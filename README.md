@@ -1,5 +1,7 @@
 # 雀魂mod_plus  
 雀魂解锁全角色、皮肤、道具等。  
+Github: [雀魂mod_plus](https://github.com/Avenshy/majsoul_mod_plus)  
+Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)  
 ## 简介  
 原作者代码地址：[雀魂mod](https://github.com/UsernameFull/majsoul_mod)，年久失修，已无法使用，本项目修复了原作者的代码并增加一些新功能。  
 顺便吐槽一句，这代码也太长了，明明能精简很多的……( ´д`)  
@@ -11,7 +13,7 @@
 ## 使用说明  
 ### 安装
 1. 浏览器安装Tampermonkey插件  
-2. 在Github或Greasyfork安装脚本  
+2. 在[Github](https://github.com/Avenshy/majsoul_mod_plus)或[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)安装脚本  
 ### 修改默认装扮  
 1. 修改脚本的ID变量  
 2. 保存并刷新  
@@ -22,8 +24,8 @@ ID可以F12打开控制台查询。
 - 所有皮肤 `cfg.item_definition.skin.map_`
 - 所有称号 `cfg.item_definition.title.map_`
   
-![image](https://github.com/Avenshy/majsoul_mod_plus/master/preview1.png)
-![image](https://github.com/Avenshy/majsoul_mod_plus/master/preview2.png)
+![image](https://raw.githubusercontent.com/Avenshy/majsoul_mod_plus/master/preview1.png)
+![image](https://raw.githubusercontent.com/Avenshy/majsoul_mod_plus/master/preview2.png)
    
 ## 已知BUG  
 ﾟ(つд`ﾟ)  
