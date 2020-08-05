@@ -41,10 +41,14 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 ![image](https://raw.githubusercontent.com/Avenshy/majsoul_mod_plus/master/preview2.png)
    
 ## 已知BUG  
-(;´Д`)  
-1.友人房对局结束后会直接回到主页
+暂无，欢迎反馈~(〃∀〃)  
+
   
 ## 更新日志  
+  
+### `v0.21` `(2020/8/05 > Majsoul v0.8.82w )`  
+* 修复“友人房对局结束后会直接回到主页”的BUG，sorry my bad(つд⊂)  
+  
   
 ### `v0.2` `(2020/8/05 > Majsoul v0.8.82w )`  
 * 修复特效不生效的BUG  
