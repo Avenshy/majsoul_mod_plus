@@ -16,8 +16,10 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 - 解锁所有装扮  
 - 解锁所有道具  
 - 解锁所有称号 `(v0.2 New)`  
+  
+  
 ## 使用说明   
-### 安装
+### 安装  
 1. 浏览器安装Tampermonkey插件  
 2. 在[Github](https://github.com/Avenshy/majsoul_mod_plus)或[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)安装脚本  
 ### 修改默认装扮  
