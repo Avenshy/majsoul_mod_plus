@@ -4,6 +4,7 @@ Github: [雀魂mod_plus](https://github.com/Avenshy/majsoul_mod_plus)
 Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)  
 ## 简介  
 原作者代码地址：[雀魂mod](https://github.com/UsernameFull/majsoul_mod)，年久失修，已无法使用，本项目修复了原作者的代码并增加一些新功能。  
+欢迎反馈BUG！  
 顺便吐槽一句，这代码也太长了，明明能精简很多的……( ´д`)  
 >注意：解锁人物仅在本地有效，别人还是只能看到你原来的角色。<br/>
 魔改千万条，安全第一条。<br/>
@@ -22,11 +23,15 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 ### 安装  
 1. 浏览器安装Tampermonkey插件  
 2. 在[Github](https://github.com/Avenshy/majsoul_mod_plus)或[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)安装脚本  
+  
 ### 修改默认装扮  
 1. 修改脚本的ID变量  
 2. 保存并刷新  
   
-ID可以F12打开控制台查询。  
+### 查询ID  
+1. F12打开控制台
+2. 输入对应的代码并按下回车  
+  
 - 所有物品 `cfg.item_definition.item.map_`  
 - 所有角色 `cfg.item_definition.character.map_`  
 - 所有皮肤 `cfg.item_definition.skin.map_`
@@ -36,7 +41,8 @@ ID可以F12打开控制台查询。
 ![image](https://raw.githubusercontent.com/Avenshy/majsoul_mod_plus/master/preview2.png)
    
 ## 已知BUG  
-好像没有哦，欢迎反馈~(*´∀`) 
+(;´Д`)  
+1.友人房对局结束后会直接回到主页
   
 ## 更新日志  
   
@@ -44,6 +50,8 @@ ID可以F12打开控制台查询。
 * 修复特效不生效的BUG  
 * 修复友人房换装无效的BUG  
 * 增加解锁全称号  
+* 修改了代码，脚本不会一直循环运行了  
+* 增加新BUG(*´д`) (友人房对局结束后会直接回到主页)  
   
   
 ### `v0.1` `(2020/8/02 > Majsoul v0.8.82w )`  
