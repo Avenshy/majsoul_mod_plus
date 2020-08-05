@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         雀魂mod_plus
 // @namespace    majsoul_mod_plus
-// @version      0.2
+// @version      0.21
 // @description  雀魂mod,解锁了全人物道具等。。。
 // @author       Avenshy
 // @homepageURL  https://github.com/Avenshy/majsoul_mod_plus
@@ -5576,6 +5576,7 @@ for (var i = 0; i < ca.length; i++) {
                 (uiscript || (uiscript = {}));
             // 对局结束更新数据
             GameMgr.Inst.updateAccountInfo = function () {
+                var t = GameMgr;
                 var e = this;
                 app.NetAgent.sendReq2Lobby("Lobby", "fetchAccountInfo", {}, function (i, n) {
                     if (i || n.error)
