@@ -60,7 +60,7 @@ function saveSettings(t) {
 }
 // 读取保存的人物和装扮
 !function loadSettings() {
-    var temp;
+    var temp = {};
     try {
         temp = JSON.parse(GM_getValue('majsoul_mod_plus', '{}'));
     } catch (error) {
