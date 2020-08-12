@@ -26,9 +26,8 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 1. 浏览器安装Tampermonkey插件  
 2. 在[Github](https://github.com/Avenshy/majsoul_mod_plus)或[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)安装脚本  
   
-### 修改默认装扮  
-1. 修改脚本的ID变量  
-2. 保存并刷新  
+### 修改装扮
+在游戏内正常修改即可，无需修改脚本！  
   
 ### 查询ID  
 1. F12打开控制台
@@ -50,15 +49,16 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
   
 ### `v0.3` `(2020/8/12 > Majsoul v0.8.82w )`  
 * 修复了友人房给房主换装的BUG，友人房现在应该没有BUG了  
-* 保存设置的方式改为GM_setValue和GM_getValue，cookie作为备用方式  
+* 保存设置的方式改为`GM_setValue`和`GM_getValue`，cookie作为备用方式  
 * 现在能够保存各角色使用的皮肤、正在使用的装扮页和所有装扮，不再需要在脚本中手动修改设置  
 * 去除因传记产生的小红点  
 * 修复进入游戏时，“试炼之道”活动中“试炼积分”为1的BUG  
 * 修复表情丢失的BUG，但是如果原本就没有该表情的话，也是不能发送的  
-* 增加外服支持，可能有水土不服  
+* 增加外服(EN/JP)支持，可能有水土不服，暂未测试  
 * 增加暂不开放的功能：强制打开便捷提示、保存每局状态（自动理牌、自动和了、不吃碰杠、自动摸切）  
-* 应该还有，但是忘了，就这样吧
- 
+* 删除多余代码，从5600行减至3200行  
+* 应该还有，但是忘了，就这样吧  
+  
   
 ### `v0.21` `(2020/8/05 > Majsoul v0.8.82w )`  
 * 修复“友人房对局结束后会直接回到主页”的BUG，sorry my bad(つд⊂)  
