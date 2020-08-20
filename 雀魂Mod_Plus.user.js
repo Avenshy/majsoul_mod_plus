@@ -51,7 +51,7 @@ class MajsoulModPlus {
             setbianjietishi: false, // 强制打开便捷提示
             setItems: {
                 setAllItems: true, // 开关，是否获得全部道具
-                ignoreItems: [309000, 309022, 309023] // 不需要获得的道具id
+                ignoreItems: [309000, 309022, 309023, 309029] // 不需要获得的道具id
             }
         }
     }
