@@ -1,19 +1,19 @@
 // ==UserScript==
-// @name         雀魂Mod_Plus
-// @name:zh-TW   雀魂Mod_Plus
-// @name:zh-HK   雀魂Mod_Plus
-// @name:en      MajsoulMod_Plus
-// @name:ja      雀魂Mod_Plus
-// @namespace    https://github.com/Avenshy
-// @version      0.5
+// @name         雀魂Mod_Plus_helper.ver
+// @name:zh-TW   雀魂Mod_Plus_helper.ver
+// @name:zh-HK   雀魂Mod_Plus_helper.ver
+// @name:en      MajsoulMod_Plus_helper.ver
+// @name:ja      雀魂Mod_Plus_helper.ver
+// @namespace    https://github.com/Moeblack
+// @version      0.1
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
 // @description:en    A majsoul mod that unlocks all characters, skins, decorations, etc. and supports all servers.
 // @description:ja    A majsoul mod that unlocks all characters, skins, decorations, etc. and supports all servers.
 // @author       Avenshy
-// @homepageURL  https://github.com/Avenshy/majsoul_mod_plus
-// @supportURL   https://github.com/Avenshy/majsoul_mod_plus/issues
+// @homepageURL  https://github.com/Moeblack/majsoul_mod_plus/
+// @supportURL   https://github.com/Moeblack/majsoul_mod_plus/issues
 // @match        https://game.maj-soul.com/1/
 // @match        https://game.mahjongsoul.com/
 // @match        https://mahjongsoul.game.yo-star.com/
