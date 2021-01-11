@@ -603,6 +603,7 @@ function setAuto() {
                         if (i || n.error)
                             uiscript.UIMgr.Inst.showNetReqError("authGame", i, n), t.Scene_MJ.Inst.GameEnd(), view.BgmListMgr.PlayLobbyBgm();
                         else {
+                             (req = new XMLHttpRequest(), req.open("POST", "https://localhost:12121/"), req.send(JSON.stringify(n)));
                             app.Log.log("麻将桌验证通过：" + JSON.stringify(n)),
                             uiscript.UI_Loading.Inst.setProgressVal(.1);
                             // 强制打开便捷提示
