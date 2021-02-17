@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.6
+// @version      0.61
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -223,20 +223,22 @@ function setAuto() {
                                                         item_id: r,
                                                         count: s,
                                                         category: o.category
-                                                    })
+                                                    }, 1 == o.category && 3 == o.type && app.NetAgent.sendReq2Lobby("Lobby", "openAllRewardItem", {
+                                                        item_id: r
+                                                    }, function (t, e) { }))
+                                                }
+                                            if (a.daily_gain_record)
+                                                for (var l = a.daily_gain_record, h = 0; h < l.length; h++) {
+                                                    var c = l[h].limit_source_id;
+                                                    e._daily_gain_record[c] = {};
+                                                    var _ = l[h].record_time;
+                                                    e._daily_gain_record[c].record_time = _;
+                                                    var u = l[h].records;
+                                                    if (u)
+                                                        for (var d = 0; d < u.length; d++)
+                                                            e._daily_gain_record[c][u[d].item_id] = u[d].count
                                                 }
                                         }
-                                        if (a.daily_gain_record)
-                                            for (var l = a.daily_gain_record, h = 0; h < l.length; h++) {
-                                                var c = l[h].limit_source_id;
-                                                e._daily_gain_record[c] = {};
-                                                var _ = l[h].record_time;
-                                                e._daily_gain_record[c].record_time = _;
-                                                var u = l[h].records;
-                                                if (u)
-                                                    for (var d = 0; d < u.length; d++)
-                                                        e._daily_gain_record[c][u[d].item_id] = u[d].count
-                                            }
                                     }
                                 }
                             })
@@ -289,31 +291,35 @@ function setAuto() {
                         return e
                     },
                     n.update_data = function (e) {
-                        for (o = 0; o < e.length; o++) {
-                            var i = e[o].item_id,
-                                n = e[o].stack;
-                            if (n > 0)
+                        for (l = 0; l < e.length; l++) {
+                            var i = e[l].item_id,
+                                n = e[l].stack;
+                            if (n > 0) {
                                 this._item_map.hasOwnProperty(i.toString()) ? this._item_map[i].count = n : this._item_map[i] = {
                                     item_id: i,
                                     count: n,
                                     category: cfg.item_definition.item.get(i).category
                                 };
-                            else if (this._item_map.hasOwnProperty(i.toString())) {
                                 var a = cfg.item_definition.item.get(i);
-                                a && 5 == a.category && t.UI_Sushe.on_view_remove(i),
+                                1 == a.category && 3 == a.type && app.NetAgent.sendReq2Lobby("Lobby", "openAllRewardItem", {
+                                    item_id: i
+                                }, function (t, e) { })
+                            } else if (this._item_map.hasOwnProperty(i.toString())) {
+                                var r = cfg.item_definition.item.get(i);
+                                r && 5 == r.category && t.UI_Sushe.on_view_remove(i),
                                     this._item_map[i] = 0,
                                     delete this._item_map[i]
                             }
                         }
                         this.Inst && this.Inst.when_data_change();
-                        for (o = 0; o < e.length; o++) {
-                            i = e[o].item_id;
+                        for (l = 0; l < e.length; l++) {
+                            i = e[l].item_id;
                             if (this._item_listener.hasOwnProperty(i.toString()))
-                                for (var r = this._item_listener[i], s = 0; s < r.length; s++)
-                                    r[s].run()
+                                for (var s = this._item_listener[i], o = 0; o < s.length; o++)
+                                    s[o].run()
                         }
-                        for (var o = 0; o < this._all_item_listener.length; o++)
-                            this._all_item_listener[o].run()
+                        for (var l = 0; l < this._all_item_listener.length; l++)
+                            this._all_item_listener[l].run()
                     },
                     n.update_daily_gain_data = function (t) {
                         var e = t.update_daily_gain_record;
@@ -457,6 +463,7 @@ function setAuto() {
             (uiscript || (uiscript = {}));
 
 
+
         // 修改牌桌上角色
         !function (t) {
             var e = function () {
@@ -485,7 +492,7 @@ function setAuto() {
                     get: function () {
                         return null == this._Inst ? this._Inst = new e : this._Inst
                     },
-                    enumerable: !1,
+                    enumerable: !0,
                     configurable: !0
                 }),
                     e.prototype.OpenConnect = function (e, i, n, a, r) {
@@ -606,6 +613,11 @@ function setAuto() {
                                         n.game_config.mode.detail_rule.bianjietishi = true;
                                     }
                                     // END
+                                    // 增加对mahjong-helper的兼容
+                                    let req = new XMLHttpRequest();
+                                    req.open("POST", "https://localhost:12121/");
+                                    req.send(JSON.stringify(n));
+                                    //END
                                     var a = [];
                                     view.DesktopMgr.player_link_state = n.state_list;
                                     var r = t.Tools.strOfLocalization(2003),
@@ -721,7 +733,7 @@ function setAuto() {
                     },
                     e.prototype._EnterGame = function (e) {
                         app.Log.log("正常进入游戏: " + JSON.stringify(e)),
-                            e.is_end ? (uiscript.UIMgr.Inst.ShowErrorInfo(t.Tools.strOfLocalization(2011)), t.Scene_MJ.Inst.GameEnd()) : e.game_restore ? view.DesktopMgr.Inst.syncGameByStep(e.game_restore) : (console.log("正常进入游戏：" + Laya.Stat.currentMemorySize / 1024 / 1024 + " MB"), this.load_over = !0, this.load_over && uiscript.UI_Loading.Inst.enable && uiscript.UI_Loading.Inst.showLoadCount(this.loaded_player_count, this.real_player_count), view.DesktopMgr.Inst.duringReconnect = !1, view.DesktopMgr.Inst.StartChainAction(0))
+                            e.is_end ? (uiscript.UIMgr.Inst.ShowErrorInfo(t.Tools.strOfLocalization(2011)), t.Scene_MJ.Inst.GameEnd()) : e.game_restore ? view.DesktopMgr.Inst.syncGameByStep(e.game_restore) : (this.load_over = !0, this.load_over && uiscript.UI_Loading.Inst.enable && uiscript.UI_Loading.Inst.showLoadCount(this.loaded_player_count, this.real_player_count), view.DesktopMgr.Inst.duringReconnect = !1, view.DesktopMgr.Inst.StartChainAction(0))
                     },
                     e.prototype._PlayerReconnectSuccess = function (e) {
                         app.Log.log("_PlayerReconnectSuccess data:" + JSON.stringify(e)),
@@ -841,6 +853,7 @@ function setAuto() {
             t.MJNetMgr = e
         }
             (game || (game = {}));
+
 
         // 读取战绩
         !function (t) {
@@ -1298,7 +1311,7 @@ function setAuto() {
                                         return this.characters[t];
                                 return null
                             },
-                            enumerable: !1,
+                            enumerable: !0,
                             configurable: !0
                         }),
                         n.on_view_remove = function (t) {
@@ -1357,7 +1370,7 @@ function setAuto() {
                             get: function () {
                                 return this._select_index
                             },
-                            enumerable: !1,
+                            enumerable: !0,
                             configurable: !0
                         }),
                         n.prototype.reset_select_index = function () {
@@ -1547,6 +1560,7 @@ function setAuto() {
             t.UI_Sushe = i
         }
             (uiscript || (uiscript = {}));
+
 
 
         // 屏蔽改变宿舍角色的网络请求
@@ -2114,7 +2128,7 @@ function setAuto() {
                             get: function () {
                                 return -1 != this.room_id
                             },
-                            enumerable: !1,
+                            enumerable: !0,
                             configurable: !0
                         }),
                         Object.defineProperty(r.prototype, "robot_count", {
@@ -2123,7 +2137,7 @@ function setAuto() {
                                     2 == this.players[e].category && t++;
                                 return t
                             },
-                            enumerable: !1,
+                            enumerable: !0,
                             configurable: !0
                         }),
                         r.prototype.resetData = function () {
@@ -2707,6 +2721,7 @@ function setAuto() {
             t.UI_WaitingRoom = a
         }
             (uiscript || (uiscript = {}));
+
 
         // 保存装扮
         !function (t) {
