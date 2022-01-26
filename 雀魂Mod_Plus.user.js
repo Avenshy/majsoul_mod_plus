@@ -1241,7 +1241,7 @@ function setAuto() {
                                                 exp: 0,
                                                 skin: skin,
                                                 is_upgraded: 1,
-                                                extra_emoji: ["10", "11", "12", "13", "14", "15", "16", "17"]
+                                                extra_emoji: ["10", "11", "12", "13", "14", "15", "16", "17", "888"]
                                             });
                                         }
                                         let skins = cfg.item_definition.skin['rows_'];
