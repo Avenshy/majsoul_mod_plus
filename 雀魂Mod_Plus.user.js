@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.9.245
+// @version      0.10.73
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -42,6 +42,7 @@ class MajsoulModPlus {
             commonViewList: [[], [], [], [], []], // 保存装扮
             using_commonview_index: 0, // 使用装扮页
             title: 600021, // 称号
+            nickname: '',
             setAuto: {
                 isSetAuto: false, // 开关，是否保存状态
                 setAutoLiPai: true, // 自动理牌
@@ -214,6 +215,8 @@ function setAuto() {
                                                     }; //获取物品列表并添加
                                                 }
                                             }
+
+
                                         } else {
                                             if (a.items)
                                                 for (var r = 0; r < a.items.length; r++) {
@@ -240,6 +243,7 @@ function setAuto() {
                                                             e._daily_gain_record[c][u[d].item_id] = u[d].count
                                                 }
                                         }
+
                                     }
                                 }
                             })
@@ -422,6 +426,8 @@ function setAuto() {
                     },
                     n.prototype.onDisable = function () {
                         this.page_skin.close()
+                        this.page_item.close(),
+                            this.page_gift.close()
                     },
                     n.prototype.on_change_tab = function (t) {
                         this.select_index = t;
@@ -462,6 +468,7 @@ function setAuto() {
             t.UI_Bag = i
         }
             (uiscript || (uiscript = {}));
+
 
 
         // 修改牌桌上角色
@@ -527,7 +534,7 @@ function setAuto() {
                         this.connect_state == t.EConnectState.connecting && GameMgr.Inst.postNewInfo2Server("network_route", {
                             client_type: "web",
                             route_type: "game",
-                            route_index: t.LobbyNetMgr.Inst.choosed_index + 1,
+                            route_index: t.LobbyNetMgr.root_id_lst[t.LobbyNetMgr.Inst.choosed_index],
                             route_delay: Math.min(1e4, Math.round(app.NetAgent.mj_network_delay)),
                             connection_time: Math.round(Date.now() - this._connect_start_time),
                             reconnect_count: this._report_reconnect_count
@@ -683,6 +690,9 @@ function setAuto() {
                                                         a[h].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
                                                         a[h].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
                                                         a[h].title = GameMgr.Inst.account_data.title;
+                                                        if (MMP.settings.nickname != '') {
+                                                            a[h].nickname = MMP.settings.nickname;
+                                                        }
                                                     }
                                                     // END
                                                     break
@@ -877,6 +887,7 @@ function setAuto() {
             (game || (game = {}));
 
 
+
         // 读取战绩
         !function (t) {
             var e = function (e) {
@@ -915,9 +926,9 @@ function setAuto() {
                             this.origin_x = this.root.x,
                             this.origin_y = this.root.y,
                             this.container_info = this.root.getChildByName("container_info"),
-                            this.title = new t.UI_PlayerTitle(this.container_info.getChildByName("title")),
+                            this.title = new t.UI_PlayerTitle(this.container_info.getChildByName("title"), "UI_OtherPlayerInfo"),
                             this.name = this.container_info.getChildByName("name"),
-                            this.level = new t.UI_Level(this.container_info.getChildByName("rank")),
+                            this.level = new t.UI_Level(this.container_info.getChildByName("rank"), "UI_OtherPlayerInfo"),
                             this.detail_data = new t.UI_PlayerData(this.container_info.getChildByName("data")),
                             this.achievement_data = new t.UI_Achievement_Light(this.container_info.getChildByName("achievement")),
                             this.illust = new t.UI_Character_Skin(this.root.getChildByName("illust").getChildByName("illust")),
@@ -1014,6 +1025,9 @@ function setAuto() {
                                     if (a.account_id == GameMgr.Inst.account_id) {
                                         a.avatar_id = uiscript.UI_Sushe.main_chara_info.skin,
                                             a.title = GameMgr.Inst.account_data.title;
+                                        if (MMP.settings.nickname != '') {
+                                            a.nickname = MMP.settings.nickname;
+                                        }
                                     }
                                     //end
                                     e.player_data = a,
@@ -1050,8 +1064,12 @@ function setAuto() {
                                 e.enable = !1
                         }))))
                     },
+                    i.prototype.onEnable = function () {
+                        game.TempImageMgr.setUIEnable("UI_OtherPlayerInfo", !0)
+                    },
                     i.prototype.onDisable = function () {
-                        this.detail_data.close(),
+                        game.TempImageMgr.setUIEnable("UI_OtherPlayerInfo", !1),
+                            this.detail_data.close(),
                             this.illust.clear(),
                             Laya.loader.clearTextureRes(this.level.icon.skin)
                     },
@@ -1064,51 +1082,57 @@ function setAuto() {
             (uiscript || (uiscript = {}));
 
 
+
         // 宿舍相关
         !function (t) {
             var e = function () {
-                function e(t, e) {
-                    var i = this;
+                function e(e, n) {
+                    var a = this;
                     this._scale = 1,
                         this.during_move = !1,
                         this.mouse_start_x = 0,
                         this.mouse_start_y = 0,
-                        this.me = t,
-                        this.container_illust = e,
+                        this.me = e,
+                        this.container_illust = n,
                         this.illust = this.container_illust.getChildByName("illust"),
-                        this.container_move = t.getChildByName("move"),
+                        this.container_move = e.getChildByName("move"),
                         this.container_move.on("mousedown", this, function () {
-                            i.during_move = !0,
-                                i.mouse_start_x = i.container_move.mouseX,
-                                i.mouse_start_y = i.container_move.mouseY
+                            a.during_move = !0,
+                                a.mouse_start_x = a.container_move.mouseX,
+                                a.mouse_start_y = a.container_move.mouseY
                         }),
                         this.container_move.on("mousemove", this, function () {
-                            i.during_move && (i.move(i.container_move.mouseX - i.mouse_start_x, i.container_move.mouseY - i.mouse_start_y), i.mouse_start_x = i.container_move.mouseX, i.mouse_start_y = i.container_move.mouseY)
+                            a.during_move && (a.move(a.container_move.mouseX - a.mouse_start_x, a.container_move.mouseY - a.mouse_start_y), a.mouse_start_x = a.container_move.mouseX, a.mouse_start_y = a.container_move.mouseY)
                         }),
                         this.container_move.on("mouseup", this, function () {
-                            i.during_move = !1
+                            a.during_move = !1
                         }),
                         this.container_move.on("mouseout", this, function () {
-                            i.during_move = !1
+                            a.during_move = !1
                         }),
-                        this.btn_big = t.getChildByName("btn_big"),
+                        this.btn_big = e.getChildByName("btn_big"),
                         this.btn_big.clickHandler = Laya.Handler.create(this, function () {
-                            i.locking || i.bigger()
+                            a.locking || a.bigger()
                         }, null, !1),
-                        this.btn_small = t.getChildByName("btn_small"),
+                        this.btn_small = e.getChildByName("btn_small"),
                         this.btn_small.clickHandler = Laya.Handler.create(this, function () {
-                            i.locking || i.smaller()
+                            a.locking || a.smaller()
                         }, null, !1),
-                        this.btn_close = t.getChildByName("btn_close"),
+                        this.btn_close = e.getChildByName("btn_close"),
                         this.btn_close.clickHandler = Laya.Handler.create(this, function () {
-                            i.locking || i.close()
+                            a.locking || a.close()
                         }, null, !1),
-                        this.scrollbar = t.getChildByName("scrollbar").scriptMap["capsui.CScrollBar"],
+                        this.scrollbar = e.getChildByName("scrollbar").scriptMap["capsui.CScrollBar"],
                         this.scrollbar.init(new Laya.Handler(this, function (t) {
-                            i._scale = 1 * (1 - t) + .5,
-                                i.illust.scaleX = i._scale,
-                                i.illust.scaleY = i._scale,
-                                i.scrollbar.setVal(t, 0)
+                            a._scale = 1 * (1 - t) + .5,
+                                a.illust.scaleX = a._scale,
+                                a.illust.scaleY = a._scale,
+                                a.scrollbar.setVal(t, 0)
+                        })),
+                        this.dongtai_kaiguan = new t.UI_Dongtai_Kaiguan(this.me.getChildByName("dongtai"), new Laya.Handler(this, function () {
+                            i.Inst.illust.resetSkin()
+                        }), new Laya.Handler(this, function (t) {
+                            i.Inst.illust.playAnim(t)
                         }))
                 }
                 return Object.defineProperty(e.prototype, "scale", {
@@ -1146,7 +1170,8 @@ function setAuto() {
                             Laya.timer.once(250, this, function () {
                                 n.locking = !1
                             }),
-                            this.me.visible = !0
+                            this.me.visible = !0,
+                            this.dongtai_kaiguan.refresh(i.Inst.illust.skin_id)
                     },
                     e.prototype.close = function () {
                         var e = this;
@@ -1265,7 +1290,8 @@ function setAuto() {
                                             views: [],
                                             skin: 400101,
                                             is_upgraded: !1,
-                                            extra_emoji: []
+                                            extra_emoji: [],
+                                            rewarded_level: []
                                         }), i.characters.push({
                                             charid: 200002,
                                             level: 0,
@@ -1273,7 +1299,8 @@ function setAuto() {
                                             views: [],
                                             skin: 400201,
                                             is_upgraded: !1,
-                                            extra_emoji: []
+                                            extra_emoji: [],
+                                            rewarded_level: []
                                         }), i.skin_map[400101] = 1, i.skin_map[400201] = 1, i.main_character_id = 200001;
                                     if (i.send_gift_count = 0, i.send_gift_limit = 0, a.send_gift_count && (i.send_gift_count = a.send_gift_count), a.send_gift_limit && (i.send_gift_limit = a.send_gift_limit), a.finished_endings)
                                         for (var r = 0; r < a.finished_endings.length; r++)
@@ -1303,6 +1330,7 @@ function setAuto() {
                             i.commonViewList = MMP.settings.commonViewList;
                             GameMgr.Inst.account_data.title = MMP.settings.title;
                             GameMgr.Inst.load_mjp_view();
+                            GameMgr.Inst.load_touming_mjp_view();
                             GameMgr.Inst.account_data.avatar_frame = getAvatar_id();
                             //}
                             //})
@@ -1495,7 +1523,8 @@ function setAuto() {
                                 })
                         },
                         n.prototype.onDisable = function () {
-                            this.illust.clear(),
+                            view.AudioMgr.refresh_music_volume(!1),
+                                this.illust.clear(),
                                 this.stopsay(),
                                 this.container_look_illust.me.visible && this.container_look_illust.close()
                         },
@@ -1536,9 +1565,9 @@ function setAuto() {
                                 this.illust_showing = !0;
                             var i = n.characters[e];
                             this.label_name.text = "chs" == GameMgr.client_language || "chs_t" == GameMgr.client_language ? cfg.item_definition.character.get(i.charid)["name_" + GameMgr.client_language].replace("-", "|") : cfg.item_definition.character.get(i.charid)["name_" + GameMgr.client_language],
-                                "chs" == GameMgr.client_language && (this.label_name.font = 200040 == i.charid || 200043 == i.charid ? "fengyu" : "hanyi"),
+                                "chs" == GameMgr.client_language && (this.label_name.font = -1 != n.chs_fengyu_name_lst.indexOf(i.charid) ? "fengyu" : "hanyi"),
                                 this.label_cv.text = "chs" == GameMgr.client_language || "chs_t" == GameMgr.client_language ? "CV" + cfg.item_definition.character.get(i.charid)["desc_cv_" + GameMgr.client_language] : "CV:" + cfg.item_definition.character.get(i.charid)["desc_cv_" + GameMgr.client_language],
-                                "chs" == GameMgr.client_language && (this.label_cv.font = 200047 == i.charid ? "fengyu" : "hanyi"),
+                                "chs" == GameMgr.client_language && (this.label_cv.font = -1 != n.chs_fengyu_cv_lst.indexOf(i.charid) ? "fengyu" : "hanyi"),
                                 this.illust.setSkin(i.skin, "full"),
                                 this.contianer_illust.visible = !0,
                                 Laya.Tween.clearAll(this.contianer_illust),
@@ -1547,7 +1576,9 @@ function setAuto() {
                                 t.UIBase.anim_alpha_in(this.contianer_illust, {
                                     x: -30
                                 }, 230),
-                                this.stopsay()
+                                this.stopsay();
+                            var a = cfg.item_definition.skin.get(i.skin);
+                            a.spine_type ? (this.page_select_character.changeKaiguanShow(!0), this.container_look_illust.dongtai_kaiguan.show(this.illust.skin_id)) : (this.page_select_character.changeKaiguanShow(!1), this.container_look_illust.dongtai_kaiguan.hide())
                         },
                         n.prototype.onChangeSkin = function (t) {
                             n.characters[this._select_index].skin = t,
@@ -1582,7 +1613,8 @@ function setAuto() {
                         n.prototype.to_look_illust = function () {
                             var t = this;
                             this.container_look_illust.show(Laya.Handler.create(this, function () {
-                                t.page_select_character.show(0)
+                                t.illust.playAnim("idle"),
+                                    t.page_select_character.show(0)
                             }))
                         },
                         n.prototype.jump_to_char_skin = function (e) {
@@ -1598,7 +1630,22 @@ function setAuto() {
                                     i.page_visit_character.show_pop_skin()
                             }))
                         },
+                        n.prototype.jump_to_char_qiyue = function (e) {
+                            var i = this;
+                            if (void 0 === e && (e = -1), e >= 0)
+                                for (var a = 0; a < n.characters.length; a++)
+                                    if (n.characters[a].charid == e) {
+                                        this.change_select(a);
+                                        break
+                                    }
+                            t.UI_Sushe_Select.Inst.close(Laya.Handler.create(this, function () {
+                                n.Inst.show_page_visit(),
+                                    i.page_visit_character.show_qiyue()
+                            }))
+                        },
                         n.characters = [],
+                        n.chs_fengyu_name_lst = [200040, 200043],
+                        n.chs_fengyu_cv_lst = [200047, 200050, 200054],
                         n.skin_map = {},
                         n.main_character_id = 0,
                         n.send_gift_count = 0,
@@ -1615,6 +1662,7 @@ function setAuto() {
             t.UI_Sushe = i
         }
             (uiscript || (uiscript = {}));
+
 
 
         // 屏蔽改变宿舍角色的网络请求
@@ -1645,7 +1693,10 @@ function setAuto() {
                         }, null, !1),
                         this.scrollview = this.me.scriptMap["capsui.CScrollView"],
                         this.scrollview.init_scrollview(new Laya.Handler(this, this.render_character_cell), -1, 3),
-                        this.scrollview.setElastic()
+                        this.scrollview.setElastic(),
+                        this.dongtai_kaiguan = new t.UI_Dongtai_Kaiguan(this.me.getChildByName("dongtai"), new Laya.Handler(this, function () {
+                            t.UI_Sushe.Inst.illust.resetSkin()
+                        }))
                 }
                 return e.prototype.show = function (e, i) {
                     void 0 === i && (i = !1),
@@ -1816,6 +1867,7 @@ function setAuto() {
                             var i = this;
                             this.enable = !0,
                                 this.locking = !0,
+                                this.container_head.dongtai_kaiguan.refresh(),
                                 this.tab_index = e,
                                 0 == this.tab_index ? (this.bg.width = this.bg_width_head, this.bg2.width = this.bg.width + this.bg2_delta, this.container_zhuangban.close(!0), this.container_head.show(!0), t.UIBase.anim_alpha_in(this.container_top, {
                                     y: -30
@@ -1896,12 +1948,16 @@ function setAuto() {
                                 n && Laya.loader.clearTextureRes(game.LoadMgr.getResImageSkin(n.path + "/bighead.png"))
                             }
                         },
+                        n.prototype.changeKaiguanShow = function (t) {
+                            t ? this.container_head.dongtai_kaiguan.show() : this.container_head.dongtai_kaiguan.hide()
+                        },
                         n
                 }
                     (t.UIBase);
             t.UI_Sushe_Select = i
         }
             (uiscript || (uiscript = {}));
+
 
 
         // 友人房
@@ -1977,7 +2033,7 @@ function setAuto() {
                         var i = e.index,
                             n = e.container,
                             r = e.cache_data;
-                        r.head || (r.head = new t.UI_Head(n.getChildByName("head")), r.name = n.getChildByName("name"), r.state = n.getChildByName("label_state"), r.btn = n.getChildByName("btn_invite"), r.invited = n.getChildByName("invited"));
+                        r.head || (r.head = new t.UI_Head(n.getChildByName("head"), "UI_WaitingRoom"), r.name = n.getChildByName("name"), r.state = n.getChildByName("label_state"), r.btn = n.getChildByName("btn_invite"), r.invited = n.getChildByName("invited"));
                         var s = this.friends[this.sortlist[i]];
                         r.head.id = game.GameUtility.get_limited_skin_id(s.f.base.avatar_id),
                             r.head.set_head_frame(s.f.base.account_id, s.f.base.avatar_frame),
@@ -2088,7 +2144,7 @@ function setAuto() {
                         e.prototype.close = function (e) {
                             var i = this;
                             //修改友人房间立绘
-                            if (i.page_head.choosed_chara_index != 0 && i.page_head.choosed_chara_index != 0) {
+                            if (!(i.page_head.choosed_chara_index == 0 && i.page_head.choosed_skin_id == 0)) {
                                 for (let id = 0; id < a.Inst.players.length; id++) {
                                     if (a.Inst.players[id].account_id == GameMgr.Inst.account_id) {
                                         a.Inst.players[id].avatar_id = i.page_head.choosed_skin_id;
@@ -2237,6 +2293,9 @@ function setAuto() {
                                     t.persons[i].character = uiscript.UI_Sushe.main_chara_info;
                                     t.persons[i].title = GameMgr.Inst.account_data.title;
                                     t.persons[i].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
+                                    if (MMP.settings.nickname != '') {
+                                        t.persons[i].nickname = MMP.settings.nickname;
+                                    }
                                     break;
                                 }
                             }
@@ -2309,6 +2368,9 @@ function setAuto() {
                                         t.player_list[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
                                         t.player_list[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
                                         t.player_list[i].title = GameMgr.Inst.account_data.title;
+                                        if (MMP.settings.nickname != '') {
+                                            t.player_list[i].nickname = MMP.settings.nickname;
+                                        }
                                         break;
                                     }
                                 }
@@ -2318,6 +2380,9 @@ function setAuto() {
                                             t.update_list[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
                                             t.update_list[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
                                             t.update_list[i].title = GameMgr.Inst.account_data.title;
+                                            if (MMP.settings.nickname != '') {
+                                                t.update_list[i].nickname = MMP.settings.nickname;
+                                            }
                                             break;
                                         }
                                     }
@@ -2328,6 +2393,9 @@ function setAuto() {
                                         this.players[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
                                         this.players[i].title = GameMgr.Inst.account_data.title;
                                         this.players[i].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
+                                        if (MMP.settings.nickname != '') {
+                                            this.players[i].nickname = MMP.settings.nickname;
+                                        }
                                         break;
                                     }
                                 }
@@ -2472,8 +2540,8 @@ function setAuto() {
                                     n.container_illust = i.getChildByName("container_illust"),
                                     n.illust = new t.UI_Character_Skin(i.getChildByName("container_illust").getChildByName("illust")),
                                     n.host = i.getChildByName("host"),
-                                    n.title = new t.UI_PlayerTitle(i.getChildByName("container_name").getChildByName("title")),
-                                    n.rank = new t.UI_Level(i.getChildByName("container_name").getChildByName("rank")),
+                                    n.title = new t.UI_PlayerTitle(i.getChildByName("container_name").getChildByName("title"), "UI_WaitingRoom"),
+                                    n.rank = new t.UI_Level(i.getChildByName("container_name").getChildByName("rank"), "UI_WaitingRoom"),
                                     n.is_robot = !1;
                                 var s = 0;
                                 n.btn_t.clickHandler = Laya.Handler.create(o, function () {
@@ -2611,7 +2679,7 @@ function setAuto() {
                                     l && a.push(l.name)
                                 }
                                 if (null != r.init_point && a.push(game.Tools.strOfLocalization(2199) + r.init_point), null != r.fandian && a.push(game.Tools.strOfLocalization(2094) + ":" + r.fandian), r.guyi_mode && a.push(game.Tools.strOfLocalization(3028)), null != r.dora_count)
-                                    switch (r.dora_count) {
+                                    switch (r.chuanma && (r.dora_count = 0), r.dora_count) {
                                         case 0:
                                             a.push(game.Tools.strOfLocalization(2044));
                                             break;
@@ -2799,6 +2867,12 @@ function setAuto() {
                                 this.enable = !1,
                                 game.MJNetMgr.Inst.OpenConnect(t.connect_token, t.game_uuid, t.location, !1, null)
                         },
+                        r.prototype.onEnable = function () {
+                            game.TempImageMgr.setUIEnable("UI_WaitingRoom", !0)
+                        },
+                        r.prototype.onDisable = function () {
+                            game.TempImageMgr.setUIEnable("UI_WaitingRoom", !1)
+                        },
                         r.Inst = null,
                         r
                 }
@@ -2806,6 +2880,7 @@ function setAuto() {
             t.UI_WaitingRoom = a
         }
             (uiscript || (uiscript = {}));
+
 
 
         // 保存装扮
@@ -2876,7 +2951,7 @@ function setAuto() {
                                 //		t.UIMgr.Inst.showNetReqError("saveCommonViews", i, n);
                                 //	else {
                                 if (t.UI_Sushe.commonViewList.length < s)
-                                    for (var a = t.UI_Sushe.commonViewList.length; a <= s; a++)
+                                    for (var a = t.UI_Sushe.commonViewList.length; s >= a; a++)
                                         t.UI_Sushe.commonViewList.push([]);
                                 MMP.settings.commonViewList = t.UI_Sushe.commonViewList;
                                 MMP.settings.using_commonview_index = t.UI_Sushe.using_commonview_index;
@@ -2915,7 +2990,8 @@ function setAuto() {
                             configurable: !0
                         }),
                         i.prototype.show = function (e) {
-                            this.container_zhuangban0.visible = !0,
+                            game.TempImageMgr.setUIEnable("UI_Sushe_Select.Zhuangban", !0),
+                                this.container_zhuangban0.visible = !0,
                                 this.container_zhuangban1.visible = !0,
                                 e ? (this.container_zhuangban0.alpha = 1, this.container_zhuangban1.alpha = 1) : (t.UIBase.anim_alpha_in(this.container_zhuangban0, {
                                     x: 0
@@ -3004,7 +3080,7 @@ function setAuto() {
                                 l = this.slot_ids[n];
                             this.slot_map[l] && (o = this.slot_map[l]);
                             var h = cfg.item_definition.item.get(o);
-                            h ? (r.text = h["name_" + GameMgr.client_language], game.LoadMgr.setImgSkin(s, h.icon)) : (r.text = game.Tools.strOfLocalization(this.cell_names[n]), game.LoadMgr.setImgSkin(s, this.cell_default_img[n]));
+                            h ? (r.text = h["name_" + GameMgr.client_language], game.LoadMgr.setImgSkin(s, h.icon, null, "UI_Sushe_Select.Zhuangban")) : (r.text = game.Tools.strOfLocalization(this.cell_names[n]), game.LoadMgr.setImgSkin(s, this.cell_default_img[n], null, "UI_Sushe_Select.Zhuangban"));
                             var c = a.getChildByName("btn");
                             c.clickHandler = Laya.Handler.create(this, function () {
                                 e.locking || e.select_index != n && (e.onChangeSlotSelect(n), e.scrollview.wantToRefreshAll())
@@ -3024,6 +3100,7 @@ function setAuto() {
                                     i.page_bgm.close(),
                                     i.container_zhuangban0.visible = !1,
                                     i.container_zhuangban1.visible = !1
+                                game.TempImageMgr.setUIEnable("UI_Sushe_Select.Zhuangban", !1)
                             }))))
                         },
                         i.prototype.onChangeGameView = function () {
@@ -3050,6 +3127,7 @@ function setAuto() {
             (uiscript || (uiscript = {}));
 
 
+
         // 设置称号
         !function (t) {
             var e = function (e) {
@@ -3067,6 +3145,10 @@ function setAuto() {
                     i.Init = function () {
                         var e = this;
                         // 获取称号
+                        //app.NetAgent.sendReq2Lobby("Lobby", "fetchTitleList", {}, function (i, n) {
+                        //if (i || n.error)
+                        //t.UIMgr.Inst.showNetReqError("fetchTitleList", i, n);
+                        //else {
                         e.owned_title = [];
                         for (let a of cfg.item_definition.title.rows_) {
                             var r = a.id;
@@ -3141,15 +3223,19 @@ function setAuto() {
                                     e.enable = !1
                             }))
                     },
+                    i.prototype.onEnable = function () {
+                        game.TempImageMgr.setUIEnable("UI_TitleBook", !0)
+                    },
                     i.prototype.onDisable = function () {
-                        this._scrollview.reset()
+                        game.TempImageMgr.setUIEnable("UI_TitleBook", !1),
+                            this._scrollview.reset()
                     },
                     i.prototype.setItemValue = function (t, e) {
                         var n = this;
                         if (this.enable) {
                             var a = i.owned_title[this._showindexs[t]],
                                 r = cfg.item_definition.title.find(a);
-                            game.LoadMgr.setImgSkin(e.getChildByName("img_title"), r.icon),
+                            game.LoadMgr.setImgSkin(e.getChildByName("img_title"), r.icon, null, "UI_TitleBook"),
                                 e.getChildByName("using").visible = a == GameMgr.Inst.account_data.title,
                                 e.getChildByName("desc").text = r["desc_" + GameMgr.client_language];
                             var s = e.getChildByName("btn");
@@ -3184,6 +3270,7 @@ function setAuto() {
                             -1 != s && this._scrollview.wantToRefreshItem(s),
                             // 设置称号
                             MMP.settings.title = r;
+
                         MMP.saveSettings();
                         t.UI_Lobby.Inst.top.refresh(),
                             t.UI_PlayerInfo.Inst.enable && t.UI_PlayerInfo.Inst.refreshBaseInfo(),
@@ -3198,6 +3285,7 @@ function setAuto() {
             t.UI_TitleBook = e
         }
             (uiscript || (uiscript = {}));
+
 
 
         // 友人房调整装扮
@@ -3337,13 +3425,16 @@ function setAuto() {
                 if (i || n.error)
                     uiscript.UIMgr.Inst.showNetReqError("fetchAccountInfo", i, n);
                 else {
+                    app.Log.log("UpdateAccount: " + JSON.stringify(n)),
+                        t.Inst.account_refresh_time = Laya.timer.currTimer;
                     // 对局结束更新数据
                     n.account.avatar_id = GameMgr.Inst.account_data.avatar_id;
                     n.account.title = GameMgr.Inst.account_data.title;
                     n.account.avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                    if (MMP.settings.nickname != '') {
+                        n.account.nickname = MMP.settings.nickname;
+                    }
                     // end
-                    app.Log.log("UpdateAccount: " + JSON.stringify(n)),
-                        t.Inst.account_refresh_time = Laya.timer.currTimer;
                     for (var a in n.account) {
                         if (t.Inst.account_data[a] = n.account[a], "platform_diamond" == a)
                             for (var r = n.account[a], s = 0; s < r.length; s++)
@@ -3438,6 +3529,14 @@ function setAuto() {
                 this.arrow = this._container_fun.getChildByName("arrow"),
                 this.arrow.scaleX = -1
         };
+        temp = uiscript.UI_Info.Init;
+        uiscript.UI_Info.Init = function () {
+            // 设置名称
+            if (MMP.settings.nickname != '') {
+                GameMgr.Inst.account_data.nickname = MMP.settings.nickname;
+            }
+            temp();
+        }
         console.log('[雀魂mod_plus] 启动完毕!!!');
     } catch (error) {
         console.log('[雀魂mod_plus] 等待游戏启动');
