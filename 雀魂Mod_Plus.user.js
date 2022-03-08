@@ -98,14 +98,16 @@ class MajsoulModPlus {
     }
 }
 
-MMP = new MajsoulModPlus;
-if (typeof unsafeWindow !== "undefined") {
-    unsafeWindow.MMP = MMP;
-} else {
-    console.log("unsafeWindow API not available. Try to inject into window.MMP");
-    window.MMP = MMP;
-}
-MMP.loadSettings();
+!function() {
+    var MMP = new MajsoulModPlus;
+    if (typeof unsafeWindow !== "undefined") {
+        unsafeWindow.MMP = MMP;
+    } else {
+        console.log("unsafeWindow API not available. Try to inject into window.MMP");
+        window.MMP = MMP;
+    }
+    MMP.loadSettings();
+}();
 
 // 取称号id
 function getAvatar_id() {
