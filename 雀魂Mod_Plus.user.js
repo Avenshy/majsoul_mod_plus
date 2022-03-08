@@ -20,6 +20,8 @@
 // @match        https://mahjongsoul.game.yo-star.com/
 // @grant        GM_setValue
 // @grant        GM_getValue
+// @inject-into  auto
+// @run-at       document-start
 // @license      GPL-3.0
 // ==/UserScript==
 
@@ -95,8 +97,17 @@ class MajsoulModPlus {
         }
     }
 }
-unsafeWindow.MMP = new MajsoulModPlus;
-MMP.loadSettings();
+
+!function() {
+    var MMP = new MajsoulModPlus;
+    if (typeof unsafeWindow !== "undefined") {
+        unsafeWindow.MMP = MMP;
+    } else {
+        console.log("unsafeWindow API not available. Try to inject into window.MMP");
+        window.MMP = MMP;
+    }
+    MMP.loadSettings();
+}();
 
 // 取称号id
 function getAvatar_id() {
@@ -1777,7 +1788,7 @@ function setAuto() {
                         // 保存人物和皮肤
                         MMP.settings.star_chars = uiscript.UI_Sushe.star_chars;
                         MMP.saveSettings();
-                        // END     
+                        // END
                     },
                     e.prototype.close = function (e) {
                         var i = this;
