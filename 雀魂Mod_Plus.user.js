@@ -58,7 +58,10 @@ class MajsoulModPlus {
                 ignoreItems: [309000, 309022, 309023, 309029, 309035]// 不需要获得的道具id
             }
         }
+        this.randomBotSkin = true;    //开关，是否随机电脑皮肤
+        this.randomPlayerDefSkin = true; //开关，是否随机那些只有默认皮肤的玩家的皮肤
     }
+
     loadSettings() {
         var temp = {};
         try {
@@ -670,7 +673,7 @@ function setAuto() {
                                         o.detail_rule && o.detail_rule.ai_level && (1 === o.detail_rule.ai_level && (s = t.Tools.strOfLocalization(2003)), 2 === o.detail_rule.ai_level && (s = t.Tools.strOfLocalization(2004)));
                                     for (var c = t.GameUtility.get_default_ai_skin(), _ = t.GameUtility.get_default_ai_character(), h = 0; h < n.seat_list.length; h++) {
                                         var u = n.seat_list[h];
-                                        if (0 == u)
+                                        if (0 == u) {
                                             a[h] = {
                                                 nickname: s,
                                                 avatar_id: c,
@@ -689,9 +692,22 @@ function setAuto() {
                                                     is_upgraded: !1
                                                 }
                                             };
+                                            //随机化电脑皮肤
+                                            if(MMP.randomBotSkin)
+                                            {
+                                                let all_keys = Object.keys(cfg.item_definition.skin.map_);
+                                                let rand_skin_id = parseInt(Math.random()*all_keys.length,10);
+                                                let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
+                                                a[h].avatar_id = skin.id;
+                                                a[h].character.charid = skin.character_id;
+                                                a[h].character.skin = skin.id;
+                                            }
+
+                                        }
                                         else {
                                             r++;
                                             for (var d = 0; d < n.players.length; d++)
+
                                                 if (n.players[d].account_id == u) {
                                                     a[h] = n.players[d];
                                                     //修改牌桌上人物头像及皮肤
@@ -705,8 +721,19 @@ function setAuto() {
                                                             a[h].nickname = MMP.settings.nickname;
                                                         }
                                                     }
+                                                    else if(MMP.randomPlayerDefSkin && (a[h].avatar_id == 400101 || a[h].avatar_id == 400201))
+                                                    {
+                                                        //玩家如果用了默认皮肤也随机换
+                                                        let all_keys = Object.keys(cfg.item_definition.skin.map_);
+                                                        let rand_skin_id = parseInt(Math.random()*all_keys.length,10);
+                                                        let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
+                                                        a[h].avatar_id = skin.id;
+                                                        a[h].character.charid = skin.character_id;
+                                                        a[h].character.skin = skin.id;
+                                                    }
                                                     // END
-                                                    break
+                                                    //break
+
                                                 }
                                         }
                                     }
@@ -2298,6 +2325,7 @@ function setAuto() {
                                 return this.resetData(), void 0;
                             //修改友人房间立绘
                             for (let i = 0; i < t.persons.length; i++) {
+
                                 if (t.persons[i].account_id == GameMgr.Inst.account_data.account_id) {
                                     t.persons[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
                                     t.persons[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
@@ -2375,6 +2403,7 @@ function setAuto() {
                             if (app.Log.log(t), t = t.toJSON(), !(t.seq && t.seq <= this.update_seq)) {
                                 // 修改友人房间立绘
                                 for (var i = 0; i < t.player_list.length; i++) {
+
                                     if (t.player_list[i].account_id == GameMgr.Inst.account_data.account_id) {
                                         t.player_list[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
                                         t.player_list[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
@@ -2387,6 +2416,7 @@ function setAuto() {
                                 }
                                 if (t.update_list != undefined) {
                                     for (var i = 0; i < t.update_list.length; i++) {
+
                                         if (t.update_list[i].account_id == GameMgr.Inst.account_data.account_id) {
                                             t.update_list[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
                                             t.update_list[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
