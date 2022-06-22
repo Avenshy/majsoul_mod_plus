@@ -15,6 +15,7 @@
 // @homepageURL  https://github.com/Avenshy/majsoul_mod_plus
 // @supportURL   https://github.com/Avenshy/majsoul_mod_plus/issues
 // @match        https://game.maj-soul.com/1/
+// @match        https://game.maj-soul.net/1/
 // @match        https://game.mahjongsoul.com/
 // @match        https://game.mahjongsoul.com/index.html
 // @match        https://mahjongsoul.game.yo-star.com/
