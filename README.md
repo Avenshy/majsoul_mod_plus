@@ -11,7 +11,7 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 雀魂经常有小更新，经常会出现脚本已支持版本低于雀魂当前版本，但不会影响脚本使用。  
 一般只有雀魂停服更新才会出现脚本无法使用的情况。  
 请放心使用。有BUG欢迎反馈。  
-![放铳放铳](https://img.nga.178.com/attachments/mon_201902/26/-4kkseQ5-djj2K1cT1kSci-9q.gif)  
+![放铳放铳](https://memeprod.ap-south-1.linodeobjects.com/user-gif-post/1647655593730.gif)  
   
 ## 简介  
 原作者代码地址：[雀魂mod](https://github.com/UsernameFull/majsoul_mod)，年久失修，已无法使用，本项目修复了原作者的代码并增加一些新功能。  
