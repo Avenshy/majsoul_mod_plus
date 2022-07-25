@@ -53,10 +53,12 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 2. 在[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)或[Github](https://github.com/Avenshy/majsoul_mod_plus)安装脚本  
 3. 使用浏览器进入游戏
 
-#### iOS
-1. 在Safari安装Tampermonkey插件
+#### iOS(>15.1)(不推荐)
+1. 在AppStore安装Userscripts
 2. 在[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)或[Github](https://github.com/Avenshy/majsoul_mod_plus)安装脚本  
 3. 使用浏览器进入游戏
+   * 注意：iOS平台的脚本管理器对API的支持极差，不推荐使用iOS运行脚本
+   * 注意：可能暂时无法使用，等待修复
 
   
 ### 修改设置  
