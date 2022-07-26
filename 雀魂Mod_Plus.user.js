@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.10.128
+// @version      0.10.129
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -31,7 +31,7 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
-// @connect      *
+// @connect      localhost
 // @license      GPL-3.0
 // ==/UserScript==
 
@@ -187,6 +187,28 @@ function setAuto() {
     view.DesktopMgr.Inst.setAutoMoQie(MMP.settings.setAuto.setAutoMoQie);
     uiscript.UI_DesktopInfo.Inst.refreshFuncBtnShow(uiscript.UI_DesktopInfo.Inst._container_fun.getChildByName("btn_automoqie"), MMP.settings.setAuto.setAutoMoQie);
 }
+// 油猴API测试
+function testAPI() {
+    let apis = ['GM_setValue', 'GM_getValue', 'GM_info', 'unsafeWindow', 'GM_xmlhttpRequest', 'GM_registerMenuCommand', 'GM_addStyle', 'GM_getResourceText'];
+    let result = { 'apis': {}, 'clear': true };
+    for (func of apis) {
+        try {
+            if (typeof eval(func) !== "undefined") {
+                result['apis'][func] = true;
+
+            } else {
+                result['apis'][func] = false;
+                result['clear'] = false;
+            }
+        }
+        catch {
+            result['apis'][func] = false;
+            result['clear'] = false;
+        }
+    }
+    return result
+}
+
 
 !function majsoul_mod_plus() {
     try {
@@ -709,7 +731,10 @@ function setAuto() {
                                             method: 'post',
                                             url: MMP.settings.sendGameURL,
                                             data: JSON.stringify(Y),
-                                        })
+                                            onload: function (msg) {
+                                                console.log('[雀魂mod_plus] 已成功发送牌局');
+                                            }
+                                        });
                                     }
                                     //END
                                     var W = [],
@@ -3990,14 +4015,27 @@ function setAuto() {
         }
         // 防止背景变白
         document.querySelector('head').insertAdjacentHTML('beforeend', '<style>body {background-color:#000000!important;</style>');
-        GM_addStyle(GM_getResourceText('bootstrap'));
+        if (typeof GM_getResourceText === "function") {
+            GM_addStyle(GM_getResourceText('bootstrap'));
+        } else {
+            GM_addStyle(GM_xmlhttpRequest({
+                method: 'get',
+                url: 'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css',
+                onload: function (msg) {
+                    GM_addStyle(msg.responseText);
+                }
+            }));
+
+        }
         document.querySelector('#saveSettings').addEventListener('click', () => {
             saveSettings_UI();
             MMP_Settings.hide();
             saveSuccess.show();
         });
         document.querySelector("#version").data = "https://img.shields.io/static/v1?&label=MajsoulMod_Plus&message=v" + GM_info['script']['version'] + "&color=ff69b4";
-        GM_registerMenuCommand('打开设置', openSettings);
+        if (typeof GM_registerMenuCommand === "function") {
+            GM_registerMenuCommand('打开设置', openSettings);
+        }
         MMP.openSettings = openSettings;
         if (MMP.settings.antiCensorship == true) {
             app.Taboo.test = function () { return null };
@@ -4005,6 +4043,17 @@ function setAuto() {
             GameMgr.Inst.nickname_replace_lst = [];
         }
         console.log('[雀魂mod_plus] 启动完毕!!!');
+        let testapi=testAPI();
+        
+        if (testapi['clear']!=true){
+            let showAPI='';
+            for (let item in testapi['apis']){
+                showAPI+= item+': '+testapi['apis'][item]+'\n';
+            }
+            alert('[雀魂mod_plus]\n您的脚本管理器有不支持的API，可能会影响脚本使用，如果您有条件的话，请您更换对API支持较好的脚本管理器，具体请查看脚本使用说明！\n\n本脚本使用的API与支持如下：\n'+showAPI);
+
+        }
+        
     } catch (error) {
         console.log('[雀魂mod_plus] 等待游戏启动');
         setTimeout(majsoul_mod_plus, 1000);
