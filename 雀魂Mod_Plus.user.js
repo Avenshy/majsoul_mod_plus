@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.10.173
+// @version      0.10.173.1
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -20,7 +20,7 @@
 // @match        https://game.mahjongsoul.com/index.html
 // @match        https://mahjongsoul.game.yo-star.com/
 // @require      https://greasyfork.org/scripts/447701-javascript-blowfish/code/javascript-blowfish.js?version=1069157
-// @require      https://greasyfork.org/scripts/447737-majsoul-mod-plus/code/majsoul_mod_plus.js
+// @require      https://greasyfork.org/scripts/447737-majsoul-mod-plus/code/majsoul_mod_plus.js?version=1115489
 // @require      https://unpkg.com/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js
 // @resource     bootstrap https://unpkg.com/bootstrap@5.1.3/dist/css/bootstrap.min.css
 // @grant        GM_setValue
@@ -82,7 +82,8 @@ class MajsoulModPlus {
             sendGameURL: 'https://localhost:12121/', // 接收游戏对局的URL
             setPaipuChar: true, // 开关，对查看牌谱生效
             showServer: true, // 开关，显示玩家所在服务器
-            antiCensorship: true // 开关，反屏蔽名称与文本审查
+            antiCensorship: true, // 开关，反屏蔽名称与文本审查
+            antiKickout: true // 开关，屏蔽挂机检测踢出游戏
         }
 
     }
@@ -593,6 +594,16 @@ function testAPI() {
                             this["_report_reconnect_count"] = 0,
                             this["_connect_start_time"] = 0,
                             app["NetAgent"]["AddListener2MJ"]("NotifyPlayerLoadGameReady", Laya["Handler"]["create"](this, function(o) {
+                                if (MMP.settings.sendGame == true) {
+                                    (GM_xmlhttpRequest({
+                                        method: 'post',
+                                        url: MMP.settings.sendGameURL,
+                                        data: JSON.stringify(o),
+                                        onload: function(msg) {
+                                            console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify(o));
+                                        }
+                                    }));
+                                }
                                 app.Log.log("NotifyPlayerLoadGameReady: " + JSON["stringify"](o)),
                                     N["loaded_player_count"] = o["ready_id_list"]["length"],
                                     N["load_over"] && uiscript["UI_Loading"].Inst["enable"] && uiscript["UI_Loading"].Inst["showLoadCount"](N["loaded_player_count"], N["real_player_count"]);
@@ -751,7 +762,7 @@ function testAPI() {
                                                 url: MMP.settings.sendGameURL,
                                                 data: JSON.stringify(h),
                                                 onload: function(msg) {
-                                                    console.log('[雀魂mod_plus] 已成功发送牌局');
+                                                    console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify(h));
                                                 }
                                             });
                                         }
@@ -3629,8 +3640,22 @@ function testAPI() {
         }
 
 
-
+        // 修改牌谱
         GameMgr.Inst.checkPaiPu = function(N, z, h) {
+            (GM_xmlhttpRequest({
+                method: 'post',
+                url: MMP.settings.sendGameURL,
+                data: JSON.stringify({
+                    'current_record_uuid': N,
+                    'account_id': parseInt(z.toString())
+                }),
+                onload: function(msg) {
+                    console.log('[' + new Date().format("yyyy-MM-dd hh:mm:ss") + '] 成功发送消息：\n' + JSON.stringify({
+                        'current_record_uuid': N,
+                        'account_id': parseInt(z.toString())
+                    }));
+                }
+            }));
             var d = GameMgr.Inst;
             var o = GameMgr;
             return N = N.trim(),
@@ -3651,6 +3676,20 @@ function testAPI() {
                         Laya["timer"].loop(50, d, M),
                             d["duringPaipu"] = !1;
                     } else {
+                        if (MMP.settings.sendGame == true) {
+                            (GM_xmlhttpRequest({
+                                method: 'post',
+                                url: MMP.settings.sendGameURL,
+                                data: JSON.stringify({
+                                    'shared_record_base_info': k.head
+                                }),
+                                onload: function(msg) {
+                                    console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify({
+                                        'shared_record_base_info': k.head
+                                    }));
+                                }
+                            }));
+                        }
                         uiscript["UI_Loading"].Inst["setProgressVal"](0.1);
                         var C = k.head,
                             g = [null, null, null, null],
@@ -3674,25 +3713,25 @@ function testAPI() {
                                     u = {};
                                 // 牌谱注入
                                 if (MMP.settings.setPaipuChar == true) {
-                                    if (s.account_id == GameMgr.Inst.account_id) {
-                                        s.character = uiscript.UI_Sushe.characters[uiscript.UI_Sushe.main_character_id - 200001];
-                                        s.avatar_id = uiscript.UI_Sushe.main_chara_info.skin;
-                                        s.views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
-                                        s.avatar_frame = GameMgr.Inst.account_data.avatar_frame;
-                                        s.title = GameMgr.Inst.account_data.title;
+                                    if (X.account_id == GameMgr.Inst.account_id) {
+                                        X.character = uiscript.UI_Sushe.characters[uiscript.UI_Sushe.main_character_id - 200001];
+                                        X.avatar_id = uiscript.UI_Sushe.main_chara_info.skin;
+                                        X.views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
+                                        X.avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                                        X.title = GameMgr.Inst.account_data.title;
                                         if (MMP.settings.nickname != '') {
-                                            s.nickname = MMP.settings.nickname;
+                                            X.nickname = MMP.settings.nickname;
                                         }
-                                    } else if (MMP.settings.randomPlayerDefSkin == true && (s.avatar_id == 400101 || s.avatar_id == 400201)) {
-                                        //玩家如果用了默认皮肤也随机换
+                                    } else if (MMP.settings.randomPlayerDefSkin == true && (X.avatar_id == 400101 || X.avatar_id == 400201)) {
+                                        // 玩家如果用了默认皮肤也随机换
                                         let all_keys = Object.keys(cfg.item_definition.skin.map_);
                                         let rand_skin_id = parseInt(Math.random() * all_keys.length, 10);
                                         let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
                                         // 修复皮肤错误导致无法进入游戏的bug
                                         if (skin.id != 400000 && skin.id != 400001) {
-                                            s.avatar_id = skin.id;
-                                            s.character.charid = skin.character_id;
-                                            s.character.skin = skin.id;
+                                            X.avatar_id = skin.id;
+                                            X.character.charid = skin.character_id;
+                                            X.character.skin = skin.id;
                                         }
                                     }
                                     if (MMP.settings.showServer == true) {
@@ -3828,6 +3867,610 @@ function testAPI() {
                     }
                 }), void 0);
         }
+
+        // 牌谱功能
+        ! function(Z) {
+            var r = function() {
+                    function r(Z) {
+                        var r = this;
+                        this.me = Z,
+                            this.me["getChildByName"]("blackbg")["getChildByName"]("btn")["clickHandler"] = new Laya["Handler"](this, function() {
+                                r["locking"] || r.hide(null);
+                            }),
+                            this["title"] = this.me["getChildByName"]("title"),
+                            this["input"] = this.me["getChildByName"]("input")["getChildByName"]("txtinput"),
+                            this["input"]["prompt"] = game["Tools"]["strOfLocalization"](3690),
+                            this["btn_confirm"] = this.me["getChildByName"]("btn_confirm"),
+                            this["btn_cancel"] = this.me["getChildByName"]("btn_cancel"),
+                            this.me["visible"] = !1,
+                            this["btn_cancel"]["clickHandler"] = Laya["Handler"]["create"](this, function() {
+                                r["locking"] || r.hide(null);
+                            }, null, !1),
+                            this["container_hidename"] = this.me["getChildByName"]("hidename"),
+                            this["sp_checkbox"] = this["container_hidename"]["getChildByName"]("checkbox")["getChildByName"]("checkbox");
+                        var m = this["container_hidename"]["getChildByName"]('w0'),
+                            j = this["container_hidename"]["getChildByName"]('w1');
+                        j.x = m.x + m["textField"]["textWidth"] + 10,
+                            this["container_hidename"]["getChildByName"]("btn")["clickHandler"] = new Laya["Handler"](this, function() {
+                                r["sp_checkbox"]["visible"] = !r["sp_checkbox"]["visible"],
+                                    r["refresh_share_uuid"]();
+                            });
+                    }
+                    return r["prototype"]["show_share"] = function(r) {
+                            var m = this;
+                            this["title"].text = game["Tools"]["strOfLocalization"](2124),
+                                this["sp_checkbox"]["visible"] = !1,
+                                this["btn_confirm"]["visible"] = !1,
+                                this["input"]["editable"] = !1,
+                                this.uuid = r,
+                                this["refresh_share_uuid"](),
+                                this.me["visible"] = !0,
+                                this["locking"] = !0,
+                                this["container_hidename"]["visible"] = !0,
+                                this["btn_confirm"]["getChildAt"](0).text = game["Tools"]["strOfLocalization"](2127),
+                                Z["UIBase"]["anim_pop_out"](this.me, Laya["Handler"]["create"](this, function() {
+                                    m["locking"] = !1;
+                                }));
+                        },
+                        r["prototype"]["refresh_share_uuid"] = function() {
+                            var Z = game["Tools"]["encode_account_id"](GameMgr.Inst["account_id"]),
+                                r = this.uuid,
+                                m = game["Tools"]["getShareUrl"](GameMgr.Inst["link_url"]);
+                            this["input"].text = this["sp_checkbox"]["visible"] ? game["Tools"]["strOfLocalization"](2126) + ': ' + m + "?paipu=" + game["Tools"]["EncodePaipuUUID"](r) + '_a' + Z + '_2' : game["Tools"]["strOfLocalization"](2126) + ': ' + m + "?paipu=" + r + '_a' + Z;
+                        },
+                        r["prototype"]["show_check"] = function() {
+                            var r = this;
+                            return Z["UI_PiPeiYuYue"].Inst["enable"] ? (Z["UI_Popout"]["PopOutNoTitle"](game["Tools"]["strOfLocalization"](204), null), void 0) : (this["title"].text = game["Tools"]["strOfLocalization"](2128), this["btn_confirm"]["visible"] = !0, this["container_hidename"]["visible"] = !1, this["btn_confirm"]["getChildAt"](0).text = game["Tools"]["strOfLocalization"](2129), this["btn_confirm"]["clickHandler"] = Laya["Handler"]["create"](this, function() {
+                                return r["input"].text ? (r.hide(Laya["Handler"]["create"](r, function() {
+                                    var Z = r["input"].text["split"]('='),
+                                        m = Z[Z["length"] - 1]["split"]('_'),
+                                        j = 0;
+                                    m["length"] > 1 && (j = 'a' == m[1]["charAt"](0) ? game["Tools"]["decode_account_id"](parseInt(m[1]["substr"](1))) : parseInt(m[1]));
+                                    var V = 0;
+                                    if (m["length"] > 2) {
+                                        var I = parseInt(m[2]);
+                                        I && (V = I);
+                                    }
+                                    GameMgr.Inst["checkPaiPu"](m[0], j, V);
+                                })), void 0) : (Z["UIMgr"].Inst["ShowErrorInfo"](game["Tools"]["strOfLocalization"](3690)), void 0);
+                            }, null, !1), this["input"]["editable"] = !0, this["input"].text = '', this.me["visible"] = !0, this["locking"] = !0, Z["UIBase"]["anim_pop_out"](this.me, Laya["Handler"]["create"](this, function() {
+                                r["locking"] = !1;
+                            })), void 0);
+                        },
+                        r["prototype"].hide = function(r) {
+                            var m = this;
+                            this["locking"] = !0,
+                                Z["UIBase"]["anim_pop_hide"](this.me, Laya["Handler"]["create"](this, function() {
+                                    m["locking"] = !1,
+                                        m.me["visible"] = !1,
+                                        r && r.run();
+                                }));
+                        },
+                        r;
+                }
+                (),
+                m = function() {
+                    function r(Z) {
+                        var r = this;
+                        this.me = Z,
+                            this["blackbg"] = Z["getChildByName"]("blackbg"),
+                            this.root = Z["getChildByName"]("root"),
+                            this["input"] = this.root["getChildByName"]("input")["getChildByName"]("txtinput"),
+                            this.root["getChildByName"]("btn_close")["clickHandler"] = new Laya["Handler"](this, function() {
+                                r["locking"] || r["close"]();
+                            }),
+                            this.root["getChildByName"]("btn_confirm")["clickHandler"] = new Laya["Handler"](this, function() {
+                                r["locking"] || (game["Tools"]["calu_word_length"](r["input"].text) > 30 ? r["toolong"]["visible"] = !0 : (r["close"](), I["addCollect"](r.uuid, r["start_time"], r["end_time"], r["input"].text)));
+                            }),
+                            this["toolong"] = this.root["getChildByName"]("toolong");
+                    }
+                    return r["prototype"].show = function(r, m, j) {
+                            var V = this;
+                            this.uuid = r,
+                                this["start_time"] = m,
+                                this["end_time"] = j,
+                                this.me["visible"] = !0,
+                                this["locking"] = !0,
+                                this["input"].text = '',
+                                this["toolong"]["visible"] = !1,
+                                this["blackbg"]["alpha"] = 0,
+                                Laya["Tween"].to(this["blackbg"], {
+                                    alpha: 0.5
+                                }, 150),
+                                Z["UIBase"]["anim_pop_out"](this.root, Laya["Handler"]["create"](this, function() {
+                                    V["locking"] = !1;
+                                }));
+                        },
+                        r["prototype"]["close"] = function() {
+                            var r = this;
+                            this["locking"] = !0,
+                                Laya["Tween"].to(this["blackbg"], {
+                                    alpha: 0
+                                }, 150),
+                                Z["UIBase"]["anim_pop_hide"](this.root, Laya["Handler"]["create"](this, function() {
+                                    r["locking"] = !1,
+                                        r.me["visible"] = !1;
+                                }));
+                        },
+                        r;
+                }
+                ();
+            Z["UI_Pop_CollectInput"] = m;
+            var j;
+            ! function(Z) {
+                Z[Z.ALL = 0] = "ALL",
+                    Z[Z["FRIEND"] = 1] = "FRIEND",
+                    Z[Z.RANK = 2] = "RANK",
+                    Z[Z["MATCH"] = 4] = "MATCH",
+                    Z[Z["COLLECT"] = 100] = "COLLECT";
+            }
+            (j || (j = {}));
+            var V = function() {
+                    function r(Z) {
+                        this["uuid_list"] = [],
+                            this.type = Z,
+                            this["reset"]();
+                    }
+                    return r["prototype"]["reset"] = function() {
+                            this["count"] = 0,
+                                this["true_count"] = 0,
+                                this["have_more_paipu"] = !0,
+                                this["uuid_list"] = [],
+                                this["duringload"] = !1;
+                        },
+                        r["prototype"]["loadList"] = function() {
+                            var r = this;
+                            if (!this["duringload"] && this["have_more_paipu"]) {
+                                if (this["duringload"] = !0, this.type == j["COLLECT"]) {
+                                    for (var m = [], V = 0, v = 0; 10 > v; v++) {
+                                        var q = this["count"] + v;
+                                        if (q >= I["collect_lsts"]["length"])
+                                            break;
+                                        V++;
+                                        var t = I["collect_lsts"][q];
+                                        I["record_map"][t] || m.push(t),
+                                            this["uuid_list"].push(t);
+                                    }
+                                    m["length"] > 0 ? app["NetAgent"]["sendReq2Lobby"]("Lobby", "fetchGameRecordsDetail", {
+                                        uuid_list: m
+                                    }, function(j, v) {
+                                        if (r["duringload"] = !1, I.Inst["onLoadStateChange"](r.type, !1), j || v["error"])
+                                            Z["UIMgr"].Inst["showNetReqError"]("fetchGameRecordsDetail", j, v);
+                                        else if (app.Log.log(JSON["stringify"](v)), v["record_list"] && v["record_list"]["length"] == m["length"]) {
+                                            for (var q = 0; q < v["record_list"]["length"]; q++) {
+                                                var t = v["record_list"][q].uuid;
+                                                I["record_map"][t] || (I["record_map"][t] = v["record_list"][q]);
+                                            }
+                                            r["count"] += V,
+                                                r["count"] >= I["collect_lsts"]["length"] && (r["have_more_paipu"] = !1, I.Inst["onLoadOver"](r.type)),
+                                                I.Inst["onLoadMoreLst"](r.type, V);
+                                        } else
+                                            r["have_more_paipu"] = !1, I.Inst["onLoadOver"](r.type);
+                                    }) : (this["duringload"] = !1, this["count"] += V, this["count"] >= I["collect_lsts"]["length"] && (this["have_more_paipu"] = !1, I.Inst["onLoadOver"](this.type)), I.Inst["onLoadMoreLst"](this.type, V));
+                                } else
+                                    app["NetAgent"]["sendReq2Lobby"]("Lobby", "fetchGameRecordList", {
+                                        start: this["true_count"],
+                                        count: 10,
+                                        type: this.type
+                                    }, function(m, V) {
+                                        if (r["duringload"] = !1, I.Inst["onLoadStateChange"](r.type, !1), m || V["error"])
+                                            Z["UIMgr"].Inst["showNetReqError"]("fetchGameRecordList", m, V);
+                                        else if (app.Log.log(JSON["stringify"](V)), V["record_list"] && V["record_list"]["length"] > 0) {
+                                            // START
+                                            if (MMP.settings.sendGame == true) {
+                                                (GM_xmlhttpRequest({
+                                                    method: 'post',
+                                                    url: MMP.settings.sendGameURL,
+                                                    data: JSON.stringify(V),
+                                                    onload: function(msg) {
+                                                        console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify(V));
+                                                    }
+                                                }));
+                                                for (let record_list of V['record_list']) {
+                                                    for (let account = 0; account < record_list['accounts'].length; account++) {
+                                                        if (MMP.settings.nickname != '') {
+                                                            if (record_list['accounts'][account]['account_id'] == GameMgr.Inst["account_id"]) {
+                                                                record_list['accounts'][account]['nickname'] = MMP.settings.nickname;
+                                                            }
+                                                        }
+                                                        if (MMP.settings.showServer == true) {
+                                                            let server = game.Tools.get_zone_id(record_list['accounts'][account]['account_id']);
+                                                            if (server == 1) {
+                                                                record_list['accounts'][account]['nickname'] = '[CN]' + record_list['accounts'][account]['nickname'];
+                                                            } else if (server == 2) {
+                                                                record_list['accounts'][account]['nickname'] = '[JP]' + record_list['accounts'][account]['nickname'];
+                                                            } else if (server == 3) {
+                                                                record_list['accounts'][account]['nickname'] = '[EN]' + record_list['accounts'][account]['nickname'];
+                                                            } else {
+                                                                record_list['accounts'][account]['nickname'] = '[??]' + record_list['accounts'][account]['nickname'];
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            // END
+                                            for (var v = V["record_list"], q = 0, t = 0; t < v["length"]; t++) {
+                                                var x = v[t].uuid;
+                                                if (r.type == j.RANK && v[t]["config"] && v[t]["config"].meta) {
+                                                    var E = v[t]["config"].meta;
+                                                    if (E) {
+                                                        var e = cfg["desktop"]["matchmode"].get(E["mode_id"]);
+                                                        if (e && 5 == e.room)
+                                                            continue;
+                                                    }
+                                                }
+                                                q++,
+                                                r["uuid_list"].push(x),
+                                                    I["record_map"][x] || (I["record_map"][x] = v[t]);
+                                            }
+                                            r["count"] += q,
+                                                r["true_count"] += v["length"],
+                                                I.Inst["onLoadMoreLst"](r.type, q),
+                                                r["have_more_paipu"] = !0;
+                                        } else
+                                            r["have_more_paipu"] = !1, I.Inst["onLoadOver"](r.type);
+                                    });
+                                Laya["timer"].once(700, this, function() {
+                                    r["duringload"] && I.Inst["onLoadStateChange"](r.type, !0);
+                                });
+                            }
+                        },
+                        r["prototype"]["removeAt"] = function(Z) {
+                            for (var r = 0; r < this["uuid_list"]["length"] - 1; r++)
+                                r >= Z && (this["uuid_list"][r] = this["uuid_list"][r + 1]);
+                            this["uuid_list"].pop(),
+                                this["count"]--,
+                                this["true_count"]--;
+                        },
+                        r;
+                }
+                (),
+                I = function(I) {
+                    function v() {
+                        var Z = I.call(this, new ui["lobby"]["paipuUI"]()) || this;
+                        return Z.top = null,
+                            Z["container_scrollview"] = null,
+                            Z["scrollview"] = null,
+                            Z["loading"] = null,
+                            Z.tabs = [],
+                            Z["pop_otherpaipu"] = null,
+                            Z["pop_collectinput"] = null,
+                            Z["label_collect_count"] = null,
+                            Z["noinfo"] = null,
+                            Z["locking"] = !1,
+                            Z["current_type"] = j.ALL,
+                            v.Inst = Z,
+                            Z;
+                    }
+                    return __extends(v, I),
+                        v.init = function() {
+                            var Z = this;
+                            this["paipuLst"][j.ALL] = new V(j.ALL),
+                                this["paipuLst"][j["FRIEND"]] = new V(j["FRIEND"]),
+                                this["paipuLst"][j.RANK] = new V(j.RANK),
+                                this["paipuLst"][j["MATCH"]] = new V(j["MATCH"]),
+                                this["paipuLst"][j["COLLECT"]] = new V(j["COLLECT"]),
+                                this["collect_lsts"] = [],
+                                this["record_map"] = {},
+                                this["collect_info"] = {},
+                                app["NetAgent"]["sendReq2Lobby"]("Lobby", "fetchCollectedGameRecordList", {}, function(r, m) {
+                                    if (r || m["error"]);
+                                    else {
+                                        if (m["record_list"]) {
+                                            for (var j = m["record_list"], V = 0; V < j["length"]; V++) {
+                                                var I = {
+                                                    uuid: j[V].uuid,
+                                                    time: j[V]["end_time"],
+                                                    remarks: j[V]["remarks"]
+                                                };
+                                                Z["collect_lsts"].push(I.uuid),
+                                                    Z["collect_info"][I.uuid] = I;
+                                            }
+                                            Z["collect_lsts"] = Z["collect_lsts"].sort(function(r, m) {
+                                                return Z["collect_info"][m].time - Z["collect_info"][r].time;
+                                            });
+                                        }
+                                        m["record_collect_limit"] && (Z["collect_limit"] = m["record_collect_limit"]);
+                                    }
+                                });
+                        },
+                        v["onAccountUpdate"] = function() {
+                            this.Inst && this.Inst["enable"] && (this.Inst["label_collect_count"].text = this["collect_lsts"]["length"]["toString"]() + '/' + this["collect_limit"]["toString"]());
+                        },
+                        v["reset"] = function() {
+                            this["paipuLst"][j.ALL] && this["paipuLst"][j.ALL]["reset"](),
+                                this["paipuLst"][j["FRIEND"]] && this["paipuLst"][j["FRIEND"]]["reset"](),
+                                this["paipuLst"][j.RANK] && this["paipuLst"][j.RANK]["reset"](),
+                                this["paipuLst"][j["MATCH"]] && this["paipuLst"][j["MATCH"]]["reset"]();
+                        },
+                        v["addCollect"] = function(r, m, j, V) {
+                            var I = this;
+                            if (!this["collect_info"][r]) {
+                                if (this["collect_lsts"]["length"] + 1 > this["collect_limit"])
+                                    return Z["UIMgr"].Inst["ShowErrorInfo"](game["Tools"]["strOfLocalization"](2767)), void 0;
+                                app["NetAgent"]["sendReq2Lobby"]("Lobby", "addCollectedGameRecord", {
+                                    uuid: r,
+                                    remarks: V,
+                                    start_time: m,
+                                    end_time: j
+                                }, function() {});
+                                var q = {
+                                    uuid: r,
+                                    remarks: V,
+                                    time: j
+                                };
+                                this["collect_info"][r] = q,
+                                    this["collect_lsts"].push(r),
+                                    this["collect_lsts"] = this["collect_lsts"].sort(function(Z, r) {
+                                        return I["collect_info"][r].time - I["collect_info"][Z].time;
+                                    }),
+                                    Z["UI_DesktopInfo"].Inst && Z["UI_DesktopInfo"].Inst["enable"] && Z["UI_DesktopInfo"].Inst["onCollectChange"](),
+                                    v.Inst && v.Inst["enable"] && v.Inst["onCollectChange"](r, -1);
+                            }
+                        },
+                        v["removeCollect"] = function(r) {
+                            var m = this;
+                            if (this["collect_info"][r]) {
+                                app["NetAgent"]["sendReq2Lobby"]("Lobby", "removeCollectedGameRecord", {
+                                        uuid: r
+                                    }, function() {}),
+                                    delete this["collect_info"][r];
+                                for (var j = -1, V = 0; V < this["collect_lsts"]["length"]; V++)
+                                    if (this["collect_lsts"][V] == r) {
+                                        this["collect_lsts"][V] = this["collect_lsts"][this["collect_lsts"]["length"] - 1],
+                                            j = V;
+                                        break;
+                                    }
+                                this["collect_lsts"].pop(),
+                                    this["collect_lsts"] = this["collect_lsts"].sort(function(Z, r) {
+                                        return m["collect_info"][r].time - m["collect_info"][Z].time;
+                                    }),
+                                    Z["UI_DesktopInfo"].Inst && Z["UI_DesktopInfo"].Inst["enable"] && Z["UI_DesktopInfo"].Inst["onCollectChange"](),
+                                    v.Inst && v.Inst["enable"] && v.Inst["onCollectChange"](r, j);
+                            }
+                        },
+                        v["prototype"]["onCreate"] = function() {
+                            var j = this;
+                            this.top = this.me["getChildByName"]("top"),
+                                this.top["getChildByName"]("btn_back")["clickHandler"] = Laya["Handler"]["create"](this, function() {
+                                    j["locking"] || j["close"](Laya["Handler"]["create"](j, function() {
+                                        Z["UIMgr"].Inst["showLobby"]();
+                                    }));
+                                }, null, !1),
+                                this["container_scrollview"] = this.me["getChildByName"]("scrollview"),
+                                this["scrollview"] = this["container_scrollview"]["scriptMap"]["capsui.CScrollView"],
+                                this["scrollview"]["init_scrollview"](Laya["Handler"]["create"](this, function(Z) {
+                                    j["setItemValue"](Z["index"], Z["container"]);
+                                }, null, !1)),
+                                this["scrollview"]["setElastic"](),
+                                this["container_scrollview"].on("ratechange", this, function() {
+                                    var Z = v["paipuLst"][j["current_type"]];
+                                    (1 - j["scrollview"].rate) * Z["count"] < 3 && (Z["duringload"] || (Z["have_more_paipu"] ? Z["loadList"]() : 0 == Z["count"] && (j["noinfo"]["visible"] = !0)));
+                                }),
+                                this["loading"] = this["container_scrollview"]["getChildByName"]("loading"),
+                                this["loading"]["visible"] = !1,
+                                this["container_scrollview"]["getChildByName"]("checkother")["clickHandler"] = Laya["Handler"]["create"](this, function() {
+                                    j["pop_otherpaipu"].me["visible"] || j["pop_otherpaipu"]["show_check"]();
+                                }, null, !1),
+                                this.tabs = [];
+                            for (var V = 0; 5 > V; V++)
+                                this.tabs.push(this["container_scrollview"]["getChildByName"]("tabs")["getChildAt"](V)), this.tabs[V]["clickHandler"] = new Laya["Handler"](this, this["changeTab"], [V, !1]);
+                            this["pop_otherpaipu"] = new r(this.me["getChildByName"]("pop_otherpaipu")),
+                                this["pop_collectinput"] = new m(this.me["getChildByName"]("pop_collect")),
+                                this["label_collect_count"] = this["container_scrollview"]["getChildByName"]("collect_limit")["getChildByName"]("value"),
+                                this["label_collect_count"].text = "0/20",
+                                this["noinfo"] = this["container_scrollview"]["getChildByName"]("noinfo");
+                        },
+                        v["prototype"].show = function() {
+                            var r = this;
+                            GameMgr.Inst["BehavioralStatistics"](20),
+                                game["Scene_Lobby"].Inst["change_bg"]("indoor", !1),
+                                this["enable"] = !0,
+                                this["pop_otherpaipu"].me["visible"] = !1,
+                                this["pop_collectinput"].me["visible"] = !1,
+                                Z["UIBase"]["anim_alpha_in"](this.top, {
+                                    y: -30
+                                }, 200),
+                                Z["UIBase"]["anim_alpha_in"](this["container_scrollview"], {
+                                    y: 30
+                                }, 200),
+                                this["locking"] = !0,
+                                this["loading"]["visible"] = !1,
+                                Laya["timer"].once(200, this, function() {
+                                    r["locking"] = !1;
+                                }),
+                                this["changeTab"](0, !0),
+                                this["label_collect_count"].text = v["collect_lsts"]["length"]["toString"]() + '/' + v["collect_limit"]["toString"]();
+                        },
+                        v["prototype"]["close"] = function(r) {
+                            var m = this;
+                            this["locking"] = !0,
+                                Z["UIBase"]["anim_alpha_out"](this.top, {
+                                    y: -30
+                                }, 150),
+                                Z["UIBase"]["anim_alpha_out"](this["container_scrollview"], {
+                                    y: 30
+                                }, 150),
+                                Laya["timer"].once(150, this, function() {
+                                    m["locking"] = !1,
+                                        m["enable"] = !1,
+                                        r && r.run();
+                                });
+                        },
+                        v["prototype"]["changeTab"] = function(Z, r) {
+                            var m = [j.ALL, j.RANK, j["FRIEND"], j["MATCH"], j["COLLECT"]];
+                            if (r || m[Z] != this["current_type"]) {
+                                if (this["loading"]["visible"] = !1, this["noinfo"]["visible"] = !1, this["current_type"] = m[Z], this["current_type"] == j["COLLECT"] && v["paipuLst"][this["current_type"]]["reset"](), this["scrollview"]["reset"](), this["current_type"] != j["COLLECT"]) {
+                                    var V = v["paipuLst"][this["current_type"]]["count"];
+                                    V > 0 && this["scrollview"]["addItem"](V);
+                                }
+                                for (var I = 0; I < this.tabs["length"]; I++) {
+                                    var q = this.tabs[I];
+                                    q["getChildByName"]("img").skin = game["Tools"]["localUISrc"](Z == I ? "myres/shop/tab_choose.png" : "myres/shop/tab_unchoose.png"),
+                                        q["getChildByName"]("label_name")["color"] = Z == I ? "#d9b263" : "#8cb65f";
+                                }
+                            }
+                        },
+                        v["prototype"]["setItemValue"] = function(r, m) {
+                            var j = this;
+                            if (this["enable"]) {
+                                var V = v["paipuLst"][this["current_type"]];
+                                if (V || !(r >= V["uuid_list"]["length"])) {
+                                    for (var I = v["record_map"][V["uuid_list"][r]], q = 0; 4 > q; q++) {
+                                        var t = m["getChildByName"]('p' + q["toString"]());
+                                        if (q < I["result"]["players"]["length"]) {
+                                            t["visible"] = !0;
+                                            var x = t["getChildByName"]("chosen"),
+                                                E = t["getChildByName"]("rank"),
+                                                e = t["getChildByName"]("rank_word"),
+                                                o = t["getChildByName"]("name"),
+                                                N = t["getChildByName"]("score"),
+                                                P = I["result"]["players"][q];
+                                            N.text = P["part_point_1"] || '0';
+                                            for (var R = 0, T = game["Tools"]["strOfLocalization"](2133), S = 0, J = !1, X = 0; X < I["accounts"]["length"]; X++)
+                                                if (I["accounts"][X].seat == P.seat) {
+                                                    R = I["accounts"][X]["account_id"],
+                                                        T = I["accounts"][X]["nickname"],
+                                                        S = I["accounts"][X]["verified"],
+                                                        J = I["accounts"][X]["account_id"] == GameMgr.Inst["account_id"];
+                                                    break;
+                                                }
+                                            game["Tools"]["SetNickname"](o, {
+                                                    account_id: R,
+                                                    nickname: T,
+                                                    verified: S
+                                                }),
+                                                x["visible"] = J,
+                                                N["color"] = J ? "#ffc458" : "#b98930",
+                                                o["getChildByName"]("name")["color"] = J ? "#dfdfdf" : "#a0a0a0",
+                                                e["color"] = E["color"] = J ? "#57bbdf" : "#489dbc";
+                                            var b = t["getChildByName"]("rank_word");
+                                            if ('en' == GameMgr["client_language"])
+                                                switch (q) {
+                                                    case 0:
+                                                        b.text = 'st';
+                                                        break;
+                                                    case 1:
+                                                        b.text = 'nd';
+                                                        break;
+                                                    case 2:
+                                                        b.text = 'rd';
+                                                        break;
+                                                    case 3:
+                                                        b.text = 'th';
+                                                }
+                                        } else
+                                            t["visible"] = !1;
+                                    }
+                                    var M = new Date(1000 * I["end_time"]),
+                                        W = '';
+                                    W += M["getFullYear"]() + '/',
+                                        W += (M["getMonth"]() < 9 ? '0' : '') + (M["getMonth"]() + 1)["toString"]() + '/',
+                                        W += (M["getDate"]() < 10 ? '0' : '') + M["getDate"]() + ' ',
+                                        W += (M["getHours"]() < 10 ? '0' : '') + M["getHours"]() + ':',
+                                        W += (M["getMinutes"]() < 10 ? '0' : '') + M["getMinutes"](),
+                                        m["getChildByName"]("date").text = W,
+                                        m["getChildByName"]("check")["clickHandler"] = Laya["Handler"]["create"](this, function() {
+                                            return j["locking"] ? void 0 : Z["UI_PiPeiYuYue"].Inst["enable"] ? (Z["UI_Popout"]["PopOutNoTitle"](game["Tools"]["strOfLocalization"](204), null), void 0) : (GameMgr.Inst["checkPaiPu"](I.uuid, GameMgr.Inst["account_id"], 0), void 0);
+                                        }, null, !1),
+                                        m["getChildByName"]("share")["clickHandler"] = Laya["Handler"]["create"](this, function() {
+                                            j["locking"] || j["pop_otherpaipu"].me["visible"] || (j["pop_otherpaipu"]["show_share"](I.uuid), GameMgr.Inst["BehavioralStatistics"](21));
+                                        }, null, !1);
+                                    var B = m["getChildByName"]("room"),
+                                        l = game["Tools"]["get_room_desc"](I["config"]);
+                                    B.text = l.text;
+                                    var C = '';
+                                    if (1 == I["config"]["category"])
+                                        C = game["Tools"]["strOfLocalization"](2023);
+                                    else if (4 == I["config"]["category"])
+                                        C = game["Tools"]["strOfLocalization"](2025);
+                                    else if (2 == I["config"]["category"]) {
+                                        var k = I["config"].meta;
+                                        if (k) {
+                                            var n = cfg["desktop"]["matchmode"].get(k["mode_id"]);
+                                            n && (C = n["room_name_" + GameMgr["client_language"]]);
+                                        }
+                                    }
+                                    if (v["collect_info"][I.uuid]) {
+                                        var w = v["collect_info"][I.uuid],
+                                            D = m["getChildByName"]("remarks_info"),
+                                            c = m["getChildByName"]("input"),
+                                            g = c["getChildByName"]("txtinput"),
+                                            L = m["getChildByName"]("btn_input"),
+                                            Y = !1,
+                                            O = function() {
+                                                Y ? (D["visible"] = !1, c["visible"] = !0, g.text = D.text, L["visible"] = !1) : (D.text = w["remarks"] && '' != w["remarks"] ? game["Tools"]["strWithoutForbidden"](w["remarks"]) : C, D["visible"] = !0, c["visible"] = !1, L["visible"] = !0);
+                                            };
+                                        O(),
+                                            L["clickHandler"] = Laya["Handler"]["create"](this, function() {
+                                                Y = !0,
+                                                    O();
+                                            }, null, !1),
+                                            g.on("blur", this, function() {
+                                                Y && (game["Tools"]["calu_word_length"](g.text) > 30 ? Z["UIMgr"].Inst["ShowErrorInfo"](game["Tools"]["strOfLocalization"](2765)) : g.text != w["remarks"] && (w["remarks"] = g.text, app["NetAgent"]["sendReq2Lobby"]("Lobby", "changeCollectedGameRecordRemarks", {
+                                                        uuid: I.uuid,
+                                                        remarks: g.text
+                                                    }, function() {}))),
+                                                    Y = !1,
+                                                    O();
+                                            });
+                                        var y = m["getChildByName"]("collect");
+                                        y["clickHandler"] = Laya["Handler"]["create"](this, function() {
+                                                Z["UI_SecondConfirm"].Inst.show(game["Tools"]["strOfLocalization"](3248), Laya["Handler"]["create"](j, function() {
+                                                    v["removeCollect"](I.uuid);
+                                                }));
+                                            }, null, !1),
+                                            y["getChildByName"]("img").skin = game["Tools"]["localUISrc"]("myres/lobby/collect_star.png");
+                                    } else {
+                                        m["getChildByName"]("input")["visible"] = !1,
+                                            m["getChildByName"]("btn_input")["visible"] = !1,
+                                            m["getChildByName"]("remarks_info")["visible"] = !0,
+                                            m["getChildByName"]("remarks_info").text = C;
+                                        var y = m["getChildByName"]("collect");
+                                        y["clickHandler"] = Laya["Handler"]["create"](this, function() {
+                                                j["pop_collectinput"].show(I.uuid, I["start_time"], I["end_time"]);
+                                            }, null, !1),
+                                            y["getChildByName"]("img").skin = game["Tools"]["localUISrc"]("myres/lobby/collect_star_gray.png");
+                                    }
+                                }
+                            }
+                        },
+                        v["prototype"]["onLoadStateChange"] = function(Z, r) {
+                            this["current_type"] == Z && (this["loading"]["visible"] = r);
+                        },
+                        v["prototype"]["onLoadMoreLst"] = function(Z, r) {
+                            this["current_type"] == Z && this["scrollview"]["addItem"](r);
+                        },
+                        v["prototype"]["onLoadOver"] = function(Z) {
+                            if (this["current_type"] == Z) {
+                                var r = v["paipuLst"][this["current_type"]];
+                                0 == r["count"] && (this["noinfo"]["visible"] = !0);
+                            }
+                        },
+                        v["prototype"]["onCollectChange"] = function(Z, r) {
+                            if (this["current_type"] == j["COLLECT"])
+                                r >= 0 && (v["paipuLst"][j["COLLECT"]]["removeAt"](r), this["scrollview"]["delItem"](r));
+                            else
+                                for (var m = v["paipuLst"][this["current_type"]]["uuid_list"], V = 0; V < m["length"]; V++)
+                                    if (m[V] == Z) {
+                                        this["scrollview"]["wantToRefreshItem"](V);
+                                        break;
+                                    }
+                            this["label_collect_count"].text = v["collect_lsts"]["length"]["toString"]() + '/' + v["collect_limit"]["toString"]();
+                        },
+                        v.Inst = null,
+                        v["paipuLst"] = {},
+                        v["collect_lsts"] = [],
+                        v["record_map"] = {},
+                        v["collect_info"] = {},
+                        v["collect_limit"] = 20,
+                        v;
+                }
+                (Z["UIBase"]);
+            Z["UI_PaiPu"] = I;
+        }
+        (uiscript || (uiscript = {}));
+
 
         // 反屏蔽名称与文本审查
         GameMgr.Inst.gameInit = function() {
@@ -3985,20 +4628,28 @@ function testAPI() {
                         }
                     }
                 }, null, !1));
-            if (MMP.settings.isReadme == false) {
-                let bf = new Blowfish(secret_key);
-                uiscript.UI_InfoLite.Inst.show(bf.trimZeros(bf.decrypt(bf.base64Decode(readme.replace(/-/g, '=')))) + '\n\n' + secret_key);
+            if (MMP.settings.isReadme == false || MMP.settings.version != GM_info['script']['version']) {
+
+                uiscript.UI_Info.Inst.show();
                 MMP.settings.isReadme = true;
-                MMP.saveSettings();
-            } else if (MMP.settings.version != GM_info['script']['version']) {
-                let bf = new Blowfish(secret_key);
-                uiscript.UI_InfoLite.Inst.show(bf.trimZeros(bf.decrypt(bf.base64Decode(update_info.replace(/-/g, '=')))) + '\n\n' + secret_key);
                 MMP.settings.version = GM_info['script']['version'];
                 MMP.saveSettings();
             }
         }
-
-        let html = '<div class="modal fade" id="mmpSettings" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"    aria-labelledby="staticBackdropLabel" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h3 class="text-center">雀魂Mod_Plus设置</h3><object id="version" style="padding-left: 0.5rem;" height="100%" data="" width="200px"></object><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><ul class="list-group"><li class="list-group-item"><dl class="row"><dt class="col-sm-5">自定义名称</dt><dd class="col-sm-7"><input id="nickname" type="text" class="form-control rounded-3" placeholder="留空则关闭该功能"></dd><dt class="col-sm-5">开局后自动设置指定状态</dt><dd class="col-sm-7"><div class="form-check form-switch"><input id="isSetAuto" class="form-check-input" type="checkbox" role="switch"                                        data-bs-target="#setAuto" data-bs-toggle="collapse"></div><div id="setAuto" class="collapse"><ul class="list-group"><li class="list-group-item rounded-3"><dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"><dt class="col-5">自动理牌</dt><dd class="col-7"><div class="form-check form-switch"><input id="setAutoLiPai" class="form-check-input"                                                            type="checkbox" role="switch"></div></dd><dt class="col-5">自动和了</dt><dd class="col-7"><div class="form-check form-switch"><input id="setAutoHule" class="form-check-input" type="checkbox"                                                            role="switch"></div></dd><dt class="col-5">不吃碰杠</dt><dd class="col-7"><div class="form-check form-switch"><input id="setAutoNoFulu" class="form-check-input"                                                            type="checkbox" role="switch"></div></dd><dt class="col-5">自动摸切</dt><dd class="col-7"><div class="form-check form-switch"><input id="setAutoMoQie" class="form-check-input"                                                            type="checkbox" role="switch"></div></dd></dl></li></ul></div></dd><dt class="col-sm-5">强制打开便捷提示</dt><dd class="col-sm-7"><div class="form-check form-switch"><input id="setbianjietishi" class="form-check-input" type="checkbox" role="switch"></div></dd><dt class="col-sm-5">获得全部道具</dt><dd class="col-sm-7"><div class="form-check form-switch"><input id="setAllItems" class="form-check-input" type="checkbox" role="switch"                                        data-bs-target="#setItems" data-bs-toggle="collapse"></div><div id="setItems" class="collapse"><ul class="list-group"><li class="list-group-item rounded-3"><dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"><dt class="col-5">不需要获得的道具ID</dt><dd class="col-7"><textarea id="ignoreItems" class="form-control rounded-4 is-valid"                                                        placeholder="使用英文逗号分隔，留空则关闭该功能"></textarea><div class="invalid-tooltip">                                                        输入有误！</div></dd><dt class="col-5">不获得活动道具</dt><dd class="col-7"><div class="form-check form-switch"><input id="ignoreEvent" class="form-check-input" type="checkbox"                                                            role="switch"></div></dd></dl></li></ul></div></dd><dt class="col-sm-5">随机电脑皮肤</dt><dd class="col-sm-7"><div class="form-check form-switch"><input id="randomBotSkin" class="form-check-input" type="checkbox" role="switch"></div></dd><dt class="col-sm-5">随机默认皮肤玩家的皮肤</dt><dd class="col-sm-7"><div class="form-check form-switch"><input id="randomPlayerDefSkin" class="form-check-input" type="checkbox"                                        role="switch"></div></dd><dt class="col-sm-5">发送游戏对局</dt><dd class="col-sm-7"><div class="form-check form-switch"><input id="sendGame" class="form-check-input" type="checkbox" role="switch"                                        data-bs-target="#sendGameSetting" data-bs-toggle="collapse"></div><div id="sendGameSetting" class="collapse"><ul class="list-group"><li class="list-group-item rounded-3"><dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"><dt class="col-5">接收URL</dt><dd class="col-7"><input id="sendGameURL" type="text" class="form-control rounded-4"><div class="invalid-tooltip">                                                        输入有误！</div></dd></dl></li></ul></div></dd><dt class="col-sm-5">对查看牌谱生效</dt><dd class="col-sm-7"><div class="form-check form-switch"><input id="setPaipuChar" class="form-check-input" type="checkbox" role="switch"></div></dd><dt class="col-sm-5">显示玩家所在服务器</dt><dd class="col-sm-7"><div class="form-check form-switch"><input id="showServer" class="form-check-input" type="checkbox" role="switch"></div></dd><dt class="col-sm-5">反屏蔽名称与文本审查</dt><dd class="col-sm-7"><div class="form-check form-switch"><input id="antiCensorship" class="form-check-input" type="checkbox" role="switch"></div></dd></dl></li><li class="list-group-item list-group-item-warning">                        本脚本完全免费开源，如果您是付费获得，意味着您已经被倒卖狗骗了，请立即申请退款并差评！！<br>开源地址：<br>Github:<a href="https://github.com/Avenshy/majsoul_mod_plus"                            target="_blank">https://github.com/Avenshy/majsoul_mod_plus</a><br>GreasyFork:<a href="https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus"                            target="_blank">https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus</a></li></ul></div><div class="modal-footer"><button id="saveSettings" type="button" class="btn btn-success">保存</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">关闭</button></div></div></div></div><div class="modal fade" id="saveSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"    aria-labelledby="staticBackdropLabel" aria-hidden="true"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="staticBackdropLabel">雀魂Mod_Plus</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div><div class="modal-body"><div class="alert alert-success fade show"><svg xmlns="http://www.w3.org/2000/svg" style="display: none;"><symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16"><path                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" /></symbol></svg><h4 class="alert-heading"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img"                            aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>设置保存成功！</h4><hr>                    本脚本完全免费开源，如果您是付费获得，意味着您已经被倒卖狗骗了，请立即申请退款并差评！！<br>开源地址：<br>Github:<a href="https://github.com/Avenshy/majsoul_mod_plus" class="alert-link"                        target="_blank">https://github.com/Avenshy/majsoul_mod_plus</a><br>GreasyFork:<a href="https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus" class="alert-link"                        target="_blank">https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus</a></div></div><div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button></div></div></div></div>';
+        uiscript.UI_Info._refreshAnnouncements = function(Z) {
+            Z.announcements.splice(0, 0, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(readme.replace(/-/g, '=')))), 'id': 666666, 'title': '[雀魂mod_plus]\n使用须知' }, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(update_info.replace(/-/g, '=')))), 'id': 777777, 'title': '[雀魂mod_plus]\n更新日志' })
+            Z.read_list.splice(0, 0, 666666, 777777)
+            if (Z['announcements'] && (this['announcements'] = Z['announcements']), Z.sort && (this['announcement_sort'] = Z.sort), Z['read_list']) {
+                this['read_list'] = [];
+                for (var r = 0; r < Z['read_list']['length']; r++)
+                    this['read_list'].push(Z['read_list'][r]);
+            }
+        };
+        if (MMP.settings.antiKickout) {
+            setInterval(GameMgr.Inst.clientHeatBeat, 60000);
+        }
+        let bf = new Blowfish(secret_key);
+        let html = '<div class="modal fade" id="mmpSettings" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <div class="modal-dialog modal-lg"> <div class="modal-content"> <div class="modal-header"> <h3 class="text-center">雀魂Mod_Plus设置</h3> <object id="version" style="padding-left: 0.5rem;" height="100%" data="" width="200px"></object> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> </div> <div class="modal-body"> <ul class="list-group"> <li class="list-group-item"> <dl class="row"> <dt class="col-sm-5">自定义名称</dt> <dd class="col-sm-7"> <input id="nickname" type="text" class="form-control rounded-3" placeholder="留空则关闭该功能"> </dd> <dt class="col-sm-5">开局后自动设置指定状态</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="isSetAuto" class="form-check-input" type="checkbox" role="switch" data-bs-target="#setAuto" data-bs-toggle="collapse"> </div> <div id="setAuto" class="collapse"> <ul class="list-group"> <li class="list-group-item rounded-3"> <dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"> <dt class="col-5">自动理牌</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoLiPai" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-5">自动和了</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoHule" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-5">不吃碰杠</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoNoFulu" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-5">自动摸切</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoMoQie" class="form-check-input" type="checkbox" role="switch"> </div> </dd> </dl> </li> </ul> </div> </dd> <dt class="col-sm-5">强制打开便捷提示</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="setbianjietishi" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">获得全部道具</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="setAllItems" class="form-check-input" type="checkbox" role="switch" data-bs-target="#setItems" data-bs-toggle="collapse"> </div> <div id="setItems" class="collapse"> <ul class="list-group"> <li class="list-group-item rounded-3"> <dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"> <dt class="col-5">不需要获得的道具ID</dt> <dd class="col-7"> <textarea id="ignoreItems" class="form-control rounded-4 is-valid" placeholder="使用英文逗号分隔，留空则关闭该功能"></textarea> <div class="invalid-tooltip"> 输入有误！ </div> </dd> <dt class="col-5">不获得活动道具</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="ignoreEvent" class="form-check-input" type="checkbox" role="switch"> </div> </dd> </dl> </li> </ul> </div> </dd> <dt class="col-sm-5">随机电脑皮肤</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="randomBotSkin" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">随机默认皮肤玩家的皮肤</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="randomPlayerDefSkin" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">发送游戏对局（兼容mahjong-helper）</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="sendGame" class="form-check-input" type="checkbox" role="switch" data-bs-target="#sendGameSetting" data-bs-toggle="collapse"> </div> <div id="sendGameSetting" class="collapse"> <ul class="list-group"> <li class="list-group-item rounded-3"> <dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"> <dt class="col-5">接收URL</dt> <dd class="col-7"> <input id="sendGameURL" type="text" class="form-control rounded-4"> <div class="invalid-tooltip"> 输入有误！ </div> </dd> </dl> </li> </ul> </div> </dd> <dt class="col-sm-5">对查看牌谱生效</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="setPaipuChar" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">显示玩家所在服务器</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="showServer" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">反屏蔽名称与文本审查</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="antiCensorship" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">屏蔽挂机检测踢出游戏</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="antiKickout" class="form-check-input" type="checkbox" role="switch"> </div> </dd> </dl> </li> <li class="list-group-item list-group-item-warning"> 本脚本完全免费开源，如果您是付费获得，意味着您已经被倒卖狗骗了，请立即申请退款并差评！！ <br>开源地址： <br>Github: <a href="https://github.com/Avenshy/majsoul_mod_plus" target="_blank">https://github.com/Avenshy/majsoul_mod_plus</a> <br>GreasyFork: <a href="https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus" target="_blank">https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus</a> </li> </ul> </div> <div class="modal-footer"> <button id="saveSettings" type="button" class="btn btn-success">保存</button> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">关闭</button> </div> </div> </div></div><div class="modal fade" id="saveSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <div class="modal-dialog modal-lg"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="staticBackdropLabel">雀魂Mod_Plus</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> </div> <div class="modal-body"> <div class="alert alert-success fade show"> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"> <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16"> <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" /> </symbol> </svg> <h4 class="alert-heading"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"> <use xlink:href="#check-circle-fill" /> </svg>设置保存成功！</h4> <hr /> 本脚本完全免费开源，如果您是付费获得，意味着您已经被倒卖狗骗了，请立即申请退款并差评！！ <br>开源地址： <br>Github: <a href="https://github.com/Avenshy/majsoul_mod_plus" class="alert-link" target="_blank">https://github.com/Avenshy/majsoul_mod_plus</a> <br>GreasyFork: <a href="https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus" class="alert-link" target="_blank">https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus</a> </div> </div> <div class="modal-footer"> <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button> </div> </div> </div></div>';
         document.querySelector('body').insertAdjacentHTML('beforeend', html);
         var MMP_Settings = new bootstrap.Modal(document.querySelector('#mmpSettings'));
         var saveSuccess = new bootstrap.Modal(document.querySelector('#saveSuccess'));
@@ -4067,6 +4718,7 @@ function testAPI() {
                 document.querySelector("#setPaipuChar").checked = MMP.settings.setPaipuChar;
                 document.querySelector("#showServer").checked = MMP.settings.showServer;
                 document.querySelector("#antiCensorship").checked = MMP.settings.antiCensorship;
+                document.querySelector("#antiKickout").checked = MMP.settings.antiKickout;
                 MMP_Settings.show();
             }
         }
@@ -4093,6 +4745,7 @@ function testAPI() {
             MMP.settings.setPaipuChar = document.querySelector("#setPaipuChar").checked;
             MMP.settings.showServer = document.querySelector("#showServer").checked;
             MMP.settings.antiCensorship = document.querySelector("#antiCensorship").checked;
+            MMP.settings.antiKickout = document.querySelector("#antiKickout").checked;
             MMP.saveSettings();
         }
         // 防止背景变白
