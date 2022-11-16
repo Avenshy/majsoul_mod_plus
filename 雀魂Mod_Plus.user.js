@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.10.175.1
+// @version      0.10.175.2
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -3612,6 +3612,7 @@ function testAPI() {
 
         // 对局结束更新数据
         GameMgr.Inst.updateAccountInfo = function() {
+			var l = GameMgr;
             var a = this;
             app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountInfo', {}, function(U, z) {
                 if (U || z['error'])
