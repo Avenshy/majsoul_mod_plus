@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.10.175.2
+// @version      0.10.176
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -20,7 +20,7 @@
 // @match        https://game.mahjongsoul.com/index.html
 // @match        https://mahjongsoul.game.yo-star.com/
 // @require      https://greasyfork.org/scripts/447701-javascript-blowfish/code/javascript-blowfish.js?version=1069157
-// @require      https://greasyfork.org/scripts/447737-majsoul-mod-plus/code/majsoul_mod_plus.js?version=1115489
+// @require      https://greasyfork.org/scripts/447737-majsoul-mod-plus/code/majsoul_mod_plus.js?version=1124756
 // @require      https://unpkg.com/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js
 // @resource     bootstrap https://unpkg.com/bootstrap@5.1.3/dist/css/bootstrap.min.css
 // @grant        GM_setValue
@@ -106,10 +106,10 @@ class MajsoulModPlus {
         } catch (error) {
             console.log('[雀魂mod_plus] 读取配置出错，自动切换到cookie模式');
             let ca = document.cookie.split(";");
-            for (let items of ca) {
-                items = items.trim();
-                if (items.indexOf('majsoul_mod_plus=') == 0) {
-                    value = decodeURIComponent(items.substring("majsoul_mod_plus=".length, items.length));
+            for (let element of ca) {
+                element = element.trim();
+                if (element.indexOf('majsoul_mod_plus=') == 0) {
+                    value = decodeURIComponent(element.substring("majsoul_mod_plus=".length, element.length));
                     if (value.charAt(0) == '{' && value.charAt(value.length - 1) == '}') {
                         temp = JSON.parse(value);
                         break
@@ -152,6 +152,7 @@ class MajsoulModPlus {
     }
 }
 let secret_key;
+let fake_data = {};
 ! function() {
     var MMP = new MajsoulModPlus;
     let bf = new Blowfish("majsoul_mod_plus");
@@ -218,6 +219,7 @@ function testAPI() {
 
 ! function majsoul_mod_plus() {
     try {
+
         // Hack 开启报番型，作者 aoarashi1988，Handle修改
         ! function() {
             const arrBackup = cfg.voice.sound.groups_;
@@ -233,6 +235,10 @@ function testAPI() {
                 });
         }
         ();
+
+
+
+
         // 设置全部道具
         ! function(l) {
             var a;
@@ -1396,23 +1402,43 @@ function testAPI() {
                                             // U['skin_map'][g['skins'][R]] = 1;
                                             // U['main_character_id'] = g['main_character_id'];
                                             //人物初始化修改寮舍人物（皮肤好感额外表情）----fxxk
+                                            fake_data.char_id = g.main_character_id;
+                                            for (let i = 0; i < g.characters.length; i++) {
+                                                if (g.characters[i].charid == g.main_character_id) {
+                                                    if (g.characters[i].extra_emoji !== undefined) {
+                                                        fake_data.emoji = g.characters[i].extra_emoji;
+                                                    } else {
+                                                        fake_data.emoji = [];
+                                                    }
+                                                    fake_data.skin = g.skins[i];
+                                                    fake_data.exp = g.characters[i].exp;
+                                                    fake_data.level = g.characters[i].level;
+                                                    fake_data.is_upgraded = g.characters[i].is_upgraded;
+                                                    break;
+                                                }
+                                            }
                                             U.characters = [];
-                                            for (var j = 1; j <= cfg.item_definition.character['rows_'].length; j++) {
-                                                var id = 200000 + j;
-                                                var skin = 400001 + j * 100;
+
+                                            for (let j = 1; j <= cfg.item_definition.character['rows_'].length; j++) {
+                                                let id = 200000 + j;
+                                                let skin = 400001 + j * 100;
+                                                let emoji = [];
+                                                cfg.character.emoji.getGroup(id).forEach((element) => {
+                                                    emoji.push(element.sub_id);
+                                                });
                                                 U.characters.push({
                                                     charid: id,
                                                     level: 5,
                                                     exp: 0,
                                                     skin: skin,
                                                     is_upgraded: 1,
-                                                    extra_emoji: ["10", "11", "12", "13", "14", "15", "16", "17", "888"]
+                                                    extra_emoji: emoji
                                                 });
                                             }
                                             let skins = cfg.item_definition.skin['rows_'];
-                                            for (let skinitem of skins) {
-                                                uiscript.UI_Sushe.add_skin(skinitem['id']);
-                                            }
+                                            skins.forEach((element) => {
+                                                uiscript.UI_Sushe.add_skin(element['id']);
+                                            });
                                             for (let skinitem in MMP.settings.characters) {
                                                 uiscript.UI_Sushe.characters[skinitem].skin = MMP.settings.characters[skinitem];
                                             }
@@ -3339,6 +3365,7 @@ function testAPI() {
                             a['owned_title'] = [];
                             //         for (var M = 0; M < z['title_list']['length']; M++) {
                             //             var g = z['title_list'][M];
+
                             for (let title of cfg.item_definition.title.rows_) {
                                 var g = title.id;
                                 cfg['item_definition']['title'].get(g) && a['owned_title'].push(g),
@@ -3612,7 +3639,7 @@ function testAPI() {
 
         // 对局结束更新数据
         GameMgr.Inst.updateAccountInfo = function() {
-			var l = GameMgr;
+            var l = GameMgr;
             var a = this;
             app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountInfo', {}, function(U, z) {
                 if (U || z['error'])
@@ -4594,28 +4621,1083 @@ function testAPI() {
 
 
         // 设置状态
-        uiscript.UI_DesktopInfo.prototype.resetFunc = function() {
-            var l = Laya['LocalStorage']['getItem']('autolipai'),
-                a = !0;
-            a = l && '' != l ? 'true' == l : !0;
-            var U = this['_container_fun']['getChildByName']('btn_autolipai');
-            this['refreshFuncBtnShow'](U, a),
-                Laya['LocalStorage']['setItem']('autolipai', a ? 'true' : 'false'),
-                view['DesktopMgr'].Inst['setAutoLiPai'](a);
-            var z = this['_container_fun']['getChildByName']('btn_autohu');
-            this['refreshFuncBtnShow'](z, view['DesktopMgr'].Inst['auto_hule']);
-            var M = this['_container_fun']['getChildByName']('btn_autonoming');
-            this['refreshFuncBtnShow'](M, view['DesktopMgr'].Inst['auto_nofulu']);
-            var g = this['_container_fun']['getChildByName']('btn_automoqie');
-            this['refreshFuncBtnShow'](g, view['DesktopMgr'].Inst['auto_moqie']),
-                this['_container_fun'].x = -528,
-                this['arrow']['scaleX'] = -1;
-            // 设置状态
-            if (MMP.settings.setAuto.isSetAuto) {
-                setAuto();
-            }
-            // END
+        ! function(C) {
+            var v = function() {
+                    function C(v) {
+                        this.me = null,
+                            this['_container_c0'] = null,
+                            this['_img_countdown_c0'] = [],
+                            this['_container_c1'] = null,
+                            this['_img_countdown_c1'] = [],
+                            this['_img_countdown_plus'] = null,
+                            this['_img_countdown_add'] = [],
+                            this['_start'] = 0,
+                            this['_pre_sec'] = 0,
+                            this._fix = 0,
+                            this._add = 0,
+                            this['_pre_time'] = 0,
+                            C.Inst = this,
+                            this.me = v,
+                            this['_container_c0'] = this.me['getChildByName']('c0');
+                        for (var p = 0; 3 > p; p++)
+                            this['_img_countdown_c0'].push(this['_container_c0']['getChildByName']('num' + p));
+                        this['_container_c1'] = this.me['getChildByName']('c1');
+                        for (var p = 0; 3 > p; p++)
+                            this['_img_countdown_c1'].push(this['_container_c1']['getChildByName']('num' + p));
+                        for (var p = 0; 2 > p; p++)
+                            this['_img_countdown_add'].push(this.me['getChildByName']('plus')['getChildByName']('add_' + p));
+                        this['_img_countdown_plus'] = this.me['getChildByName']('plus'),
+                            this.me['visible'] = !1;
+                    }
+                    return Object['defineProperty'](C['prototype'], 'timeuse', {
+                            get: function() {
+                                return this.me['visible'] ? Math['floor']((Laya['timer']['currTimer'] - this['_start']) / 1000) : 0;
+                            },
+                            enumerable: !1,
+                            configurable: !0
+                        }),
+                        C['prototype']['reset'] = function() {
+                            this.me['visible'] = !1,
+                                Laya['timer']['clearAll'](this);
+                        },
+                        C['prototype']['showCD'] = function(C, v) {
+                            var p = this;
+                            this.me['visible'] = !0,
+                                this['_start'] = Laya['timer']['currTimer'],
+                                this._fix = Math['floor'](C / 1000),
+                                this._add = Math['floor'](v / 1000),
+                                this['_pre_sec'] = -1,
+                                this['_pre_time'] = Laya['timer']['currTimer'],
+                                this['_show'](),
+                                Laya['timer']['frameLoop'](1, this, function() {
+                                    var C = Laya['timer']['currTimer'] - p['_pre_time'];
+                                    p['_pre_time'] = Laya['timer']['currTimer'],
+                                        view['DesktopMgr'].Inst['timestoped'] ? p['_start'] += C : p['_show']();
+                                });
+                        },
+                        C['prototype']['close'] = function() {
+                            this['reset']();
+                        },
+                        C['prototype']['_show'] = function() {
+                            var C = this._fix + this._add - this['timeuse'];
+                            if (0 >= C)
+                                return view['DesktopMgr'].Inst['OperationTimeOut'](), this['reset'](), void 0;
+                            if (C != this['_pre_sec']) {
+                                if (this['_pre_sec'] = C, C > this._add) {
+                                    for (var v = (C - this._add)['toString'](), p = 0; p < this['_img_countdown_c0']['length']; p++)
+                                        this['_img_countdown_c0'][p]['visible'] = p < v['length'];
+                                    if (3 == v['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + v[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + v[0] + '.png'), this['_img_countdown_c0'][2].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + v[2] + '.png')) : 2 == v['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + v[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + v[0] + '.png')) : this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + v[0] + '.png'), 0 != this._add) {
+                                        this['_img_countdown_plus']['visible'] = !0;
+                                        for (var U = this._add['toString'](), p = 0; p < this['_img_countdown_add']['length']; p++) {
+                                            var n = this['_img_countdown_add'][p];
+                                            p < U['length'] ? (n['visible'] = !0, n.skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + U[p] + '.png')) : n['visible'] = !1;
+                                        }
+                                    } else {
+                                        this['_img_countdown_plus']['visible'] = !1;
+                                        for (var p = 0; p < this['_img_countdown_add']['length']; p++)
+                                            this['_img_countdown_add'][p]['visible'] = !1;
+                                    }
+                                } else {
+                                    this['_img_countdown_plus']['visible'] = !1;
+                                    for (var v = C['toString'](), p = 0; p < this['_img_countdown_c0']['length']; p++)
+                                        this['_img_countdown_c0'][p]['visible'] = p < v['length'];
+                                    3 == v['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + v[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + v[0] + '.png'), this['_img_countdown_c0'][2].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + v[2] + '.png')) : 2 == v['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + v[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + v[0] + '.png')) : this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + v[0] + '.png');
+                                }
+                                if (C > 3) {
+                                    this['_container_c1']['visible'] = !1;
+                                    for (var p = 0; p < this['_img_countdown_c0']['length']; p++)
+                                        this['_img_countdown_c0'][p]['alpha'] = 1;
+                                    this['_img_countdown_plus']['alpha'] = 1,
+                                        this['_container_c0']['alpha'] = 1,
+                                        this['_container_c1']['alpha'] = 1;
+                                } else {
+                                    view['AudioMgr']['PlayAudio'](205),
+                                        this['_container_c1']['visible'] = !0;
+                                    for (var p = 0; p < this['_img_countdown_c0']['length']; p++)
+                                        this['_img_countdown_c0'][p]['alpha'] = 1;
+                                    this['_img_countdown_plus']['alpha'] = 1,
+                                        this['_container_c0']['alpha'] = 1,
+                                        this['_container_c1']['alpha'] = 1;
+                                    for (var p = 0; p < this['_img_countdown_c1']['length']; p++)
+                                        this['_img_countdown_c1'][p]['visible'] = this['_img_countdown_c0'][p]['visible'], this['_img_countdown_c1'][p].skin = game['Tools']['localUISrc'](this['_img_countdown_c0'][p].skin);
+                                    s.Inst.me.cd1.play(0, !1);
+                                }
+                            }
+                        },
+                        C.Inst = null,
+                        C;
+                }
+                (),
+                p = function() {
+                    function C(C) {
+                        this['timer_id'] = 0,
+                            this['last_returned'] = !1,
+                            this.me = C;
+                    }
+                    return C['prototype']['begin_refresh'] = function() {
+                            this['timer_id'] && clearTimeout(this['timer_id']),
+                                this['last_returned'] = !0,
+                                this['_loop_refresh_delay'](),
+                                Laya['timer']['clearAll'](this),
+                                Laya['timer'].loop(100, this, this['_loop_show']);
+                        },
+                        C['prototype']['close_refresh'] = function() {
+                            this['timer_id'] && (clearTimeout(this['timer_id']), this['timer_id'] = 0),
+                                this['last_returned'] = !1,
+                                Laya['timer']['clearAll'](this);
+                        },
+                        C['prototype']['_loop_refresh_delay'] = function() {
+                            var C = this;
+                            if (game['MJNetMgr'].Inst['connect_state'] != game['EConnectState'].none) {
+                                var v = 2000;
+                                if (game['MJNetMgr'].Inst['connect_state'] == game['EConnectState']['connecting'] && this['last_returned']) {
+                                    var p = app['NetAgent']['mj_network_delay'];
+                                    v = 300 > p ? 2000 : 800 > p ? 2500 + p : 4000 + 0.5 * p,
+                                        app['NetAgent']['sendReq2MJ']('FastTest', 'checkNetworkDelay', {}, function() {
+                                            C['last_returned'] = !0;
+                                        }),
+                                        this['last_returned'] = !1;
+                                } else
+                                    v = 1000;
+                                this['timer_id'] = setTimeout(this['_loop_refresh_delay'].bind(this), v);
+                            }
+                        },
+                        C['prototype']['_loop_show'] = function() {
+                            if (game['MJNetMgr'].Inst['connect_state'] != game['EConnectState'].none)
+                                if (game['MJNetMgr'].Inst['connect_state'] != game['EConnectState']['connecting'])
+                                    this.me.skin = game['Tools']['localUISrc']('myres/mjdesktop/signal_bad.png');
+                                else {
+                                    var C = app['NetAgent']['mj_network_delay'];
+                                    this.me.skin = 300 > C ? game['Tools']['localUISrc']('myres/mjdesktop/signal_good.png') : 800 > C ? game['Tools']['localUISrc']('myres/mjdesktop/signal_normal.png') : game['Tools']['localUISrc']('myres/mjdesktop/signal_bad.png');
+                                }
+                        },
+                        C;
+                }
+                (),
+                U = function() {
+                    function C(C, v) {
+                        var p = this;
+                        this['enable'] = !1,
+                            this['emj_banned'] = !1,
+                            this['locking'] = !1,
+                            this['localposition'] = v,
+                            this.me = C,
+                            this['btn_banemj'] = C['getChildByName']('btn_banemj'),
+                            this['btn_banemj_origin_x'] = this['btn_banemj'].x,
+                            this['btn_banemj_origin_y'] = this['btn_banemj'].y,
+                            this['img_bannedemj'] = this['btn_banemj']['getChildByName']('mute'),
+                            this['btn_seeinfo'] = C['getChildByName']('btn_seeinfo'),
+                            this['btn_seeinfo_origin_x'] = this['btn_seeinfo'].x,
+                            this['btn_seeinfo_origin_y'] = this['btn_seeinfo'].y,
+                            this['btn_change'] = C['getChildByName']('btn_change'),
+                            this['btn_change_origin_x'] = this['btn_change'].x,
+                            this['btn_change_origin_y'] = this['btn_change'].y,
+                            this['btn_banemj']['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                p['locking'] || (p['emj_banned'] = !p['emj_banned'], p['img_bannedemj'].skin = game['Tools']['localUISrc']('myres/mjdesktop/mute' + (p['emj_banned'] ? '_on.png' : '.png')), p['close']());
+                            }, null, !1),
+                            this['btn_seeinfo']['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                p['locking'] || (p['close'](), s.Inst['btn_seeinfo'](p['localposition']));
+                            }, null, !1),
+                            this['btn_change']['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                p['locking'] || (p['close'](), view['DesktopMgr'].Inst['changeMainbody'](view['DesktopMgr'].Inst['localPosition2Seat'](p['localposition'])));
+                            }, null, !1),
+                            this.me['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                p['locking'] || p['switch']();
+                            }, null, !1);
+                    }
+                    return C['prototype']['reset'] = function(C, v, p) {
+                            Laya['timer']['clearAll'](this),
+                                this['locking'] = !1,
+                                this['enable'] = !1,
+                                this['showinfo'] = C,
+                                this['showemj'] = v,
+                                this['showchange'] = p,
+                                this['emj_banned'] = !1,
+                                this['btn_banemj']['visible'] = !1,
+                                this['btn_seeinfo']['visible'] = !1,
+                                this['img_bannedemj'].skin = game['Tools']['localUISrc']('myres/mjdesktop/mute' + (this['emj_banned'] ? '_on.png' : '.png')),
+                                this['btn_change']['visible'] = !1;
+                        },
+                        C['prototype']['onChangeSeat'] = function(C, v, p) {
+                            this['showinfo'] = C,
+                                this['showemj'] = v,
+                                this['showchange'] = p,
+                                this['enable'] = !1,
+                                this['btn_banemj']['visible'] = !1,
+                                this['btn_seeinfo']['visible'] = !1,
+                                this['btn_change']['visible'] = !1;
+                        },
+                        C['prototype']['switch'] = function() {
+                            var C = this;
+                            this['locking'] || (this['enable'] ? this['close']() : (this['enable'] = !0, this['locking'] = !0, this['showinfo'] ? (this['btn_seeinfo']['visible'] = !0, this['btn_seeinfo']['scaleX'] = this['btn_seeinfo']['scaleY'] = 1, this['btn_seeinfo'].x = this['btn_seeinfo_origin_x'], this['btn_seeinfo'].y = this['btn_seeinfo_origin_y'], this['btn_seeinfo']['alpha'] = 1, Laya['Tween'].from(this['btn_seeinfo'], {
+                                x: 80,
+                                y: 80,
+                                scaleX: 0,
+                                scaleY: 0,
+                                alpha: 0
+                            }, 150, Laya.Ease['backOut'])) : this['btn_seeinfo']['visible'] = !1, this['showemj'] ? (this['img_bannedemj'].skin = game['Tools']['localUISrc']('myres/mjdesktop/mute' + (this['emj_banned'] ? '_on.png' : '.png')), this['btn_banemj']['visible'] = !0, this['btn_banemj']['scaleX'] = this['btn_banemj']['scaleY'] = 1, this['btn_banemj'].x = this['btn_banemj_origin_x'], this['btn_banemj'].y = this['btn_banemj_origin_y'], this['btn_banemj']['alpha'] = 1, Laya['Tween'].from(this['btn_banemj'], {
+                                x: 80,
+                                y: 80,
+                                scaleX: 0,
+                                scaleY: 0,
+                                alpha: 0
+                            }, 150, Laya.Ease['backOut'])) : this['btn_banemj']['visible'] = !1, this['showchange'] ? (this['btn_change']['visible'] = !0, this['btn_change']['scaleX'] = this['btn_change']['scaleY'] = 1, this['btn_change'].x = this['btn_change_origin_x'], this['btn_change'].y = this['btn_change_origin_y'], this['btn_change']['alpha'] = 1, Laya['Tween'].from(this['btn_change'], {
+                                x: 80,
+                                y: 80,
+                                scaleX: 0,
+                                scaleY: 0,
+                                alpha: 0
+                            }, 150, Laya.Ease['backOut'])) : this['btn_change']['visible'] = !1, Laya['timer'].once(150, this, function() {
+                                C['locking'] = !1;
+                            })));
+                        },
+                        C['prototype']['close'] = function() {
+                            var C = this;
+                            this['enable'] = !1,
+                                this['locking'] = !0,
+                                Laya['Tween'].to(this['btn_banemj'], {
+                                    x: 80,
+                                    y: 80,
+                                    scaleX: 0,
+                                    scaleY: 0,
+                                    alpha: 0
+                                }, 150, Laya.Ease['backOut']),
+                                Laya['Tween'].to(this['btn_seeinfo'], {
+                                    x: 80,
+                                    y: 80,
+                                    scaleX: 0,
+                                    scaleY: 0,
+                                    alpha: 0
+                                }, 150, Laya.Ease['backOut']),
+                                Laya['Tween'].to(this['btn_change'], {
+                                    x: 80,
+                                    y: 80,
+                                    scaleX: 0,
+                                    scaleY: 0,
+                                    alpha: 0
+                                }, 150, Laya.Ease['backOut']),
+                                Laya['timer'].once(150, this, function() {
+                                    C['locking'] = !1,
+                                        C['btn_banemj']['visible'] = !1,
+                                        C['btn_seeinfo']['visible'] = !1,
+                                        C['btn_change']['visible'] = !1;
+                                });
+                        },
+                        C;
+                }
+                (),
+                n = function() {
+                    function C(C) {
+                        var v = this;
+                        this['btn_emos'] = [],
+                            this.emos = [],
+                            this['allgray'] = !1,
+                            this.me = C,
+                            this['btn_chat'] = this.me['getChildByName']('btn_chat'),
+                            this['btn_mask'] = this.me['getChildByName']('btn_mask'),
+                            this['btn_chat']['clickHandler'] = new Laya['Handler'](this, function() {
+                                v['switchShow']();
+                            }),
+                            this['scrollbar'] = this.me['getChildByName']('scrollbar_light')['scriptMap']['capsui.CScrollBar'],
+                            this['scrollview'] = this.me['scriptMap']['capsui.CScrollView'],
+                            this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_item']), -1, 3),
+                            this['scrollview']['reset'](),
+                            this['scrollbar'].init(null),
+                            this['scrollview'].me.on('ratechange', this, function() {
+                                v['scrollview']['total_height'] > 0 ? v['scrollbar']['setVal'](v['scrollview'].rate, v['scrollview']['view_height'] / v['scrollview']['total_height']) : v['scrollbar']['setVal'](0, 1);
+                            }),
+                            'chs' != GameMgr['client_language'] ? (C['getChildAt'](5)['visible'] = !1, C['getChildAt'](6)['visible'] = !0) : (C['getChildAt'](5)['visible'] = !0, C['getChildAt'](6)['visible'] = !1);
+                    }
+                    return C['prototype']['initRoom'] = function() {
+                            // START 
+                            // var C = view['DesktopMgr'].Inst['main_role_character_info'],
+                            // END
+                            var C = { charid: fake_data.char_id, level: fake_data.level, exp: fake_data.exp, skin: fake_data.skin, extra_emoji: fake_data.emoji, is_upgraded: fake_data.is_upgraded },
+                                v = cfg['item_definition']['character'].find(C['charid']);
+                            this.emos = [];
+                            for (var p = 0; 9 > p; p++)
+                                this.emos.push({
+                                    path: v.emo + '/' + p + '.png',
+                                    sub_id: p,
+                                    sort: p
+                                });
+                            if (C['extra_emoji'])
+                                for (var p = 0; p < C['extra_emoji']['length']; p++)
+                                    this.emos.push({
+                                        path: v.emo + '/' + C['extra_emoji'][p] + '.png',
+                                        sub_id: C['extra_emoji'][p],
+                                        sort: C['extra_emoji'][p] > 12 ? 1000000 - C['extra_emoji'][p] : C['extra_emoji'][p]
+                                    });
+                            this.emos = this.emos.sort(function(C, v) {
+                                    return C.sort - v.sort;
+                                }),
+                                this['allgray'] = !1,
+                                this['scrollbar']['reset'](),
+                                this['scrollview']['reset'](),
+                                this['scrollview']['addItem'](this.emos['length']),
+                                this['btn_chat']['disabled'] = !1,
+                                this['btn_mask']['visible'] = view['DesktopMgr'].Inst['emoji_switch'],
+                                'chs' != GameMgr['client_language'] && (this.me['getChildAt'](6)['visible'] = !view['DesktopMgr'].Inst['emoji_switch']),
+                                this.me.x = 1903,
+                                this['emo_infos'] = {
+                                    char_id: C['charid'],
+                                    emoji: [],
+                                    server: 'chs_t' == GameMgr['client_type'] ? 1 : 'jp' == GameMgr['client_type'] ? 2 : 3
+                                };
+                        },
+                        C['prototype']['render_item'] = function(C) {
+                            var v = this,
+                                p = C['index'],
+                                U = C['container'],
+                                n = this.emos[p],
+                                d = U['getChildByName']('btn');
+                            d.skin = game['LoadMgr']['getResImageSkin'](n.path),
+                                this['allgray'] ? game['Tools']['setGrayDisable'](d, !0) : (game['Tools']['setGrayDisable'](d, !1), d['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    if (app['NetAgent']['isMJConnectOK']()) {
+                                        GameMgr.Inst['BehavioralStatistics'](22);
+                                        for (var C = !1, p = 0, U = v['emo_infos']['emoji']; p < U['length']; p++) {
+                                            var d = U[p];
+                                            if (d[0] == n['sub_id']) {
+                                                d[0]++,
+                                                    C = !0;
+                                                break;
+                                            }
+                                        }
+                                        C || v['emo_infos']['emoji'].push([n['sub_id'], 1]),
+                                            app['NetAgent']['sendReq2MJ']('FastTest', 'broadcastInGame', {
+                                                content: JSON['stringify']({
+                                                    emo: n['sub_id']
+                                                }),
+                                                except_self: !1
+                                            }, function() {});
+                                    }
+                                    v['change_all_gray'](!0),
+                                        Laya['timer'].once(5000, v, function() {
+                                            v['change_all_gray'](!1);
+                                        }),
+                                        v['switchShow']();
+                                }, null, !1));
+                        },
+                        C['prototype']['change_all_gray'] = function(C) {
+                            this['allgray'] = C,
+                                this['scrollview']['wantToRefreshAll']();
+                        },
+                        C['prototype']['switchShow'] = function() {
+                            var C = this,
+                                v = 0;
+                            v = this.me.x < 1600 ? 1903 : 1382,
+                                Laya['Tween'].to(this.me, {
+                                    x: v
+                                }, 200, Laya.Ease['strongOut'], Laya['Handler']['create'](this, function() {
+                                    C['btn_chat']['disabled'] = !1;
+                                }), 0, !0, !0),
+                                this['btn_chat']['disabled'] = !0;
+                        },
+                        C['prototype']['sendEmoLogUp'] = function() {
+                            this['emo_infos'] && (GameMgr.Inst['postInfo2Server']('emo_stats', {
+                                data: this['emo_infos']
+                            }), this['emo_infos']['emoji'] = []);
+                        },
+                        C['prototype']['reset'] = function() {
+                            this['scrollbar']['reset'](),
+                                this['scrollview']['reset']();
+                        },
+                        C;
+                }
+                (),
+                d = function() {
+                    function v(v) {
+                        this['effect'] = null,
+                            this['container_emo'] = v['getChildByName']('chat_bubble'),
+                            this.emo = new C['UI_Character_Emo'](this['container_emo']['getChildByName']('content')),
+                            this['root_effect'] = v['getChildByName']('root_effect'),
+                            this['container_emo']['visible'] = !1;
+                    }
+                    return v['prototype'].show = function(C, v) {
+                            var p = this;
+                            if (!view['DesktopMgr'].Inst['emoji_switch']) {
+                                for (var U = view['DesktopMgr'].Inst['player_datas'][view['DesktopMgr'].Inst['localPosition2Seat'](C)]['character']['charid'], n = cfg['character']['emoji']['getGroup'](U), d = '', s = 0, M = 0; M < n['length']; M++)
+                                    if (n[M]['sub_id'] == v) {
+                                        2 == n[M].type && (d = n[M].view, s = n[M]['audio']);
+                                        break;
+                                    }
+                                this['effect'] && (this['effect']['destory'](), this['effect'] = null),
+                                    d ? (this['effect'] = game['FrontEffect'].Inst['create_ui_effect'](this['root_effect'], 'scene/' + d + '.lh', new Laya['Point'](0, 0), 1), Laya['timer'].once(3500, this, function() {
+                                        p['effect']['destory'](),
+                                            p['effect'] = null;
+                                    }), s && view['AudioMgr']['PlayAudio'](s)) : (this.emo['setSkin'](U, v), this['container_emo']['visible'] = !0, this['container_emo']['scaleX'] = this['container_emo']['scaleY'] = 0, Laya['Tween'].to(this['container_emo'], {
+                                        scaleX: 1,
+                                        scaleY: 1
+                                    }, 120, null, null, 0, !0, !0), Laya['timer'].once(3000, this, function() {
+                                        p.emo['clear'](),
+                                            Laya['Tween'].to(p['container_emo'], {
+                                                scaleX: 0,
+                                                scaleY: 0
+                                            }, 120, null, null, 0, !0, !0);
+                                    }), Laya['timer'].once(3500, this, function() {
+                                        p['container_emo']['visible'] = !1;
+                                    }));
+                            }
+                        },
+                        v['prototype']['reset'] = function() {
+                            Laya['timer']['clearAll'](this),
+                                this.emo['clear'](),
+                                this['container_emo']['visible'] = !1,
+                                this['effect'] && (this['effect']['destory'](), this['effect'] = null);
+                        },
+                        v;
+                }
+                (),
+                s = function(s) {
+                    function M() {
+                        var C = s.call(this, new ui.mj['desktopInfoUI']()) || this;
+                        return C['container_doras'] = null,
+                            C['doras'] = [],
+                            C['label_md5'] = null,
+                            C['container_gamemode'] = null,
+                            C['label_gamemode'] = null,
+                            C['btn_auto_moqie'] = null,
+                            C['btn_auto_nofulu'] = null,
+                            C['btn_auto_hule'] = null,
+                            C['img_zhenting'] = null,
+                            C['btn_double_pass'] = null,
+                            C['_network_delay'] = null,
+                            C['_timecd'] = null,
+                            C['_player_infos'] = [],
+                            C['_container_fun'] = null,
+                            C['showscoredeltaing'] = !1,
+                            C['arrow'] = null,
+                            C['_btn_leave'] = null,
+                            C['_btn_fanzhong'] = null,
+                            C['_btn_collect'] = null,
+                            C['block_emo'] = null,
+                            C['head_offset_y'] = 15,
+                            C['gapStartPosLst'] = [new Laya['Vector2'](582, 12), new Laya['Vector2'](-266, 275), new Laya['Vector2'](-380, 103), new Laya['Vector2'](375, 142)],
+                            C['selfGapOffsetX'] = [0, -150, 150],
+                            app['NetAgent']['AddListener2MJ']('NotifyGameBroadcast', Laya['Handler']['create'](C, function(v) {
+                                C['onGameBroadcast'](v);
+                            })),
+                            app['NetAgent']['AddListener2MJ']('NotifyPlayerConnectionState', Laya['Handler']['create'](C, function(v) {
+                                C['onPlayerConnectionState'](v);
+                            })),
+                            M.Inst = C,
+                            C;
+                    }
+                    return __extends(M, s),
+                        M['prototype']['onCreate'] = function() {
+                            var s = this;
+                            this['doras'] = new Array();
+                            var M = this.me['getChildByName']('container_lefttop'),
+                                t = M['getChildByName']('container_doras');
+                            this['container_doras'] = t,
+                                this['container_gamemode'] = M['getChildByName']('gamemode'),
+                                this['label_gamemode'] = this['container_gamemode']['getChildByName']('lb_mode'),
+                                'kr' == GameMgr['client_language'] && (this['label_gamemode']['scale'](0.85, 0.85), this['label_gamemode']['scriptMap']['capsui.LabelLocalizationSize']['onCreate']()),
+                                this['label_md5'] = M['getChildByName']('MD5'),
+                                M['getChildByName']('btn_md5change')['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    if (s['label_md5']['visible'])
+                                        Laya['timer']['clearAll'](s['label_md5']), s['label_md5']['visible'] = !1, view['DesktopMgr'].Inst['is_chuanma_mode']() ? M['getChildByName']('activitymode')['visible'] = !0 : s['container_doras']['visible'] = !0;
+                                    else {
+                                        s['label_md5']['visible'] = !0,
+                                            s['label_md5'].text = game['Tools']['strOfLocalization'](2048) + view['DesktopMgr'].Inst.md5,
+                                            M['getChildByName']('activitymode')['visible'] = !1,
+                                            s['container_doras']['visible'] = !1;
+                                        var C = s;
+                                        Laya['timer'].once(5000, s['label_md5'], function() {
+                                            C['label_md5']['visible'] = !1,
+                                                view['DesktopMgr'].Inst['is_chuanma_mode']() ? M['getChildByName']('activitymode')['visible'] = !0 : s['container_doras']['visible'] = !0;
+                                        });
+                                    }
+                                }, null, !1);
+                            for (var Y = 0; Y < t['numChildren']; Y++)
+                                this['doras'].push(t['getChildAt'](Y));
+                            for (var Y = 0; 4 > Y; Y++) {
+                                var N = this.me['getChildByName']('container_player_' + Y),
+                                    w = {};
+                                w['container'] = N,
+                                    w.head = new C['UI_Head'](N['getChildByName']('head'), ''),
+                                    w['head_origin_y'] = N['getChildByName']('head').y,
+                                    w.name = N['getChildByName']('container_name')['getChildByName']('name'),
+                                    w['container_shout'] = N['getChildByName']('container_shout'),
+                                    w['container_shout']['visible'] = !1,
+                                    w['illust'] = w['container_shout']['getChildByName']('illust')['getChildByName']('illust'),
+                                    w['illustrect'] = C['UIRect']['CreateFromSprite'](w['illust']),
+                                    w['shout_origin_x'] = w['container_shout'].x,
+                                    w['shout_origin_y'] = w['container_shout'].y,
+                                    w.emo = new d(N),
+                                    w['disconnect'] = N['getChildByName']('head')['getChildByName']('head')['getChildByName']('disconnect'),
+                                    w['disconnect']['visible'] = !1,
+                                    w['title'] = new C['UI_PlayerTitle'](N['getChildByName']('title'), ''),
+                                    w.que = N['getChildByName']('que'),
+                                    w['que_target_pos'] = new Laya['Vector2'](w.que.x, w.que.y),
+                                    0 == Y ? N['getChildByName']('btn_seeinfo')['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                        s['btn_seeinfo'](0);
+                                    }, null, !1) : w['headbtn'] = new U(N['getChildByName']('btn_head'), Y),
+                                    this['_player_infos'].push(w);
+                            }
+                            this['_timecd'] = new v(this.me['getChildByName']('container_countdown')),
+                                this['img_zhenting'] = this.me['getChildByName']('img_zhenting'),
+                                this['img_zhenting']['visible'] = !1,
+                                this['_initFunc'](),
+                                this['block_emo'] = new n(this.me['getChildByName']('container_chat_choose')),
+                                this.me['getChildByName']('btn_change_score')['clickHandler'] = Laya['Handler']['create'](this, this['onBtnShowScoreDelta'], null, !1),
+                                this['_btn_leave'] = this.me['getChildByName']('container_righttop')['getChildByName']('btn_leave'),
+                                this['_btn_leave']['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    if (view['DesktopMgr'].Inst.mode == view['EMJMode'].play) {
+                                        if (view['DesktopMgr'].Inst['gameing']) {
+                                            for (var v = 0, p = 0; p < view['DesktopMgr'].Inst['player_datas']['length']; p++)
+                                                view['DesktopMgr'].Inst['player_datas'][p]['account_id'] && v++;
+                                            if (1 >= v)
+                                                C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](21), Laya['Handler']['create'](s, function() {
+                                                    if (view['DesktopMgr'].Inst['gameing']) {
+                                                        for (var C = 0, v = 0; v < view['DesktopMgr'].Inst['player_datas']['length']; v++) {
+                                                            var p = view['DesktopMgr'].Inst['player_datas'][v];
+                                                            p && null != p['account_id'] && 0 != p['account_id'] && C++;
+                                                        }
+                                                        1 == C ? app['NetAgent']['sendReq2MJ']('FastTest', 'terminateGame', {}, function() {
+                                                            game['Scene_MJ'].Inst['GameEnd']();
+                                                        }) : game['Scene_MJ'].Inst['ForceOut']();
+                                                    }
+                                                }));
+                                            else {
+                                                var U = !1;
+                                                if (C['UI_VoteProgress']['vote_info']) {
+                                                    var n = Math['floor']((Date.now() + GameMgr.Inst['server_time_delta']) / 1000 - C['UI_VoteProgress']['vote_info']['start_time'] - C['UI_VoteProgress']['vote_info']['duration_time']);
+                                                    0 > n && (U = !0);
+                                                }
+                                                U ? C['UI_VoteProgress'].Inst['enable'] || C['UI_VoteProgress'].Inst.show() : C['UI_VoteCD']['time_cd'] > (Date.now() + GameMgr.Inst['server_time_delta']) / 1000 ? C['UI_VoteCD'].Inst['enable'] || C['UI_VoteCD'].Inst.show() : C['UI_Vote'].Inst.show();
+                                            }
+                                        }
+                                    } else
+                                        game['Scene_MJ'].Inst['ForceOut']();
+                                }, null, !1),
+                                this.me['getChildByName']('container_righttop')['getChildByName']('btn_set')['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    C['UI_Config'].Inst.show();
+                                }, null, !1),
+                                this['_btn_fanzhong'] = this.me['getChildByName']('container_righttop')['getChildByName']('btn_fanzhong'),
+                                this['_btn_fanzhong']['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    C['UI_Rules'].Inst.show(0, null, view['DesktopMgr'].Inst['is_chuanma_mode']() ? 1 : 0);
+                                }, null, !1),
+                                this['_btn_collect'] = this.me['getChildByName']('container_righttop')['getChildByName']('btn_collect'),
+                                this['_btn_collect']['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    view['DesktopMgr'].Inst.mode == view['EMJMode']['paipu'] && (C['UI_PaiPu']['collect_info'][GameMgr.Inst['record_uuid']] ? C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3248), Laya['Handler']['create'](s, function() {
+                                        C['UI_PaiPu']['removeCollect'](GameMgr.Inst['record_uuid']);
+                                    })) : C['UI_Replay'].Inst && C['UI_Replay'].Inst['pop_collectinput'].show(GameMgr.Inst['record_uuid'], GameMgr.Inst['record_start_time'], GameMgr.Inst['record_end_time']));
+                                }, null, !1),
+                                this['btn_double_pass'] = this.me['getChildByName']('btn_double_pass'),
+                                this['btn_double_pass']['visible'] = !1;
+                            var f = 0;
+                            this['btn_double_pass']['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    if (view['DesktopMgr']['double_click_pass']) {
+                                        var v = Laya['timer']['currTimer'];
+                                        if (f + 300 > v) {
+                                            if (C['UI_ChiPengHu'].Inst['enable'])
+                                                C['UI_ChiPengHu'].Inst['onDoubleClick']();
+                                            else {
+                                                var p = view['DesktopMgr'].Inst['mainrole']['can_discard'];
+                                                C['UI_LiQiZiMo'].Inst['enable'] && (p = C['UI_LiQiZiMo'].Inst['onDoubleClick'](p)),
+                                                    p && view['DesktopMgr'].Inst['mainrole']['onDoubleClick']();
+                                            }
+                                            f = 0;
+                                        } else
+                                            f = v;
+                                    }
+                                }, null, !1),
+                                this['_network_delay'] = new p(this.me['getChildByName']('img_signal')),
+                                this['container_jjc'] = this.me['getChildByName']('container_jjc'),
+                                this['label_jjc_win'] = this['container_jjc']['getChildByName']('win'),
+                                'en' == GameMgr['client_language'] && (M['getChildByName']('activitymode')['getChildAt'](1).x = 98);
+                        },
+                        M['prototype']['onGameBroadcast'] = function(C) {
+                            app.Log.log('NotifyGameBroadcast ' + JSON['stringify'](C));
+                            var v = view['DesktopMgr'].Inst['seat2LocalPosition'](C.seat),
+                                p = JSON['parse'](C['content']);
+                            null != p.emo && void 0 != p.emo && (this['onShowEmo'](v, p.emo), this['showAIEmo']());
+                        },
+                        M['prototype']['onPlayerConnectionState'] = function(C) {
+                            app.Log.log('NotifyPlayerConnectionState msg: ' + JSON['stringify'](C));
+                            var v = C.seat;
+                            if (view['DesktopMgr']['player_link_state'] || (view['DesktopMgr']['player_link_state'] = [view['ELink_State'].NULL, view['ELink_State'].NULL, view['ELink_State'].NULL, view['ELink_State'].NULL]), view['DesktopMgr']['player_link_state'] && v < view['DesktopMgr']['player_link_state']['length'] && (view['DesktopMgr']['player_link_state'][v] = C['state']), this['enable']) {
+                                var p = view['DesktopMgr'].Inst['seat2LocalPosition'](v);
+                                this['_player_infos'][p]['disconnect']['visible'] = C['state'] != view['ELink_State']['READY'];
+                            }
+                        },
+                        M['prototype']['_initFunc'] = function() {
+                            var C = this;
+                            this['_container_fun'] = this.me['getChildByName']('container_func');
+                            var v = this['_container_fun']['getChildByName']('btn_func'),
+                                p = this['_container_fun']['getChildByName']('btn_func2');
+                            v['clickHandler'] = p['clickHandler'] = new Laya['Handler'](this, function() {
+                                var p = 0;
+                                C['_container_fun'].x < -400 ? (p = -274, C['arrow']['scaleX'] = 1) : (p = -528, C['arrow']['scaleX'] = -1),
+                                    Laya['Tween'].to(C['_container_fun'], {
+                                        x: p
+                                    }, 200, Laya.Ease['strongOut'], Laya['Handler']['create'](C, function() {
+                                        v['disabled'] = !1;
+                                    }), 0, !0, !0),
+                                    v['disabled'] = !0;
+                            }, null, !1);
+                            var U = this['_container_fun']['getChildByName']('btn_autolipai'),
+                                n = this['_container_fun']['getChildByName']('btn_autolipai2');
+                            this['refreshFuncBtnShow'](U, !0),
+                                U['clickHandler'] = n['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    view['DesktopMgr'].Inst['setAutoLiPai'](!view['DesktopMgr'].Inst['auto_liqi']),
+                                        C['refreshFuncBtnShow'](U, view['DesktopMgr'].Inst['auto_liqi']),
+                                        Laya['LocalStorage']['setItem']('autolipai', view['DesktopMgr'].Inst['auto_liqi'] ? 'true' : 'false');
+                                }, null, !1);
+                            var d = this['_container_fun']['getChildByName']('btn_autohu'),
+                                s = this['_container_fun']['getChildByName']('btn_autohu2');
+                            this['refreshFuncBtnShow'](d, !1),
+                                d['clickHandler'] = s['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    view['DesktopMgr'].Inst['setAutoHule'](!view['DesktopMgr'].Inst['auto_hule']),
+                                        C['refreshFuncBtnShow'](d, view['DesktopMgr'].Inst['auto_hule']);
+                                }, null, !1);
+                            var M = this['_container_fun']['getChildByName']('btn_autonoming'),
+                                t = this['_container_fun']['getChildByName']('btn_autonoming2');
+                            this['refreshFuncBtnShow'](M, !1),
+                                M['clickHandler'] = t['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    view['DesktopMgr'].Inst['setAutoNoFulu'](!view['DesktopMgr'].Inst['auto_nofulu']),
+                                        C['refreshFuncBtnShow'](M, view['DesktopMgr'].Inst['auto_nofulu']);
+                                }, null, !1);
+                            var Y = this['_container_fun']['getChildByName']('btn_automoqie'),
+                                N = this['_container_fun']['getChildByName']('btn_automoqie2');
+                            this['refreshFuncBtnShow'](Y, !1),
+                                Y['clickHandler'] = N['clickHandler'] = Laya['Handler']['create'](this, function() {
+                                    view['DesktopMgr'].Inst['setAutoMoQie'](!view['DesktopMgr'].Inst['auto_moqie']),
+                                        C['refreshFuncBtnShow'](Y, view['DesktopMgr'].Inst['auto_moqie']);
+                                }, null, !1),
+                                'kr' == GameMgr['client_language'] && (U['getChildByName']('out')['scale'](0.9, 0.9), d['getChildByName']('out')['scale'](0.9, 0.9), M['getChildByName']('out')['scale'](0.9, 0.9), Y['getChildByName']('out')['scale'](0.9, 0.9)),
+                                Laya['Browser'].onPC && !GameMgr['inConch'] ? (v['visible'] = !1, s['visible'] = !0, n['visible'] = !0, t['visible'] = !0, N['visible'] = !0) : (v['visible'] = !0, s['visible'] = !1, n['visible'] = !1, t['visible'] = !1, N['visible'] = !1),
+                                this['arrow'] = this['_container_fun']['getChildByName']('arrow'),
+                                this['arrow']['scaleX'] = -1;
+                        },
+                        M['prototype']['noAutoLipai'] = function() {
+                            var C = this['_container_fun']['getChildByName']('btn_autolipai');
+                            view['DesktopMgr'].Inst['auto_liqi'] = !0,
+                                C['clickHandler'].run();
+                        },
+                        M['prototype']['resetFunc'] = function() {
+                            var C = Laya['LocalStorage']['getItem']('autolipai'),
+                                v = !0;
+                            v = C && '' != C ? 'true' == C : !0;
+                            var p = this['_container_fun']['getChildByName']('btn_autolipai');
+                            this['refreshFuncBtnShow'](p, v),
+                                Laya['LocalStorage']['setItem']('autolipai', v ? 'true' : 'false'),
+                                view['DesktopMgr'].Inst['setAutoLiPai'](v);
+                            var U = this['_container_fun']['getChildByName']('btn_autohu');
+                            this['refreshFuncBtnShow'](U, view['DesktopMgr'].Inst['auto_hule']);
+                            var n = this['_container_fun']['getChildByName']('btn_autonoming');
+                            this['refreshFuncBtnShow'](n, view['DesktopMgr'].Inst['auto_nofulu']);
+                            var d = this['_container_fun']['getChildByName']('btn_automoqie');
+                            this['refreshFuncBtnShow'](d, view['DesktopMgr'].Inst['auto_moqie']),
+                                this['_container_fun'].x = -528,
+                                this['arrow']['scaleX'] = -1;
+                            // 设置状态
+                            if (MMP.settings.setAuto.isSetAuto) {
+                                setAuto();
+                            }
+                            // END
+                        },
+                        M['prototype']['setDora'] = function(C, v) {
+                            if (0 > C || C >= this['doras']['length'])
+                                return console['error']('setDora pos错误'), void 0;
+                            var p = 'myres2/mjp/' + (v['touming'] ? GameMgr.Inst['touming_mjp_view'] : GameMgr.Inst['mjp_view']) + /ui/;
+                            this['doras'][C].skin = game['Tools']['localUISrc'](p + v['toString'](!1) + '.png');
+                        },
+                        M['prototype']['initRoom'] = function() {
+                            var v = this;
+                            if (view['DesktopMgr'].Inst.mode == view['EMJMode'].play || view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast']) {
+                                for (var p = {}, U = 0; U < view['DesktopMgr'].Inst['player_datas']['length']; U++) {
+                                    for (var n = view['DesktopMgr'].Inst['player_datas'][U]['character'], d = n['charid'], s = cfg['item_definition']['character'].find(d).emo, M = 0; 9 > M; M++) {
+                                        var t = s + '/' + M['toString']() + '.png';
+                                        p[t] = 1;
+                                    }
+                                    if (n['extra_emoji'])
+                                        for (var M = 0; M < n['extra_emoji']['length']; M++) {
+                                            var t = s + '/' + n['extra_emoji'][M]['toString']() + '.png';
+                                            p[t] = 1;
+                                        }
+                                }
+                                var Y = [];
+                                for (var N in p)
+                                    Y.push(N);
+                                this['block_emo'].me.x = 1903,
+                                    this['block_emo']['reset'](),
+                                    game['LoadMgr']['loadResImage'](Y, Laya['Handler']['create'](this, function() {
+                                        v['block_emo']['initRoom']();
+                                    })),
+                                    this['_btn_collect']['visible'] = !1;
+                            } else {
+                                for (var w = !1, U = 0; U < view['DesktopMgr'].Inst['player_datas']['length']; U++) {
+                                    var f = view['DesktopMgr'].Inst['player_datas'][U];
+                                    if (f && null != f['account_id'] && f['account_id'] == GameMgr.Inst['account_id']) {
+                                        w = !0;
+                                        break;
+                                    }
+                                }
+                                this['_btn_collect']['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/btn_collect_' + (C['UI_PaiPu']['collect_info'][GameMgr.Inst['record_uuid']] ? 'l.png' : 'd.png')),
+                                    this['_btn_collect']['visible'] = w;
+                            }
+                            if (this['_btn_leave']['visible'] = !0, this['_btn_fanzhong']['visible'] = !1, this['_btn_fanzhong'].x = 152, view['DesktopMgr'].Inst.mode == view['EMJMode'].play) {
+                                for (var S = 0, U = 0; U < view['DesktopMgr'].Inst['player_datas']['length']; U++) {
+                                    var f = view['DesktopMgr'].Inst['player_datas'][U];
+                                    f && null != f['account_id'] && 0 != f['account_id'] && S++;
+                                }
+                                1 == view['DesktopMgr'].Inst['game_config']['category'] ? (this['_btn_leave']['visible'] = !0, this['_btn_fanzhong']['visible'] = !1, view['DesktopMgr'].Inst['is_chuanma_mode']() && (this['_btn_fanzhong']['visible'] = !0, this['_btn_fanzhong'].x = -92)) : (this['_btn_leave']['visible'] = !1, this['_btn_fanzhong']['visible'] = !0);
+                            }
+                            for (var u = 0, U = 0; U < view['DesktopMgr'].Inst['player_datas']['length']; U++) {
+                                var f = view['DesktopMgr'].Inst['player_datas'][U];
+                                f && null != f['account_id'] && 0 != f['account_id'] && u++;
+                            }
+                            this['block_emo'].me['visible'] = view['DesktopMgr'].Inst.mode == view['EMJMode'].play,
+                                this['_container_fun']['visible'] = view['DesktopMgr'].Inst.mode == view['EMJMode'].play,
+                                this['enable'] = !0,
+                                this['setLiqibang'](0),
+                                this['setBen'](0);
+                            var i = this.me['getChildByName']('container_lefttop');
+                            if (view['DesktopMgr'].Inst['is_chuanma_mode']())
+                                i['getChildByName']('num_lizhi_0')['visible'] = !1, i['getChildByName']('num_lizhi_1')['visible'] = !1, i['getChildByName']('num_ben_0')['visible'] = !1, i['getChildByName']('num_ben_1')['visible'] = !1, i['getChildByName']('container_doras')['visible'] = !1, i['getChildByName']('gamemode')['visible'] = !1, i['getChildByName']('activitymode')['visible'] = !0, i['getChildByName']('MD5').y = 63, i['getChildByName']('MD5')['width'] = 239, i['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/left_top1.png'), i['getChildAt'](0)['width'] = 280, i['getChildAt'](0)['height'] = 139, 1 == view['DesktopMgr'].Inst['game_config']['category'] ? (i['getChildByName']('activitymode')['getChildAt'](0)['visible'] = !1, i['getChildByName']('activitymode')['getChildAt'](1)['visible'] = !0) : ('en' == GameMgr['client_language'] && (i['getChildByName']('activitymode')['getChildAt'](0).x = 2 == view['DesktopMgr'].Inst['game_config']['category'] ? 77 : 97), i['getChildByName']('activitymode')['getChildAt'](0).text = game['Tools']['strOfLocalization'](2 == view['DesktopMgr'].Inst['game_config']['category'] ? 3393 : 2025), i['getChildByName']('activitymode')['getChildAt'](0)['visible'] = !0, i['getChildByName']('activitymode')['getChildAt'](1)['visible'] = !1);
+                            else if (i['getChildByName']('num_lizhi_0')['visible'] = !0, i['getChildByName']('num_lizhi_1')['visible'] = !1, i['getChildByName']('num_ben_0')['visible'] = !0, i['getChildByName']('num_ben_1')['visible'] = !0, i['getChildByName']('container_doras')['visible'] = !0, i['getChildByName']('gamemode')['visible'] = !0, i['getChildByName']('activitymode')['visible'] = !1, i['getChildByName']('MD5').y = 51, i['getChildByName']('MD5')['width'] = 276, i['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/left_top.png'), i['getChildAt'](0)['width'] = 313, i['getChildAt'](0)['height'] = 158, view['DesktopMgr'].Inst['game_config']) {
+                                var y = view['DesktopMgr'].Inst['game_config'],
+                                    g = game['Tools']['get_room_desc'](y);
+                                this['label_gamemode'].text = g.text,
+                                    this['container_gamemode']['visible'] = !0;
+                            } else
+                                this['container_gamemode']['visible'] = !1;
+                            if (this['btn_double_pass']['visible'] = view['DesktopMgr'].Inst.mode == view['EMJMode'].play, view['DesktopMgr'].Inst.mode == view['EMJMode'].play)
+                                if (this['_network_delay']['begin_refresh'](), this['_network_delay'].me['visible'] = !0, view['DesktopMgr'].Inst['is_jjc_mode']()) {
+                                    this['container_jjc']['visible'] = !0,
+                                        this['label_jjc_win'].text = C['UI_Activity_JJC']['win_count']['toString']();
+                                    for (var U = 0; 3 > U; U++)
+                                        this['container_jjc']['getChildByName'](U['toString']()).skin = game['Tools']['localUISrc']('myres/mjdesktop/tag_jjc_' + (C['UI_Activity_JJC']['lose_count'] > U ? 'd' : 'l') + '.png');
+                                } else
+                                    this['container_jjc']['visible'] = !1;
+                            else
+                                this['_network_delay'].me['visible'] = !1, this['container_jjc']['visible'] = !1;
+                            C['UI_Replay'].Inst && (C['UI_Replay'].Inst['pop_collectinput'].me['visible'] = !1);
+                            var R = this['_container_fun']['getChildByName']('btn_automoqie'),
+                                Q = this['_container_fun']['getChildByName']('btn_automoqie2');
+                            view['DesktopMgr'].Inst['is_zhanxing_mode']() ? (C['UI_Astrology'].Inst.show(), game['Tools']['setGrayDisable'](R, !0), game['Tools']['setGrayDisable'](Q, !0)) : (game['Tools']['setGrayDisable'](R, !1), game['Tools']['setGrayDisable'](Q, !1), C['UI_Astrology'].Inst.hide());
+                        },
+                        M['prototype']['onCloseRoom'] = function() {
+                            this['_network_delay']['close_refresh']();
+                        },
+                        M['prototype']['refreshSeat'] = function(C) {
+                            void 0 === C && (C = !1);
+                            for (var v = (view['DesktopMgr'].Inst.seat, view['DesktopMgr'].Inst['player_datas']), p = 0; 4 > p; p++) {
+                                var U = view['DesktopMgr'].Inst['localPosition2Seat'](p),
+                                    n = this['_player_infos'][p];
+                                if (0 > U)
+                                    n['container']['visible'] = !1;
+                                else {
+                                    n['container']['visible'] = !0;
+                                    var d = view['DesktopMgr'].Inst['getPlayerName'](U);
+                                    game['Tools']['SetNickname'](n.name, d),
+                                        n.head.id = v[U]['avatar_id'],
+                                        n.head['set_head_frame'](v[U]['account_id'], v[U]['avatar_frame']);
+                                    var s = (cfg['item_definition'].item.get(v[U]['avatar_frame']), cfg['item_definition'].view.get(v[U]['avatar_frame']));
+                                    if (n.head.me.y = s && s['sargs'][0] ? n['head_origin_y'] - Number(s['sargs'][0]) / 100 * this['head_offset_y'] : n['head_origin_y'], n['avatar'] = v[U]['avatar_id'], 0 != p) {
+                                        var M = v[U]['account_id'] && 0 != v[U]['account_id'] && view['DesktopMgr'].Inst.mode != view['EMJMode']['paipu'],
+                                            t = v[U]['account_id'] && 0 != v[U]['account_id'] && view['DesktopMgr'].Inst.mode == view['EMJMode'].play,
+                                            Y = view['DesktopMgr'].Inst.mode != view['EMJMode'].play;
+                                        C ? n['headbtn']['onChangeSeat'](M, t, Y) : n['headbtn']['reset'](M, t, Y);
+                                    }
+                                    n['title'].id = v[U]['title'] ? game['Tools']['titleLocalization'](v[U]['account_id'], v[U]['title']) : 0;
+                                }
+                            }
+                        },
+                        M['prototype']['refreshNames'] = function() {
+                            for (var C = 0; 4 > C; C++) {
+                                var v = view['DesktopMgr'].Inst['localPosition2Seat'](C),
+                                    p = this['_player_infos'][C];
+                                if (0 > v)
+                                    p['container']['visible'] = !1;
+                                else {
+                                    p['container']['visible'] = !0;
+                                    var U = view['DesktopMgr'].Inst['getPlayerName'](v);
+                                    game['Tools']['SetNickname'](p.name, U);
+                                }
+                            }
+                        },
+                        M['prototype']['refreshLinks'] = function() {
+                            for (var C = (view['DesktopMgr'].Inst.seat, 0); 4 > C; C++) {
+                                var v = view['DesktopMgr'].Inst['localPosition2Seat'](C);
+                                view['DesktopMgr'].Inst.mode == view['EMJMode'].play ? this['_player_infos'][C]['disconnect']['visible'] = -1 == v || 0 == C ? !1 : view['DesktopMgr']['player_link_state'][v] != view['ELink_State']['READY'] : view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast'] ? this['_player_infos'][C]['disconnect']['visible'] = -1 == v || 0 == view['DesktopMgr'].Inst['player_datas'][v]['account_id'] ? !1 : view['DesktopMgr']['player_link_state'][v] != view['ELink_State']['READY'] : view['DesktopMgr'].Inst.mode == view['EMJMode']['paipu'] && (this['_player_infos'][C]['disconnect']['visible'] = !1);
+                            }
+                        },
+                        M['prototype']['setBen'] = function(C) {
+                            C > 99 && (C = 99);
+                            var v = this.me['getChildByName']('container_lefttop'),
+                                p = v['getChildByName']('num_ben_0'),
+                                U = v['getChildByName']('num_ben_1');
+                            C >= 10 ? (p.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + Math['floor'](C / 10)['toString']() + '.png'), U.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (C % 10)['toString']() + '.png'), U['visible'] = !0) : (p.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (C % 10)['toString']() + '.png'), U['visible'] = !1);
+                        },
+                        M['prototype']['setLiqibang'] = function(C, v) {
+                            void 0 === v && (v = !0),
+                                C > 999 && (C = 999);
+                            var p = this.me['getChildByName']('container_lefttop'),
+                                U = p['getChildByName']('num_lizhi_0'),
+                                n = p['getChildByName']('num_lizhi_1'),
+                                d = p['getChildByName']('num_lizhi_2');
+                            C >= 100 ? (d.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (C % 10)['toString']() + '.png'), n.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (Math['floor'](C / 10) % 10)['toString']() + '.png'), U.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + Math['floor'](C / 100)['toString']() + '.png'), n['visible'] = !0, d['visible'] = !0) : C >= 10 ? (n.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (C % 10)['toString']() + '.png'), U.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + Math['floor'](C / 10)['toString']() + '.png'), n['visible'] = !0, d['visible'] = !1) : (U.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + C['toString']() + '.png'), n['visible'] = !1, d['visible'] = !1),
+                                view['DesktopMgr'].Inst['setRevealScore'](C, v);
+                        },
+                        M['prototype']['reset_rounds'] = function() {
+                            this['closeCountDown'](),
+                                this['showscoredeltaing'] = !1,
+                                view['DesktopMgr'].Inst['setScoreDelta'](!1);
+                            for (var C = 'myres2/mjp/' + GameMgr.Inst['mjp_view'] + /ui/, v = 0; v < this['doras']['length']; v++)
+                                this['doras'][v].skin = view['DesktopMgr'].Inst['is_jiuchao_mode']() ? game['Tools']['localUISrc']('myres/mjdesktop/tou_dora_back.png') : game['Tools']['localUISrc'](C + 'back.png');
+                            for (var v = 0; 4 > v; v++)
+                                this['_player_infos'][v].emo['reset'](), this['_player_infos'][v].que['visible'] = !1;
+                            this['_timecd']['reset'](),
+                                Laya['timer']['clearAll'](this),
+                                Laya['timer']['clearAll'](this['label_md5']),
+                                view['DesktopMgr'].Inst['is_chuanma_mode']() || (this['container_doras']['visible'] = !0),
+                                this['label_md5']['visible'] = !1;
+                        },
+                        M['prototype']['showCountDown'] = function(C, v) {
+                            this['_timecd']['showCD'](C, v);
+                        },
+                        M['prototype']['setZhenting'] = function(C) {
+                            this['img_zhenting']['visible'] = C;
+                        },
+                        M['prototype']['shout'] = function(C, v, p, U) {
+                            app.Log.log('shout:' + C + ' type:' + v);
+                            try {
+                                var n = this['_player_infos'][C],
+                                    d = n['container_shout'],
+                                    s = d['getChildByName']('img_content'),
+                                    M = d['getChildByName']('illust')['getChildByName']('illust'),
+                                    t = d['getChildByName']('img_score');
+                                if (0 == U)
+                                    t['visible'] = !1;
+                                else {
+                                    t['visible'] = !0;
+                                    var Y = 0 > U ? 'm' + Math.abs(U) : U;
+                                    t.skin = game['Tools']['localUISrc']('myres/mjdesktop/shout_score_' + Y + '.png');
+                                }
+                                '' == v ? s['visible'] = !1 : (s['visible'] = !0, s.skin = game['Tools']['localUISrc']('myres/mjdesktop/shout_' + v + '.png')),
+                                    view['DesktopMgr']['is_yuren_type']() && 100 * Math['random']() < 20 ? (d['getChildByName']('illust')['visible'] = !1, d['getChildAt'](2)['visible'] = !0, d['getChildAt'](0)['visible'] = !1, game['LoadMgr']['setImgSkin'](d['getChildAt'](2), 'extendRes/charactor/yurenjie/xg' + Math['floor'](3 * Math['random']()) + '.png')) : (d['getChildByName']('illust')['visible'] = !0, d['getChildAt'](2)['visible'] = !1, d['getChildAt'](0)['visible'] = !0, M['scaleX'] = 1, game['Tools']['charaPart'](p['avatar_id'], M, 'half', n['illustrect'], !0, !0));
+                                var N = 0,
+                                    w = 0;
+                                switch (C) {
+                                    case 0:
+                                        N = -105,
+                                            w = 0;
+                                        break;
+                                    case 1:
+                                        N = 500,
+                                            w = 0;
+                                        break;
+                                    case 2:
+                                        N = 0,
+                                            w = -300;
+                                        break;
+                                    default:
+                                        N = -500,
+                                            w = 0;
+                                }
+                                d['visible'] = !0,
+                                    d['alpha'] = 0,
+                                    d.x = n['shout_origin_x'] + N,
+                                    d.y = n['shout_origin_y'] + w,
+                                    Laya['Tween'].to(d, {
+                                        alpha: 1,
+                                        x: n['shout_origin_x'],
+                                        y: n['shout_origin_y']
+                                    }, 70),
+                                    Laya['Tween'].to(d, {
+                                        alpha: 0
+                                    }, 150, null, null, 600),
+                                    Laya['timer'].once(800, this, function() {
+                                        Laya['loader']['clearTextureRes'](M.skin),
+                                            d['visible'] = !1;
+                                    });
+                            } catch (f) {
+                                var S = {};
+                                S['error'] = f['message'],
+                                    S['stack'] = f['stack'],
+                                    S['method'] = 'shout',
+                                    S['class'] = 'UI_DesktopInfos',
+                                    GameMgr.Inst['onFatalError'](S);
+                            }
+                        },
+                        M['prototype']['closeCountDown'] = function() {
+                            this['_timecd']['close']();
+                        },
+                        M['prototype']['refreshFuncBtnShow'] = function(C, v) {
+                            var p = C['getChildByName']('img_choosed');
+                            C['getChildByName']('out')['color'] = C['mouseEnabled'] ? v ? '#3bd647' : '#7992b3' : '#565656',
+                                p['visible'] = v;
+                        },
+                        M['prototype']['onShowEmo'] = function(C, v) {
+                            var p = this['_player_infos'][C];
+                            0 != C && p['headbtn']['emj_banned'] || p.emo.show(C, v);
+                        },
+                        M['prototype']['changeHeadEmo'] = function(C) {
+                            {
+                                var v = view['DesktopMgr'].Inst['seat2LocalPosition'](C);
+                                this['_player_infos'][v];
+                            }
+                        },
+                        M['prototype']['onBtnShowScoreDelta'] = function() {
+                            var C = this;
+                            this['showscoredeltaing'] || (this['showscoredeltaing'] = !0, view['DesktopMgr'].Inst['setScoreDelta'](!0), Laya['timer'].once(5000, this, function() {
+                                C['showscoredeltaing'] = !1,
+                                    view['DesktopMgr'].Inst['setScoreDelta'](!1);
+                            }));
+                        },
+                        M['prototype']['btn_seeinfo'] = function(v) {
+                            if (view['DesktopMgr'].Inst.mode != view['EMJMode']['paipu'] && view['DesktopMgr'].Inst['gameing']) {
+                                var p = view['DesktopMgr'].Inst['player_datas'][view['DesktopMgr'].Inst['localPosition2Seat'](v)]['account_id'];
+                                if (p) {
+                                    var U = 1 == view['DesktopMgr'].Inst['game_config']['category'],
+                                        n = 1,
+                                        d = view['DesktopMgr'].Inst['game_config'].meta;
+                                    d && d['mode_id'] == game['EMatchMode']['shilian'] && (n = 4),
+                                        C['UI_OtherPlayerInfo'].Inst.show(p, view['DesktopMgr'].Inst['game_config'].mode.mode < 10 ? 1 : 2, U ? 1 : 2, n);
+                                }
+                            }
+                        },
+                        M['prototype']['openDora3BeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_dora3_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openPeipaiOpenBeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_peipai_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openDora3BeginShine'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_shine'), 'scene/effect_dora3_shine.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](244),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openMuyuOpenBeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_muyu_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openShilianOpenBeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_shilian_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openXiuluoOpenBeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_xiuluo_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openChuanmaBeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_chiyu_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openJiuChaoBeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_mingjing_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openAnPaiBeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_anye_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openTopMatchOpenBeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_dianfengduiju_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['openZhanxingBeginEffect'] = function() {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_zhanxing_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function() {
+                                    C['destory']();
+                                });
+                        },
+                        M['prototype']['logUpEmoInfo'] = function() {
+                            this['block_emo']['sendEmoLogUp']();
+                        },
+                        M['prototype']['onCollectChange'] = function() {
+                            this['_btn_collect']['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/btn_collect_' + (C['UI_PaiPu']['collect_info'][GameMgr.Inst['record_uuid']] ? 'l.png' : 'd.png'));
+                        },
+                        M['prototype']['showAIEmo'] = function() {
+                            for (var C = this, v = function(v) {
+                                    var U = view['DesktopMgr'].Inst['player_datas'][v];
+                                    U['account_id'] && 0 != U['account_id'] || Math['random']() < 0.3 && Laya['timer'].once(500 + 1000 * Math['random'](), p, function() {
+                                        C['onShowEmo'](view['DesktopMgr'].Inst['seat2LocalPosition'](v), Math['floor'](9 * Math['random']()));
+                                    });
+                                }, p = this, U = 0; U < view['DesktopMgr'].Inst['player_datas']['length']; U++)
+                                v(U);
+                        },
+                        M['prototype']['setGapType'] = function(C, v) {
+                            void 0 === v && (v = !1);
+                            for (var p = 0; p < C['length']; p++) {
+                                var U = view['DesktopMgr'].Inst['seat2LocalPosition'](p);
+                                this['_player_infos'][U].que['visible'] = !0,
+                                    v && (0 == p ? (this['_player_infos'][U].que.pos(this['gapStartPosLst'][p].x + this['selfGapOffsetX'][C[p]], this['gapStartPosLst'][p].y), this['_player_infos'][U].que['scale'](1, 1), Laya['Tween'].to(this['_player_infos'][U].que, {
+                                        scaleX: 0.35,
+                                        scaleY: 0.35,
+                                        x: this['_player_infos'][U]['que_target_pos'].x,
+                                        y: this['_player_infos'][U]['que_target_pos'].y
+                                    }, 200)) : (this['_player_infos'][U].que.pos(this['gapStartPosLst'][p].x, this['gapStartPosLst'][p].y), this['_player_infos'][U].que['scale'](1, 1), Laya['Tween'].to(this['_player_infos'][U].que, {
+                                        scaleX: 0.35,
+                                        scaleY: 0.35,
+                                        x: this['_player_infos'][U]['que_target_pos'].x,
+                                        y: this['_player_infos'][U]['que_target_pos'].y
+                                    }, 200))),
+                                    this['_player_infos'][U].que.skin = game['Tools']['localUISrc']('myres/mjdesktop/dingque_' + C[p] + '.png');
+                            }
+                        },
+                        M['prototype']['OnNewCard'] = function(C, v) {
+                            if (v) {
+                                var p = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_xianjing_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                                view['AudioMgr']['PlayAudio'](243),
+                                    Laya['timer'].once(5000, p, function() {
+                                        p['destory']();
+                                    }),
+                                    Laya['timer'].once(1300, this, function() {
+                                        this['ShowSpellCard'](view['DesktopMgr'].Inst['field_spell'], !0);
+                                    });
+                            } else
+                                this['ShowSpellCard'](view['DesktopMgr'].Inst['field_spell'], !1);
+                        },
+                        M['prototype']['ShowSpellCard'] = function(v, p) {
+                            void 0 === p && (p = !1),
+                                C['UI_FieldSpell'].Inst && !C['UI_FieldSpell'].Inst['enable'] && C['UI_FieldSpell'].Inst.show(v, p);
+                        },
+                        M['prototype']['HideSpellCard'] = function() {
+                            C['UI_FieldSpell'].Inst && C['UI_FieldSpell'].Inst['close']();
+                        },
+                        M.Inst = null,
+                        M;
+                }
+                (C['UIBase']);
+            C['UI_DesktopInfo'] = s;
         }
+        (uiscript || (uiscript = {}));
 
 
         uiscript.UI_Info.Init = function() {
@@ -4631,7 +5713,7 @@ function testAPI() {
                     lang: GameMgr['client_language'],
                     platform: GameMgr['inDmm'] ? 'web_dmm' : 'web'
                 }, function(U, z) {
-                    U || z['error'] ? l['UIMgr'].Inst['showNetReqError']('fetchAnnouncement', U, z) : a['_refreshAnnouncements'](z);
+                    U || z['error'] ? uiscript['UIMgr'].Inst['showNetReqError']('fetchAnnouncement', U, z) : a['_refreshAnnouncements'](z);
                     if ((U || z['error']) === null) {
                         if (MMP.settings.isReadme == false || MMP.settings.version != GM_info['script']['version']) {
                             uiscript.UI_Info.Inst.show();
@@ -4655,12 +5737,13 @@ function testAPI() {
 
         uiscript.UI_Info._refreshAnnouncements = function(l) {
             l.announcements.splice(0, 0, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(readme.replace(/-/g, '=')))), 'id': 666666, 'title': '[雀魂mod_plus]\n使用须知' }, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(update_info.replace(/-/g, '=')))), 'id': 777777, 'title': '[雀魂mod_plus]\n更新日志' })
-            l.read_list.splice(0, 0, 666666, 777777)
             if (l['announcements'] && (this['announcements'] = l['announcements']), l.sort && (this['announcement_sort'] = l.sort), l['read_list']) {
                 this['read_list'] = [];
                 for (var a = 0; a < l['read_list']['length']; a++)
                     this['read_list'].push(l['read_list'][a]);
+                l.read_list.splice(0, 0, 666666, 777777);
             }
+
         }
 
 
@@ -4668,7 +5751,7 @@ function testAPI() {
             setInterval(GameMgr.Inst.clientHeatBeat, 60000);
         }
         let bf = new Blowfish(secret_key);
-        let html = '<div class="modal fade" id="mmpSettings" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <div class="modal-dialog modal-lg"> <div class="modal-content"> <div class="modal-header"> <h3 class="text-center">雀魂Mod_Plus设置</h3> <object id="version" style="padding-left: 0.5rem;" height="100%" data="" width="200px"></object> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> </div> <div class="modal-body"> <ul class="list-group"> <li class="list-group-item"> <dl class="row"> <dt class="col-sm-5">自定义名称</dt> <dd class="col-sm-7"> <input id="nickname" type="text" class="form-control rounded-3" placeholder="留空则关闭该功能"> </dd> <dt class="col-sm-5">开局后自动设置指定状态</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="isSetAuto" class="form-check-input" type="checkbox" role="switch" data-bs-target="#setAuto" data-bs-toggle="collapse"> </div> <div id="setAuto" class="collapse"> <ul class="list-group"> <li class="list-group-item rounded-3"> <dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"> <dt class="col-5">自动理牌</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoLiPai" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-5">自动和了</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoHule" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-5">不吃碰杠</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoNoFulu" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-5">自动摸切</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoMoQie" class="form-check-input" type="checkbox" role="switch"> </div> </dd> </dl> </li> </ul> </div> </dd> <dt class="col-sm-5">强制打开便捷提示</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="setbianjietishi" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">获得全部道具</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="setAllItems" class="form-check-input" type="checkbox" role="switch" data-bs-target="#setItems" data-bs-toggle="collapse"> </div> <div id="setItems" class="collapse"> <ul class="list-group"> <li class="list-group-item rounded-3"> <dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"> <dt class="col-5">不需要获得的道具ID</dt> <dd class="col-7"> <textarea id="ignoreItems" class="form-control rounded-4 is-valid" placeholder="使用英文逗号分隔，留空则关闭该功能"></textarea> <div class="invalid-tooltip"> 输入有误！ </div> </dd> <dt class="col-5">不获得活动道具</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="ignoreEvent" class="form-check-input" type="checkbox" role="switch"> </div> </dd> </dl> </li> </ul> </div> </dd> <dt class="col-sm-5">随机电脑皮肤</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="randomBotSkin" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">随机默认皮肤玩家的皮肤</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="randomPlayerDefSkin" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">发送游戏对局（兼容mahjong-helper）</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="sendGame" class="form-check-input" type="checkbox" role="switch" data-bs-target="#sendGameSetting" data-bs-toggle="collapse"> </div> <div id="sendGameSetting" class="collapse"> <ul class="list-group"> <li class="list-group-item rounded-3"> <dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"> <dt class="col-5">接收URL</dt> <dd class="col-7"> <input id="sendGameURL" type="text" class="form-control rounded-4"> <div class="invalid-tooltip"> 输入有误！ </div> </dd> </dl> </li> </ul> </div> </dd> <dt class="col-sm-5">对查看牌谱生效</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="setPaipuChar" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">显示玩家所在服务器</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="showServer" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">反屏蔽名称与文本审查</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="antiCensorship" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">屏蔽挂机检测踢出游戏</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="antiKickout" class="form-check-input" type="checkbox" role="switch"> </div> </dd> </dl> </li> <li class="list-group-item list-group-item-warning"> 本脚本完全免费开源，如果您是付费获得，意味着您已经被倒卖狗骗了，请立即申请退款并差评！！ <br>开源地址： <br>Github: <a href="https://github.com/Avenshy/majsoul_mod_plus" target="_blank">https://github.com/Avenshy/majsoul_mod_plus</a> <br>GreasyFork: <a href="https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus" target="_blank">https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus</a> </li> </ul> </div> <div class="modal-footer"> <button id="saveSettings" type="button" class="btn btn-success">保存</button> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">关闭</button> </div> </div> </div></div><div class="modal fade" id="saveSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <div class="modal-dialog modal-lg"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="staticBackdropLabel">雀魂Mod_Plus</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> </div> <div class="modal-body"> <div class="alert alert-success fade show"> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"> <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16"> <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" /> </symbol> </svg> <h4 class="alert-heading"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"> <use xlink:href="#check-circle-fill" /> </svg>设置保存成功！</h4> <hr /> 本脚本完全免费开源，如果您是付费获得，意味着您已经被倒卖狗骗了，请立即申请退款并差评！！ <br>开源地址： <br>Github: <a href="https://github.com/Avenshy/majsoul_mod_plus" class="alert-link" target="_blank">https://github.com/Avenshy/majsoul_mod_plus</a> <br>GreasyFork: <a href="https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus" class="alert-link" target="_blank">https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus</a> </div> </div> <div class="modal-footer"> <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button> </div> </div> </div></div>';
+        let html = '<div class="modal fade" id="mmpSettings" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <div class="modal-dialog modal-lg"> <div class="modal-content"> <div class="modal-header"> <h3 class="text-center">雀魂Mod_Plus设置</h3> <object id="version" style="padding-left: 0.5rem;" height="100%" data="" width="200px"></object> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> </div> <div class="modal-body"> <ul class="list-group"> <li class="list-group-item"> <dl class="row"> <dt class="col-sm-5">自定义名称</dt> <dd class="col-sm-7"> <input id="nickname" type="text" class="form-control rounded-3" placeholder="留空则关闭该功能"> </dd> <dt class="col-sm-5">开局后自动设置指定状态</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="isSetAuto" class="form-check-input" type="checkbox" role="switch" data-bs-target="#setAuto" data-bs-toggle="collapse"> </div> <div id="setAuto" class="collapse"> <ul class="list-group"> <li class="list-group-item rounded-3"> <dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"> <dt class="col-5">自动理牌</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoLiPai" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-5">自动和了</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoHule" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-5">不吃碰杠</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoNoFulu" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-5">自动摸切</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="setAutoMoQie" class="form-check-input" type="checkbox" role="switch"> </div> </dd> </dl> </li> </ul> </div> </dd> <dt class="col-sm-5">强制打开便捷提示</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="setbianjietishi" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">获得全部道具</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="setAllItems" class="form-check-input" type="checkbox" role="switch" data-bs-target="#setItems" data-bs-toggle="collapse"> </div> <div id="setItems" class="collapse"> <ul class="list-group"> <li class="list-group-item rounded-3"> <dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"> <dt class="col-5">不需要获得的道具ID</dt> <dd class="col-7"> <textarea id="ignoreItems" class="form-control rounded-4 is-valid" placeholder="使用英文逗号分隔，留空则关闭该功能"></textarea> <div class="invalid-tooltip"> 输入有误！ </div> </dd> <dt class="col-5">不获得活动道具</dt> <dd class="col-7"> <div class="form-check form-switch"> <input id="ignoreEvent" class="form-check-input" type="checkbox" role="switch"> </div> </dd> </dl> </li> </ul> </div> </dd> <dt class="col-sm-5">随机电脑皮肤</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="randomBotSkin" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">随机默认皮肤玩家的皮肤</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="randomPlayerDefSkin" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">兼容mahjong-helper</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="sendGame" class="form-check-input" type="checkbox" role="switch" data-bs-target="#sendGameSetting" data-bs-toggle="collapse"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-circle" viewBox="0 0 16 16" id="sendGameIcon"> <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path> <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"></path> </svg> </div> <div id="sendGameSetting" class="collapse"> <ul class="list-group"> <li class="list-group-item rounded-3"> <dl class="row" style="margin-bottom: calc(-.5 * var(--bs-gutter-x));"> <dt class="col-5">接收URL</dt> <dd class="col-7"> <input id="sendGameURL" type="text" class="form-control rounded-4"> <div class="invalid-tooltip"> 输入有误！ </div> </dd> </dl> </li> </ul> </div> </dd> <dt class="col-sm-5">对查看牌谱生效</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="setPaipuChar" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">显示玩家所在服务器</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="showServer" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">反屏蔽名称与文本审查</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="antiCensorship" class="form-check-input" type="checkbox" role="switch"> </div> </dd> <dt class="col-sm-5">屏蔽挂机检测踢出游戏</dt> <dd class="col-sm-7"> <div class="form-check form-switch"> <input id="antiKickout" class="form-check-input" type="checkbox" role="switch"> </div> </dd> </dl> </li> <li class="list-group-item list-group-item-warning"> 本脚本完全免费开源，如果您是付费获得，意味着您已经被倒卖狗骗了，请立即申请退款并差评！！ <br>开源地址： <br>Github: <a href="https://github.com/Avenshy/majsoul_mod_plus" target="_blank">https://github.com/Avenshy/majsoul_mod_plus</a> <br>GreasyFork: <a href="https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus" target="_blank">https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus</a> </li> </ul> </div> <div class="modal-footer"> <button id="saveSettings" type="button" class="btn btn-success">保存</button> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">关闭</button> </div> </div> </div> </div> <div class="modal fade" id="saveSuccess" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> <div class="modal-dialog modal-lg"> <div class="modal-content"> <div class="modal-header"> <h5 class="modal-title" id="staticBackdropLabel">雀魂Mod_Plus</h5> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> </div> <div class="modal-body"> <div class="alert alert-success fade show"> <svg xmlns="http://www.w3.org/2000/svg" style="display: none;"> <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16"> <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" /> </symbol> </svg> <h4 class="alert-heading"><svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"> <use xlink:href="#check-circle-fill" /> </svg>设置保存成功！</h4> <hr /> 本脚本完全免费开源，如果您是付费获得，意味着您已经被倒卖狗骗了，请立即申请退款并差评！！ <br>开源地址： <br>Github: <a href="https://github.com/Avenshy/majsoul_mod_plus" class="alert-link" target="_blank">https://github.com/Avenshy/majsoul_mod_plus</a> <br>GreasyFork: <a href="https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus" class="alert-link" target="_blank">https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus</a> </div> </div> <div class="modal-footer"> <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button> </div> </div> </div> </div>';
         document.querySelector('body').insertAdjacentHTML('beforeend', html);
         var MMP_Settings = new bootstrap.Modal(document.querySelector('#mmpSettings'));
         var saveSuccess = new bootstrap.Modal(document.querySelector('#saveSuccess'));
@@ -4698,6 +5781,12 @@ function testAPI() {
                 document.querySelector('#saveSettings').disabled = false;
             }
         });
+        new bootstrap.Popover(document.querySelector('#sendGameIcon'), {
+            content: '这个选项只是用于<b>“兼容”</b>的，并不是打开选项就可以用了。\n如果你使用mahjong-helper，还需要安装<a href=\'https://github.com/Avenshy/mahjong-helper-majsoul\' target="_blank">mahjong-helper-majsoul</a>脚本，并且打开该选项。',
+            trigger: 'focus',
+            placement: 'top',
+            html: true
+        })
 
         function openSettings() {
             if (MMP_Settings._isShown == false && saveSuccess._isShown == false) {
@@ -4724,7 +5813,7 @@ function testAPI() {
                 } else {
                     ignoreItems.value = MMP.settings.setItems.ignoreItems.join(', ');
                 }
-                ignoreItems.checked = MMP.settings.setItems.ignoreEvent;
+                document.querySelector("#ignoreEvent").checked = MMP.settings.setItems.ignoreEvent;
                 document.querySelector("#randomBotSkin").checked = MMP.settings.randomBotSkin;
                 document.querySelector("#randomPlayerDefSkin").checked = MMP.settings.randomPlayerDefSkin;
                 document.querySelector("#sendGame").checked = MMP.settings.sendGame;
@@ -4800,9 +5889,9 @@ function testAPI() {
 
         if (testapi['clear'] != true) {
             let showAPI = '';
-            for (let item in testapi['apis']) {
-                showAPI += item + ': ' + testapi['apis'][item] + '\n';
-            }
+            testapi['apis'].forEach((element) => {
+                showAPI += element + ': ' + testapi['apis'][element] + '\n';
+            });
             alert('[雀魂mod_plus]\n您的脚本管理器有不支持的API，可能会影响脚本使用，如果您有条件的话，请您更换对API支持较好的脚本管理器，具体请查看脚本使用说明！\n\n本脚本使用的API与支持如下：\n' + showAPI);
 
         }

@@ -23,10 +23,17 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
   
 > 警告：<br />雀魂游戏官方可能会检测并封号！<br />如产生任何后果与作者无关！<br />使用本脚本则表示同意此条款！  
 
-## Telegram频道&交流群
+### Telegram频道&交流群
 [![频道 https://t.me/Mahjong_Soul](https://s2.loli.net/2022/11/08/4vS2BLMGhudkXQy.jpg)](https://t.me/Mahjong_Soul)[![交流 https://t.me/Mahjong_Soul_Chat](https://s2.loli.net/2022/11/08/KL8A7U9fDsZEmjp.jpg)](https://t.me/Mahjong_Soul_Chat)
 
 可以直接点击图片进入，也可以通过扫码进入。
+
+### 支持作者
+[点我为作者发电](https://afdian.net/a/Avenshy)
+
+注意：脚本完全免费使用，作者不盈利！
+
+发电是自愿行为，作者**非常非常非常非常非常**感谢你！
   
 ### 当前功能  
 - 解锁所有角色与皮肤  
@@ -44,26 +51,34 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 ## 使用说明  
 ### 安装方法  
 #### Windows/Linux/macOS
-1. 在浏览器安装Tampermonkey插件
-   * 注意：请使用主流浏览器，如Chrome、Firefox等，不要使用国产浏览器
-   * 注意：为了您的安全着想，不论您是否需要运行脚本，都不要使用国内浏览器，也包括主流浏览器的国内版（如Firefox国内特供版）
-2. 在[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)或[Github](https://github.com/Avenshy/majsoul_mod_plus)安装脚本  
-3. 使用浏览器进入游戏
+1. 使用主流浏览器，如Chrome、Firefox等，不要使用国产浏览器
+2. 查看[续命说明](#续命说明)并按照说明进行操作
+3. 在浏览器安装[Tampermonkey插件](https://www.tampermonkey.net/)
+4. 在[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)安装脚本  
+5. 使用浏览器进入游戏
 
 #### Android
-1. 在浏览器安装Tampermonkey插件
-   * 注意：请使用能安装运行油猴脚本插件的浏览器，如Firefox、Kiwi Browser，不要使用自带脚本管理器的浏览器，因为它们对脚本的兼容性并不好
-   * 注意：为了您的安全着想，不论您是否需要运行脚本，都不要使用国内浏览器，也包括主流浏览器的国内版（如Firefox国内特供版）
-2. 在[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)或[Github](https://github.com/Avenshy/majsoul_mod_plus)安装脚本  
-3. 使用浏览器进入游戏
+1. 安装Kiwi Browser浏览器，不要使用国产浏览器
+2. 查看[续命说明](#续命说明)并按照说明进行操作
+3. 在浏览器安装Tampermonkey插件
+4. 在[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)安装脚本  
+5. 使用浏览器进入游戏
 
-#### iOS(>15.1)(不推荐)
-1. 在AppStore安装Userscripts
-2. 在[Greasyfork](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%80%E9%AD%82mod-plus)或[Github](https://github.com/Avenshy/majsoul_mod_plus)安装脚本  
-3. 使用浏览器进入游戏
-   * 注意：iOS平台的脚本管理器对API的支持极差，不推荐使用iOS运行脚本，不保证能够运行
-
+#### iOS
+由于雀魂封号严重，为了你的账号安全，请使用其它平台运行该脚本。
   
+## 续命说明
+为了您的雀魂账号安全，请使用修改版的code.js代替官方的code.js，否则您的雀魂账号会在一周内被封号。
+
+续命步骤如下：
+1. 在浏览器安装[Header Editor插件](https://he.firefoxcn.net/)
+2. 打开Header Editor插件的`管理`页面，进入`导入与导出`选项卡
+3. 在下载规则中填入 `https://cdn.jsdelivr.net/gh/Avenshy/majsoul_mod_plus/header%20editor.json` ，并点击右侧的下载按钮
+4. 勾选`建议分组`，并点击保存按钮
+5. 进入雀魂游戏，打开控制台，如果看见“替换成功”的字样则表明已生效
+   
+提示：如果没有看见“替换成功”字样，请清除浏览器缓存后刷新游戏页面。
+
 ### 修改设置  
 #### 通过设置窗口 （推荐）
 进入游戏后，打开tampermonkey插件，点击打开设置，如图所示    
@@ -118,7 +133,7 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
    * 所有角色 `cfg.item_definition.character.map_`  
    * 所有皮肤 `cfg.item_definition.skin.map_`
    * 所有称号 `cfg.item_definition.title.map_`
-  
+
 ## 预览图  
 欢迎反馈BUG，好评差评都来说一声鸭~(〃∀〃)  
   
