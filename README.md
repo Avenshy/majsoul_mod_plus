@@ -75,9 +75,15 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 2. 打开Header Editor插件的`管理`页面，进入`导入与导出`选项卡
 3. 在下载规则中填入 `https://cdn.jsdelivr.net/gh/Avenshy/majsoul_mod_plus/header%20editor.json` ，并点击右侧的下载按钮
 4. 勾选`建议分组`，并点击保存按钮
-5. 进入雀魂游戏，打开控制台，如果看见“替换成功”的字样则表明已生效
+5. **确保油猴插件是关闭状态**，进入雀魂游戏
+6. 清除浏览器缓存：点击网址左边的锁型图标，点击网站设置，清除数据（见下图）
+7. 进入雀魂游戏，打开控制台，如果看见“替换成功”的字样则表明已成功生效
    
-提示：如果没有看见“替换成功”字样，请清除浏览器缓存后刷新游戏页面。
+提示：如果没有看见“替换成功”字样，说明续命未生效。
+
+提示：请不要在浏览器清除浏览设置中清除缓存，请在网站设置中清除（见下图）
+
+![clear_cache](https://raw.githubusercontent.com/Avenshy/majsoul_mod_plus/master/clear_cache.png)
 
 ### 修改设置  
 #### 通过设置窗口 （推荐）

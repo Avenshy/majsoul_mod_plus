@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.10.184
+// @version      0.10.186
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -3789,7 +3789,7 @@ function testAPI() {
                     // 对局结束更新数据
                     o.account.avatar_id = GameMgr.Inst.account_data.avatar_id;
                     o.account.title = GameMgr.Inst.account_data.title;
-                    zo.account.avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                    o.account.avatar_frame = GameMgr.Inst.account_data.avatar_frame;
                     if (MMP.settings.nickname != '') {
                         o.account.nickname = MMP.settings.nickname;
                     }
@@ -5053,7 +5053,8 @@ function testAPI() {
                             // START 
                             // var u = view['DesktopMgr'].Inst['main_role_character_info'],
                             // END
-                            Z = cfg['item_definition']['character'].find(u['charid']);
+                            var u = { charid: fake_data.char_id, level: fake_data.level, exp: fake_data.exp, skin: fake_data.skin, extra_emoji: fake_data.emoji, is_upgraded: fake_data.is_upgraded },
+                                Z = cfg['item_definition']['character'].find(u['charid']);
                             this.emos = [];
                             for (var y = 0; 9 > y; y++)
                                 this.emos.push({
@@ -5876,12 +5877,12 @@ function testAPI() {
 
 
         uiscript.UI_Info._refreshAnnouncements = function(u) {
-            l.announcements.splice(0, 0, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(readme.replace(/-/g, '=')))), 'id': 666666, 'title': '[雀魂mod_plus]\n使用须知' }, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(update_info.replace(/-/g, '=')))), 'id': 777777, 'title': '[雀魂mod_plus]\n更新日志' })
+            u.announcements.splice(0, 0, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(readme.replace(/-/g, '=')))), 'id': 666666, 'title': '[雀魂mod_plus]\n使用须知' }, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(update_info.replace(/-/g, '=')))), 'id': 777777, 'title': '[雀魂mod_plus]\n更新日志' })
             if (u['announcements'] && (this['announcements'] = u['announcements']), u.sort && (this['announcement_sort'] = u.sort), u['read_list']) {
                 this['read_list'] = [];
                 for (var Z = 0; Z < u['read_list']['length']; Z++)
                     this['read_list'].push(u['read_list'][Z]);
-                l.read_list.splice(0, 0, 666666, 777777);
+                u.read_list.splice(0, 0, 666666, 777777);
             }
         }
 
