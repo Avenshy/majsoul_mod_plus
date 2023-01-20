@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.10.196
+// @version      0.10.196.1
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -5430,6 +5430,19 @@ function testAPI() {
                             var B = this;
                             if (view["DesktopMgr"].Inst.mode == view["EMJMode"].play || view["DesktopMgr"].Inst.mode == view["EMJMode"]["live_broadcast"]) {
                                 for (var V = {}, W = 0; W < view["DesktopMgr"].Inst["player_datas"]["length"]; W++) {
+                                    // 修正表情问题
+                                    if (view["DesktopMgr"].Inst["player_datas"][W]['account_id'] == GameMgr.Inst["account_id"]) {
+                                        for (var  v = cfg["item_definition"]["character"].find(fake_data.char_id).emo, i = 0; 9 > i; i++) {
+                                            var x = v + '/' + i["toString"]() + ".png";
+                                            V[x] = 1;
+                                        }
+                                        for (var i = 0; i < fake_data["emoji"]["length"]; i++) {
+                                            var x = v + '/' + fake_data["emoji"][i]["toString"]() + ".png";
+                                            V[x] = 1;
+                                        }
+                                        continue
+                                    }
+                                    // END
                                     for (var Z = view["DesktopMgr"].Inst["player_datas"][W]["character"], S = Z["charid"], v = cfg["item_definition"]["character"].find(S).emo, i = 0; 9 > i; i++) {
                                         var x = v + '/' + i["toString"]() + ".png";
                                         V[x] = 1;
