@@ -68,9 +68,14 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 
 #### iOS
 由于雀魂封号严重，为了你的账号安全，请使用其它平台运行该脚本。
+
+#### 客户端/Steam
+不支持。
   
 ### 续命说明
 为了您的雀魂账号安全，请使用修改版的code.js代替官方的code.js，否则您的雀魂账号会在一周内被封号。
+
+另外，续命并不意味着你的账号安全了，务必使用小号。
 
 #### 续命步骤
 1. 在浏览器安装[Header Editor插件](https://he.firefoxcn.net/)
@@ -83,7 +88,7 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
    
 提示：如果没有看见“替换成功”字样，说明续命未生效。
 
-提示：请不要在浏览器清除浏览设置中清除缓存，请在浏览器控制台中清除（见下图）
+提示：请不要在浏览器的清除浏览设置中清除缓存，请在浏览器控制台中清除（见下图）
 
 ![clear_cache](https://raw.githubusercontent.com/Avenshy/majsoul_mod_plus/master/clear_cache.png)
 
@@ -91,9 +96,10 @@ Greasyfork: [雀魂mod_plus](https://greasyfork.org/zh-CN/scripts/408051-%E9%9B%
 当游戏更新后，续命代码可能还停留在先前的版本，一般只需手动清理缓存（见上图），再刷新雀魂游戏网页即可。
 
 如果清理缓存后仍然是旧版本续命，请按照以下方法进行操作：
-1. 查看[本项目Github页面](https://github.com/Avenshy/majsoul_mod_plus)的`safe_code.js`文件是否已更新至游戏新版本
-2. 如果上述文件确实已更新，请访问[jsdelivr_purge_cache](https://purge.jsdelivr.net/gh/Avenshy/majsoul_mod_plus/safe_code.js)页面刷新缓存，应能看到`"status": "finished"`字样
-3. 进入雀魂游戏页面，清除浏览器缓存，刷新页面，查看续命代码是否已更新
+1. 尝试**在浏览器的清除浏览设置中**清除缓存，进入雀魂游戏网页查看是否为新版本。
+2. 查看[本项目Github页面](https://github.com/Avenshy/majsoul_mod_plus)的`safe_code.js`文件是否已更新至游戏新版本
+3. 如果上述文件确实已更新，请访问[jsdelivr_purge_cache](https://purge.jsdelivr.net/gh/Avenshy/majsoul_mod_plus/safe_code.js)页面刷新缓存，应能看到`"status": "finished"`字样
+4. 进入雀魂游戏页面，清除浏览器缓存，刷新页面，查看续命代码是否已更新
 
 ### 修改设置  
 #### 通过设置窗口 （推荐）
