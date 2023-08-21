@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.10.244
+// @version      0.10.269
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -242,368 +242,369 @@ function testAPI() {
 
 
         // 设置全部道具
-        !function (w) {
-            var j;
-            !function (w) {
-                w[w.none = 0] = 'none',
-                w[w['daoju'] = 1] = 'daoju',
-                w[w.gift = 2] = 'gift',
-                w[w['fudai'] = 3] = 'fudai',
-                w[w.view = 5] = 'view';
+        !function (C) {
+            var K;
+            !function (C) {
+                C[C.none = 0] = 'none',
+                    C[C['daoju'] = 1] = 'daoju',
+                    C[C.gift = 2] = 'gift',
+                    C[C['fudai'] = 3] = 'fudai',
+                    C[C.view = 5] = 'view';
             }
-            (j = w['EItemCategory'] || (w['EItemCategory'] = {}));
-            var C = function (C) {
-                function i() {
-                    var w = C.call(this, new ui['lobby']['bagUI']()) || this;
-                    return w['container_top'] = null,
-                    w['container_content'] = null,
-                    w['locking'] = !1,
-                    w.tabs = [],
-                    w['page_item'] = null,
-                    w['page_gift'] = null,
-                    w['page_skin'] = null,
-                    w['page_cg'] = null,
-                    w['select_index'] = 0,
-                    i.Inst = w,
-                    w;
+                (K = C['EItemCategory'] || (C['EItemCategory'] = {}));
+            var r = function (r) {
+                function X() {
+                    var C = r.call(this, new ui['lobby']['bagUI']()) || this;
+                    return C['container_top'] = null,
+                        C['container_content'] = null,
+                        C['locking'] = !1,
+                        C.tabs = [],
+                        C['page_item'] = null,
+                        C['page_gift'] = null,
+                        C['page_skin'] = null,
+                        C['page_cg'] = null,
+                        C['select_index'] = 0,
+                        X.Inst = C,
+                        C;
                 }
-                return __extends(i, C),
-                i.init = function () {
-                    var w = this;
-                    app['NetAgent']['AddListener2Lobby']('NotifyAccountUpdate', Laya['Handler']['create'](this, function (j) {
-                            var C = j['update'];
-                            C && C.bag && (w['update_data'](C.bag['update_items']), w['update_daily_gain_data'](C.bag));
+                return __extends(X, r),
+                    X.init = function () {
+                        var C = this;
+                        app['NetAgent']['AddListener2Lobby']('NotifyAccountUpdate', Laya['Handler']['create'](this, function (K) {
+                            var r = K['update'];
+                            r && r.bag && (C['update_data'](r.bag['update_items']), C['update_daily_gain_data'](r.bag));
                         }, null, !1)),
-                    this['fetch']();
-                },
-                i['fetch'] = function () {
-                    var j = this;
-                    this['_item_map'] = {},
-                    this['_daily_gain_record'] = {},
-                    app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchBagInfo', {}, function (C, i) {
-                        if (C || i['error'])
-                            w['UIMgr'].Inst['showNetReqError']('fetchBagInfo', C, i);
-                        else {
-                            app.Log.log('背包信息：' + JSON['stringify'](i));
-                            var l = i.bag;
-                            if (l) {
-                                                if (MMP.settings.setItems.setAllItems) {
-                                                    //设置全部道具
-                                                    var items = cfg.item_definition.item.map_;
-                                                    for (var id in items) {
-                                                        if (MMP.settings.setItems.ignoreItems.includes(Number(id)) || (MMP.settings.setItems.ignoreEvent ? (id.slice(0, 3) == '309' ? true : false) : false)) {
-                                                            for (let item of l["items"]) {
-                                                                if (item.item_id == id) {
-                                                                    cfg.item_definition.item.get(item.item_id);
-                                                                    j._item_map[item.item_id] = {
-                                                                        item_id: item.item_id,
-                                                                        count: item.stack,
-                                                                        category: items[item.item_id].category
-                                                                    };
-                                                                    break;
-                                                                }
-                                                            }
-                                                        } else {
-                                                            cfg.item_definition.item.get(id);
-                                                            j._item_map[id] = {
-                                                                item_id: id,
-                                                                count: 1,
-                                                                category: items[id].category
-                                                            }; //获取物品列表并添加
+                            this['fetch']();
+                    },
+                    X['fetch'] = function () {
+                        var K = this;
+                        this['_item_map'] = {},
+                            this['_daily_gain_record'] = {},
+                            app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchBagInfo', {}, function (r, X) {
+                                if (r || X['error'])
+                                    C['UIMgr'].Inst['showNetReqError']('fetchBagInfo', r, X);
+                                else {
+                                    app.Log.log('背包信息：' + JSON['stringify'](X));
+                                    var U = X.bag;
+                                    if (U) {
+                                        if (MMP.settings.setItems.setAllItems) {
+                                            //设置全部道具
+                                            var items = cfg.item_definition.item.map_;
+                                            for (var id in items) {
+                                                if (MMP.settings.setItems.ignoreItems.includes(Number(id)) || (MMP.settings.setItems.ignoreEvent ? (id.slice(0, 3) == '309' ? true : false) : false)) {
+                                                    for (let item of l["items"]) {
+                                                        if (item.item_id == id) {
+                                                            cfg.item_definition.item.get(item.item_id);
+                                                            K._item_map[item.item_id] = {
+                                                                item_id: item.item_id,
+                                                                count: item.stack,
+                                                                category: items[item.item_id].category
+                                                            };
+                                                            break;
                                                         }
                                                     }
-               } else {
-                                if (l['items'])
-                                    for (var u = 0; u < l['items']['length']; u++) {
-                                        var b = l['items'][u]['item_id'],
-                                        V = l['items'][u]['stack'],
-                                        k = cfg['item_definition'].item.get(b);
-                                        k && (j['_item_map'][b] = {
-                                                item_id: b,
-                                                count: V,
-                                                category: k['category']
-                                            }, 1 == k['category'] && 3 == k.type && app['NetAgent']['sendReq2Lobby']('Lobby', 'openAllRewardItem', {
-                                                item_id: b
-                                            }, function () {}));
+                                                } else {
+                                                    cfg.item_definition.item.get(id);
+                                                    K._item_map[id] = {
+                                                        item_id: id,
+                                                        count: 1,
+                                                        category: items[id].category
+                                                    }; //获取物品列表并添加
+                                                }
+                                            }
+                                        } else {
+                                            if (U['items'])
+                                                for (var i = 0; i < U['items']['length']; i++) {
+                                                    var N = U['items'][i]['item_id'],
+                                                        H = U['items'][i]['stack'],
+                                                        w = cfg['item_definition'].item.get(N);
+                                                    w && (K['_item_map'][N] = {
+                                                        item_id: N,
+                                                        count: H,
+                                                        category: w['category']
+                                                    }, 1 == w['category'] && 3 == w.type && app['NetAgent']['sendReq2Lobby']('Lobby', 'openAllRewardItem', {
+                                                        item_id: N
+                                                    }, function () { }));
+                                                }
+                                            if (U['daily_gain_record'])
+                                                for (var G = U['daily_gain_record'], i = 0; i < G['length']; i++) {
+                                                    var l = G[i]['limit_source_id'];
+                                                    K['_daily_gain_record'][l] = {};
+                                                    var R = G[i]['record_time'];
+                                                    K['_daily_gain_record'][l]['record_time'] = R;
+                                                    var f = G[i]['records'];
+                                                    if (f)
+                                                        for (var A = 0; A < f['length']; A++)
+                                                            K['_daily_gain_record'][l][f[A]['item_id']] = f[A]['count'];
+                                                }
+                                        }
                                     }
-                                if (l['daily_gain_record'])
-                                    for (var S = l['daily_gain_record'], u = 0; u < S['length']; u++) {
-                                        var H = S[u]['limit_source_id'];
-                                        j['_daily_gain_record'][H] = {};
-                                        var N = S[u]['record_time'];
-                                        j['_daily_gain_record'][H]['record_time'] = N;
-                                        var W = S[u]['records'];
-                                        if (W)
-                                            for (var e = 0; e < W['length']; e++)
-                                                j['_daily_gain_record'][H][W[e]['item_id']] = W[e]['count'];
-                                    }
+                                }
+                            });
+                    },
+                    X['find_item'] = function (C) {
+                        var K = this['_item_map'][C];
+                        return K ? {
+                            item_id: K['item_id'],
+                            category: K['category'],
+                            count: K['count']
+                        }
+                            : null;
+                    },
+                    X['get_item_count'] = function (C) {
+                        var K = this['find_item'](C);
+                        if (K)
+                            return K['count'];
+                        if ('100001' == C) {
+                            for (var r = 0, X = 0, U = GameMgr.Inst['free_diamonds']; X < U['length']; X++) {
+                                var i = U[X];
+                                GameMgr.Inst['account_numerical_resource'][i] && (r += GameMgr.Inst['account_numerical_resource'][i]);
+                            }
+                            for (var N = 0, H = GameMgr.Inst['paid_diamonds']; N < H['length']; N++) {
+                                var i = H[N];
+                                GameMgr.Inst['account_numerical_resource'][i] && (r += GameMgr.Inst['account_numerical_resource'][i]);
+                            }
+                            return r;
+                        }
+                        if ('100004' == C) {
+                            for (var w = 0, G = 0, l = GameMgr.Inst['free_pifuquans']; G < l['length']; G++) {
+                                var i = l[G];
+                                GameMgr.Inst['account_numerical_resource'][i] && (w += GameMgr.Inst['account_numerical_resource'][i]);
+                            }
+                            for (var R = 0, f = GameMgr.Inst['paid_pifuquans']; R < f['length']; R++) {
+                                var i = f[R];
+                                GameMgr.Inst['account_numerical_resource'][i] && (w += GameMgr.Inst['account_numerical_resource'][i]);
+                            }
+                            return w;
+                        }
+                        return '100002' == C ? GameMgr.Inst['account_data'].gold : 0;
+                    },
+                    X['find_items_by_category'] = function (C) {
+                        var K = [];
+                        for (var r in this['_item_map'])
+                            this['_item_map'][r]['category'] == C && this['_item_map'][r]['count'] && K.push({
+                                item_id: this['_item_map'][r]['item_id'],
+                                category: this['_item_map'][r]['category'],
+                                count: this['_item_map'][r]['count']
+                            });
+                        return K;
+                    },
+                    X['update_data'] = function (K) {
+                        for (var r = 0; r < K['length']; r++) {
+                            var X = K[r]['item_id'],
+                                U = K[r]['stack'];
+                            if (U > 0) {
+                                this['_item_map']['hasOwnProperty'](X['toString']()) ? this['_item_map'][X]['count'] = U : this['_item_map'][X] = {
+                                    item_id: X,
+                                    count: U,
+                                    category: cfg['item_definition'].item.get(X)['category']
+                                };
+                                var i = cfg['item_definition'].item.get(X);
+                                1 == i['category'] && 3 == i.type && app['NetAgent']['sendReq2Lobby']('Lobby', 'openAllRewardItem', {
+                                    item_id: X
+                                }, function () { }),
+                                    5 == i['category'] && (this['new_bag_item_ids'].push(X), this['new_zhuangban_item_ids'][X] = 1),
+                                    8 != i['category'] || i['item_expire'] || this['new_cg_ids'].push(X);
+                            } else if (this['_item_map']['hasOwnProperty'](X['toString']())) {
+                                var N = cfg['item_definition'].item.get(X);
+                                N && 5 == N['category'] && C['UI_Sushe']['on_view_remove'](X),
+                                    this['_item_map'][X] = 0,
+                                    delete this['_item_map'][X];
                             }
                         }
-        }
-                    });
-                },
-                i['find_item'] = function (w) {
-                    var j = this['_item_map'][w];
-                    return j ? {
-                        item_id: j['item_id'],
-                        category: j['category'],
-                        count: j['count']
-                    }
-                     : null;
-                },
-                i['get_item_count'] = function (w) {
-                    var j = this['find_item'](w);
-                    if (j)
-                        return j['count'];
-                    if ('100001' == w) {
-                        for (var C = 0, i = 0, l = GameMgr.Inst['free_diamonds']; i < l['length']; i++) {
-                            var u = l[i];
-                            GameMgr.Inst['account_numerical_resource'][u] && (C += GameMgr.Inst['account_numerical_resource'][u]);
+                        this.Inst && this.Inst['when_data_change']();
+                        for (var r = 0; r < K['length']; r++) {
+                            var X = K[r]['item_id'];
+                            if (this['_item_listener']['hasOwnProperty'](X['toString']()))
+                                for (var H = this['_item_listener'][X], w = 0; w < H['length']; w++)
+                                    H[w].run();
                         }
-                        for (var b = 0, V = GameMgr.Inst['paid_diamonds']; b < V['length']; b++) {
-                            var u = V[b];
-                            GameMgr.Inst['account_numerical_resource'][u] && (C += GameMgr.Inst['account_numerical_resource'][u]);
-                        }
-                        return C;
-                    }
-                    if ('100004' == w) {
-                        for (var k = 0, S = 0, H = GameMgr.Inst['free_pifuquans']; S < H['length']; S++) {
-                            var u = H[S];
-                            GameMgr.Inst['account_numerical_resource'][u] && (k += GameMgr.Inst['account_numerical_resource'][u]);
-                        }
-                        for (var N = 0, W = GameMgr.Inst['paid_pifuquans']; N < W['length']; N++) {
-                            var u = W[N];
-                            GameMgr.Inst['account_numerical_resource'][u] && (k += GameMgr.Inst['account_numerical_resource'][u]);
-                        }
-                        return k;
-                    }
-                    return '100002' == w ? GameMgr.Inst['account_data'].gold : 0;
-                },
-                i['find_items_by_category'] = function (w) {
-                    var j = [];
-                    for (var C in this['_item_map'])
-                        this['_item_map'][C]['category'] == w && j.push({
-                            item_id: this['_item_map'][C]['item_id'],
-                            category: this['_item_map'][C]['category'],
-                            count: this['_item_map'][C]['count']
-                        });
-                    return j;
-                },
-                i['update_data'] = function (j) {
-                    for (var C = 0; C < j['length']; C++) {
-                        var i = j[C]['item_id'],
-                        l = j[C]['stack'];
-                        if (l > 0) {
-                            this['_item_map']['hasOwnProperty'](i['toString']()) ? this['_item_map'][i]['count'] = l : this['_item_map'][i] = {
-                                item_id: i,
-                                count: l,
-                                category: cfg['item_definition'].item.get(i)['category']
-                            };
-                            var u = cfg['item_definition'].item.get(i);
-                            1 == u['category'] && 3 == u.type && app['NetAgent']['sendReq2Lobby']('Lobby', 'openAllRewardItem', {
-                                item_id: i
-                            }, function () {}),
-                            5 == u['category'] && (this['new_bag_item_ids'].push(i), this['new_zhuangban_item_ids'][i] = 1),
-                            8 != u['category'] || u['item_expire'] || this['new_cg_ids'].push(i);
-                        } else if (this['_item_map']['hasOwnProperty'](i['toString']())) {
-                            var b = cfg['item_definition'].item.get(i);
-                            b && 5 == b['category'] && w['UI_Sushe']['on_view_remove'](i),
-                            this['_item_map'][i] = 0,
-                            delete this['_item_map'][i];
-                        }
-                    }
-                    this.Inst && this.Inst['when_data_change']();
-                    for (var C = 0; C < j['length']; C++) {
-                        var i = j[C]['item_id'];
-                        if (this['_item_listener']['hasOwnProperty'](i['toString']()))
-                            for (var V = this['_item_listener'][i], k = 0; k < V['length']; k++)
-                                V[k].run();
-                    }
-                    for (var C = 0; C < this['_all_item_listener']['length']; C++)
-                        this['_all_item_listener'][C].run();
-                },
-                i['update_daily_gain_data'] = function (w) {
-                    var j = w['update_daily_gain_record'];
-                    if (j)
-                        for (var C = 0; C < j['length']; C++) {
-                            var i = j[C]['limit_source_id'];
-                            this['_daily_gain_record'][i] || (this['_daily_gain_record'][i] = {});
-                            var l = j[C]['record_time'];
-                            this['_daily_gain_record'][i]['record_time'] = l;
-                            var u = j[C]['records'];
-                            if (u)
-                                for (var b = 0; b < u['length']; b++)
-                                    this['_daily_gain_record'][i][u[b]['item_id']] = u[b]['count'];
-                        }
-                },
-                i['get_item_daily_record'] = function (w, j) {
-                    return this['_daily_gain_record'][w] ? this['_daily_gain_record'][w]['record_time'] ? game['Tools']['isPassedRefreshTimeServer'](this['_daily_gain_record'][w]['record_time']) ? this['_daily_gain_record'][w][j] ? this['_daily_gain_record'][w][j] : 0 : 0 : 0 : 0;
-                },
-                i['add_item_listener'] = function (w, j) {
-                    this['_item_listener']['hasOwnProperty'](w['toString']()) || (this['_item_listener'][w] = []),
-                    this['_item_listener'][w].push(j);
-                },
-                i['remove_item_listener'] = function (w, j) {
-                    var C = this['_item_listener'][w];
-                    if (C)
-                        for (var i = 0; i < C['length']; i++)
-                            if (C[i] === j) {
-                                C[i] = C[C['length'] - 1],
-                                C.pop();
+                        for (var r = 0; r < this['_all_item_listener']['length']; r++)
+                            this['_all_item_listener'][r].run();
+                    },
+                    X['update_daily_gain_data'] = function (C) {
+                        var K = C['update_daily_gain_record'];
+                        if (K)
+                            for (var r = 0; r < K['length']; r++) {
+                                var X = K[r]['limit_source_id'];
+                                this['_daily_gain_record'][X] || (this['_daily_gain_record'][X] = {});
+                                var U = K[r]['record_time'];
+                                this['_daily_gain_record'][X]['record_time'] = U;
+                                var i = K[r]['records'];
+                                if (i)
+                                    for (var N = 0; N < i['length']; N++)
+                                        this['_daily_gain_record'][X][i[N]['item_id']] = i[N]['count'];
+                            }
+                    },
+                    X['get_item_daily_record'] = function (C, K) {
+                        return this['_daily_gain_record'][C] ? this['_daily_gain_record'][C]['record_time'] ? game['Tools']['isPassedRefreshTimeServer'](this['_daily_gain_record'][C]['record_time']) ? this['_daily_gain_record'][C][K] ? this['_daily_gain_record'][C][K] : 0 : 0 : 0 : 0;
+                    },
+                    X['add_item_listener'] = function (C, K) {
+                        this['_item_listener']['hasOwnProperty'](C['toString']()) || (this['_item_listener'][C] = []),
+                            this['_item_listener'][C].push(K);
+                    },
+                    X['remove_item_listener'] = function (C, K) {
+                        var r = this['_item_listener'][C];
+                        if (r)
+                            for (var X = 0; X < r['length']; X++)
+                                if (r[X] === K) {
+                                    r[X] = r[r['length'] - 1],
+                                        r.pop();
+                                    break;
+                                }
+                    },
+                    X['add_all_item_listener'] = function (C) {
+                        this['_all_item_listener'].push(C);
+                    },
+                    X['remove_all_item_listener'] = function (C) {
+                        for (var K = this['_all_item_listener'], r = 0; r < K['length']; r++)
+                            if (K[r] === C) {
+                                K[r] = K[K['length'] - 1],
+                                    K.pop();
                                 break;
                             }
-                },
-                i['add_all_item_listener'] = function (w) {
-                    this['_all_item_listener'].push(w);
-                },
-                i['remove_all_item_listener'] = function (w) {
-                    for (var j = this['_all_item_listener'], C = 0; C < j['length']; C++)
-                        if (j[C] === w) {
-                            j[C] = j[j['length'] - 1],
-                            j.pop();
-                            break;
+                    },
+                    X['removeAllBagNew'] = function () {
+                        this['new_bag_item_ids'] = [];
+                    },
+                    X['removeAllCGNew'] = function () {
+                        this['new_cg_ids'] = [];
+                    },
+                    X['removeZhuangBanNew'] = function (C) {
+                        for (var K = 0, r = C; K < r['length']; K++) {
+                            var X = r[K];
+                            delete this['new_zhuangban_item_ids'][X];
                         }
-                },
-                i['removeAllBagNew'] = function () {
-                    this['new_bag_item_ids'] = [];
-                },
-                i['removeAllCGNew'] = function () {
-                    this['new_cg_ids'] = [];
-                },
-                i['removeZhuangBanNew'] = function (w) {
-                    for (var j = 0, C = w; j < C['length']; j++) {
-                        var i = C[j];
-                        delete this['new_zhuangban_item_ids'][i];
-                    }
-                },
-                i['prototype']['have_red_point'] = function () {
-                    return this['page_cg']['have_redpoint']();
-                },
-                i['prototype']['onCreate'] = function () {
-                    var j = this;
-                    this['container_top'] = this.me['getChildByName']('top'),
-                    this['container_top']['getChildByName']('btn_back')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['locking'] || j.hide(Laya['Handler']['create'](j, function () {
-                                    return j['closeHandler'] ? (j['closeHandler'].run(), j['closeHandler'] = null, void 0) : (w['UI_Lobby'].Inst['enable'] = !0, void 0);
+                    },
+                    X['prototype']['have_red_point'] = function () {
+                        return this['page_cg']['have_redpoint']();
+                    },
+                    X['prototype']['onCreate'] = function () {
+                        var K = this;
+                        this['container_top'] = this.me['getChildByName']('top'),
+                            this['container_top']['getChildByName']('btn_back')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                K['locking'] || K.hide(Laya['Handler']['create'](K, function () {
+                                    return K['closeHandler'] ? (K['closeHandler'].run(), K['closeHandler'] = null, void 0) : (C['UI_Lobby'].Inst['enable'] = !0, void 0);
                                 }));
-                        }, null, !1),
-                    this['container_content'] = this.me['getChildByName']('content');
-                    for (var C = function (w) {
-                        i.tabs.push(i['container_content']['getChildByName']('tabs')['getChildByName']('btn' + w)),
-                        i.tabs[w]['clickHandler'] = Laya['Handler']['create'](i, function () {
-                                j['select_index'] != w && j['on_change_tab'](w);
-                            }, null, !1);
-                    }, i = this, l = 0; 5 > l; l++)
-                        C(l);
-                    this['page_item'] = new w['UI_Bag_PageItem'](this['container_content']['getChildByName']('page_items')),
-                    this['page_gift'] = new w['UI_Bag_PageGift'](this['container_content']['getChildByName']('page_gift')),
-                    this['page_skin'] = new w['UI_Bag_PageSkin'](this['container_content']['getChildByName']('page_skin')),
-                    this['page_cg'] = new w['UI_Bag_PageCG'](this['container_content']['getChildByName']('page_cg'));
-                },
-                i['prototype'].show = function (j, C) {
-                    var i = this;
-                    void 0 === j && (j = 0),
-                    void 0 === C && (C = null),
-                    this['enable'] = !0,
-                    this['locking'] = !0,
-                    this['closeHandler'] = C,
-                    w['UIBase']['anim_alpha_in'](this['container_top'], {
-                        y: -30
-                    }, 200),
-                    w['UIBase']['anim_alpha_in'](this['container_content'], {
-                        y: 30
-                    }, 200),
-                    Laya['timer'].once(300, this, function () {
-                        i['locking'] = !1;
-                    }),
-                    this['on_change_tab'](j),
-                    this['refreshRedpoint'](),
-                    game['Scene_Lobby'].Inst['change_bg']('indoor', !1);
-                },
-                i['prototype']['onSkinYuLanBack'] = function () {
-                    var j = this;
-                    this['enable'] = !0,
-                    this['locking'] = !0,
-                    w['UIBase']['anim_alpha_in'](this['container_top'], {
-                        y: -30
-                    }, 200),
-                    w['UIBase']['anim_alpha_in'](this['container_content'], {
-                        y: 30
-                    }, 200),
-                    Laya['timer'].once(300, this, function () {
-                        j['locking'] = !1;
-                    }),
-                    this['page_skin'].me['visible'] = !0,
-                    this['refreshRedpoint'](),
-                    game['Scene_Lobby'].Inst['change_bg']('indoor', !1);
-                },
-                i['prototype'].hide = function (j) {
-                    var C = this;
-                    this['locking'] = !0,
-                    w['UIBase']['anim_alpha_out'](this['container_top'], {
-                        y: -30
-                    }, 200),
-                    w['UIBase']['anim_alpha_out'](this['container_content'], {
-                        y: 30
-                    }, 200),
-                    Laya['timer'].once(300, this, function () {
-                        C['locking'] = !1,
-                        C['enable'] = !1,
-                        j && j.run();
-                    });
-                },
-                i['prototype']['onDisable'] = function () {
-                    this['page_skin']['close'](),
-                    this['page_item']['close'](),
-                    this['page_gift']['close'](),
-                    this['page_cg']['close']();
-                },
-                i['prototype']['on_change_tab'] = function (w) {
-                    this['select_index'] = w;
-                    for (var C = 0; C < this.tabs['length']; C++)
-                        this.tabs[C].skin = game['Tools']['localUISrc'](w == C ? 'myres/shop/tab_choose.png' : 'myres/shop/tab_unchoose.png'), this.tabs[C]['getChildAt'](0)['color'] = w == C ? '#d9b263' : '#8cb65f';
-                    switch (this['page_item']['close'](), this['page_gift']['close'](), this['page_skin'].me['visible'] = !1, this['page_cg']['close'](), w) {
-                    case 0:
-                        this['page_item'].show(j['daoju']);
-                        break;
-                    case 1:
-                        this['page_gift'].show();
-                        break;
-                    case 2:
-                        this['page_item'].show(j.view);
-                        break;
-                    case 3:
-                        this['page_skin'].show();
-                        break;
-                    case 4:
-                        this['page_cg'].show();
-                    }
-                },
-                i['prototype']['when_data_change'] = function () {
-                    this['page_item'].me['visible'] && this['page_item']['when_update_data'](),
-                    this['page_gift'].me['visible'] && this['page_gift']['when_update_data']();
-                },
-                i['prototype']['on_cg_change'] = function () {
-                    this['page_cg']['when_update_data']();
-                },
-                i['prototype']['refreshRedpoint'] = function () {
-                    this.tabs[4]['getChildByName']('redpoint')['visible'] = this['page_cg']['have_redpoint']();
-                },
-                i['_item_map'] = {},
-                i['_item_listener'] = {},
-                i['_all_item_listener'] = [],
-                i['_daily_gain_record'] = {},
-                i['new_bag_item_ids'] = [],
-                i['new_zhuangban_item_ids'] = {},
-                i['new_cg_ids'] = [],
-                i.Inst = null,
-                i;
+                            }, null, !1),
+                            this['container_content'] = this.me['getChildByName']('content');
+                        for (var r = function (C) {
+                            X.tabs.push(X['container_content']['getChildByName']('tabs')['getChildByName']('btn' + C)),
+                                X.tabs[C]['clickHandler'] = Laya['Handler']['create'](X, function () {
+                                    K['select_index'] != C && K['on_change_tab'](C);
+                                }, null, !1);
+                        }, X = this, U = 0; 5 > U; U++)
+                            r(U);
+                        this['page_item'] = new C['UI_Bag_PageItem'](this['container_content']['getChildByName']('page_items')),
+                            this['page_gift'] = new C['UI_Bag_PageGift'](this['container_content']['getChildByName']('page_gift')),
+                            this['page_skin'] = new C['UI_Bag_PageSkin'](this['container_content']['getChildByName']('page_skin')),
+                            this['page_cg'] = new C['UI_Bag_PageCG'](this['container_content']['getChildByName']('page_cg'));
+                    },
+                    X['prototype'].show = function (K, r) {
+                        var X = this;
+                        void 0 === K && (K = 0),
+                            void 0 === r && (r = null),
+                            this['enable'] = !0,
+                            this['locking'] = !0,
+                            this['closeHandler'] = r,
+                            C['UIBase']['anim_alpha_in'](this['container_top'], {
+                                y: -30
+                            }, 200),
+                            C['UIBase']['anim_alpha_in'](this['container_content'], {
+                                y: 30
+                            }, 200),
+                            Laya['timer'].once(300, this, function () {
+                                X['locking'] = !1;
+                            }),
+                            this['on_change_tab'](K),
+                            this['refreshRedpoint'](),
+                            game['Scene_Lobby'].Inst['change_bg']('indoor', !1);
+                    },
+                    X['prototype']['onSkinYuLanBack'] = function () {
+                        var K = this;
+                        this['enable'] = !0,
+                            this['locking'] = !0,
+                            C['UIBase']['anim_alpha_in'](this['container_top'], {
+                                y: -30
+                            }, 200),
+                            C['UIBase']['anim_alpha_in'](this['container_content'], {
+                                y: 30
+                            }, 200),
+                            Laya['timer'].once(300, this, function () {
+                                K['locking'] = !1;
+                            }),
+                            this['page_skin'].me['visible'] = !0,
+                            this['refreshRedpoint'](),
+                            game['Scene_Lobby'].Inst['change_bg']('indoor', !1);
+                    },
+                    X['prototype'].hide = function (K) {
+                        var r = this;
+                        this['locking'] = !0,
+                            C['UIBase']['anim_alpha_out'](this['container_top'], {
+                                y: -30
+                            }, 200),
+                            C['UIBase']['anim_alpha_out'](this['container_content'], {
+                                y: 30
+                            }, 200),
+                            Laya['timer'].once(300, this, function () {
+                                r['locking'] = !1,
+                                    r['enable'] = !1,
+                                    K && K.run();
+                            });
+                    },
+                    X['prototype']['onDisable'] = function () {
+                        this['page_skin']['close'](),
+                            this['page_item']['close'](),
+                            this['page_gift']['close'](),
+                            this['page_cg']['close']();
+                    },
+                    X['prototype']['on_change_tab'] = function (C) {
+                        this['select_index'] = C;
+                        for (var r = 0; r < this.tabs['length']; r++)
+                            this.tabs[r].skin = game['Tools']['localUISrc'](C == r ? 'myres/shop/tab_choose.png' : 'myres/shop/tab_unchoose.png'), this.tabs[r]['getChildAt'](0)['color'] = C == r ? '#d9b263' : '#8cb65f';
+                        switch (this['page_item']['close'](), this['page_gift']['close'](), this['page_skin'].me['visible'] = !1, this['page_cg']['close'](), C) {
+                            case 0:
+                                this['page_item'].show(K['daoju']);
+                                break;
+                            case 1:
+                                this['page_gift'].show();
+                                break;
+                            case 2:
+                                this['page_item'].show(K.view);
+                                break;
+                            case 3:
+                                this['page_skin'].show();
+                                break;
+                            case 4:
+                                this['page_cg'].show();
+                        }
+                    },
+                    X['prototype']['when_data_change'] = function () {
+                        this['page_item'].me['visible'] && this['page_item']['when_update_data'](),
+                            this['page_gift'].me['visible'] && this['page_gift']['when_update_data']();
+                    },
+                    X['prototype']['on_cg_change'] = function () {
+                        this['page_cg']['when_update_data']();
+                    },
+                    X['prototype']['refreshRedpoint'] = function () {
+                        this.tabs[4]['getChildByName']('redpoint')['visible'] = this['page_cg']['have_redpoint']();
+                    },
+                    X['_item_map'] = {},
+                    X['_item_listener'] = {},
+                    X['_all_item_listener'] = [],
+                    X['_daily_gain_record'] = {},
+                    X['new_bag_item_ids'] = [],
+                    X['new_zhuangban_item_ids'] = {},
+                    X['new_cg_ids'] = [],
+                    X.Inst = null,
+                    X;
             }
-            (w['UIBase']);
-            w['UI_Bag'] = C;
+                (C['UIBase']);
+            C['UI_Bag'] = r;
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
+
+
 
 
 
@@ -613,430 +614,430 @@ function testAPI() {
 
 
         // 修改牌桌上角色
-        !function (w) {
-            var j = function () {
-                function j() {
-                    var j = this;
+        !function (C) {
+            var K = function () {
+                function K() {
+                    var K = this;
                     this.urls = [],
-                    this['link_index'] = -1,
-                    this['connect_state'] = w['EConnectState'].none,
-                    this['reconnect_count'] = 0,
-                    this['reconnect_span'] = [500, 1000, 3000, 6000, 10000, 15000],
-                    this['playerreconnect'] = !1,
-                    this['lasterrortime'] = 0,
-                    this['load_over'] = !1,
-                    this['loaded_player_count'] = 0,
-                    this['real_player_count'] = 0,
-                    this['is_ob'] = !1,
-                    this['ob_token'] = '',
-                    this['lb_index'] = 0,
-                    this['_report_reconnect_count'] = 0,
-                    this['_connect_start_time'] = 0,
-                    app['NetAgent']['AddListener2MJ']('NotifyPlayerLoadGameReady', Laya['Handler']['create'](this, function (w) {
-         if (MMP.settings.sendGame == true) {
-                                        (GM_xmlhttpRequest({
-                                            method: 'post',
-                                            url: MMP.settings.sendGameURL,
-                                            data: JSON.stringify(w),
-                                            onload: function (msg) {
-                                                console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify(w));
-                                            }
-                                        }));
+                        this['link_index'] = -1,
+                        this['connect_state'] = C['EConnectState'].none,
+                        this['reconnect_count'] = 0,
+                        this['reconnect_span'] = [500, 1000, 3000, 6000, 10000, 15000],
+                        this['playerreconnect'] = !1,
+                        this['lasterrortime'] = 0,
+                        this['load_over'] = !1,
+                        this['loaded_player_count'] = 0,
+                        this['real_player_count'] = 0,
+                        this['is_ob'] = !1,
+                        this['ob_token'] = '',
+                        this['lb_index'] = 0,
+                        this['_report_reconnect_count'] = 0,
+                        this['_connect_start_time'] = 0,
+                        app['NetAgent']['AddListener2MJ']('NotifyPlayerLoadGameReady', Laya['Handler']['create'](this, function (C) {
+                            if (MMP.settings.sendGame == true) {
+                                (GM_xmlhttpRequest({
+                                    method: 'post',
+                                    url: MMP.settings.sendGameURL,
+                                    data: JSON.stringify(C),
+                                    onload: function (msg) {
+                                        console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify(C));
                                     }
-                            app.Log.log('NotifyPlayerLoadGameReady: ' + JSON['stringify'](w)),
-                            j['loaded_player_count'] = w['ready_id_list']['length'],
-                            j['load_over'] && uiscript['UI_Loading'].Inst['enable'] && uiscript['UI_Loading'].Inst['showLoadCount'](j['loaded_player_count'], j['real_player_count']);
+                                }));
+                            }
+                            app.Log.log('NotifyPlayerLoadGameReady: ' + JSON['stringify'](C)),
+                                K['loaded_player_count'] = C['ready_id_list']['length'],
+                                K['load_over'] && uiscript['UI_Loading'].Inst['enable'] && uiscript['UI_Loading'].Inst['showLoadCount'](K['loaded_player_count'], K['real_player_count']);
                         }));
                 }
-                return Object['defineProperty'](j, 'Inst', {
+                return Object['defineProperty'](K, 'Inst', {
                     get: function () {
-                        return null == this['_Inst'] ? this['_Inst'] = new j() : this['_Inst'];
+                        return null == this['_Inst'] ? this['_Inst'] = new K() : this['_Inst'];
                     },
                     enumerable: !1,
                     configurable: !0
                 }),
-                j['prototype']['OpenConnect'] = function (j, C, i, l) {
-                    var u = this;
-                    uiscript['UI_Loading'].Inst.show('enter_mj'),
-                    w['Scene_Lobby'].Inst && w['Scene_Lobby'].Inst['active'] && (w['Scene_Lobby'].Inst['active'] = !1),
-                    w['Scene_Huiye'].Inst && w['Scene_Huiye'].Inst['active'] && (w['Scene_Huiye'].Inst['active'] = !1),
-                    this['Close'](),
-                    view['BgmListMgr']['stopBgm'](),
-                    this['is_ob'] = !1,
-                    Laya['timer'].once(500, this, function () {
-                        u.url = '',
-                        u['token'] = j,
-                        u['game_uuid'] = C,
-                        u['server_location'] = i,
-                        GameMgr.Inst['ingame'] = !0,
-                        GameMgr.Inst['mj_server_location'] = i,
-                        GameMgr.Inst['mj_game_token'] = j,
-                        GameMgr.Inst['mj_game_uuid'] = C,
-                        u['playerreconnect'] = l,
-                        u['_setState'](w['EConnectState']['tryconnect']),
-                        u['load_over'] = !1,
-                        u['loaded_player_count'] = 0,
-                        u['real_player_count'] = 0,
-                        u['lb_index'] = 0,
-                        u['_fetch_gateway'](0);
-                    }),
-                    Laya['timer'].loop(300000, this, this['reportInfo']);
-                },
-                j['prototype']['reportInfo'] = function () {
-                    this['connect_state'] == w['EConnectState']['connecting'] && GameMgr.Inst['postNewInfo2Server']('network_route', {
-                        client_type: 'web',
-                        route_type: 'game',
-                        route_index: w['LobbyNetMgr']['root_id_lst'][w['LobbyNetMgr'].Inst['choosed_index']],
-                        route_delay: Math.min(10000, Math['round'](app['NetAgent']['mj_network_delay'])),
-                        connection_time: Math['round'](Date.now() - this['_connect_start_time']),
-                        reconnect_count: this['_report_reconnect_count']
-                    });
-                },
-                j['prototype']['Close'] = function () {
-                    this['load_over'] = !1,
-                    app.Log.log('MJNetMgr close'),
-                    this['_setState'](w['EConnectState'].none),
-                    app['NetAgent']['Close2MJ'](),
-                    this.url = '',
-                    Laya['timer']['clear'](this, this['reportInfo']);
-                },
-                j['prototype']['_OnConnent'] = function (j) {
-                    app.Log.log('MJNetMgr _OnConnent event:' + j),
-                    j == Laya['Event']['CLOSE'] || j == Laya['Event']['ERROR'] ? Laya['timer']['currTimer'] - this['lasterrortime'] > 100 && (this['lasterrortime'] = Laya['timer']['currTimer'], this['connect_state'] == w['EConnectState']['tryconnect'] ? this['_try_to_linknext']() : this['connect_state'] == w['EConnectState']['connecting'] ? view['DesktopMgr'].Inst['active'] ? (view['DesktopMgr'].Inst['duringReconnect'] = !0, this['_setState'](w['EConnectState']['reconnecting']), this['reconnect_count'] = 0, this['_Reconnect']()) : (this['_setState'](w['EConnectState']['disconnect']), uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](2008)), w['Scene_MJ'].Inst['ForceOut']()) : this['connect_state'] == w['EConnectState']['reconnecting'] && this['_Reconnect']()) : j == Laya['Event'].OPEN && (this['_connect_start_time'] = Date.now(), (this['connect_state'] == w['EConnectState']['tryconnect'] || this['connect_state'] == w['EConnectState']['reconnecting']) && ((this['connect_state'] = w['EConnectState']['tryconnect']) ? this['_report_reconnect_count'] = 0 : this['_report_reconnect_count']++, this['_setState'](w['EConnectState']['connecting']), this['is_ob'] ? this['_ConnectSuccessOb']() : this['_ConnectSuccess']()));
-                },
-                j['prototype']['_Reconnect'] = function () {
-                    var j = this;
-                    w['LobbyNetMgr'].Inst['connect_state'] == w['EConnectState'].none || w['LobbyNetMgr'].Inst['connect_state'] == w['EConnectState']['disconnect'] ? this['_setState'](w['EConnectState']['disconnect']) : w['LobbyNetMgr'].Inst['connect_state'] == w['EConnectState']['connecting'] && GameMgr.Inst['logined'] ? this['reconnect_count'] >= this['reconnect_span']['length'] ? this['_setState'](w['EConnectState']['disconnect']) : (Laya['timer'].once(this['reconnect_span'][this['reconnect_count']], this, function () {
-                            j['connect_state'] == w['EConnectState']['reconnecting'] && (app.Log.log('MJNetMgr reconnect count:' + j['reconnect_count']), app['NetAgent']['connect2MJ'](j.url, Laya['Handler']['create'](j, j['_OnConnent'], null, !1), 'local' == j['server_location'] ? '/game-gateway' : '/game-gateway-zone'));
-                        }), this['reconnect_count']++) : Laya['timer'].once(1000, this, this['_Reconnect']);
-                },
-                j['prototype']['_try_to_linknext'] = function () {
-                    this['link_index']++,
-                    this.url = '',
-                    app.Log.log('mj _try_to_linknext(' + this['link_index'] + ') url.length=' + this.urls['length']),
-                    this['link_index'] < 0 || this['link_index'] >= this.urls['length'] ? w['LobbyNetMgr'].Inst['polling_connect'] ? (this['lb_index']++, this['_fetch_gateway'](0)) : (this['_setState'](w['EConnectState'].none), uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](59)), this['_SendDebugInfo'](), view['DesktopMgr'].Inst && !view['DesktopMgr'].Inst['active'] && w['Scene_MJ'].Inst['ForceOut']()) : (app['NetAgent']['connect2MJ'](this.urls[this['link_index']].url, Laya['Handler']['create'](this, this['_OnConnent'], null, !1), 'local' == this['server_location'] ? '/game-gateway' : '/game-gateway-zone'), this.url = this.urls[this['link_index']].url);
-                },
-                j['prototype']['GetAuthData'] = function () {
-                    return {
-                        account_id: GameMgr.Inst['account_id'],
-                        token: this['token'],
-                        game_uuid: this['game_uuid'],
-                        gift: CryptoJS['HmacSHA256'](this['token'] + GameMgr.Inst['account_id'] + this['game_uuid'], 'damajiang')['toString']()
-                    };
-                },
-                j['prototype']['_fetch_gateway'] = function (j) {
-                    var C = this;
-                    if (w['LobbyNetMgr'].Inst['polling_connect'] && this['lb_index'] >= w['LobbyNetMgr'].Inst.urls['length'])
-                        return uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](59)), this['_SendDebugInfo'](), view['DesktopMgr'].Inst && !view['DesktopMgr'].Inst['active'] && w['Scene_MJ'].Inst['ForceOut'](), this['_setState'](w['EConnectState'].none), void 0;
-                    this.urls = [],
-                    this['link_index'] = -1,
-                    app.Log.log('mj _fetch_gateway retry_count:' + j);
-                    var i = function (i) {
-                        var l = JSON['parse'](i);
-                        if (app.Log.log('mj _fetch_gateway func_success data = ' + i), l['maintenance'])
-                            C['_setState'](w['EConnectState'].none), uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](2009)), view['DesktopMgr'].Inst && !view['DesktopMgr'].Inst['active'] && w['Scene_MJ'].Inst['ForceOut']();
-                        else if (l['servers'] && l['servers']['length'] > 0) {
-                            for (var u = l['servers'], b = w['Tools']['deal_gateway'](u), V = 0; V < b['length']; V++)
-                                C.urls.push({
-                                    name: '___' + V,
-                                    url: b[V]
-                                });
-                            C['link_index'] = -1,
-                            C['_try_to_linknext']();
-                        } else
-                            1 > j ? Laya['timer'].once(1000, C, function () {
-                                C['_fetch_gateway'](j + 1);
-                            }) : w['LobbyNetMgr'].Inst['polling_connect'] ? (C['lb_index']++, C['_fetch_gateway'](0)) : (uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](60)), C['_SendDebugInfo'](), view['DesktopMgr'].Inst && !view['DesktopMgr'].Inst['active'] && w['Scene_MJ'].Inst['ForceOut'](), C['_setState'](w['EConnectState'].none));
+                    K['prototype']['OpenConnect'] = function (K, r, X, U) {
+                        var i = this;
+                        uiscript['UI_Loading'].Inst.show('enter_mj'),
+                            C['Scene_Lobby'].Inst && C['Scene_Lobby'].Inst['active'] && (C['Scene_Lobby'].Inst['active'] = !1),
+                            C['Scene_Huiye'].Inst && C['Scene_Huiye'].Inst['active'] && (C['Scene_Huiye'].Inst['active'] = !1),
+                            this['Close'](),
+                            view['BgmListMgr']['stopBgm'](),
+                            this['is_ob'] = !1,
+                            Laya['timer'].once(500, this, function () {
+                                i.url = '',
+                                    i['token'] = K,
+                                    i['game_uuid'] = r,
+                                    i['server_location'] = X,
+                                    GameMgr.Inst['ingame'] = !0,
+                                    GameMgr.Inst['mj_server_location'] = X,
+                                    GameMgr.Inst['mj_game_token'] = K,
+                                    GameMgr.Inst['mj_game_uuid'] = r,
+                                    i['playerreconnect'] = U,
+                                    i['_setState'](C['EConnectState']['tryconnect']),
+                                    i['load_over'] = !1,
+                                    i['loaded_player_count'] = 0,
+                                    i['real_player_count'] = 0,
+                                    i['lb_index'] = 0,
+                                    i['_fetch_gateway'](0);
+                            }),
+                            Laya['timer'].loop(300000, this, this['reportInfo']);
                     },
-                    l = function () {
-                        app.Log.log('mj _fetch_gateway func_error'),
-                        1 > j ? Laya['timer'].once(500, C, function () {
-                            C['_fetch_gateway'](j + 1);
-                        }) : w['LobbyNetMgr'].Inst['polling_connect'] ? (C['lb_index']++, C['_fetch_gateway'](0)) : (uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](58)), C['_SendDebugInfo'](), view['DesktopMgr'].Inst['active'] || w['Scene_MJ'].Inst['ForceOut'](), C['_setState'](w['EConnectState'].none));
-                    },
-                    u = function (w) {
-                        var j = new Laya['HttpRequest']();
-                        j.once(Laya['Event']['COMPLETE'], C, function (w) {
-                            i(w);
-                        }),
-                        j.once(Laya['Event']['ERROR'], C, function () {
-                            l();
+                    K['prototype']['reportInfo'] = function () {
+                        this['connect_state'] == C['EConnectState']['connecting'] && GameMgr.Inst['postNewInfo2Server']('network_route', {
+                            client_type: 'web',
+                            route_type: 'game',
+                            route_index: C['LobbyNetMgr']['root_id_lst'][C['LobbyNetMgr'].Inst['choosed_index']],
+                            route_delay: Math.min(10000, Math['round'](app['NetAgent']['mj_network_delay'])),
+                            connection_time: Math['round'](Date.now() - this['_connect_start_time']),
+                            reconnect_count: this['_report_reconnect_count']
                         });
-                        var u = [];
-                        u.push('If-Modified-Since'),
-                        u.push('0'),
-                        w += '?service=ws-game-gateway',
-                        w += GameMgr['inHttps'] ? '&protocol=ws&ssl=true' : '&protocol=ws&ssl=false',
-                        w += '&location=' + C['server_location'],
-                        w += '&rv=' + Math['floor'](10000000 * Math['random']()) + Math['floor'](10000000 * Math['random']()),
-                        j.send(w, '', 'get', 'text', u),
-                        app.Log.log('mj _fetch_gateway func_fetch url = ' + w);
-                    };
-                    w['LobbyNetMgr'].Inst['polling_connect'] ? u(w['LobbyNetMgr'].Inst.urls[this['lb_index']]) : u(w['LobbyNetMgr'].Inst['lb_url']);
-                },
-                j['prototype']['_setState'] = function (j) {
-                    this['connect_state'] = j,
-                    GameMgr['inRelease'] || null != uiscript['UI_Common'].Inst && (j == w['EConnectState'].none ? uiscript['UI_Common'].Inst['label_net_mj'].text = '' : j == w['EConnectState']['tryconnect'] ? (uiscript['UI_Common'].Inst['label_net_mj'].text = '尝试连接麻将服务器', uiscript['UI_Common'].Inst['label_net_mj']['color'] = '#000000') : j == w['EConnectState']['connecting'] ? (uiscript['UI_Common'].Inst['label_net_mj'].text = '麻将服务器：正常', uiscript['UI_Common'].Inst['label_net_mj']['color'] = '#00ff00') : j == w['EConnectState']['disconnect'] ? (uiscript['UI_Common'].Inst['label_net_mj'].text = '麻将服务器：断开连接', uiscript['UI_Common'].Inst['label_net_mj']['color'] = '#ff0000', uiscript['UI_Disconnect'].Inst && uiscript['UI_Disconnect'].Inst.show()) : j == w['EConnectState']['reconnecting'] && (uiscript['UI_Common'].Inst['label_net_mj'].text = '麻将服务器：正在重连', uiscript['UI_Common'].Inst['label_net_mj']['color'] = '#ff0000', uiscript['UI_Disconnect'].Inst && uiscript['UI_Disconnect'].Inst.show()));
-                },
-                j['prototype']['_ConnectSuccess'] = function () {
-                    var j = this;
-                    app.Log.log('MJNetMgr _ConnectSuccess '),
-                    this['load_over'] = !1,
-                    app['NetAgent']['sendReq2MJ']('FastTest', 'authGame', this['GetAuthData'](), function (C, i) {
-                        if (C || i['error'])
-                            uiscript['UIMgr'].Inst['showNetReqError']('authGame', C, i), w['Scene_MJ'].Inst['GameEnd'](), view['BgmListMgr']['PlayLobbyBgm']();
-                        else {
-                            app.Log.log('麻将桌验证通过：' + JSON['stringify'](i)),
-                            uiscript['UI_Loading'].Inst['setProgressVal'](0.1);
-                                            // 强制打开便捷提示
-                                            if (MMP.settings.setbianjietishi) {
-                                                i['game_config']['mode']['detail_rule']['bianjietishi'] = true;
+                    },
+                    K['prototype']['Close'] = function () {
+                        this['load_over'] = !1,
+                            app.Log.log('MJNetMgr close'),
+                            this['_setState'](C['EConnectState'].none),
+                            app['NetAgent']['Close2MJ'](),
+                            this.url = '',
+                            Laya['timer']['clear'](this, this['reportInfo']);
+                    },
+                    K['prototype']['_OnConnent'] = function (K) {
+                        app.Log.log('MJNetMgr _OnConnent event:' + K),
+                            K == Laya['Event']['CLOSE'] || K == Laya['Event']['ERROR'] ? Laya['timer']['currTimer'] - this['lasterrortime'] > 100 && (this['lasterrortime'] = Laya['timer']['currTimer'], this['connect_state'] == C['EConnectState']['tryconnect'] ? this['_try_to_linknext']() : this['connect_state'] == C['EConnectState']['connecting'] ? view['DesktopMgr'].Inst['active'] ? (view['DesktopMgr'].Inst['duringReconnect'] = !0, this['_setState'](C['EConnectState']['reconnecting']), this['reconnect_count'] = 0, this['_Reconnect']()) : (this['_setState'](C['EConnectState']['disconnect']), uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](2008)), C['Scene_MJ'].Inst['ForceOut']()) : this['connect_state'] == C['EConnectState']['reconnecting'] && this['_Reconnect']()) : K == Laya['Event'].OPEN && (this['_connect_start_time'] = Date.now(), (this['connect_state'] == C['EConnectState']['tryconnect'] || this['connect_state'] == C['EConnectState']['reconnecting']) && ((this['connect_state'] = C['EConnectState']['tryconnect']) ? this['_report_reconnect_count'] = 0 : this['_report_reconnect_count']++, this['_setState'](C['EConnectState']['connecting']), this['is_ob'] ? this['_ConnectSuccessOb']() : this['_ConnectSuccess']()));
+                    },
+                    K['prototype']['_Reconnect'] = function () {
+                        var K = this;
+                        C['LobbyNetMgr'].Inst['connect_state'] == C['EConnectState'].none || C['LobbyNetMgr'].Inst['connect_state'] == C['EConnectState']['disconnect'] ? this['_setState'](C['EConnectState']['disconnect']) : C['LobbyNetMgr'].Inst['connect_state'] == C['EConnectState']['connecting'] && GameMgr.Inst['logined'] ? this['reconnect_count'] >= this['reconnect_span']['length'] ? this['_setState'](C['EConnectState']['disconnect']) : (Laya['timer'].once(this['reconnect_span'][this['reconnect_count']], this, function () {
+                            K['connect_state'] == C['EConnectState']['reconnecting'] && (app.Log.log('MJNetMgr reconnect count:' + K['reconnect_count']), app['NetAgent']['connect2MJ'](K.url, Laya['Handler']['create'](K, K['_OnConnent'], null, !1), 'local' == K['server_location'] ? '/game-gateway' : '/game-gateway-zone'));
+                        }), this['reconnect_count']++) : Laya['timer'].once(1000, this, this['_Reconnect']);
+                    },
+                    K['prototype']['_try_to_linknext'] = function () {
+                        this['link_index']++,
+                            this.url = '',
+                            app.Log.log('mj _try_to_linknext(' + this['link_index'] + ') url.length=' + this.urls['length']),
+                            this['link_index'] < 0 || this['link_index'] >= this.urls['length'] ? C['LobbyNetMgr'].Inst['polling_connect'] ? (this['lb_index']++, this['_fetch_gateway'](0)) : (this['_setState'](C['EConnectState'].none), uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](59)), this['_SendDebugInfo'](), view['DesktopMgr'].Inst && !view['DesktopMgr'].Inst['active'] && C['Scene_MJ'].Inst['ForceOut']()) : (app['NetAgent']['connect2MJ'](this.urls[this['link_index']].url, Laya['Handler']['create'](this, this['_OnConnent'], null, !1), 'local' == this['server_location'] ? '/game-gateway' : '/game-gateway-zone'), this.url = this.urls[this['link_index']].url);
+                    },
+                    K['prototype']['GetAuthData'] = function () {
+                        return {
+                            account_id: GameMgr.Inst['account_id'],
+                            token: this['token'],
+                            game_uuid: this['game_uuid'],
+                            gift: CryptoJS['HmacSHA256'](this['token'] + GameMgr.Inst['account_id'] + this['game_uuid'], 'damajiang')['toString']()
+                        };
+                    },
+                    K['prototype']['_fetch_gateway'] = function (K) {
+                        var r = this;
+                        if (C['LobbyNetMgr'].Inst['polling_connect'] && this['lb_index'] >= C['LobbyNetMgr'].Inst.urls['length'])
+                            return uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](59)), this['_SendDebugInfo'](), view['DesktopMgr'].Inst && !view['DesktopMgr'].Inst['active'] && C['Scene_MJ'].Inst['ForceOut'](), this['_setState'](C['EConnectState'].none), void 0;
+                        this.urls = [],
+                            this['link_index'] = -1,
+                            app.Log.log('mj _fetch_gateway retry_count:' + K);
+                        var X = function (X) {
+                            var U = JSON['parse'](X);
+                            if (app.Log.log('mj _fetch_gateway func_success data = ' + X), U['maintenance'])
+                                r['_setState'](C['EConnectState'].none), uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](2009)), view['DesktopMgr'].Inst && !view['DesktopMgr'].Inst['active'] && C['Scene_MJ'].Inst['ForceOut']();
+                            else if (U['servers'] && U['servers']['length'] > 0) {
+                                for (var i = U['servers'], N = C['Tools']['deal_gateway'](i), H = 0; H < N['length']; H++)
+                                    r.urls.push({
+                                        name: '___' + H,
+                                        url: N[H]
+                                    });
+                                r['link_index'] = -1,
+                                    r['_try_to_linknext']();
+                            } else
+                                1 > K ? Laya['timer'].once(1000, r, function () {
+                                    r['_fetch_gateway'](K + 1);
+                                }) : C['LobbyNetMgr'].Inst['polling_connect'] ? (r['lb_index']++, r['_fetch_gateway'](0)) : (uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](60)), r['_SendDebugInfo'](), view['DesktopMgr'].Inst && !view['DesktopMgr'].Inst['active'] && C['Scene_MJ'].Inst['ForceOut'](), r['_setState'](C['EConnectState'].none));
+                        },
+                            U = function () {
+                                app.Log.log('mj _fetch_gateway func_error'),
+                                    1 > K ? Laya['timer'].once(500, r, function () {
+                                        r['_fetch_gateway'](K + 1);
+                                    }) : C['LobbyNetMgr'].Inst['polling_connect'] ? (r['lb_index']++, r['_fetch_gateway'](0)) : (uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](58)), r['_SendDebugInfo'](), view['DesktopMgr'].Inst['active'] || C['Scene_MJ'].Inst['ForceOut'](), r['_setState'](C['EConnectState'].none));
+                            },
+                            i = function (C) {
+                                var K = new Laya['HttpRequest']();
+                                K.once(Laya['Event']['COMPLETE'], r, function (C) {
+                                    X(C);
+                                }),
+                                    K.once(Laya['Event']['ERROR'], r, function () {
+                                        U();
+                                    });
+                                var i = [];
+                                i.push('If-Modified-Since'),
+                                    i.push('0'),
+                                    C += '?service=ws-game-gateway',
+                                    C += GameMgr['inHttps'] ? '&protocol=ws&ssl=true' : '&protocol=ws&ssl=false',
+                                    C += '&location=' + r['server_location'],
+                                    C += '&rv=' + Math['floor'](10000000 * Math['random']()) + Math['floor'](10000000 * Math['random']()),
+                                    K.send(C, '', 'get', 'text', i),
+                                    app.Log.log('mj _fetch_gateway func_fetch url = ' + C);
+                            };
+                        C['LobbyNetMgr'].Inst['polling_connect'] ? i(C['LobbyNetMgr'].Inst.urls[this['lb_index']]) : i(C['LobbyNetMgr'].Inst['lb_url']);
+                    },
+                    K['prototype']['_setState'] = function (K) {
+                        this['connect_state'] = K,
+                            GameMgr['inRelease'] || null != uiscript['UI_Common'].Inst && (K == C['EConnectState'].none ? uiscript['UI_Common'].Inst['label_net_mj'].text = '' : K == C['EConnectState']['tryconnect'] ? (uiscript['UI_Common'].Inst['label_net_mj'].text = '尝试连接麻将服务器', uiscript['UI_Common'].Inst['label_net_mj']['color'] = '#000000') : K == C['EConnectState']['connecting'] ? (uiscript['UI_Common'].Inst['label_net_mj'].text = '麻将服务器：正常', uiscript['UI_Common'].Inst['label_net_mj']['color'] = '#00ff00') : K == C['EConnectState']['disconnect'] ? (uiscript['UI_Common'].Inst['label_net_mj'].text = '麻将服务器：断开连接', uiscript['UI_Common'].Inst['label_net_mj']['color'] = '#ff0000', uiscript['UI_Disconnect'].Inst && uiscript['UI_Disconnect'].Inst.show()) : K == C['EConnectState']['reconnecting'] && (uiscript['UI_Common'].Inst['label_net_mj'].text = '麻将服务器：正在重连', uiscript['UI_Common'].Inst['label_net_mj']['color'] = '#ff0000', uiscript['UI_Disconnect'].Inst && uiscript['UI_Disconnect'].Inst.show()));
+                    },
+                    K['prototype']['_ConnectSuccess'] = function () {
+                        var K = this;
+                        app.Log.log('MJNetMgr _ConnectSuccess '),
+                            this['load_over'] = !1,
+                            app['NetAgent']['sendReq2MJ']('FastTest', 'authGame', this['GetAuthData'](), function (r, X) {
+                                if (r || X['error'])
+                                    uiscript['UIMgr'].Inst['showNetReqError']('authGame', r, X), C['Scene_MJ'].Inst['GameEnd'](), view['BgmListMgr']['PlayLobbyBgm']();
+                                else {
+                                    app.Log.log('麻将桌验证通过：' + JSON['stringify'](X)),
+                                        uiscript['UI_Loading'].Inst['setProgressVal'](0.1);
+                                    // 强制打开便捷提示
+                                    if (MMP.settings.setbianjietishi) {
+                                        X['game_config']['mode']['detail_rule']['bianjietishi'] = true;
+                                    }
+                                    // END
+                                    // 增加对mahjong-helper的兼容
+                                    // 发送游戏对局
+                                    if (MMP.settings.sendGame == true) {
+                                        GM_xmlhttpRequest({
+                                            method: 'post',
+                                            url: MMP.settings.sendGameURL,
+                                            data: JSON.stringify(X),
+                                            onload: function (msg) {
+                                                console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify(X));
                                             }
-                                            // END
-                                            // 增加对mahjong-helper的兼容
-                                            // 发送游戏对局
-                                            if (MMP.settings.sendGame == true) {
-                                                GM_xmlhttpRequest({
-                                                    method: 'post',
-                                                    url: MMP.settings.sendGameURL,
-                                                    data: JSON.stringify(i),
-                                                    onload: function (msg) {
-                                                        console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify(i));
-                                                    }
-                                                });
+                                        });
+                                    }
+                                    // END
+                                    var U = [],
+                                        i = 0;
+                                    view['DesktopMgr']['player_link_state'] = X['state_list'];
+                                    var N = C['Tools']['strOfLocalization'](2003),
+                                        H = X['game_config'].mode,
+                                        w = view['ERuleMode']['Liqi4'];
+                                    H.mode < 10 ? (w = view['ERuleMode']['Liqi4'], K['real_player_count'] = 4) : H.mode < 20 && (w = view['ERuleMode']['Liqi3'], K['real_player_count'] = 3);
+                                    for (var G = 0; G < K['real_player_count']; G++)
+                                        U.push(null);
+                                    H['extendinfo'] && (N = C['Tools']['strOfLocalization'](2004)),
+                                        H['detail_rule'] && H['detail_rule']['ai_level'] && (1 === H['detail_rule']['ai_level'] && (N = C['Tools']['strOfLocalization'](2003)), 2 === H['detail_rule']['ai_level'] && (N = C['Tools']['strOfLocalization'](2004)));
+                                    for (var l = C['GameUtility']['get_default_ai_skin'](), R = C['GameUtility']['get_default_ai_character'](), G = 0; G < X['seat_list']['length']; G++) {
+                                        var f = X['seat_list'][G];
+                                        if (0 == f) {
+                                            U[G] = {
+                                                nickname: N,
+                                                avatar_id: l,
+                                                level: {
+                                                    id: '10101'
+                                                },
+                                                level3: {
+                                                    id: '20101'
+                                                },
+                                                character: {
+                                                    charid: R,
+                                                    level: 0,
+                                                    exp: 0,
+                                                    views: [],
+                                                    skin: l,
+                                                    is_upgraded: !1
+                                                }
+                                            };
+                                            //随机化电脑皮肤
+                                            if (MMP.settings.randomBotSkin == true) {
+                                                let all_keys = Object.keys(cfg.item_definition.skin.map_);
+                                                let rand_skin_id = parseInt(Math.random() * all_keys.length, 10);
+                                                let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
+                                                // 修复皮肤错误导致无法进入游戏的bug
+                                                if (skin.id != 400000 && skin.id != 400001) {
+                                                    U[G].avatar_id = skin.id;
+                                                    U[G].character.charid = skin.character_id;
+                                                    U[G].character.skin = skin.id;
+                                                }
                                             }
-                                            // END
-                            var l = [],
-                            u = 0;
-                            view['DesktopMgr']['player_link_state'] = i['state_list'];
-                            var b = w['Tools']['strOfLocalization'](2003),
-                            V = i['game_config'].mode,
-                            k = view['ERuleMode']['Liqi4'];
-                            V.mode < 10 ? (k = view['ERuleMode']['Liqi4'], j['real_player_count'] = 4) : V.mode < 20 && (k = view['ERuleMode']['Liqi3'], j['real_player_count'] = 3);
-                            for (var S = 0; S < j['real_player_count']; S++)
-                                l.push(null);
-                            V['extendinfo'] && (b = w['Tools']['strOfLocalization'](2004)),
-                            V['detail_rule'] && V['detail_rule']['ai_level'] && (1 === V['detail_rule']['ai_level'] && (b = w['Tools']['strOfLocalization'](2003)), 2 === V['detail_rule']['ai_level'] && (b = w['Tools']['strOfLocalization'](2004)));
-                            for (var H = w['GameUtility']['get_default_ai_skin'](), N = w['GameUtility']['get_default_ai_character'](), S = 0; S < i['seat_list']['length']; S++) {
-                                var W = i['seat_list'][S];
-                                if (0 == W) {
-                                    l[S] = {
-                                        nickname: b,
-                                        avatar_id: H,
-                                        level: {
-                                            id: '10101'
-                                        },
-                                        level3: {
-                                            id: '20101'
-                                        },
-                                        character: {
-                                            charid: N,
-                                            level: 0,
-                                            exp: 0,
-                                            views: [],
-                                            skin: H,
-                                            is_upgraded: !1
-                                        }
-                                    };
-                                                    //随机化电脑皮肤
-                                                    if (MMP.settings.randomBotSkin == true) {
+                                            if (MMP.settings.showServer == true) {
+                                                U[G].nickname = '[BOT]' + U[G].nickname;
+                                            }
+                                        } else {
+                                            i++;
+                                            for (var A = 0; A < X['players']['length']; A++)
+                                                if (X['players'][A]['account_id'] == f) {
+                                                    U[G] = X['players'][A];
+                                                    //修改牌桌上人物头像及皮肤
+                                                    if (U[G].account_id == GameMgr.Inst.account_id) {
+                                                        U[G].character = uiscript.UI_Sushe.characters[uiscript.UI_Sushe.main_character_id - 200001];
+                                                        U[G].avatar_id = uiscript.UI_Sushe.main_chara_info.skin;
+                                                        U[G].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
+                                                        U[G].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                                                        U[G].title = GameMgr.Inst.account_data.title;
+                                                        if (MMP.settings.nickname != '') {
+                                                            U[G].nickname = MMP.settings.nickname;
+                                                        }
+                                                    } else if (MMP.settings.randomPlayerDefSkin && (U[G].avatar_id == 400101 || U[G].avatar_id == 400201)) {
+                                                        //玩家如果用了默认皮肤也随机换
                                                         let all_keys = Object.keys(cfg.item_definition.skin.map_);
                                                         let rand_skin_id = parseInt(Math.random() * all_keys.length, 10);
                                                         let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
                                                         // 修复皮肤错误导致无法进入游戏的bug
                                                         if (skin.id != 400000 && skin.id != 400001) {
-                                                             l[S].avatar_id = skin.id;
-                                                             l[S].character.charid = skin.character_id;
-                                                            l[S].character.skin = skin.id;
+                                                            U[G].avatar_id = skin.id;
+                                                            U[G].character.charid = skin.character_id;
+                                                            U[G].character.skin = skin.id;
                                                         }
                                                     }
                                                     if (MMP.settings.showServer == true) {
-                                                          l[S].nickname = '[BOT]' +   l[S].nickname;
+                                                        let server = game.Tools.get_zone_id(U[G].account_id);
+                                                        if (server == 1) {
+                                                            U[G].nickname = '[CN]' + U[G].nickname;
+                                                        } else if (server == 2) {
+                                                            U[G].nickname = '[JP]' + U[G].nickname;
+                                                        } else if (server == 3) {
+                                                            U[G].nickname = '[EN]' + U[G].nickname;
+                                                        } else {
+                                                            U[G].nickname = '[??]' + U[G].nickname;
+                                                        }
                                                     }
-                               } else {
-                                    u++;
-                                    for (var e = 0; e < i['players']['length']; e++)
-                                        if (i['players'][e]['account_id'] == W) {
-                                            l[S] = i['players'][e];
-                                                            //修改牌桌上人物头像及皮肤
-                                                            if (  l[S].account_id == GameMgr.Inst.account_id) {
-                                                                  l[S].character = uiscript.UI_Sushe.characters[uiscript.UI_Sushe.main_character_id - 200001];
-                                                                  l[S].avatar_id = uiscript.UI_Sushe.main_chara_info.skin;
-                                                                  l[S].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
-                                                                  l[S].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
-                                                                  l[S].title = GameMgr.Inst.account_data.title;
-                                                                if (MMP.settings.nickname != '') {
-                                                                      l[S].nickname = MMP.settings.nickname;
-                                                                }
-                                                            } else if (MMP.settings.randomPlayerDefSkin && (  l[S].avatar_id == 400101 ||   l[S].avatar_id == 400201)) {
-                                                                //玩家如果用了默认皮肤也随机换
-                                                                let all_keys = Object.keys(cfg.item_definition.skin.map_);
-                                                                let rand_skin_id = parseInt(Math.random() * all_keys.length, 10);
-                                                                let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
-                                                                // 修复皮肤错误导致无法进入游戏的bug
-                                                                if (skin.id != 400000 && skin.id != 400001) {
-                                                                     l[S].avatar_id = skin.id;
-                                                                     l[S].character.charid = skin.character_id;
-                                                                     l[S].character.skin = skin.id;
-                                                                }
-                                                            }
-                                                            if (MMP.settings.showServer == true) {
-                                                                let server = game.Tools.get_zone_id(  l[S].account_id);
-                                                                if (server == 1) {
-                                                                     l[S].nickname = '[CN]' +   l[S].nickname;
-                                                                } else if (server == 2) {
-                                                                     l[S].nickname = '[JP]' +   l[S].nickname;
-                                                                } else if (server == 3) {
-                                                                      l[S].nickname = '[EN]' +   l[S].nickname;
-                                                                } else {
-                                                                      l[S].nickname = '[??]' +   l[S].nickname;
-                                                                }
-                                                            }
-                                                            // END
-                                            break;
+                                                    // END
+                                                    break;
+                                                }
                                         }
+                                    }
+                                    for (var G = 0; G < K['real_player_count']; G++)
+                                        null == U[G] && (U[G] = {
+                                            account: 0,
+                                            nickname: C['Tools']['strOfLocalization'](2010),
+                                            avatar_id: l,
+                                            level: {
+                                                id: '10101'
+                                            },
+                                            level3: {
+                                                id: '20101'
+                                            },
+                                            character: {
+                                                charid: R,
+                                                level: 0,
+                                                exp: 0,
+                                                views: [],
+                                                skin: l,
+                                                is_upgraded: !1
+                                            }
+                                        });
+                                    K['loaded_player_count'] = X['ready_id_list']['length'],
+                                        K['_AuthSuccess'](U, X['is_game_start'], X['game_config']['toJSON']());
                                 }
-                            }
-                            for (var S = 0; S < j['real_player_count']; S++)
-                                null == l[S] && (l[S] = {
-                                        account: 0,
-                                        nickname: w['Tools']['strOfLocalization'](2010),
-                                        avatar_id: H,
-                                        level: {
-                                            id: '10101'
-                                        },
-                                        level3: {
-                                            id: '20101'
-                                        },
-                                        character: {
-                                            charid: N,
-                                            level: 0,
-                                            exp: 0,
-                                            views: [],
-                                            skin: H,
-                                            is_upgraded: !1
-                                        }
-                                    });
-                            j['loaded_player_count'] = i['ready_id_list']['length'],
-                            j['_AuthSuccess'](l, i['is_game_start'], i['game_config']['toJSON']());
-                        }
-                    });
-                },
-                j['prototype']['_AuthSuccess'] = function (j, C, i) {
-                    var l = this;
-                    view['DesktopMgr'].Inst && view['DesktopMgr'].Inst['active'] ? (this['load_over'] = !0, Laya['timer'].once(500, this, function () {
-                            app.Log.log('重连信息1 round_id:' + view['DesktopMgr'].Inst['round_id'] + ' step:' + view['DesktopMgr'].Inst['current_step']),
-                            view['DesktopMgr'].Inst['Reset'](),
-                            view['DesktopMgr'].Inst['duringReconnect'] = !0,
-                            uiscript['UI_Loading'].Inst['setProgressVal'](0.2),
-                            app['NetAgent']['sendReq2MJ']('FastTest', 'syncGame', {
-                                round_id: view['DesktopMgr'].Inst['round_id'],
-                                step: view['DesktopMgr'].Inst['current_step']
-                            }, function (j, C) {
-                                j || C['error'] ? (uiscript['UIMgr'].Inst['showNetReqError']('syncGame', j, C), w['Scene_MJ'].Inst['ForceOut']()) : (app.Log.log('[syncGame] ' + JSON['stringify'](C)), C['isEnd'] ? (uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](2011)), w['Scene_MJ'].Inst['GameEnd']()) : (uiscript['UI_Loading'].Inst['setProgressVal'](0.3), view['DesktopMgr'].Inst['fetchLinks'](), view['DesktopMgr'].Inst['Reset'](), view['DesktopMgr'].Inst['duringReconnect'] = !0, view['DesktopMgr'].Inst['syncGameByStep'](C['game_restore'])));
                             });
-                        })) : w['Scene_MJ'].Inst['openMJRoom'](i, j, Laya['Handler']['create'](this, function () {
-                            view['DesktopMgr'].Inst['initRoom'](JSON['parse'](JSON['stringify'](i)), j, GameMgr.Inst['account_id'], view['EMJMode'].play, Laya['Handler']['create'](l, function () {
-                                    C ? Laya['timer']['frameOnce'](10, l, function () {
-                                        app.Log.log('重连信息2 round_id:-1 step:' + 1000000),
+                    },
+                    K['prototype']['_AuthSuccess'] = function (K, r, X) {
+                        var U = this;
+                        view['DesktopMgr'].Inst && view['DesktopMgr'].Inst['active'] ? (this['load_over'] = !0, Laya['timer'].once(500, this, function () {
+                            app.Log.log('重连信息1 round_id:' + view['DesktopMgr'].Inst['round_id'] + ' step:' + view['DesktopMgr'].Inst['current_step']),
+                                view['DesktopMgr'].Inst['Reset'](),
+                                view['DesktopMgr'].Inst['duringReconnect'] = !0,
+                                uiscript['UI_Loading'].Inst['setProgressVal'](0.2),
+                                app['NetAgent']['sendReq2MJ']('FastTest', 'syncGame', {
+                                    round_id: view['DesktopMgr'].Inst['round_id'],
+                                    step: view['DesktopMgr'].Inst['current_step']
+                                }, function (K, r) {
+                                    K || r['error'] ? (uiscript['UIMgr'].Inst['showNetReqError']('syncGame', K, r), C['Scene_MJ'].Inst['ForceOut']()) : (app.Log.log('[syncGame] ' + JSON['stringify'](r)), r['isEnd'] ? (uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](2011)), C['Scene_MJ'].Inst['GameEnd']()) : (uiscript['UI_Loading'].Inst['setProgressVal'](0.3), view['DesktopMgr'].Inst['fetchLinks'](), view['DesktopMgr'].Inst['Reset'](), view['DesktopMgr'].Inst['duringReconnect'] = !0, view['DesktopMgr'].Inst['syncGameByStep'](r['game_restore'])));
+                                });
+                        })) : C['Scene_MJ'].Inst['openMJRoom'](X, K, Laya['Handler']['create'](this, function () {
+                            view['DesktopMgr'].Inst['initRoom'](JSON['parse'](JSON['stringify'](X)), K, GameMgr.Inst['account_id'], view['EMJMode'].play, Laya['Handler']['create'](U, function () {
+                                r ? Laya['timer']['frameOnce'](10, U, function () {
+                                    app.Log.log('重连信息2 round_id:-1 step:' + 1000000),
                                         view['DesktopMgr'].Inst['Reset'](),
                                         view['DesktopMgr'].Inst['duringReconnect'] = !0,
                                         app['NetAgent']['sendReq2MJ']('FastTest', 'syncGame', {
                                             round_id: '-1',
                                             step: 1000000
-                                        }, function (j, C) {
-                                            app.Log.log('syncGame ' + JSON['stringify'](C)),
-                                            j || C['error'] ? (uiscript['UIMgr'].Inst['showNetReqError']('syncGame', j, C), w['Scene_MJ'].Inst['ForceOut']()) : (uiscript['UI_Loading'].Inst['setProgressVal'](1), view['DesktopMgr'].Inst['fetchLinks'](), l['_PlayerReconnectSuccess'](C));
+                                        }, function (K, r) {
+                                            app.Log.log('syncGame ' + JSON['stringify'](r)),
+                                                K || r['error'] ? (uiscript['UIMgr'].Inst['showNetReqError']('syncGame', K, r), C['Scene_MJ'].Inst['ForceOut']()) : (uiscript['UI_Loading'].Inst['setProgressVal'](1), view['DesktopMgr'].Inst['fetchLinks'](), U['_PlayerReconnectSuccess'](r));
                                         });
-                                    }) : Laya['timer']['frameOnce'](10, l, function () {
-                                        app.Log.log('send enterGame'),
+                                }) : Laya['timer']['frameOnce'](10, U, function () {
+                                    app.Log.log('send enterGame'),
                                         view['DesktopMgr'].Inst['Reset'](),
                                         view['DesktopMgr'].Inst['duringReconnect'] = !0,
-                                        app['NetAgent']['sendReq2MJ']('FastTest', 'enterGame', {}, function (j, C) {
-                                            j || C['error'] ? (uiscript['UIMgr'].Inst['showNetReqError']('enterGame', j, C), w['Scene_MJ'].Inst['ForceOut']()) : (uiscript['UI_Loading'].Inst['setProgressVal'](1), app.Log.log('enterGame'), l['_EnterGame'](C), view['DesktopMgr'].Inst['fetchLinks']());
+                                        app['NetAgent']['sendReq2MJ']('FastTest', 'enterGame', {}, function (K, r) {
+                                            K || r['error'] ? (uiscript['UIMgr'].Inst['showNetReqError']('enterGame', K, r), C['Scene_MJ'].Inst['ForceOut']()) : (uiscript['UI_Loading'].Inst['setProgressVal'](1), app.Log.log('enterGame'), U['_EnterGame'](r), view['DesktopMgr'].Inst['fetchLinks']());
                                         });
-                                    });
-                                }));
-                        }), Laya['Handler']['create'](this, function (w) {
-                            return uiscript['UI_Loading'].Inst['setProgressVal'](0.1 + 0.8 * w);
+                                });
+                            }));
+                        }), Laya['Handler']['create'](this, function (C) {
+                            return uiscript['UI_Loading'].Inst['setProgressVal'](0.1 + 0.8 * C);
                         }, null, !1));
-                },
-                j['prototype']['_EnterGame'] = function (j) {
-                    app.Log.log('正常进入游戏: ' + JSON['stringify'](j)),
-                    j['is_end'] ? (uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](2011)), w['Scene_MJ'].Inst['GameEnd']()) : j['game_restore'] ? view['DesktopMgr'].Inst['syncGameByStep'](j['game_restore']) : (this['load_over'] = !0, this['load_over'] && uiscript['UI_Loading'].Inst['enable'] && uiscript['UI_Loading'].Inst['showLoadCount'](this['loaded_player_count'], this['real_player_count']), view['DesktopMgr'].Inst['duringReconnect'] = !1, view['DesktopMgr'].Inst['StartChainAction'](0));
-                },
-                j['prototype']['_PlayerReconnectSuccess'] = function (j) {
-                    app.Log.log('_PlayerReconnectSuccess data:' + JSON['stringify'](j)),
-                    j['isEnd'] ? (uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](2011)), w['Scene_MJ'].Inst['GameEnd']()) : j['game_restore'] ? view['DesktopMgr'].Inst['syncGameByStep'](j['game_restore']) : (uiscript['UIMgr'].Inst['ShowErrorInfo'](w['Tools']['strOfLocalization'](2012)), w['Scene_MJ'].Inst['ForceOut']());
-                },
-                j['prototype']['_SendDebugInfo'] = function () {},
-                j['prototype']['OpenConnectObserve'] = function (j, C) {
-                    var i = this;
-                    this['is_ob'] = !0,
-                    uiscript['UI_Loading'].Inst.show('enter_mj'),
-                    this['Close'](),
-                    view['AudioMgr']['StopMusic'](),
-                    Laya['timer'].once(500, this, function () {
-                        i['server_location'] = C,
-                        i['ob_token'] = j,
-                        i['_setState'](w['EConnectState']['tryconnect']),
-                        i['lb_index'] = 0,
-                        i['_fetch_gateway'](0);
-                    });
-                },
-                j['prototype']['_ConnectSuccessOb'] = function () {
-                    var j = this;
-                    app.Log.log('MJNetMgr _ConnectSuccessOb '),
-                    app['NetAgent']['sendReq2MJ']('FastTest', 'authObserve', {
-                        token: this['ob_token']
-                    }, function (C, i) {
-                        C || i['error'] ? (uiscript['UIMgr'].Inst['showNetReqError']('authObserve', C, i), w['Scene_MJ'].Inst['GameEnd'](), view['BgmListMgr']['PlayLobbyBgm']()) : (app.Log.log('实时OB验证通过：' + JSON['stringify'](i)), uiscript['UI_Loading'].Inst['setProgressVal'](0.3), uiscript['UI_Live_Broadcast'].Inst && uiscript['UI_Live_Broadcast'].Inst['clearPendingUnits'](), app['NetAgent']['sendReq2MJ']('FastTest', 'startObserve', {}, function (C, i) {
-                                if (C || i['error'])
-                                    uiscript['UIMgr'].Inst['showNetReqError']('startObserve', C, i), w['Scene_MJ'].Inst['GameEnd'](), view['BgmListMgr']['PlayLobbyBgm']();
-                                else {
-                                    var l = i.head,
-                                    u = l['game_config'].mode,
-                                    b = [],
-                                    V = w['Tools']['strOfLocalization'](2003),
-                                    k = view['ERuleMode']['Liqi4'];
-                                    u.mode < 10 ? (k = view['ERuleMode']['Liqi4'], j['real_player_count'] = 4) : u.mode < 20 && (k = view['ERuleMode']['Liqi3'], j['real_player_count'] = 3);
-                                    for (var S = 0; S < j['real_player_count']; S++)
-                                        b.push(null);
-                                    u['extendinfo'] && (V = w['Tools']['strOfLocalization'](2004)),
-                                    u['detail_rule'] && u['detail_rule']['ai_level'] && (1 === u['detail_rule']['ai_level'] && (V = w['Tools']['strOfLocalization'](2003)), 2 === u['detail_rule']['ai_level'] && (V = w['Tools']['strOfLocalization'](2004)));
-                                    for (var H = w['GameUtility']['get_default_ai_skin'](), N = w['GameUtility']['get_default_ai_character'](), S = 0; S < l['seat_list']['length']; S++) {
-                                        var W = l['seat_list'][S];
-                                        if (0 == W)
-                                            b[S] = {
-                                                nickname: V,
-                                                avatar_id: H,
-                                                level: {
-                                                    id: '10101'
-                                                },
-                                                level3: {
-                                                    id: '20101'
-                                                },
-                                                character: {
-                                                    charid: N,
-                                                    level: 0,
-                                                    exp: 0,
-                                                    views: [],
-                                                    skin: H,
-                                                    is_upgraded: !1
-                                                }
-                                            };
-                                        else
-                                            for (var e = 0; e < l['players']['length']; e++)
-                                                if (l['players'][e]['account_id'] == W) {
-                                                    b[S] = l['players'][e];
-                                                    break;
-                                                }
-                                    }
-                                    for (var S = 0; S < j['real_player_count']; S++)
-                                        null == b[S] && (b[S] = {
+                    },
+                    K['prototype']['_EnterGame'] = function (K) {
+                        app.Log.log('正常进入游戏: ' + JSON['stringify'](K)),
+                            K['is_end'] ? (uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](2011)), C['Scene_MJ'].Inst['GameEnd']()) : K['game_restore'] ? view['DesktopMgr'].Inst['syncGameByStep'](K['game_restore']) : (this['load_over'] = !0, this['load_over'] && uiscript['UI_Loading'].Inst['enable'] && uiscript['UI_Loading'].Inst['showLoadCount'](this['loaded_player_count'], this['real_player_count']), view['DesktopMgr'].Inst['duringReconnect'] = !1, view['DesktopMgr'].Inst['StartChainAction'](0));
+                    },
+                    K['prototype']['_PlayerReconnectSuccess'] = function (K) {
+                        app.Log.log('_PlayerReconnectSuccess data:' + JSON['stringify'](K)),
+                            K['isEnd'] ? (uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](2011)), C['Scene_MJ'].Inst['GameEnd']()) : K['game_restore'] ? view['DesktopMgr'].Inst['syncGameByStep'](K['game_restore']) : (uiscript['UIMgr'].Inst['ShowErrorInfo'](C['Tools']['strOfLocalization'](2012)), C['Scene_MJ'].Inst['ForceOut']());
+                    },
+                    K['prototype']['_SendDebugInfo'] = function () { },
+                    K['prototype']['OpenConnectObserve'] = function (K, r) {
+                        var X = this;
+                        this['is_ob'] = !0,
+                            uiscript['UI_Loading'].Inst.show('enter_mj'),
+                            this['Close'](),
+                            view['AudioMgr']['StopMusic'](),
+                            Laya['timer'].once(500, this, function () {
+                                X['server_location'] = r,
+                                    X['ob_token'] = K,
+                                    X['_setState'](C['EConnectState']['tryconnect']),
+                                    X['lb_index'] = 0,
+                                    X['_fetch_gateway'](0);
+                            });
+                    },
+                    K['prototype']['_ConnectSuccessOb'] = function () {
+                        var K = this;
+                        app.Log.log('MJNetMgr _ConnectSuccessOb '),
+                            app['NetAgent']['sendReq2MJ']('FastTest', 'authObserve', {
+                                token: this['ob_token']
+                            }, function (r, X) {
+                                r || X['error'] ? (uiscript['UIMgr'].Inst['showNetReqError']('authObserve', r, X), C['Scene_MJ'].Inst['GameEnd'](), view['BgmListMgr']['PlayLobbyBgm']()) : (app.Log.log('实时OB验证通过：' + JSON['stringify'](X)), uiscript['UI_Loading'].Inst['setProgressVal'](0.3), uiscript['UI_Live_Broadcast'].Inst && uiscript['UI_Live_Broadcast'].Inst['clearPendingUnits'](), app['NetAgent']['sendReq2MJ']('FastTest', 'startObserve', {}, function (r, X) {
+                                    if (r || X['error'])
+                                        uiscript['UIMgr'].Inst['showNetReqError']('startObserve', r, X), C['Scene_MJ'].Inst['GameEnd'](), view['BgmListMgr']['PlayLobbyBgm']();
+                                    else {
+                                        var U = X.head,
+                                            i = U['game_config'].mode,
+                                            N = [],
+                                            H = C['Tools']['strOfLocalization'](2003),
+                                            w = view['ERuleMode']['Liqi4'];
+                                        i.mode < 10 ? (w = view['ERuleMode']['Liqi4'], K['real_player_count'] = 4) : i.mode < 20 && (w = view['ERuleMode']['Liqi3'], K['real_player_count'] = 3);
+                                        for (var G = 0; G < K['real_player_count']; G++)
+                                            N.push(null);
+                                        i['extendinfo'] && (H = C['Tools']['strOfLocalization'](2004)),
+                                            i['detail_rule'] && i['detail_rule']['ai_level'] && (1 === i['detail_rule']['ai_level'] && (H = C['Tools']['strOfLocalization'](2003)), 2 === i['detail_rule']['ai_level'] && (H = C['Tools']['strOfLocalization'](2004)));
+                                        for (var l = C['GameUtility']['get_default_ai_skin'](), R = C['GameUtility']['get_default_ai_character'](), G = 0; G < U['seat_list']['length']; G++) {
+                                            var f = U['seat_list'][G];
+                                            if (0 == f)
+                                                N[G] = {
+                                                    nickname: H,
+                                                    avatar_id: l,
+                                                    level: {
+                                                        id: '10101'
+                                                    },
+                                                    level3: {
+                                                        id: '20101'
+                                                    },
+                                                    character: {
+                                                        charid: R,
+                                                        level: 0,
+                                                        exp: 0,
+                                                        views: [],
+                                                        skin: l,
+                                                        is_upgraded: !1
+                                                    }
+                                                };
+                                            else
+                                                for (var A = 0; A < U['players']['length']; A++)
+                                                    if (U['players'][A]['account_id'] == f) {
+                                                        N[G] = U['players'][A];
+                                                        break;
+                                                    }
+                                        }
+                                        for (var G = 0; G < K['real_player_count']; G++)
+                                            null == N[G] && (N[G] = {
                                                 account: 0,
-                                                nickname: w['Tools']['strOfLocalization'](2010),
-                                                avatar_id: H,
+                                                nickname: C['Tools']['strOfLocalization'](2010),
+                                                avatar_id: l,
                                                 level: {
                                                     id: '10101'
                                                 },
@@ -1044,46 +1045,47 @@ function testAPI() {
                                                     id: '20101'
                                                 },
                                                 character: {
-                                                    charid: N,
+                                                    charid: R,
                                                     level: 0,
                                                     exp: 0,
                                                     views: [],
-                                                    skin: H,
+                                                    skin: l,
                                                     is_upgraded: !1
                                                 }
                                             });
-                                    j['_StartObSuccuess'](b, i['passed'], l['game_config']['toJSON'](), l['start_time']);
-                                }
-                            }));
-                    });
-                },
-                j['prototype']['_StartObSuccuess'] = function (j, C, i, l) {
-                    var u = this;
-                    view['DesktopMgr'].Inst && view['DesktopMgr'].Inst['active'] ? (this['load_over'] = !0, Laya['timer'].once(500, this, function () {
+                                        K['_StartObSuccuess'](N, X['passed'], U['game_config']['toJSON'](), U['start_time']);
+                                    }
+                                }));
+                            });
+                    },
+                    K['prototype']['_StartObSuccuess'] = function (K, r, X, U) {
+                        var i = this;
+                        view['DesktopMgr'].Inst && view['DesktopMgr'].Inst['active'] ? (this['load_over'] = !0, Laya['timer'].once(500, this, function () {
                             app.Log.log('重连信息1 round_id:' + view['DesktopMgr'].Inst['round_id'] + ' step:' + view['DesktopMgr'].Inst['current_step']),
-                            view['DesktopMgr'].Inst['Reset'](),
-                            uiscript['UI_Live_Broadcast'].Inst['startRealtimeLive'](l, C);
-                        })) : (uiscript['UI_Loading'].Inst['setProgressVal'](0.4), w['Scene_MJ'].Inst['openMJRoom'](i, j, Laya['Handler']['create'](this, function () {
-                                view['DesktopMgr'].Inst['initRoom'](JSON['parse'](JSON['stringify'](i)), j, GameMgr.Inst['account_id'], view['EMJMode']['live_broadcast'], Laya['Handler']['create'](u, function () {
-                                        uiscript['UI_Loading'].Inst['setProgressVal'](0.9),
-                                        Laya['timer'].once(1000, u, function () {
-                                            GameMgr.Inst['EnterMJ'](),
+                                view['DesktopMgr'].Inst['Reset'](),
+                                uiscript['UI_Live_Broadcast'].Inst['startRealtimeLive'](U, r);
+                        })) : (uiscript['UI_Loading'].Inst['setProgressVal'](0.4), C['Scene_MJ'].Inst['openMJRoom'](X, K, Laya['Handler']['create'](this, function () {
+                            view['DesktopMgr'].Inst['initRoom'](JSON['parse'](JSON['stringify'](X)), K, GameMgr.Inst['account_id'], view['EMJMode']['live_broadcast'], Laya['Handler']['create'](i, function () {
+                                uiscript['UI_Loading'].Inst['setProgressVal'](0.9),
+                                    Laya['timer'].once(1000, i, function () {
+                                        GameMgr.Inst['EnterMJ'](),
                                             uiscript['UI_Loading'].Inst['setProgressVal'](0.95),
-                                            uiscript['UI_Live_Broadcast'].Inst['startRealtimeLive'](l, C);
-                                        });
-                                    }));
-                            }), Laya['Handler']['create'](this, function (w) {
-                                return uiscript['UI_Loading'].Inst['setProgressVal'](0.4 + 0.4 * w);
-                            }, null, !1)));
-                },
-                j['_Inst'] = null,
-                j;
+                                            uiscript['UI_Live_Broadcast'].Inst['startRealtimeLive'](U, r);
+                                    });
+                            }));
+                        }), Laya['Handler']['create'](this, function (C) {
+                            return uiscript['UI_Loading'].Inst['setProgressVal'](0.4 + 0.4 * C);
+                        }, null, !1)));
+                    },
+                    K['_Inst'] = null,
+                    K;
             }
-            ();
-            w['MJNetMgr'] = j;
+                ();
+            C['MJNetMgr'] = K;
         }
-        (game || (game = {}));
-        
+            (game || (game = {}));
+
+
 
 
 
@@ -1091,197 +1093,198 @@ function testAPI() {
 
 
         // 读取战绩
-        !function (w) {
-            var j = function (j) {
-                function C() {
-                    var w = j.call(this, 'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? new ui['both_ui']['otherplayerinfoUI']() : new ui['both_ui']['otherplayerinfo_enUI']()) || this;
-                    return w['account_id'] = 0,
-                    w['origin_x'] = 0,
-                    w['origin_y'] = 0,
-                    w.root = null,
-                    w['title'] = null,
-                    w['level'] = null,
-                    w['btn_addfriend'] = null,
-                    w['btn_report'] = null,
-                    w['illust'] = null,
-                    w.name = null,
-                    w['detail_data'] = null,
-                    w['achievement_data'] = null,
-                    w['locking'] = !1,
-                    w['tab_info4'] = null,
-                    w['tab_info3'] = null,
-                    w['tab_note'] = null,
-                    w['tab_img_dark'] = '',
-                    w['tab_img_chosen'] = '',
-                    w['player_data'] = null,
-                    w['tab_index'] = 1,
-                    w['game_category'] = 1,
-                    w['game_type'] = 1,
-                    C.Inst = w,
-                    w;
+        !function (C) {
+            var K = function (K) {
+                function r() {
+                    var C = K.call(this, 'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? new ui['both_ui']['otherplayerinfoUI']() : new ui['both_ui']['otherplayerinfo_enUI']()) || this;
+                    return C['account_id'] = 0,
+                        C['origin_x'] = 0,
+                        C['origin_y'] = 0,
+                        C.root = null,
+                        C['title'] = null,
+                        C['level'] = null,
+                        C['btn_addfriend'] = null,
+                        C['btn_report'] = null,
+                        C['illust'] = null,
+                        C.name = null,
+                        C['detail_data'] = null,
+                        C['achievement_data'] = null,
+                        C['locking'] = !1,
+                        C['tab_info4'] = null,
+                        C['tab_info3'] = null,
+                        C['tab_note'] = null,
+                        C['tab_img_dark'] = '',
+                        C['tab_img_chosen'] = '',
+                        C['player_data'] = null,
+                        C['tab_index'] = 1,
+                        C['game_category'] = 1,
+                        C['game_type'] = 1,
+                        r.Inst = C,
+                        C;
                 }
-                return __extends(C, j),
-                C['prototype']['onCreate'] = function () {
-                    var j = this;
-                    'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? (this['tab_img_chosen'] = game['Tools']['localUISrc']('myres/bothui/info_tab_chosen.png'), this['tab_img_dark'] = game['Tools']['localUISrc']('myres/bothui/info_tab_dark.png')) : (this['tab_img_chosen'] = game['Tools']['localUISrc']('myres/bothui/info_tabheng_chosen.png'), this['tab_img_dark'] = game['Tools']['localUISrc']('myres/bothui/info_tabheng_dark.png')),
-                    this.root = this.me['getChildByName']('root'),
-                    this['origin_x'] = this.root.x,
-                    this['origin_y'] = this.root.y,
-                    this['container_info'] = this.root['getChildByName']('container_info'),
-                    this['title'] = new w['UI_PlayerTitle'](this['container_info']['getChildByName']('title'), 'UI_OtherPlayerInfo'),
-                    this.name = this['container_info']['getChildByName']('name'),
-                    this['level'] = new w['UI_Level'](this['container_info']['getChildByName']('rank'), 'UI_OtherPlayerInfo'),
-                    this['detail_data'] = new w['UI_PlayerData'](this['container_info']['getChildByName']('data')),
-                    this['achievement_data'] = new w['UI_Achievement_Light'](this['container_info']['getChildByName']('achievement')),
-                    this['illust'] = new w['UI_Character_Skin'](this.root['getChildByName']('illust')['getChildByName']('illust')),
-                    this['btn_addfriend'] = this['container_info']['getChildByName']('btn_add'),
-                    this['btn_addfriend']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['btn_addfriend']['visible'] = !1,
-                            j['btn_report'].x = 343,
-                            app['NetAgent']['sendReq2Lobby']('Lobby', 'applyFriend', {
-                                target_id: j['account_id']
-                            }, function () {});
-                        }, null, !1),
-                    this['btn_report'] = this['container_info']['getChildByName']('btn_report'),
-                    this['btn_report']['clickHandler'] = new Laya['Handler'](this, function () {
-                            w['UI_Report_Nickname'].Inst.show(j['account_id']);
-                        }),
-                    this.me['getChildAt'](0)['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['locking'] || j['close']();
-                        }, null, !1),
-                    this.root['getChildByName']('btn_close')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['close']();
-                        }, null, !1),
-                    this.note = new w['UI_PlayerNote'](this.root['getChildByName']('container_note'), null),
-                    this['tab_info4'] = this.root['getChildByName']('tab_info4'),
-                    this['tab_info4']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['locking'] || 1 != j['tab_index'] && j['changeMJCategory'](1);
-                        }, null, !1),
-                    this['tab_info3'] = this.root['getChildByName']('tab_info3'),
-                    this['tab_info3']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['locking'] || 2 != j['tab_index'] && j['changeMJCategory'](2);
-                        }, null, !1),
-                    this['tab_note'] = this.root['getChildByName']('tab_note'),
-                    this['tab_note']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['locking'] || 'chs' != GameMgr['client_type'] && 'chs_t' != GameMgr['client_type'] && (game['Tools']['during_chat_close']() ? w['UIMgr'].Inst['ShowErrorInfo']('功能维护中，祝大家新年快乐') : j['container_info']['visible'] && (j['container_info']['visible'] = !1, j['tab_info4'].skin = j['tab_img_dark'], j['tab_info3'].skin = j['tab_img_dark'], j['tab_note'].skin = j['tab_img_chosen'], j['tab_index'] = 3, j.note.show()));
-                        }, null, !1),
-                    this['locking'] = !1;
-                },
-                C['prototype'].show = function (j, C, i, l) {
-                    var u = this;
-                    void 0 === C && (C = 1),
-                    void 0 === i && (i = 2),
-                    void 0 === l && (l = 1),
-                    GameMgr.Inst['BehavioralStatistics'](14),
-                    this['account_id'] = j,
-                    this['enable'] = !0,
-                    this['locking'] = !0,
-                    this.root.y = this['origin_y'],
-                    this['player_data'] = null,
-                    w['UIBase']['anim_pop_out'](this.root, Laya['Handler']['create'](this, function () {
-                            u['locking'] = !1;
-                        })),
-                    this['detail_data']['reset'](),
-                    app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountStatisticInfo', {
-                        account_id: j
-                    }, function (C, i) {
-                        C || i['error'] ? w['UIMgr'].Inst['showNetReqError']('fetchAccountStatisticInfo', C, i) : w['UI_Shilian']['now_season_info'] && 1001 == w['UI_Shilian']['now_season_info']['season_id'] && 3 != w['UI_Shilian']['get_cur_season_state']() ? (u['detail_data']['setData'](i), u['changeMJCategory'](u['tab_index'], u['game_category'], u['game_type'])) : app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountChallengeRankInfo', {
-                            account_id: j
-                        }, function (j, C) {
-                            j || C['error'] ? w['UIMgr'].Inst['showNetReqError']('fetchAccountChallengeRankInfo', j, C) : (i['season_info'] = C['season_info'], u['detail_data']['setData'](i), u['changeMJCategory'](u['tab_index'], u['game_category'], u['game_type']));
-                        });
-                    }),
-                    this.note['init_data'](j),
-                    this['refreshBaseInfo'](),
-                    this['btn_report']['visible'] = j != GameMgr.Inst['account_id'],
-                    this['tab_index'] = C,
-                    this['game_category'] = i,
-                    this['game_type'] = l,
-                    this['container_info']['visible'] = !0,
-                    this['tab_info4'].skin = 1 == this['tab_index'] ? this['tab_img_chosen'] : this['tab_img_dark'],
-                    this['tab_info3'].skin = 2 == this['tab_index'] ? this['tab_img_chosen'] : this['tab_img_dark'],
-                    this['tab_note'].skin = this['tab_img_dark'],
-                    this.note['close'](),
-                    this['tab_note']['visible'] = 'chs' != GameMgr['client_type'] && 'chs_t' != GameMgr['client_type'],
-                    this['player_data'] ? (this['level'].id = this['player_data'][1 == this['tab_index'] ? 'level' : 'level3'].id, this['level'].exp = this['player_data'][1 == this['tab_index'] ? 'level' : 'level3']['score']) : (this['level'].id = 1 == this['tab_index'] ? '10101' : '20101', this['level'].exp = 0);
-                },
-                C['prototype']['refreshBaseInfo'] = function () {
-                    var j = this;
-                    this['title'].id = 0,
-                    this['illust'].me['visible'] = !1,
-                    game['Tools']['SetNickname'](this.name, {
-                        account_id: 0,
-                        nickname: '',
-                        verified: 0
-                    }),
-                    this['btn_addfriend']['visible'] = !1,
-                    this['btn_report'].x = 343,
-                    app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountInfo', {
-                        account_id: this['account_id']
-                    }, function (C, i) {
-                        if (C || i['error'])
-                            w['UIMgr'].Inst['showNetReqError']('fetchAccountInfo', C, i);
-                        else {
-                            var l = i['account'];
-                                            //修复读取战绩信息时人物皮肤不一致问题 ----fxxk
-                                            if (l.account_id == GameMgr.Inst.account_id) {
-                                                l.avatar_id = uiscript.UI_Sushe.main_chara_info.skin,
-                                                    l.title = GameMgr.Inst.account_data.title;
-                                                if (MMP.settings.nickname != '') {
-                                                    l.nickname = MMP.settings.nickname;
-                                                }
-                                            }
-                                            //end
-                            j['player_data'] = l,
-                            game['Tools']['SetNickname'](j.name, l),
-                            j['title'].id = game['Tools']['titleLocalization'](l['account_id'], l['title']),
-                            j['level'].id = l['level'].id,
-                            j['level'].id = j['player_data'][1 == j['tab_index'] ? 'level' : 'level3'].id,
-                            j['level'].exp = j['player_data'][1 == j['tab_index'] ? 'level' : 'level3']['score'],
-                            j['illust'].me['visible'] = !0,
-                            j['account_id'] == GameMgr.Inst['account_id'] ? j['illust']['setSkin'](l['avatar_id'], 'waitingroom') : j['illust']['setSkin'](game['GameUtility']['get_limited_skin_id'](l['avatar_id']), 'waitingroom'),
-                            game['Tools']['is_same_zone'](GameMgr.Inst['account_id'], j['account_id']) && j['account_id'] != GameMgr.Inst['account_id'] && null == game['FriendMgr'].find(j['account_id']) ? (j['btn_addfriend']['visible'] = !0, j['btn_report'].x = 520) : (j['btn_addfriend']['visible'] = !1, j['btn_report'].x = 343),
-                            j.note.sign['setSign'](l['signature']),
-                            j['achievement_data'].show(!1, l['achievement_count']);
-                        }
-                    });
-                },
-                C['prototype']['changeMJCategory'] = function (w, j, C) {
-                    void 0 === j && (j = 2),
-                    void 0 === C && (C = 1),
-                    this['tab_index'] = w,
-                    this['container_info']['visible'] = !0,
-                    this['detail_data']['changeMJCategory'](w, j, C),
-                    this['tab_info4'].skin = 1 == this['tab_index'] ? this['tab_img_chosen'] : this['tab_img_dark'],
-                    this['tab_info3'].skin = 2 == this['tab_index'] ? this['tab_img_chosen'] : this['tab_img_dark'],
-                    this['tab_note'].skin = this['tab_img_dark'],
-                    this.note['close'](),
-                    this['player_data'] ? (this['level'].id = this['player_data'][1 == this['tab_index'] ? 'level' : 'level3'].id, this['level'].exp = this['player_data'][1 == this['tab_index'] ? 'level' : 'level3']['score']) : (this['level'].id = 1 == this['tab_index'] ? '10101' : '20101', this['level'].exp = 0);
-                },
-                C['prototype']['close'] = function () {
-                    var j = this;
-                    this['enable'] && (this['locking'] || (this['locking'] = !0, this['detail_data']['close'](), w['UIBase']['anim_pop_hide'](this.root, Laya['Handler']['create'](this, function () {
-                                    j['locking'] = !1,
-                                    j['enable'] = !1;
-                                }))));
-                },
-                C['prototype']['onEnable'] = function () {
-                    game['TempImageMgr']['setUIEnable']('UI_OtherPlayerInfo', !0);
-                },
-                C['prototype']['onDisable'] = function () {
-                    game['TempImageMgr']['setUIEnable']('UI_OtherPlayerInfo', !1),
-                    this['detail_data']['close'](),
-                    this['illust']['clear'](),
-                    Laya['loader']['clearTextureRes'](this['level'].icon.skin);
-                },
-                C.Inst = null,
-                C;
+                return __extends(r, K),
+                    r['prototype']['onCreate'] = function () {
+                        var K = this;
+                        'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? (this['tab_img_chosen'] = game['Tools']['localUISrc']('myres/bothui/info_tab_chosen.png'), this['tab_img_dark'] = game['Tools']['localUISrc']('myres/bothui/info_tab_dark.png')) : (this['tab_img_chosen'] = game['Tools']['localUISrc']('myres/bothui/info_tabheng_chosen.png'), this['tab_img_dark'] = game['Tools']['localUISrc']('myres/bothui/info_tabheng_dark.png')),
+                            this.root = this.me['getChildByName']('root'),
+                            this['origin_x'] = this.root.x,
+                            this['origin_y'] = this.root.y,
+                            this['container_info'] = this.root['getChildByName']('container_info'),
+                            this['title'] = new C['UI_PlayerTitle'](this['container_info']['getChildByName']('title'), 'UI_OtherPlayerInfo'),
+                            this.name = this['container_info']['getChildByName']('name'),
+                            this['level'] = new C['UI_Level'](this['container_info']['getChildByName']('rank'), 'UI_OtherPlayerInfo'),
+                            this['detail_data'] = new C['UI_PlayerData'](this['container_info']['getChildByName']('data')),
+                            this['achievement_data'] = new C['UI_Achievement_Light'](this['container_info']['getChildByName']('achievement')),
+                            this['illust'] = new C['UI_Character_Skin'](this.root['getChildByName']('illust')['getChildByName']('illust')),
+                            this['btn_addfriend'] = this['container_info']['getChildByName']('btn_add'),
+                            this['btn_addfriend']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                K['btn_addfriend']['visible'] = !1,
+                                    K['btn_report'].x = 343,
+                                    app['NetAgent']['sendReq2Lobby']('Lobby', 'applyFriend', {
+                                        target_id: K['account_id']
+                                    }, function () { });
+                            }, null, !1),
+                            this['btn_report'] = this['container_info']['getChildByName']('btn_report'),
+                            this['btn_report']['clickHandler'] = new Laya['Handler'](this, function () {
+                                C['UI_Report_Nickname'].Inst.show(K['account_id']);
+                            }),
+                            this.me['getChildAt'](0)['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                K['locking'] || K['close']();
+                            }, null, !1),
+                            this.root['getChildByName']('btn_close')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                K['close']();
+                            }, null, !1),
+                            this.note = new C['UI_PlayerNote'](this.root['getChildByName']('container_note'), null),
+                            this['tab_info4'] = this.root['getChildByName']('tab_info4'),
+                            this['tab_info4']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                K['locking'] || 1 != K['tab_index'] && K['changeMJCategory'](1);
+                            }, null, !1),
+                            this['tab_info3'] = this.root['getChildByName']('tab_info3'),
+                            this['tab_info3']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                K['locking'] || 2 != K['tab_index'] && K['changeMJCategory'](2);
+                            }, null, !1),
+                            this['tab_note'] = this.root['getChildByName']('tab_note'),
+                            this['tab_note']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                K['locking'] || 'chs' != GameMgr['client_type'] && 'chs_t' != GameMgr['client_type'] && (game['Tools']['during_chat_close']() ? C['UIMgr'].Inst['ShowErrorInfo']('功能维护中，祝大家新年快乐') : K['container_info']['visible'] && (K['container_info']['visible'] = !1, K['tab_info4'].skin = K['tab_img_dark'], K['tab_info3'].skin = K['tab_img_dark'], K['tab_note'].skin = K['tab_img_chosen'], K['tab_index'] = 3, K.note.show()));
+                            }, null, !1),
+                            this['locking'] = !1;
+                    },
+                    r['prototype'].show = function (K, r, X, U) {
+                        var i = this;
+                        void 0 === r && (r = 1),
+                            void 0 === X && (X = 2),
+                            void 0 === U && (U = 1),
+                            GameMgr.Inst['BehavioralStatistics'](14),
+                            this['account_id'] = K,
+                            this['enable'] = !0,
+                            this['locking'] = !0,
+                            this.root.y = this['origin_y'],
+                            this['player_data'] = null,
+                            C['UIBase']['anim_pop_out'](this.root, Laya['Handler']['create'](this, function () {
+                                i['locking'] = !1;
+                            })),
+                            this['detail_data']['reset'](),
+                            app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountStatisticInfo', {
+                                account_id: K
+                            }, function (r, X) {
+                                r || X['error'] ? C['UIMgr'].Inst['showNetReqError']('fetchAccountStatisticInfo', r, X) : C['UI_Shilian']['now_season_info'] && 1001 == C['UI_Shilian']['now_season_info']['season_id'] && 3 != C['UI_Shilian']['get_cur_season_state']() ? (i['detail_data']['setData'](X), i['changeMJCategory'](i['tab_index'], i['game_category'], i['game_type'])) : app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountChallengeRankInfo', {
+                                    account_id: K
+                                }, function (K, r) {
+                                    K || r['error'] ? C['UIMgr'].Inst['showNetReqError']('fetchAccountChallengeRankInfo', K, r) : (X['season_info'] = r['season_info'], i['detail_data']['setData'](X), i['changeMJCategory'](i['tab_index'], i['game_category'], i['game_type']));
+                                });
+                            }),
+                            this.note['init_data'](K),
+                            this['refreshBaseInfo'](),
+                            this['btn_report']['visible'] = K != GameMgr.Inst['account_id'],
+                            this['tab_index'] = r,
+                            this['game_category'] = X,
+                            this['game_type'] = U,
+                            this['container_info']['visible'] = !0,
+                            this['tab_info4'].skin = 1 == this['tab_index'] ? this['tab_img_chosen'] : this['tab_img_dark'],
+                            this['tab_info3'].skin = 2 == this['tab_index'] ? this['tab_img_chosen'] : this['tab_img_dark'],
+                            this['tab_note'].skin = this['tab_img_dark'],
+                            this.note['close'](),
+                            this['tab_note']['visible'] = 'chs' != GameMgr['client_type'] && 'chs_t' != GameMgr['client_type'],
+                            this['player_data'] ? (this['level'].id = this['player_data'][1 == this['tab_index'] ? 'level' : 'level3'].id, this['level'].exp = this['player_data'][1 == this['tab_index'] ? 'level' : 'level3']['score']) : (this['level'].id = 1 == this['tab_index'] ? '10101' : '20101', this['level'].exp = 0);
+                    },
+                    r['prototype']['refreshBaseInfo'] = function () {
+                        var K = this;
+                        this['title'].id = 0,
+                            this['illust'].me['visible'] = !1,
+                            game['Tools']['SetNickname'](this.name, {
+                                account_id: 0,
+                                nickname: '',
+                                verified: 0
+                            }),
+                            this['btn_addfriend']['visible'] = !1,
+                            this['btn_report'].x = 343,
+                            app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountInfo', {
+                                account_id: this['account_id']
+                            }, function (r, X) {
+                                if (r || X['error'])
+                                    C['UIMgr'].Inst['showNetReqError']('fetchAccountInfo', r, X);
+                                else {
+                                    var U = X['account'];
+                                    //修复读取战绩信息时人物皮肤不一致问题 ----fxxk
+                                    if (U.account_id == GameMgr.Inst.account_id) {
+                                        U.avatar_id = uiscript.UI_Sushe.main_chara_info.skin,
+                                            U.title = GameMgr.Inst.account_data.title;
+                                        if (MMP.settings.nickname != '') {
+                                            U.nickname = MMP.settings.nickname;
+                                        }
+                                    }
+                                    //end
+                                    K['player_data'] = U,
+                                        game['Tools']['SetNickname'](K.name, U),
+                                        K['title'].id = game['Tools']['titleLocalization'](U['account_id'], U['title']),
+                                        K['level'].id = U['level'].id,
+                                        K['level'].id = K['player_data'][1 == K['tab_index'] ? 'level' : 'level3'].id,
+                                        K['level'].exp = K['player_data'][1 == K['tab_index'] ? 'level' : 'level3']['score'],
+                                        K['illust'].me['visible'] = !0,
+                                        K['account_id'] == GameMgr.Inst['account_id'] ? K['illust']['setSkin'](U['avatar_id'], 'waitingroom') : K['illust']['setSkin'](game['GameUtility']['get_limited_skin_id'](U['avatar_id']), 'waitingroom'),
+                                        game['Tools']['is_same_zone'](GameMgr.Inst['account_id'], K['account_id']) && K['account_id'] != GameMgr.Inst['account_id'] && null == game['FriendMgr'].find(K['account_id']) ? (K['btn_addfriend']['visible'] = !0, K['btn_report'].x = 520) : (K['btn_addfriend']['visible'] = !1, K['btn_report'].x = 343),
+                                        K.note.sign['setSign'](U['signature']),
+                                        K['achievement_data'].show(!1, U['achievement_count']);
+                                }
+                            });
+                    },
+                    r['prototype']['changeMJCategory'] = function (C, K, r) {
+                        void 0 === K && (K = 2),
+                            void 0 === r && (r = 1),
+                            this['tab_index'] = C,
+                            this['container_info']['visible'] = !0,
+                            this['detail_data']['changeMJCategory'](C, K, r),
+                            this['tab_info4'].skin = 1 == this['tab_index'] ? this['tab_img_chosen'] : this['tab_img_dark'],
+                            this['tab_info3'].skin = 2 == this['tab_index'] ? this['tab_img_chosen'] : this['tab_img_dark'],
+                            this['tab_note'].skin = this['tab_img_dark'],
+                            this.note['close'](),
+                            this['player_data'] ? (this['level'].id = this['player_data'][1 == this['tab_index'] ? 'level' : 'level3'].id, this['level'].exp = this['player_data'][1 == this['tab_index'] ? 'level' : 'level3']['score']) : (this['level'].id = 1 == this['tab_index'] ? '10101' : '20101', this['level'].exp = 0);
+                    },
+                    r['prototype']['close'] = function () {
+                        var K = this;
+                        this['enable'] && (this['locking'] || (this['locking'] = !0, this['detail_data']['close'](), C['UIBase']['anim_pop_hide'](this.root, Laya['Handler']['create'](this, function () {
+                            K['locking'] = !1,
+                                K['enable'] = !1;
+                        }))));
+                    },
+                    r['prototype']['onEnable'] = function () {
+                        game['TempImageMgr']['setUIEnable']('UI_OtherPlayerInfo', !0);
+                    },
+                    r['prototype']['onDisable'] = function () {
+                        game['TempImageMgr']['setUIEnable']('UI_OtherPlayerInfo', !1),
+                            this['detail_data']['close'](),
+                            this['illust']['clear'](),
+                            Laya['loader']['clearTextureRes'](this['level'].icon.skin);
+                    },
+                    r.Inst = null,
+                    r;
             }
-            (w['UIBase']);
-            w['UI_OtherPlayerInfo'] = j;
+                (C['UIBase']);
+            C['UI_OtherPlayerInfo'] = K;
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
+
+
 
 
 
@@ -1290,628 +1293,640 @@ function testAPI() {
 
 
         // 宿舍相关
-        !function (w) {
-            var j = function () {
-                function j(j, i) {
-                    var l = this;
+        !function (C) {
+            var K = function () {
+                function K(K, X) {
+                    var U = this;
                     this['_scale'] = 1,
-                    this['during_move'] = !1,
-                    this['mouse_start_x'] = 0,
-                    this['mouse_start_y'] = 0,
-                    this.me = j,
-                    this['container_illust'] = i,
-                    this['illust'] = this['container_illust']['getChildByName']('illust'),
-                    this['container_move'] = j['getChildByName']('move'),
-                    this['container_move'].on('mousedown', this, function () {
-                        l['during_move'] = !0,
-                        l['mouse_start_x'] = l['container_move']['mouseX'],
-                        l['mouse_start_y'] = l['container_move']['mouseY'];
-                    }),
-                    this['container_move'].on('mousemove', this, function () {
-                        l['during_move'] && (l.move(l['container_move']['mouseX'] - l['mouse_start_x'], l['container_move']['mouseY'] - l['mouse_start_y']), l['mouse_start_x'] = l['container_move']['mouseX'], l['mouse_start_y'] = l['container_move']['mouseY']);
-                    }),
-                    this['container_move'].on('mouseup', this, function () {
-                        l['during_move'] = !1;
-                    }),
-                    this['container_move'].on('mouseout', this, function () {
-                        l['during_move'] = !1;
-                    }),
-                    this['btn_close'] = j['getChildByName']('btn_close'),
-                    this['btn_close']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            l['locking'] || l['close']();
+                        this['during_move'] = !1,
+                        this['mouse_start_x'] = 0,
+                        this['mouse_start_y'] = 0,
+                        this.me = K,
+                        this['container_illust'] = X,
+                        this['illust'] = this['container_illust']['getChildByName']('illust'),
+                        this['container_move'] = K['getChildByName']('move'),
+                        this['container_move'].on('mousedown', this, function () {
+                            U['during_move'] = !0,
+                                U['mouse_start_x'] = U['container_move']['mouseX'],
+                                U['mouse_start_y'] = U['container_move']['mouseY'];
+                        }),
+                        this['container_move'].on('mousemove', this, function () {
+                            U['during_move'] && (U.move(U['container_move']['mouseX'] - U['mouse_start_x'], U['container_move']['mouseY'] - U['mouse_start_y']), U['mouse_start_x'] = U['container_move']['mouseX'], U['mouse_start_y'] = U['container_move']['mouseY']);
+                        }),
+                        this['container_move'].on('mouseup', this, function () {
+                            U['during_move'] = !1;
+                        }),
+                        this['container_move'].on('mouseout', this, function () {
+                            U['during_move'] = !1;
+                        }),
+                        this['btn_close'] = K['getChildByName']('btn_close'),
+                        this['btn_close']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                            U['locking'] || U['close']();
                         }, null, !1),
-                    this['scrollbar'] = j['getChildByName']('scrollbar')['scriptMap']['capsui.CScrollBar'],
-                    this['scrollbar'].init(new Laya['Handler'](this, function (w) {
-                            l['_scale'] = 1 * (1 - w) + 0.5,
-                            l['illust']['scaleX'] = l['_scale'],
-                            l['illust']['scaleY'] = l['_scale'],
-                            l['scrollbar']['setVal'](w, 0);
+                        this['scrollbar'] = K['getChildByName']('scrollbar')['scriptMap']['capsui.CScrollBar'],
+                        this['scrollbar'].init(new Laya['Handler'](this, function (C) {
+                            U['_scale'] = 1 * (1 - C) + 0.5,
+                                U['illust']['scaleX'] = U['_scale'],
+                                U['illust']['scaleY'] = U['_scale'],
+                                U['scrollbar']['setVal'](C, 0);
                         })),
-                    this['dongtai_kaiguan'] = new w['UI_Dongtai_Kaiguan'](this.me['getChildByName']('dongtai'), new Laya['Handler'](this, function () {
-                                C.Inst['illust']['resetSkin']();
-                            }), new Laya['Handler'](this, function (w) {
-                                C.Inst['illust']['playAnim'](w);
-                            })),
-                    this['dongtai_kaiguan']['setKaiguanPos'](43, -31);
+                        this['dongtai_kaiguan'] = new C['UI_Dongtai_Kaiguan'](this.me['getChildByName']('dongtai'), new Laya['Handler'](this, function () {
+                            r.Inst['illust']['resetSkin']();
+                        }), new Laya['Handler'](this, function (C) {
+                            r.Inst['illust']['playAnim'](C);
+                        })),
+                        this['dongtai_kaiguan']['setKaiguanPos'](43, -31);
                 }
-                return Object['defineProperty'](j['prototype'], 'scale', {
+                return Object['defineProperty'](K['prototype'], 'scale', {
                     get: function () {
                         return this['_scale'];
                     },
-                    set: function (w) {
-                        this['_scale'] = w,
-                        this['scrollbar']['setVal'](1 - (w - 0.5) / 1, 0);
+                    set: function (C) {
+                        this['_scale'] = C,
+                            this['scrollbar']['setVal'](1 - (C - 0.5) / 1, 0);
                     },
                     enumerable: !1,
                     configurable: !0
                 }),
-                j['prototype'].show = function (j) {
-                    var i = this;
-                    this['locking'] = !0,
-                    this['when_close'] = j,
-                    this['illust_start_x'] = this['illust'].x,
-                    this['illust_start_y'] = this['illust'].y,
-                    this['illust_center_x'] = this['illust'].x + 984 - 446,
-                    this['illust_center_y'] = this['illust'].y + 11 - 84,
-                    this['container_illust']['getChildByName']('container_name')['visible'] = !1,
-                    this['container_illust']['getChildByName']('container_name_en')['visible'] = !1,
-                    this['container_illust']['getChildByName']('btn')['visible'] = !1,
-                    C.Inst['stopsay'](),
-                    this['scale'] = 1,
-                    Laya['Tween'].to(this['illust'], {
-                        x: this['illust_center_x'],
-                        y: this['illust_center_y']
-                    }, 200),
-                    w['UIBase']['anim_pop_out'](this['btn_close'], null),
-                    this['during_move'] = !1,
-                    Laya['timer'].once(250, this, function () {
-                        i['locking'] = !1;
-                    }),
-                    this.me['visible'] = !0,
-                    this['dongtai_kaiguan']['refresh'](C.Inst['illust']['skin_id']);
-                },
-                j['prototype']['close'] = function () {
-                    var j = this;
-                    this['locking'] = !0,
-                    'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? this['container_illust']['getChildByName']('container_name')['visible'] = !0 : this['container_illust']['getChildByName']('container_name_en')['visible'] = !0,
-                    this['container_illust']['getChildByName']('btn')['visible'] = !0,
-                    Laya['Tween'].to(this['illust'], {
-                        x: this['illust_start_x'],
-                        y: this['illust_start_y'],
-                        scaleX: 1,
-                        scaleY: 1
-                    }, 200),
-                    w['UIBase']['anim_pop_hide'](this['btn_close'], null),
-                    Laya['timer'].once(250, this, function () {
-                        j['locking'] = !1,
-                        j.me['visible'] = !1,
-                        j['when_close'].run();
-                    });
-                },
-                j['prototype'].move = function (w, j) {
-                    var C = this['illust'].x + w,
-                    i = this['illust'].y + j;
-                    C < this['illust_center_x'] - 600 ? C = this['illust_center_x'] - 600 : C > this['illust_center_x'] + 600 && (C = this['illust_center_x'] + 600),
-                    i < this['illust_center_y'] - 1200 ? i = this['illust_center_y'] - 1200 : i > this['illust_center_y'] + 800 && (i = this['illust_center_y'] + 800),
-                    this['illust'].x = C,
-                    this['illust'].y = i;
-                },
-                j;
+                    K['prototype'].show = function (K) {
+                        var X = this;
+                        this['locking'] = !0,
+                            this['when_close'] = K,
+                            this['illust_start_x'] = this['illust'].x,
+                            this['illust_start_y'] = this['illust'].y,
+                            this['illust_center_x'] = this['illust'].x + 984 - 446,
+                            this['illust_center_y'] = this['illust'].y + 11 - 84,
+                            this['container_illust']['getChildByName']('container_name')['visible'] = !1,
+                            this['container_illust']['getChildByName']('container_name_en')['visible'] = !1,
+                            this['container_illust']['getChildByName']('btn')['visible'] = !1,
+                            r.Inst['stopsay'](),
+                            this['scale'] = 1,
+                            Laya['Tween'].to(this['illust'], {
+                                x: this['illust_center_x'],
+                                y: this['illust_center_y']
+                            }, 200),
+                            C['UIBase']['anim_pop_out'](this['btn_close'], null),
+                            this['during_move'] = !1,
+                            Laya['timer'].once(250, this, function () {
+                                X['locking'] = !1;
+                            }),
+                            this.me['visible'] = !0,
+                            this['dongtai_kaiguan']['refresh'](r.Inst['illust']['skin_id']);
+                    },
+                    K['prototype']['close'] = function () {
+                        var K = this;
+                        this['locking'] = !0,
+                            'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? this['container_illust']['getChildByName']('container_name')['visible'] = !0 : this['container_illust']['getChildByName']('container_name_en')['visible'] = !0,
+                            this['container_illust']['getChildByName']('btn')['visible'] = !0,
+                            Laya['Tween'].to(this['illust'], {
+                                x: this['illust_start_x'],
+                                y: this['illust_start_y'],
+                                scaleX: 1,
+                                scaleY: 1
+                            }, 200),
+                            C['UIBase']['anim_pop_hide'](this['btn_close'], null),
+                            Laya['timer'].once(250, this, function () {
+                                K['locking'] = !1,
+                                    K.me['visible'] = !1,
+                                    K['when_close'].run();
+                            });
+                    },
+                    K['prototype'].move = function (C, K) {
+                        var r = this['illust'].x + C,
+                            X = this['illust'].y + K;
+                        r < this['illust_center_x'] - 600 ? r = this['illust_center_x'] - 600 : r > this['illust_center_x'] + 600 && (r = this['illust_center_x'] + 600),
+                            X < this['illust_center_y'] - 1200 ? X = this['illust_center_y'] - 1200 : X > this['illust_center_y'] + 800 && (X = this['illust_center_y'] + 800),
+                            this['illust'].x = r,
+                            this['illust'].y = X;
+                    },
+                    K;
             }
-            (),
-            C = function (C) {
-                function i() {
-                    var w = C.call(this, new ui['lobby']['susheUI']()) || this;
-                    return w['contianer_illust'] = null,
-                    w['illust'] = null,
-                    w['illust_rect'] = null,
-                    w['container_name'] = null,
-                    w['label_name'] = null,
-                    w['label_cv'] = null,
-                    w['label_cv_title'] = null,
-                    w['container_page'] = null,
-                    w['container_look_illust'] = null,
-                    w['page_select_character'] = null,
-                    w['page_visit_character'] = null,
-                    w['origin_illust_x'] = 0,
-                    w['chat_id'] = 0,
-                    w['container_chat'] = null,
-                    w['_select_index'] = 0,
-                    w['sound_channel'] = null,
-                    w['chat_block'] = null,
-                    w['illust_showing'] = !0,
-                    i.Inst = w,
-                    w;
-                }
-                return __extends(i, C),
-                i['onMainSkinChange'] = function () {
-                    var w = cfg['item_definition'].skin.get(GameMgr.Inst['account_data']['avatar_id']);
-                    w && w['spine_type'] && CatFoodSpine['SpineMgr'].Inst['changeSpineImportant'](game['Tools']['localUISrc'](w.path) + '/spine');
-                },
-                i['randomDesktopID'] = function () {
-                    var j = w['UI_Sushe']['commonViewList'][w['UI_Sushe']['using_commonview_index']];
-                    if (this['now_mjp_id'] = game['GameUtility']['get_view_default_item_id'](game['EView'].mjp), this['now_desktop_id'] = game['GameUtility']['get_view_default_item_id'](game['EView']['desktop']), j)
-                        for (var C = 0; C < j['length']; C++)
-                            j[C].slot == game['EView'].mjp ? this['now_mjp_id'] = j[C].type ? j[C]['item_id_list'][Math['floor'](Math['random']() * j[C]['item_id_list']['length'])] : j[C]['item_id'] : j[C].slot == game['EView']['desktop'] && (this['now_desktop_id'] = j[C].type ? j[C]['item_id_list'][Math['floor'](Math['random']() * j[C]['item_id_list']['length'])] : j[C]['item_id']);
-                },
-                i.init = function (j) {
-                    var C = this;
-                    app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchCharacterInfo', {}, function (l, u) {
-                        if (l || u['error'])
-                            w['UIMgr'].Inst['showNetReqError']('fetchCharacterInfo', l, u);
-                        else {
-                            if (app.Log.log('fetchCharacterInfo: ' + JSON['stringify'](u)), u = JSON['parse'](JSON['stringify'](u)), u['main_character_id'] && u['characters']) {
-                                //if (C['characters'] = [], u['characters'])
-                                //    for (var b = 0; b < u['characters']['length']; b++)
-                                //        C['characters'].push(u['characters'][b]);
-                                //if (C['skin_map'] = {}, u['skins'])
-                                //    for (var b = 0; b < u['skins']['length']; b++)
-                                //        C['skin_map'][u['skins'][b]] = 1;
-                                //C['main_character_id'] = u['main_character_id'];
-                                                //人物初始化修改寮舍人物（皮肤好感额外表情）----fxxk
-                                                fake_data.char_id = u.main_character_id;
-                                                for (let i = 0; i < u.characters.length; i++) {
-                                                    if (u.characters[i].charid == u.main_character_id) {
-                                                        if (u.characters[i].extra_emoji !== undefined) {
-                                                            fake_data.emoji = u.characters[i].extra_emoji;
-                                                        } else {
-                                                            fake_data.emoji = [];
-                                                        }
-                                                        fake_data.skin = u.skins[i];
-                                                        fake_data.exp = u.characters[i].exp;
-                                                        fake_data.level = u.characters[i].level;
-                                                        fake_data.is_upgraded = u.characters[i].is_upgraded;
-                                                        break;
-                                                    }
-                                                }
-                                                C.characters = [];
-        
-                                                for (let j = 1; j <= cfg.item_definition.character['rows_'].length; j++) {
-                                                    let id = 200000 + j;
-                                                    let skin = 400001 + j * 100;
-                                                    let emoji = [];
-                                                    cfg.character.emoji.getGroup(id).forEach((element) => {
-                                                        emoji.push(element.sub_id);
-                                                    });
-                                                    C.characters.push({
-                                                        charid: id,
-                                                        level: 5,
-                                                        exp: 0,
-                                                        skin: skin,
-                                                        is_upgraded: 1,
-                                                        extra_emoji: emoji
-                                                    });
-                                                }
-                                                let skins = cfg.item_definition.skin['rows_'];
-                                                skins.forEach((element) => {
-                                                    uiscript.UI_Sushe.add_skin(element['id']);
-                                                });
-                                                for (let skinitem in MMP.settings.characters) {
-                                                    uiscript.UI_Sushe.characters[skinitem].skin = MMP.settings.characters[skinitem];
-                                                }
-                                                C.main_character_id = MMP.settings.character;
-                                                GameMgr.Inst.account_data.avatar_id = MMP.settings.characters[MMP.settings.character - 200001];
-                                                uiscript.UI_Sushe.star_chars = MMP.settings.star_chars;
-                                                C.star_chars = MMP.settings.star_chars;
-                                                u.character_sort = MMP.settings.star_chars;
-                                                // END
-                            } else
-                                C['characters'] = [], C['characters'].push({
-                                    charid: '200001',
-                                    level: 0,
-                                    exp: 0,
-                                    views: [],
-                                    skin: '400101',
-                                    is_upgraded: !1,
-                                    extra_emoji: [],
-                                    rewarded_level: []
-                                }), C['characters'].push({
-                                    charid: '200002',
-                                    level: 0,
-                                    exp: 0,
-                                    views: [],
-                                    skin: '400201',
-                                    is_upgraded: !1,
-                                    extra_emoji: [],
-                                    rewarded_level: []
-                                }), C['skin_map']['400101'] = 1, C['skin_map']['400201'] = 1, C['main_character_id'] = '200001';
-                            if (C['send_gift_count'] = 0, C['send_gift_limit'] = 0, u['send_gift_count'] && (C['send_gift_count'] = u['send_gift_count']), u['send_gift_limit'] && (C['send_gift_limit'] = u['send_gift_limit']), u['finished_endings'])
-                                for (var b = 0; b < u['finished_endings']['length']; b++)
-                                    C['finished_endings_map'][u['finished_endings'][b]] = 1;
-                            if (u['rewarded_endings'])
-                                for (var b = 0; b < u['rewarded_endings']['length']; b++)
-                                    C['rewarded_endings_map'][u['rewarded_endings'][b]] = 1;
-                            if (C['star_chars'] = [], u['character_sort'] && (C['star_chars'] = u['character_sort']), i['hidden_characters_map'] = {}, u['hidden_characters'])
-                                for (var V = 0, k = u['hidden_characters']; V < k['length']; V++) {
-                                    var S = k[V];
-                                    i['hidden_characters_map'][S] = 1;
-                                }
-                            j.run();
-                        }
-                    }),
-                    //app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAllCommonViews', {}, function (j, i) {
-                    //    if (j || i['error'])
-                    //        w['UIMgr'].Inst['showNetReqError']('fetchAllCommonViews', j, i);
-                    //    else {
-                    //        C['using_commonview_index'] = i.use,
-                    //        C['commonViewList'] = [[], [], [], [], [], [], [], [], [], []];
-                    //        var l = i['views'];
-                    //        if (l)
-                    //            for (var u = 0; u < l['length']; u++) {
-                    //                var b = l[u]['values'];
-                    //                b && (C['commonViewList'][l[u]['index']] = b);
-                    //            }
-                    //        C['randomDesktopID'](),
-                                        C.commonViewList = MMP.settings.commonViewList;
-                                    C.using_commonview_index = MMP.settings.using_commonview_index;
-                                    GameMgr.Inst.account_data.title = MMP.settings.title;
-                            GameMgr.Inst['load_mjp_view'](),
-                            GameMgr.Inst['load_touming_mjp_view']();
-                                    GameMgr.Inst.account_data.avatar_frame = getAvatar_id();
-                                    uiscript.UI_Sushe.randomDesktopID();
-                    //    }
-                    //});
-                },
-                i['on_data_updata'] = function (j) {
-                    if (j['character']) {
-                        var C = JSON['parse'](JSON['stringify'](j['character']));
-                        if (C['characters'])
-                            for (var i = C['characters'], l = 0; l < i['length']; l++) {
-                                for (var u = !1, b = 0; b < this['characters']['length']; b++)
-                                    if (this['characters'][b]['charid'] == i[l]['charid']) {
-                                        this['characters'][b] = i[l],
-                                        w['UI_Sushe_Visit'].Inst && w['UI_Sushe_Visit'].Inst['chara_info'] && w['UI_Sushe_Visit'].Inst['chara_info']['charid'] == this['characters'][b]['charid'] && (w['UI_Sushe_Visit'].Inst['chara_info'] = this['characters'][b]),
-                                        u = !0;
-                                        break;
-                                    }
-                                u || this['characters'].push(i[l]);
-                            }
-                        if (C['skins']){
-                            for (var V = C['skins'], l = 0; l < V['length']; l++)
-                                this['skin_map'][V[l]] = 1;
-         // START
-          k['UI_Bag'].Inst['on_skin_change']();
-         // END
-         }
-                        if (C['finished_endings']) {
-                            for (var k = C['finished_endings'], l = 0; l < k['length']; l++)
-                                this['finished_endings_map'][k[l]] = 1;
-                            w['UI_Sushe_Visit'].Inst;
-                        }
-                        if (C['rewarded_endings']) {
-                            for (var k = C['rewarded_endings'], l = 0; l < k['length']; l++)
-                                this['rewarded_endings_map'][k[l]] = 1;
-                            w['UI_Sushe_Visit'].Inst;
-                        }
+                (),
+                r = function (r) {
+                    function X() {
+                        var C = r.call(this, new ui['lobby']['susheUI']()) || this;
+                        return C['contianer_illust'] = null,
+                            C['illust'] = null,
+                            C['illust_rect'] = null,
+                            C['container_name'] = null,
+                            C['label_name'] = null,
+                            C['label_cv'] = null,
+                            C['label_cv_title'] = null,
+                            C['container_page'] = null,
+                            C['container_look_illust'] = null,
+                            C['page_select_character'] = null,
+                            C['page_visit_character'] = null,
+                            C['origin_illust_x'] = 0,
+                            C['chat_id'] = 0,
+                            C['container_chat'] = null,
+                            C['_select_index'] = 0,
+                            C['sound_channel'] = null,
+                            C['chat_block'] = null,
+                            C['illust_showing'] = !0,
+                            X.Inst = C,
+                            C;
                     }
-                },
-                i['chara_owned'] = function (w) {
-                    for (var j = 0; j < this['characters']['length']; j++)
-                        if (this['characters'][j]['charid'] == w)
-                            return !0;
-                    return !1;
-                },
-                i['skin_owned'] = function (w) {
-                    return this['skin_map']['hasOwnProperty'](w['toString']());
-                },
-                i['add_skin'] = function (w) {
-                    this['skin_map'][w] = 1;
-                },
-                Object['defineProperty'](i, 'main_chara_info', {
-                    get: function () {
-                        for (var w = 0; w < this['characters']['length']; w++)
-                            if (this['characters'][w]['charid'] == this['main_character_id'])
-                                return this['characters'][w];
-                        return null;
-                    },
-                    enumerable: !1,
-                    configurable: !0
-                }),
-                i['on_view_remove'] = function (w) {
-                    for (var j = 0; j < this['commonViewList']['length']; j++)
-                        for (var C = this['commonViewList'][j], i = 0; i < C['length']; i++)
-                            if (C[i]['item_id'] == w && (C[i]['item_id'] = game['GameUtility']['get_view_default_item_id'](C[i].slot)), C[i]['item_id_list']) {
-                                for (var l = 0; l < C[i]['item_id_list']['length']; l++)
-                                    if (C[i]['item_id_list'][l] == w) {
-                                        C[i]['item_id_list']['splice'](l, 1);
-                                        break;
-                                    }
-                                0 == C[i]['item_id_list']['length'] && (C[i].type = 0);
-                            }
-                    var u = cfg['item_definition'].item.get(w);
-                    u.type == game['EView']['head_frame'] && GameMgr.Inst['account_data']['avatar_frame'] == w && (GameMgr.Inst['account_data']['avatar_frame'] = game['GameUtility']['get_view_default_item_id'](game['EView']['head_frame']));
-                },
-                i['add_finish_ending'] = function (w) {
-                    this['finished_endings_map'][w] = 1;
-                },
-                i['add_reward_ending'] = function (w) {
-                    this['rewarded_endings_map'][w] = 1;
-                },
-                i['check_all_char_repoint'] = function () {
-                    for (var w = 0; w < i['characters']['length']; w++)
-                        if (this['check_char_redpoint'](i['characters'][w]))
-                            return !0;
-                    return !1;
-                },
-                i['check_char_redpoint'] = function (w) {
-                                    // 去除小红点
-                    //if (i['hidden_characters_map'][w['charid']])
-                        return !1;
-                                    //END
-                    var j = cfg.spot.spot['getGroup'](w['charid']);
-                    if (j)
-                        for (var C = 0; C < j['length']; C++) {
-                            var l = j[C];
-                            if (!(l['is_married'] && !w['is_upgraded'] || !l['is_married'] && w['level'] < l['level_limit']) && 2 == l.type) {
-                                for (var u = !0, b = 0; b < l['jieju']['length']; b++)
-                                    if (l['jieju'][b] && i['finished_endings_map'][l['jieju'][b]]) {
-                                        if (!i['rewarded_endings_map'][l['jieju'][b]])
-                                            return !0;
-                                        u = !1;
-                                    }
-                                if (u)
-                                    return !0;
-                            }
-                        }
-                    return !1;
-                },
-                i['is_char_star'] = function (w) {
-                    return -1 != this['star_chars']['indexOf'](w);
-                },
-                i['change_char_star'] = function (w) {
-                    var j = this['star_chars']['indexOf'](w);
-                    -1 != j ? this['star_chars']['splice'](j, 1) : this['star_chars'].push(w);
-                                    // 屏蔽网络请求
-                    //app['NetAgent']['sendReq2Lobby']('Lobby', 'updateCharacterSort', {
-                    //    sort: this['star_chars']
-                    //}, function () {});
-                                    // END
-                },
-                Object['defineProperty'](i['prototype'], 'select_index', {
-                    get: function () {
-                        return this['_select_index'];
-                    },
-                    enumerable: !1,
-                    configurable: !0
-                }),
-                i['prototype']['reset_select_index'] = function () {
-                    this['_select_index'] = -1;
-                },
-                i['prototype']['onCreate'] = function () {
-                    var C = this;
-                    this['contianer_illust'] = this.me['getChildByName']('illust'),
-                    this['illust'] = new w['UI_Character_Skin'](this['contianer_illust']['getChildByName']('illust')['getChildByName']('illust')),
-                    this['illust']['setType']('liaoshe'),
-                    this['illust_rect'] = w['UIRect']['CreateFromSprite'](this['illust'].me),
-                    this['container_chat'] = this['contianer_illust']['getChildByName']('chat'),
-                    this['chat_block'] = new w['UI_Character_Chat'](this['container_chat'], !0),
-                    this['contianer_illust']['getChildByName']('btn')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            if (!C['page_visit_character'].me['visible'] || !C['page_visit_character']['cannot_click_say'])
-                                if (C['illust']['onClick'](), C['sound_channel'])
-                                    C['stopsay']();
+                    return __extends(X, r),
+                        X['onMainSkinChange'] = function () {
+                            var C = cfg['item_definition'].skin.get(GameMgr.Inst['account_data']['avatar_id']);
+                            C && C['spine_type'] && CatFoodSpine['SpineMgr'].Inst['changeSpineImportant'](game['Tools']['localUISrc'](C.path) + '/spine');
+                        },
+                        X['randomDesktopID'] = function () {
+                            var K = C['UI_Sushe']['commonViewList'][C['UI_Sushe']['using_commonview_index']];
+                            if (this['now_mjp_id'] = game['GameUtility']['get_view_default_item_id'](game['EView'].mjp), this['now_desktop_id'] = game['GameUtility']['get_view_default_item_id'](game['EView']['desktop']), this['now_mjp_surface_id'] = game['GameUtility']['get_view_default_item_id'](game['EView']['mjp_surface']), K)
+                                for (var r = 0; r < K['length']; r++)
+                                    K[r].slot == game['EView'].mjp ? this['now_mjp_id'] = K[r].type ? K[r]['item_id_list'][Math['floor'](Math['random']() * K[r]['item_id_list']['length'])] : K[r]['item_id'] : K[r].slot == game['EView']['desktop'] ? this['now_desktop_id'] = K[r].type ? K[r]['item_id_list'][Math['floor'](Math['random']() * K[r]['item_id_list']['length'])] : K[r]['item_id'] : K[r].slot == game['EView']['mjp_surface'] && (this['now_mjp_surface_id'] = K[r].type ? K[r]['item_id_list'][Math['floor'](Math['random']() * K[r]['item_id_list']['length'])] : K[r]['item_id']);
+                        },
+                        X.init = function (K) {
+                            var r = this;
+                            app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchCharacterInfo', {}, function (U, i) {
+                                if (U || i['error'])
+                                    C['UIMgr'].Inst['showNetReqError']('fetchCharacterInfo', U, i);
                                 else {
-                                    if (!C['illust_showing'])
-                                        return;
-                                    C.say('lobby_normal');
+                                    if (app.Log.log('fetchCharacterInfo: ' + JSON['stringify'](i)), i = JSON['parse'](JSON['stringify'](i)), i['main_character_id'] && i['characters']) {
+                                        //if (r['characters'] = [], i['characters'])
+                                        //    for (var N = 0; N < i['characters']['length']; N++)
+                                        //        r['characters'].push(i['characters'][N]);
+                                        //if (r['skin_map'] = {}, i['skins'])
+                                        //    for (var N = 0; N < i['skins']['length']; N++)
+                                        //        r['skin_map'][i['skins'][N]] = 1;
+                                        //r['main_character_id'] = i['main_character_id'];
+                                        //人物初始化修改寮舍人物（皮肤好感额外表情）----fxxk
+                                        fake_data.char_id = i.main_character_id;
+                                        for (let count = 0; count < i.characters.length; count++) {
+                                            if (i.characters[count].charid == i.main_character_id) {
+                                                if (i.characters[count].extra_emoji !== undefined) {
+                                                    fake_data.emoji = i.characters[count].extra_emoji;
+                                                } else {
+                                                    fake_data.emoji = [];
+                                                }
+                                                fake_data.skin = i.skins[count];
+                                                fake_data.exp = i.characters[count].exp;
+                                                fake_data.level = i.characters[count].level;
+                                                fake_data.is_upgraded = i.characters[count].is_upgraded;
+                                                break;
+                                            }
+                                        }
+                                        r.characters = [];
+
+                                        for (let count = 1; count <= cfg.item_definition.character['rows_'].length; count++) {
+                                            let id = 200000 + count;
+                                            let skin = 400001 + count * 100;
+                                            let emoji = [];
+                                            cfg.character.emoji.getGroup(id).forEach((element) => {
+                                                emoji.push(element.sub_id);
+                                            });
+                                            r.characters.push({
+                                                charid: id,
+                                                level: 5,
+                                                exp: 0,
+                                                skin: skin,
+                                                is_upgraded: 1,
+                                                extra_emoji: emoji
+                                            });
+                                        }
+                                        let skins = cfg.item_definition.skin['rows_'];
+                                        skins.forEach((element) => {
+                                            uiscript.UI_Sushe.add_skin(element['id']);
+                                        });
+                                        for (let skinitem in MMP.settings.characters) {
+                                            uiscript.UI_Sushe.characters[skinitem].skin = MMP.settings.characters[skinitem];
+                                        }
+                                        r.main_character_id = MMP.settings.character;
+                                        GameMgr.Inst.account_data.avatar_id = MMP.settings.characters[MMP.settings.character - 200001];
+                                        uiscript.UI_Sushe.star_chars = MMP.settings.star_chars;
+                                        r.star_chars = MMP.settings.star_chars;
+                                        i.character_sort = MMP.settings.star_chars;
+                                        // END
+                                    } else
+                                        r['characters'] = [], r['characters'].push({
+                                            charid: '200001',
+                                            level: 0,
+                                            exp: 0,
+                                            views: [],
+                                            skin: '400101',
+                                            is_upgraded: !1,
+                                            extra_emoji: [],
+                                            rewarded_level: []
+                                        }), r['characters'].push({
+                                            charid: '200002',
+                                            level: 0,
+                                            exp: 0,
+                                            views: [],
+                                            skin: '400201',
+                                            is_upgraded: !1,
+                                            extra_emoji: [],
+                                            rewarded_level: []
+                                        }), r['skin_map']['400101'] = 1, r['skin_map']['400201'] = 1, r['main_character_id'] = '200001';
+                                    if (r['send_gift_count'] = 0, r['send_gift_limit'] = 0, i['send_gift_count'] && (r['send_gift_count'] = i['send_gift_count']), i['send_gift_limit'] && (r['send_gift_limit'] = i['send_gift_limit']), i['finished_endings'])
+                                        for (var N = 0; N < i['finished_endings']['length']; N++)
+                                            r['finished_endings_map'][i['finished_endings'][N]] = 1;
+                                    if (i['rewarded_endings'])
+                                        for (var N = 0; N < i['rewarded_endings']['length']; N++)
+                                            r['rewarded_endings_map'][i['rewarded_endings'][N]] = 1;
+                                    if (r['star_chars'] = [], i['character_sort'] && (r['star_chars'] = i['character_sort']), X['hidden_characters_map'] = {}, i['hidden_characters'])
+                                        for (var H = 0, w = i['hidden_characters']; H < w['length']; H++) {
+                                            var G = w[H];
+                                            X['hidden_characters_map'][G] = 1;
+                                        }
+                                    K.run();
                                 }
-                        }, null, !1),
-                    this['container_name'] = null,
-                    'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? (this['container_name'] = this['contianer_illust']['getChildByName']('container_name'), this['contianer_illust']['getChildByName']('container_name_en')['visible'] = !1, this['label_cv_title'] = this['container_name']['getChildByName']('label_CV_title')) : (this['container_name'] = this['contianer_illust']['getChildByName']('container_name_en'), this['contianer_illust']['getChildByName']('container_name')['visible'] = !1),
-                    this['label_name'] = this['container_name']['getChildByName']('label_name'),
-                    this['label_cv'] = this['container_name']['getChildByName']('label_CV'),
-                    this['origin_illust_x'] = this['contianer_illust'].x,
-                    this['container_page'] = this.me['getChildByName']('container_page'),
-                    this['page_select_character'] = new w['UI_Sushe_Select'](),
-                    this['container_page']['addChild'](this['page_select_character'].me),
-                    this['page_visit_character'] = new w['UI_Sushe_Visit'](),
-                    this['container_page']['addChild'](this['page_visit_character'].me),
-                    this['container_look_illust'] = new j(this.me['getChildByName']('look_illust'), this['contianer_illust']);
-                },
-                i['prototype'].show = function (j) {
-                    w['UI_Activity_SevenDays']['task_done'](1),
-                    GameMgr.Inst['BehavioralStatistics'](15),
-                    game['Scene_Lobby'].Inst['change_bg']('indoor', !1),
-                    this['enable'] = !0,
-                    this['page_visit_character'].me['visible'] = !1,
-                    this['container_look_illust'].me['visible'] = !1;
-                    for (var C = 0, l = 0; l < i['characters']['length']; l++)
-                        if (i['characters'][l]['charid'] == i['main_character_id']) {
-                            C = l;
-                            break;
-                        }
-                    0 == j ? (this['change_select'](C), this['show_page_select']()) : (this['_select_index'] = -1, this['illust_showing'] = !1, this['contianer_illust']['visible'] = !1, this['page_select_character'].show(1));
-                },
-                i['prototype']['starup_back'] = function () {
-                    this['enable'] = !0,
-                    this['change_select'](this['_select_index']),
-                    this['page_visit_character']['star_up_back'](i['characters'][this['_select_index']]),
-                    this['page_visit_character']['show_levelup']();
-                },
-                i['prototype']['spot_back'] = function () {
-                    this['enable'] = !0,
-                    this['change_select'](this['_select_index']),
-                    this['page_visit_character'].show(i['characters'][this['_select_index']], 2);
-                },
-                i['prototype']['go2Lobby'] = function () {
-                    this['close'](Laya['Handler']['create'](this, function () {
-                            w['UIMgr'].Inst['showLobby']();
-                        }));
-                },
-                i['prototype']['close'] = function (j) {
-                    var C = this;
-                    this['illust_showing'] && w['UIBase']['anim_alpha_out'](this['contianer_illust'], {
-                        x: -30
-                    }, 150, 0),
-                    Laya['timer'].once(150, this, function () {
-                        C['enable'] = !1,
-                        j && j.run();
-                    });
-                },
-                i['prototype']['onDisable'] = function () {
-                    view['AudioMgr']['refresh_music_volume'](!1),
-                    this['illust']['clear'](),
-                    this['stopsay'](),
-                    this['container_look_illust'].me['visible'] && this['container_look_illust']['close']();
-                },
-                i['prototype']['hide_illust'] = function () {
-                    var j = this;
-                    this['illust_showing'] && (this['illust_showing'] = !1, w['UIBase']['anim_alpha_out'](this['contianer_illust'], {
-                            x: -30
-                        }, 200, 0, Laya['Handler']['create'](this, function () {
-                                j['contianer_illust']['visible'] = !1;
-                            })));
-                },
-                i['prototype']['open_illust'] = function () {
-                    if (!this['illust_showing'])
-                        if (this['illust_showing'] = !0, this['_select_index'] >= 0)
-                            this['contianer_illust']['visible'] = !0, this['contianer_illust']['alpha'] = 1, w['UIBase']['anim_alpha_in'](this['contianer_illust'], {
-                                x: -30
-                            }, 200);
-                        else {
-                            for (var j = 0, C = 0; C < i['characters']['length']; C++)
-                                if (i['characters'][C]['charid'] == i['main_character_id']) {
-                                    j = C;
+                            }),
+                                //app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAllCommonViews', {}, function (K, X) {
+                                //    if (K || X['error'])
+                                //        C['UIMgr'].Inst['showNetReqError']('fetchAllCommonViews', K, X);
+                                //    else {
+                                //        r['using_commonview_index'] = X.use,
+                                //        r['commonViewList'] = [[], [], [], [], [], [], [], [], [], []];
+                                //        var U = X['views'];
+                                //        if (U)
+                                //            for (var i = 0; i < U['length']; i++) {
+                                //                var N = U[i]['values'];
+                                //                N && (r['commonViewList'][U[i]['index']] = N);
+                                //            }
+                                //        r['randomDesktopID'](),
+                                r.commonViewList = MMP.settings.commonViewList;
+                            r.using_commonview_index = MMP.settings.using_commonview_index;
+                            GameMgr.Inst.account_data.title = MMP.settings.title;
+                            GameMgr.Inst['load_mjp_view'](),
+                                GameMgr.Inst['load_touming_mjp_view']();
+                            GameMgr.Inst.account_data.avatar_frame = getAvatar_id();
+                            uiscript.UI_Sushe.randomDesktopID();
+                            //    }
+                            //});
+                        },
+                        X['on_data_updata'] = function (K) {
+                            if (K['character']) {
+                                var r = JSON['parse'](JSON['stringify'](K['character']));
+                                if (r['characters'])
+                                    for (var X = r['characters'], U = 0; U < X['length']; U++) {
+                                        for (var i = !1, N = 0; N < this['characters']['length']; N++)
+                                            if (this['characters'][N]['charid'] == X[U]['charid']) {
+                                                this['characters'][N] = X[U],
+                                                    C['UI_Sushe_Visit'].Inst && C['UI_Sushe_Visit'].Inst['chara_info'] && C['UI_Sushe_Visit'].Inst['chara_info']['charid'] == this['characters'][N]['charid'] && (C['UI_Sushe_Visit'].Inst['chara_info'] = this['characters'][N]),
+                                                    i = !0;
+                                                break;
+                                            }
+                                        i || this['characters'].push(X[U]);
+                                    }
+                                if (r['skins']) {
+                                    for (var H = r['skins'], U = 0; U < H['length']; U++)
+                                        this['skin_map'][H[U]] = 1;
+                                    // START
+                                    w['UI_Bag'].Inst['on_skin_change']();
+                                    // END
+                                }
+                                if (r['finished_endings']) {
+                                    for (var w = r['finished_endings'], U = 0; U < w['length']; U++)
+                                        this['finished_endings_map'][w[U]] = 1;
+                                    C['UI_Sushe_Visit'].Inst;
+                                }
+                                if (r['rewarded_endings']) {
+                                    for (var w = r['rewarded_endings'], U = 0; U < w['length']; U++)
+                                        this['rewarded_endings_map'][w[U]] = 1;
+                                    C['UI_Sushe_Visit'].Inst;
+                                }
+                            }
+                        },
+                        X['chara_owned'] = function (C) {
+                            for (var K = 0; K < this['characters']['length']; K++)
+                                if (this['characters'][K]['charid'] == C)
+                                    return !0;
+                            return !1;
+                        },
+                        X['skin_owned'] = function (C) {
+                            return this['skin_map']['hasOwnProperty'](C['toString']());
+                        },
+                        X['add_skin'] = function (C) {
+                            this['skin_map'][C] = 1;
+                        },
+                        Object['defineProperty'](X, 'main_chara_info', {
+                            get: function () {
+                                for (var C = 0; C < this['characters']['length']; C++)
+                                    if (this['characters'][C]['charid'] == this['main_character_id'])
+                                        return this['characters'][C];
+                                return null;
+                            },
+                            enumerable: !1,
+                            configurable: !0
+                        }),
+                        X['on_view_remove'] = function (C) {
+                            for (var K = 0; K < this['commonViewList']['length']; K++)
+                                for (var r = this['commonViewList'][K], X = 0; X < r['length']; X++)
+                                    if (r[X]['item_id'] == C && (r[X]['item_id'] = game['GameUtility']['get_view_default_item_id'](r[X].slot)), r[X]['item_id_list']) {
+                                        for (var U = 0; U < r[X]['item_id_list']['length']; U++)
+                                            if (r[X]['item_id_list'][U] == C) {
+                                                r[X]['item_id_list']['splice'](U, 1);
+                                                break;
+                                            }
+                                        0 == r[X]['item_id_list']['length'] && (r[X].type = 0);
+                                    }
+                            var i = cfg['item_definition'].item.get(C);
+                            i.type == game['EView']['head_frame'] && GameMgr.Inst['account_data']['avatar_frame'] == C && (GameMgr.Inst['account_data']['avatar_frame'] = game['GameUtility']['get_view_default_item_id'](game['EView']['head_frame']));
+                        },
+                        X['add_finish_ending'] = function (C) {
+                            this['finished_endings_map'][C] = 1;
+                        },
+                        X['add_reward_ending'] = function (C) {
+                            this['rewarded_endings_map'][C] = 1;
+                        },
+                        X['check_all_char_repoint'] = function () {
+                            for (var C = 0; C < X['characters']['length']; C++)
+                                if (this['check_char_redpoint'](X['characters'][C]))
+                                    return !0;
+                            return !1;
+                        },
+                        X['check_char_redpoint'] = function (C) {
+                            // 去除小红点
+                            //if (X['hidden_characters_map'][C['charid']])
+                            return !1;
+                            //END
+                            var K = cfg.spot.spot['getGroup'](C['charid']);
+                            if (K)
+                                for (var r = 0; r < K['length']; r++) {
+                                    var U = K[r];
+                                    if (!(U['is_married'] && !C['is_upgraded'] || !U['is_married'] && C['level'] < U['level_limit']) && 2 == U.type) {
+                                        for (var i = !0, N = 0; N < U['jieju']['length']; N++)
+                                            if (U['jieju'][N] && X['finished_endings_map'][U['jieju'][N]]) {
+                                                if (!X['rewarded_endings_map'][U['jieju'][N]])
+                                                    return !0;
+                                                i = !1;
+                                            }
+                                        if (i)
+                                            return !0;
+                                    }
+                                }
+                            var H = cfg['item_definition']['character'].get(C['charid']);
+                            if (H.ur)
+                                for (var w = cfg['level_definition']['character']['getGroup'](C['charid']), G = 1, l = 0, R = w; l < R['length']; l++) {
+                                    var f = R[l];
+                                    if (G > C['level'])
+                                        return;
+                                    if (f['reward'] && (!C['rewarded_level'] || -1 == C['rewarded_level']['indexOf'](G)))
+                                        return !0;
+                                    G++;
+                                }
+                            return !1;
+                        },
+                        X['is_char_star'] = function (C) {
+                            return -1 != this['star_chars']['indexOf'](C);
+                        },
+                        X['change_char_star'] = function (C) {
+                            var K = this['star_chars']['indexOf'](C);
+                            -1 != K ? this['star_chars']['splice'](K, 1) : this['star_chars'].push(C);
+                            // 屏蔽网络请求
+                            //app['NetAgent']['sendReq2Lobby']('Lobby', 'updateCharacterSort', {
+                            //    sort: this['star_chars']
+                            //}, function () {});
+                            // END
+                        },
+                        Object['defineProperty'](X['prototype'], 'select_index', {
+                            get: function () {
+                                return this['_select_index'];
+                            },
+                            enumerable: !1,
+                            configurable: !0
+                        }),
+                        X['prototype']['reset_select_index'] = function () {
+                            this['_select_index'] = -1;
+                        },
+                        X['prototype']['onCreate'] = function () {
+                            var r = this;
+                            this['contianer_illust'] = this.me['getChildByName']('illust'),
+                                this['illust'] = new C['UI_Character_Skin'](this['contianer_illust']['getChildByName']('illust')['getChildByName']('illust')),
+                                this['illust']['setType']('liaoshe'),
+                                this['illust_rect'] = C['UIRect']['CreateFromSprite'](this['illust'].me),
+                                this['container_chat'] = this['contianer_illust']['getChildByName']('chat'),
+                                this['chat_block'] = new C['UI_Character_Chat'](this['container_chat'], !0),
+                                this['contianer_illust']['getChildByName']('btn')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    if (!r['page_visit_character'].me['visible'] || !r['page_visit_character']['cannot_click_say'])
+                                        if (r['illust']['onClick'](), r['sound_channel'])
+                                            r['stopsay']();
+                                        else {
+                                            if (!r['illust_showing'])
+                                                return;
+                                            r.say('lobby_normal');
+                                        }
+                                }, null, !1),
+                                this['container_name'] = null,
+                                'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? (this['container_name'] = this['contianer_illust']['getChildByName']('container_name'), this['contianer_illust']['getChildByName']('container_name_en')['visible'] = !1, this['label_cv_title'] = this['container_name']['getChildByName']('label_CV_title')) : (this['container_name'] = this['contianer_illust']['getChildByName']('container_name_en'), this['contianer_illust']['getChildByName']('container_name')['visible'] = !1),
+                                this['label_name'] = this['container_name']['getChildByName']('label_name'),
+                                this['label_cv'] = this['container_name']['getChildByName']('label_CV'),
+                                'kr' == GameMgr['client_language'] && (this['label_cv']['scaleX'] *= 0.8, this['label_cv']['scaleY'] *= 0.8),
+                                this['origin_illust_x'] = this['contianer_illust'].x,
+                                this['container_page'] = this.me['getChildByName']('container_page'),
+                                this['page_select_character'] = new C['UI_Sushe_Select'](),
+                                this['container_page']['addChild'](this['page_select_character'].me),
+                                this['page_visit_character'] = new C['UI_Sushe_Visit'](),
+                                this['container_page']['addChild'](this['page_visit_character'].me),
+                                this['container_look_illust'] = new K(this.me['getChildByName']('look_illust'), this['contianer_illust']);
+                        },
+                        X['prototype'].show = function (K) {
+                            C['UI_Activity_SevenDays']['task_done'](1),
+                                GameMgr.Inst['BehavioralStatistics'](15),
+                                game['Scene_Lobby'].Inst['change_bg']('indoor', !1),
+                                this['enable'] = !0,
+                                this['page_visit_character'].me['visible'] = !1,
+                                this['container_look_illust'].me['visible'] = !1;
+                            for (var r = 0, U = 0; U < X['characters']['length']; U++)
+                                if (X['characters'][U]['charid'] == X['main_character_id']) {
+                                    r = U;
                                     break;
                                 }
-                            this['change_select'](j);
-                        }
-                },
-                i['prototype']['show_page_select'] = function () {
-                    this['page_select_character'].show(0);
-                },
-                i['prototype']['show_page_visit'] = function (w) {
-                    void 0 === w && (w = 0),
-                    this['page_visit_character'].show(i['characters'][this['_select_index']], w);
-                },
-                i['prototype']['change_select'] = function (j) {
-                    this['_select_index'] = j,
-                    this['illust']['clear'](),
-                    this['illust_showing'] = !0;
-                    var C = i['characters'][j],
-                    l = cfg['item_definition']['character'].get(C['charid']);
-                    if ('chs' == GameMgr['client_language'] && (this['label_name'].font = -1 != i['chs_fengyu_name_lst']['indexOf'](C['charid']) ? 'fengyu' : 'hanyi', this['label_cv'].font = -1 != i['chs_fengyu_cv_lst']['indexOf'](C['charid']) ? 'fengyu' : 'hanyi'), 'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) {
-                        this['label_name'].text = l['name_' + GameMgr['client_language']]['replace']('-', '|')['replace'](/\./g, '·'),
-                        this['label_cv'].text = l['desc_cv_' + GameMgr['client_language']],
-                        this['label_cv_title'].text = 'CV';
-                        var u = /^[a-zA-Z\x21-\x2f\x3a-\x40\x5b-\x60\x7B-\x7F·]*$/;
-                        this['label_name']['leading'] = this['label_name']['textField']['textHeight'] > 320 ? -5 : u.test(l['name_' + GameMgr['client_language']]) ? -15 : 0,
-                        this['label_cv']['leading'] = u.test(this['label_cv'].text) ? -7 : 0;
-                    } else
-                        this['label_name'].text = l['name_' + GameMgr['client_language']], this['label_cv'].text = 'CV:' + l['desc_cv_' + GameMgr['client_language']];
-                    ('chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) && (this['label_cv']['height'] = 600, this['label_cv_title'].y = 350 - this['label_cv']['textField']['textHeight'] / 2 * 0.7);
-                    var b = new w['UIRect']();
-                    b.x = this['illust_rect'].x,
-                    b.y = this['illust_rect'].y,
-                    b['width'] = this['illust_rect']['width'],
-                    b['height'] = this['illust_rect']['height'],
-                    this['illust']['setRect'](b),
-                    this['illust']['setSkin'](C.skin, 'full'),
-                    this['contianer_illust']['visible'] = !0,
-                    Laya['Tween']['clearAll'](this['contianer_illust']),
-                    this['contianer_illust'].x = this['origin_illust_x'],
-                    this['contianer_illust']['alpha'] = 1,
-                    w['UIBase']['anim_alpha_in'](this['contianer_illust'], {
-                        x: -30
-                    }, 230),
-                    this['stopsay']();
-                    var V = cfg['item_definition'].skin.get(C.skin);
-                    V['spine_type'] ? (this['page_select_character']['changeKaiguanShow'](!0), this['container_look_illust']['dongtai_kaiguan'].show(this['illust']['skin_id'])) : (this['page_select_character']['changeKaiguanShow'](!1), this['container_look_illust']['dongtai_kaiguan'].hide());
-                },
-                i['prototype']['onChangeSkin'] = function (w) {
-                    i['characters'][this['_select_index']].skin = w,
-                    this['change_select'](this['_select_index']),
-                    i['characters'][this['_select_index']]['charid'] == i['main_character_id'] && (GameMgr.Inst['account_data']['avatar_id'] = w, i['onMainSkinChange']());
-                                    // 屏蔽换肤请求
-                    //app['NetAgent']['sendReq2Lobby']('Lobby', 'changeCharacterSkin', {
-                    //    character_id: i['characters'][this['_select_index']]['charid'],
-                    //    skin: w
-                    //}, function () {});
-                                    // 保存皮肤
-                },
-                i['prototype'].say = function (w) {
-                    var j = this,
-                    C = i['characters'][this['_select_index']];
-                    this['chat_id']++;
-                    var l = this['chat_id'],
-                    u = view['AudioMgr']['PlayCharactorSound'](C, w, Laya['Handler']['create'](this, function () {
-                                Laya['timer'].once(1000, j, function () {
-                                    l == j['chat_id'] && j['stopsay']();
-                                });
+                            0 == K ? (this['change_select'](r), this['show_page_select']()) : (this['_select_index'] = -1, this['illust_showing'] = !1, this['contianer_illust']['visible'] = !1, this['page_select_character'].show(1));
+                        },
+                        X['prototype']['starup_back'] = function () {
+                            this['enable'] = !0,
+                                this['change_select'](this['_select_index']),
+                                this['page_visit_character']['star_up_back'](X['characters'][this['_select_index']]),
+                                this['page_visit_character']['show_levelup']();
+                        },
+                        X['prototype']['spot_back'] = function () {
+                            this['enable'] = !0,
+                                this['change_select'](this['_select_index']),
+                                this['page_visit_character'].show(X['characters'][this['_select_index']], 2);
+                        },
+                        X['prototype']['go2Lobby'] = function () {
+                            this['close'](Laya['Handler']['create'](this, function () {
+                                C['UIMgr'].Inst['showLobby']();
                             }));
-                    u && (this['chat_block'].show(u['words']), this['sound_channel'] = u['sound']);
-                },
-                i['prototype']['stopsay'] = function () {
-                    this['chat_block']['close'](!1),
-                    this['sound_channel'] && (this['sound_channel'].stop(), Laya['SoundManager']['removeChannel'](this['sound_channel']), this['sound_channel'] = null);
-                },
-                i['prototype']['to_look_illust'] = function () {
-                    var w = this;
-                    this['container_look_illust'].show(Laya['Handler']['create'](this, function () {
-                            w['illust']['playAnim']('idle'),
-                            w['page_select_character'].show(0);
-                        }));
-                },
-                i['prototype']['jump_to_char_skin'] = function (j, C) {
-                    var l = this;
-                    if (void 0 === j && (j = -1), void 0 === C && (C = null), j >= 0)
-                        for (var u = 0; u < i['characters']['length']; u++)
-                            if (i['characters'][u]['charid'] == j) {
-                                this['change_select'](u);
-                                break;
-                            }
-                    w['UI_Sushe_Select'].Inst['close'](Laya['Handler']['create'](this, function () {
-                            i.Inst['show_page_visit'](),
-                            l['page_visit_character']['show_pop_skin'](),
-                            l['page_visit_character']['set_jump_callback'](C);
-                        }));
-                },
-                i['prototype']['jump_to_char_qiyue'] = function (j) {
-                    var C = this;
-                    if (void 0 === j && (j = -1), j >= 0)
-                        for (var l = 0; l < i['characters']['length']; l++)
-                            if (i['characters'][l]['charid'] == j) {
-                                this['change_select'](l);
-                                break;
-                            }
-                    w['UI_Sushe_Select'].Inst['close'](Laya['Handler']['create'](this, function () {
-                            i.Inst['show_page_visit'](),
-                            C['page_visit_character']['show_qiyue']();
-                        }));
-                },
-                i['prototype']['jump_to_char_gift'] = function (j) {
-                    var C = this;
-                    if (void 0 === j && (j = -1), j >= 0)
-                        for (var l = 0; l < i['characters']['length']; l++)
-                            if (i['characters'][l]['charid'] == j) {
-                                this['change_select'](l);
-                                break;
-                            }
-                    w['UI_Sushe_Select'].Inst['close'](Laya['Handler']['create'](this, function () {
-                            i.Inst['show_page_visit'](),
-                            C['page_visit_character']['show_gift']();
-                        }));
-                },
-                i['characters'] = [],
-                i['chs_fengyu_name_lst'] = ['200040', '200043'],
-                i['chs_fengyu_cv_lst'] = ['200047', '200050', '200054', '200071'],
-                i['skin_map'] = {},
-                i['main_character_id'] = 0,
-                i['send_gift_count'] = 0,
-                i['send_gift_limit'] = 0,
-                i['commonViewList'] = [],
-                i['using_commonview_index'] = 0,
-                i['finished_endings_map'] = {},
-                i['rewarded_endings_map'] = {},
-                i['star_chars'] = [],
-                i['hidden_characters_map'] = {},
-                i.Inst = null,
-                i;
-            }
-            (w['UIBase']);
-            w['UI_Sushe'] = C;
+                        },
+                        X['prototype']['close'] = function (K) {
+                            var r = this;
+                            this['illust_showing'] && C['UIBase']['anim_alpha_out'](this['contianer_illust'], {
+                                x: -30
+                            }, 150, 0),
+                                Laya['timer'].once(150, this, function () {
+                                    r['enable'] = !1,
+                                        K && K.run();
+                                });
+                        },
+                        X['prototype']['onDisable'] = function () {
+                            view['AudioMgr']['refresh_music_volume'](!1),
+                                this['illust']['clear'](),
+                                this['stopsay'](),
+                                this['container_look_illust'].me['visible'] && this['container_look_illust']['close']();
+                        },
+                        X['prototype']['hide_illust'] = function () {
+                            var K = this;
+                            this['illust_showing'] && (this['illust_showing'] = !1, C['UIBase']['anim_alpha_out'](this['contianer_illust'], {
+                                x: -30
+                            }, 200, 0, Laya['Handler']['create'](this, function () {
+                                K['contianer_illust']['visible'] = !1;
+                            })));
+                        },
+                        X['prototype']['open_illust'] = function () {
+                            if (!this['illust_showing'])
+                                if (this['illust_showing'] = !0, this['_select_index'] >= 0)
+                                    this['contianer_illust']['visible'] = !0, this['contianer_illust']['alpha'] = 1, C['UIBase']['anim_alpha_in'](this['contianer_illust'], {
+                                        x: -30
+                                    }, 200);
+                                else {
+                                    for (var K = 0, r = 0; r < X['characters']['length']; r++)
+                                        if (X['characters'][r]['charid'] == X['main_character_id']) {
+                                            K = r;
+                                            break;
+                                        }
+                                    this['change_select'](K);
+                                }
+                        },
+                        X['prototype']['show_page_select'] = function () {
+                            this['page_select_character'].show(0);
+                        },
+                        X['prototype']['show_page_visit'] = function (C) {
+                            void 0 === C && (C = 0),
+                                this['page_visit_character'].show(X['characters'][this['_select_index']], C);
+                        },
+                        X['prototype']['change_select'] = function (K) {
+                            this['_select_index'] = K,
+                                this['illust']['clear'](),
+                                this['illust_showing'] = !0;
+                            var r = X['characters'][K],
+                                U = cfg['item_definition']['character'].get(r['charid']);
+                            if ('chs' == GameMgr['client_language'] && (this['label_name'].font = -1 != X['chs_fengyu_name_lst']['indexOf'](r['charid']) ? 'fengyu' : 'hanyi', this['label_cv'].font = -1 != X['chs_fengyu_cv_lst']['indexOf'](r['charid']) ? 'fengyu' : 'hanyi'), 'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) {
+                                this['label_name'].text = U['name_' + GameMgr['client_language']]['replace']('-', '|')['replace'](/\./g, '·'),
+                                    this['label_cv'].text = U['desc_cv_' + GameMgr['client_language']],
+                                    this['label_cv_title'].text = 'CV';
+                                var i = /^[a-zA-Z\x21-\x2f\x3a-\x40\x5b-\x60\x7B-\x7F·]*$/;
+                                this['label_name']['leading'] = this['label_name']['textField']['textHeight'] > 320 ? -5 : i.test(U['name_' + GameMgr['client_language']]) ? -15 : 0,
+                                    this['label_cv']['leading'] = i.test(this['label_cv'].text) ? -7 : 0;
+                            } else
+                                this['label_name'].text = U['name_' + GameMgr['client_language']], this['label_cv'].text = 'CV:' + U['desc_cv_' + GameMgr['client_language']];
+                            ('chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) && (this['label_cv']['height'] = 600, this['label_cv_title'].y = 350 - this['label_cv']['textField']['textHeight'] / 2 * 0.7);
+                            var N = new C['UIRect']();
+                            N.x = this['illust_rect'].x,
+                                N.y = this['illust_rect'].y,
+                                N['width'] = this['illust_rect']['width'],
+                                N['height'] = this['illust_rect']['height'],
+                                this['illust']['setRect'](N),
+                                this['illust']['setSkin'](r.skin, 'full'),
+                                this['contianer_illust']['visible'] = !0,
+                                Laya['Tween']['clearAll'](this['contianer_illust']),
+                                this['contianer_illust'].x = this['origin_illust_x'],
+                                this['contianer_illust']['alpha'] = 1,
+                                C['UIBase']['anim_alpha_in'](this['contianer_illust'], {
+                                    x: -30
+                                }, 230),
+                                this['stopsay']();
+                            var H = cfg['item_definition'].skin.get(r.skin);
+                            H['spine_type'] ? (this['page_select_character']['changeKaiguanShow'](!0), this['container_look_illust']['dongtai_kaiguan'].show(this['illust']['skin_id'])) : (this['page_select_character']['changeKaiguanShow'](!1), this['container_look_illust']['dongtai_kaiguan'].hide());
+                        },
+                        X['prototype']['onChangeSkin'] = function (C) {
+                            X['characters'][this['_select_index']].skin = C,
+                                this['change_select'](this['_select_index']),
+                                X['characters'][this['_select_index']]['charid'] == X['main_character_id'] && (GameMgr.Inst['account_data']['avatar_id'] = C, X['onMainSkinChange']());
+                            // 屏蔽换肤请求
+                            //app['NetAgent']['sendReq2Lobby']('Lobby', 'changeCharacterSkin', {
+                            //    character_id: X['characters'][this['_select_index']]['charid'],
+                            //    skin: C
+                            //}, function () {});
+                            // 保存皮肤
+                        },
+                        X['prototype'].say = function (C) {
+                            var K = this,
+                                r = X['characters'][this['_select_index']];
+                            this['chat_id']++;
+                            var U = this['chat_id'],
+                                i = view['AudioMgr']['PlayCharactorSound'](r, C, Laya['Handler']['create'](this, function () {
+                                    Laya['timer'].once(1000, K, function () {
+                                        U == K['chat_id'] && K['stopsay']();
+                                    });
+                                }));
+                            i && (this['chat_block'].show(i['words']), this['sound_channel'] = i['sound']);
+                        },
+                        X['prototype']['stopsay'] = function () {
+                            this['chat_block']['close'](!1),
+                                this['sound_channel'] && (this['sound_channel'].stop(), Laya['SoundManager']['removeChannel'](this['sound_channel']), this['sound_channel'] = null);
+                        },
+                        X['prototype']['to_look_illust'] = function () {
+                            var C = this;
+                            this['container_look_illust'].show(Laya['Handler']['create'](this, function () {
+                                C['illust']['playAnim']('idle'),
+                                    C['page_select_character'].show(0);
+                            }));
+                        },
+                        X['prototype']['jump_to_char_skin'] = function (K, r) {
+                            var U = this;
+                            if (void 0 === K && (K = -1), void 0 === r && (r = null), K >= 0)
+                                for (var i = 0; i < X['characters']['length']; i++)
+                                    if (X['characters'][i]['charid'] == K) {
+                                        this['change_select'](i);
+                                        break;
+                                    }
+                            C['UI_Sushe_Select'].Inst['close'](Laya['Handler']['create'](this, function () {
+                                X.Inst['show_page_visit'](),
+                                    U['page_visit_character']['show_pop_skin'](),
+                                    U['page_visit_character']['set_jump_callback'](r);
+                            }));
+                        },
+                        X['prototype']['jump_to_char_qiyue'] = function (K) {
+                            var r = this;
+                            if (void 0 === K && (K = -1), K >= 0)
+                                for (var U = 0; U < X['characters']['length']; U++)
+                                    if (X['characters'][U]['charid'] == K) {
+                                        this['change_select'](U);
+                                        break;
+                                    }
+                            C['UI_Sushe_Select'].Inst['close'](Laya['Handler']['create'](this, function () {
+                                X.Inst['show_page_visit'](),
+                                    r['page_visit_character']['show_qiyue']();
+                            }));
+                        },
+                        X['prototype']['jump_to_char_gift'] = function (K) {
+                            var r = this;
+                            if (void 0 === K && (K = -1), K >= 0)
+                                for (var U = 0; U < X['characters']['length']; U++)
+                                    if (X['characters'][U]['charid'] == K) {
+                                        this['change_select'](U);
+                                        break;
+                                    }
+                            C['UI_Sushe_Select'].Inst['close'](Laya['Handler']['create'](this, function () {
+                                X.Inst['show_page_visit'](),
+                                    r['page_visit_character']['show_gift']();
+                            }));
+                        },
+                        X['characters'] = [],
+                        X['chs_fengyu_name_lst'] = ['200040', '200043'],
+                        X['chs_fengyu_cv_lst'] = ['200047', '200050', '200054', '200071'],
+                        X['skin_map'] = {},
+                        X['main_character_id'] = 0,
+                        X['send_gift_count'] = 0,
+                        X['send_gift_limit'] = 0,
+                        X['commonViewList'] = [],
+                        X['using_commonview_index'] = 0,
+                        X['finished_endings_map'] = {},
+                        X['rewarded_endings_map'] = {},
+                        X['star_chars'] = [],
+                        X['hidden_characters_map'] = {},
+                        X.Inst = null,
+                        X;
+                }
+                    (C['UIBase']);
+            C['UI_Sushe'] = r;
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
+
+
 
 
 
@@ -1920,1258 +1935,1260 @@ function testAPI() {
 
 
         // 屏蔽改变宿舍角色的网络请求
-        !function (w) {
-            var j = function () {
-                function j(j) {
-                    var i = this;
+        !function (C) {
+            var K = function () {
+                function K(K) {
+                    var X = this;
                     this['scrollview'] = null,
-                    this['select_index'] = 0,
-                    this['show_index_list'] = [],
-                    this['only_show_star_char'] = !1,
-                    this.me = j,
-                    this.me['getChildByName']('btn_visit')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            C.Inst['locking'] || C.Inst['close'](Laya['Handler']['create'](i, function () {
-                                    w['UI_Sushe'].Inst['show_page_visit']();
-                                }));
-                        }, null, !1),
-                    this.me['getChildByName']('btn_look')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            C.Inst['locking'] || C.Inst['close'](Laya['Handler']['create'](i, function () {
-                                    w['UI_Sushe'].Inst['to_look_illust']();
-                                }));
-                        }, null, !1),
-                    this.me['getChildByName']('btn_huanzhuang')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            C.Inst['locking'] || w['UI_Sushe'].Inst['jump_to_char_skin']();
-                        }, null, !1),
-                    this.me['getChildByName']('btn_star')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            C.Inst['locking'] || i['onChangeStarShowBtnClick']();
-                        }, null, !1),
-                    this['scrollview'] = this.me['scriptMap']['capsui.CScrollView'],
-                    this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_character_cell']), -1, 3),
-                    this['scrollview']['setElastic'](),
-                    this['dongtai_kaiguan'] = new w['UI_Dongtai_Kaiguan'](this.me['getChildByName']('dongtai'), new Laya['Handler'](this, function () {
-                                w['UI_Sushe'].Inst['illust']['resetSkin']();
-                            }));
-                }
-                return j['prototype'].show = function (j, C) {
-                    if (void 0 === C && (C = !1), this.me['visible'] = !0, j ? this.me['alpha'] = 1 : w['UIBase']['anim_alpha_in'](this.me, {
-                                x: 0
-                            }, 200, 0), this['getShowStarState'](), this['sortShowCharsList'](), C || (this.me['getChildByName']('btn_star')['getChildAt'](1).x = this['only_show_star_char'] ? 107 : 47), this['scrollview']['reset'](), this['scrollview']['addItem'](this['show_index_list']['length']), Math['floor'](this['show_index_list']['length'] / 3) - 3 > 0) {
-                        var i = (Math['floor'](this['select_index'] / 3) - 1) / (Math.ceil(this['show_index_list']['length'] / 3) - 2.5);
-                        this['scrollview'].rate = Math.min(1, Math.max(0, i));
-                    }
-                },
-                j['prototype']['render_character_cell'] = function (j) {
-                    var C = this,
-                    i = j['index'],
-                    l = j['container'],
-                    u = j['cache_data'];
-                    l['visible'] = !0,
-                    u['index'] = i,
-                    u['inited'] || (u['inited'] = !0, l['getChildByName']('btn')['clickHandler'] = new Laya['Handler'](this, function () {
-                                C['onClickAtHead'](u['index']);
-                            }), u.skin = new w['UI_Character_Skin'](l['getChildByName']('btn')['getChildByName']('head')), u.bg = l['getChildByName']('btn')['getChildByName']('bg'), u['bound'] = l['getChildByName']('btn')['getChildByName']('bound'), u['btn_star'] = l['getChildByName']('btn_star'), u.star = l['getChildByName']('btn')['getChildByName']('star'), u['btn_star']['clickHandler'] = new Laya['Handler'](this, function () {
-                                C['onClickAtStar'](u['index']);
-                            }));
-                    var b = l['getChildByName']('btn');
-                    b['getChildByName']('choose')['visible'] = i == this['select_index'];
-                    var V = this['getCharInfoByIndex'](i);
-                    b['getChildByName']('redpoint')['visible'] = w['UI_Sushe']['check_char_redpoint'](V),
-                    u.skin['setSkin'](V.skin, 'bighead'),
-                    b['getChildByName']('using')['visible'] = V['charid'] == w['UI_Sushe']['main_character_id'],
-                    l['getChildByName']('btn')['getChildByName']('bg').skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (V['is_upgraded'] ? '2.png' : '.png'));
-                    var k = cfg['item_definition']['character'].get(V['charid']);
-                    'en' == GameMgr['client_language'] || 'jp' == GameMgr['client_language'] || 'kr' == GameMgr['client_language'] ? u['bound'].skin = k.ur ? game['Tools']['localUISrc']('myres/sushe/bg_head_bound' + (V['is_upgraded'] ? '4.png' : '3.png')) : game['Tools']['localUISrc']('myres/sushe/en_head_bound' + (V['is_upgraded'] ? '2.png' : '.png')) : k.ur ? (u['bound'].pos(-10, -2), u['bound'].skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (V['is_upgraded'] ? '6.png' : '5.png'))) : (u['bound'].pos(4, 20), u['bound'].skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (V['is_upgraded'] ? '4.png' : '3.png'))),
-                    u['btn_star']['visible'] = this['select_index'] == i,
-                    u.star['visible'] = w['UI_Sushe']['is_char_star'](V['charid']) || this['select_index'] == i;
-                    var S = cfg['item_definition']['character'].find(V['charid']),
-                    H = b['getChildByName']('label_name'),
-                    N = S['name_' + GameMgr['client_language'] + '2'] ? S['name_' + GameMgr['client_language'] + '2'] : S['name_' + GameMgr['client_language']];
-                    if ('chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) {
-                        u.star.skin = game['Tools']['localUISrc']('myres/sushe/tag_star_' + (w['UI_Sushe']['is_char_star'](V['charid']) ? 'l' : 'd') + (V['is_upgraded'] ? '1.png' : '.png')),
-                        H.text = N['replace']('-', '|')['replace'](/\./g, '·');
-                        var W = /^[a-zA-Z\x21-\x2f\x3a-\x40\x5b-\x60\x7B-\x7F]*$/;
-                        H['leading'] = W.test(N) ? -15 : 0;
-                    } else
-                        u.star.skin = game['Tools']['localUISrc']('myres/sushe/tag_star_' + (w['UI_Sushe']['is_char_star'](V['charid']) ? 'l.png' : 'd.png')), H.text = N;
-                    ('chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) && ('200041' == V['charid'] ? (H['scaleX'] = 0.67, H['scaleY'] = 0.57) : (H['scaleX'] = 0.7, H['scaleY'] = 0.6));
-                },
-                j['prototype']['onClickAtHead'] = function (j) {
-                    if (this['select_index'] == j) {
-                        var C = this['getCharInfoByIndex'](j);
-                        if (C['charid'] != w['UI_Sushe']['main_character_id'])
-                            if (w['UI_PiPeiYuYue'].Inst['enable'])
-                                w['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](2769));
-                            else {
-                                var i = w['UI_Sushe']['main_character_id'];
-                                w['UI_Sushe']['main_character_id'] = C['charid'],
-                                //app['NetAgent']['sendReq2Lobby']('Lobby', 'changeMainCharacter', {
-                                //    character_id: w['UI_Sushe']['main_character_id']
-                                //}, function () {}),
-                                GameMgr.Inst['account_data']['avatar_id'] = C.skin,
-                                w['UI_Sushe']['onMainSkinChange']();
-                                            // 保存人物和皮肤
-                                            MMP.settings.character = C.charid;
-                                            MMP.settings.characters[MMP.settings.character - 200001] = C.skin;
-                                            MMP.saveSettings();
-                                            // END
-                                for (var l = 0; l < this['show_index_list']['length']; l++)
-                                    this['getCharInfoByIndex'](l)['charid'] == i && this['scrollview']['wantToRefreshItem'](l);
-                                this['scrollview']['wantToRefreshItem'](j);
-                            }
-                    } else {
-                        var u = this['select_index'];
-                        this['select_index'] = j,
-                        u >= 0 && this['scrollview']['wantToRefreshItem'](u),
-                        this['scrollview']['wantToRefreshItem'](j),
-                        w['UI_Sushe'].Inst['change_select'](this['show_index_list'][j]);
-                    }
-                },
-                j['prototype']['onClickAtStar'] = function (j) {
-                    if (w['UI_Sushe']['change_char_star'](this['getCharInfoByIndex'](j)['charid']), this['only_show_star_char'])
-                        this['scrollview']['wantToRefreshItem'](j);
-                    else if (this.show(!0), Math['floor'](this['show_index_list']['length'] / 3) - 3 > 0) {
-                        var C = (Math['floor'](this['select_index'] / 3) - 1) / (Math['floor'](this['show_index_list']['length'] / 3) - 3);
-                        this['scrollview'].rate = Math.min(1, Math.max(0, C));
-                    }
-                                // 保存人物和皮肤
-                                MMP.settings.star_chars = uiscript.UI_Sushe.star_chars;
-                                MMP.saveSettings();
-                                // END
-                },
-                j['prototype']['close'] = function (j) {
-                    var C = this;
-                    this.me['visible'] && (j ? this.me['visible'] = !1 : w['UIBase']['anim_alpha_out'](this.me, {
-                                x: 0
-                            }, 200, 0, Laya['Handler']['create'](this, function () {
-                                    C.me['visible'] = !1;
-                                })));
-                },
-                j['prototype']['onChangeStarShowBtnClick'] = function () {
-                    if (!this['only_show_star_char']) {
-                        for (var j = !1, C = 0, i = w['UI_Sushe']['star_chars']; C < i['length']; C++) {
-                            var l = i[C];
-                            if (!w['UI_Sushe']['hidden_characters_map'][l]) {
-                                j = !0;
-                                break;
-                            }
-                        }
-                        if (!j)
-                            return w['UI_SecondConfirm'].Inst['show_only_confirm'](game['Tools']['strOfLocalization'](3301)), void 0;
-                    }
-                    w['UI_Sushe'].Inst['change_select'](this['show_index_list']['length'] > 0 ? this['show_index_list'][0] : 0),
-                    this['only_show_star_char'] = !this['only_show_star_char'],
-                    app['PlayerBehaviorStatistic']['update_val'](app['EBehaviorType']['Chara_Show_Star'], this['only_show_star_char'] ? 1 : 0);
-                    var u = this.me['getChildByName']('btn_star')['getChildAt'](1);
-                    Laya['Tween']['clearAll'](u),
-                    Laya['Tween'].to(u, {
-                        x: this['only_show_star_char'] ? 107 : 47
-                    }, 150),
-                    this.show(!0, !0);
-                },
-                j['prototype']['getShowStarState'] = function () {
-                    if (0 == w['UI_Sushe']['star_chars']['length'])
-                        return this['only_show_star_char'] = !1, void 0;
-                    if (this['only_show_star_char'] = 1 == app['PlayerBehaviorStatistic']['get_val'](app['EBehaviorType']['Chara_Show_Star']), this['only_show_star_char']) {
-                        for (var j = 0, C = w['UI_Sushe']['star_chars']; j < C['length']; j++) {
-                            var i = C[j];
-                            if (!w['UI_Sushe']['hidden_characters_map'][i])
-                                return;
-                        }
+                        this['select_index'] = 0,
+                        this['show_index_list'] = [],
                         this['only_show_star_char'] = !1,
-                        app['PlayerBehaviorStatistic']['update_val'](app['EBehaviorType']['Chara_Show_Star'], 0);
+                        this.me = K,
+                        this.me['getChildByName']('btn_visit')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                            r.Inst['locking'] || r.Inst['close'](Laya['Handler']['create'](X, function () {
+                                C['UI_Sushe'].Inst['show_page_visit']();
+                            }));
+                        }, null, !1),
+                        this.me['getChildByName']('btn_look')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                            r.Inst['locking'] || r.Inst['close'](Laya['Handler']['create'](X, function () {
+                                C['UI_Sushe'].Inst['to_look_illust']();
+                            }));
+                        }, null, !1),
+                        this.me['getChildByName']('btn_huanzhuang')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                            r.Inst['locking'] || C['UI_Sushe'].Inst['jump_to_char_skin']();
+                        }, null, !1),
+                        this.me['getChildByName']('btn_star')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                            r.Inst['locking'] || X['onChangeStarShowBtnClick']();
+                        }, null, !1),
+                        this['scrollview'] = this.me['scriptMap']['capsui.CScrollView'],
+                        this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_character_cell']), -1, 3),
+                        this['scrollview']['setElastic'](),
+                        this['dongtai_kaiguan'] = new C['UI_Dongtai_Kaiguan'](this.me['getChildByName']('dongtai'), new Laya['Handler'](this, function () {
+                            C['UI_Sushe'].Inst['illust']['resetSkin']();
+                        }));
+                }
+                return K['prototype'].show = function (K, r) {
+                    if (void 0 === r && (r = !1), this.me['visible'] = !0, K ? this.me['alpha'] = 1 : C['UIBase']['anim_alpha_in'](this.me, {
+                        x: 0
+                    }, 200, 0), this['getShowStarState'](), this['sortShowCharsList'](), r || (this.me['getChildByName']('btn_star')['getChildAt'](1).x = this['only_show_star_char'] ? 107 : 47), this['scrollview']['reset'](), this['scrollview']['addItem'](this['show_index_list']['length']), Math['floor'](this['show_index_list']['length'] / 3) - 3 > 0) {
+                        var X = (Math['floor'](this['select_index'] / 3) - 1) / (Math.ceil(this['show_index_list']['length'] / 3) - 2.5);
+                        this['scrollview'].rate = Math.min(1, Math.max(0, X));
                     }
                 },
-                j['prototype']['sortShowCharsList'] = function () {
-                    this['show_index_list'] = [],
-                    this['select_index'] = -1;
-                    for (var j = 0, C = w['UI_Sushe']['star_chars']; j < C['length']; j++) {
-                        var i = C[j];
-                        if (!w['UI_Sushe']['hidden_characters_map'][i])
-                            for (var l = 0; l < w['UI_Sushe']['characters']['length']; l++)
-                                if (w['UI_Sushe']['characters'][l]['charid'] == i) {
-                                    l == w['UI_Sushe'].Inst['select_index'] && (this['select_index'] = this['show_index_list']['length']),
-                                    this['show_index_list'].push(l);
+                    K['prototype']['render_character_cell'] = function (K) {
+                        var r = this,
+                            X = K['index'],
+                            U = K['container'],
+                            i = K['cache_data'];
+                        U['visible'] = !0,
+                            i['index'] = X,
+                            i['inited'] || (i['inited'] = !0, U['getChildByName']('btn')['clickHandler'] = new Laya['Handler'](this, function () {
+                                r['onClickAtHead'](i['index']);
+                            }), i.skin = new C['UI_Character_Skin'](U['getChildByName']('btn')['getChildByName']('head')), i.bg = U['getChildByName']('btn')['getChildByName']('bg'), i['bound'] = U['getChildByName']('btn')['getChildByName']('bound'), i['btn_star'] = U['getChildByName']('btn_star'), i.star = U['getChildByName']('btn')['getChildByName']('star'), i['btn_star']['clickHandler'] = new Laya['Handler'](this, function () {
+                                r['onClickAtStar'](i['index']);
+                            }));
+                        var N = U['getChildByName']('btn');
+                        N['getChildByName']('choose')['visible'] = X == this['select_index'];
+                        var H = this['getCharInfoByIndex'](X);
+                        N['getChildByName']('redpoint')['visible'] = C['UI_Sushe']['check_char_redpoint'](H),
+                            i.skin['setSkin'](H.skin, 'bighead'),
+                            N['getChildByName']('using')['visible'] = H['charid'] == C['UI_Sushe']['main_character_id'],
+                            U['getChildByName']('btn')['getChildByName']('bg').skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (H['is_upgraded'] ? '2.png' : '.png'));
+                        var w = cfg['item_definition']['character'].get(H['charid']);
+                        'en' == GameMgr['client_language'] || 'jp' == GameMgr['client_language'] || 'kr' == GameMgr['client_language'] ? i['bound'].skin = w.ur ? game['Tools']['localUISrc']('myres/sushe/bg_head_bound' + (H['is_upgraded'] ? '4.png' : '3.png')) : game['Tools']['localUISrc']('myres/sushe/en_head_bound' + (H['is_upgraded'] ? '2.png' : '.png')) : w.ur ? (i['bound'].pos(-10, -2), i['bound'].skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (H['is_upgraded'] ? '6.png' : '5.png'))) : (i['bound'].pos(4, 20), i['bound'].skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (H['is_upgraded'] ? '4.png' : '3.png'))),
+                            i['btn_star']['visible'] = this['select_index'] == X,
+                            i.star['visible'] = C['UI_Sushe']['is_char_star'](H['charid']) || this['select_index'] == X;
+                        var G = cfg['item_definition']['character'].find(H['charid']),
+                            l = N['getChildByName']('label_name'),
+                            R = G['name_' + GameMgr['client_language'] + '2'] ? G['name_' + GameMgr['client_language'] + '2'] : G['name_' + GameMgr['client_language']];
+                        if ('chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) {
+                            i.star.skin = game['Tools']['localUISrc']('myres/sushe/tag_star_' + (C['UI_Sushe']['is_char_star'](H['charid']) ? 'l' : 'd') + (H['is_upgraded'] ? '1.png' : '.png')),
+                                l.text = R['replace']('-', '|')['replace'](/\./g, '·');
+                            var f = /^[a-zA-Z\x21-\x2f\x3a-\x40\x5b-\x60\x7B-\x7F]*$/;
+                            l['leading'] = f.test(R) ? -15 : 0;
+                        } else
+                            i.star.skin = game['Tools']['localUISrc']('myres/sushe/tag_star_' + (C['UI_Sushe']['is_char_star'](H['charid']) ? 'l.png' : 'd.png')), l.text = R;
+                        ('chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) && ('200041' == H['charid'] ? (l['scaleX'] = 0.67, l['scaleY'] = 0.57) : (l['scaleX'] = 0.7, l['scaleY'] = 0.6));
+                    },
+                    K['prototype']['onClickAtHead'] = function (K) {
+                        if (this['select_index'] == K) {
+                            var r = this['getCharInfoByIndex'](K);
+                            if (r['charid'] != C['UI_Sushe']['main_character_id'])
+                                if (C['UI_PiPeiYuYue'].Inst['enable'])
+                                    C['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](2769));
+                                else {
+                                    var X = C['UI_Sushe']['main_character_id'];
+                                    C['UI_Sushe']['main_character_id'] = r['charid'],
+                                        //app['NetAgent']['sendReq2Lobby']('Lobby', 'changeMainCharacter', {
+                                        //    character_id: C['UI_Sushe']['main_character_id']
+                                        //}, function () {}),
+                                        GameMgr.Inst['account_data']['avatar_id'] = r.skin,
+                                        C['UI_Sushe']['onMainSkinChange']();
+                                    // 保存人物和皮肤
+                                    MMP.settings.character = r.charid;
+                                    MMP.settings.characters[MMP.settings.character - 200001] = r.skin;
+                                    MMP.saveSettings();
+                                    // END
+                                    for (var U = 0; U < this['show_index_list']['length']; U++)
+                                        this['getCharInfoByIndex'](U)['charid'] == X && this['scrollview']['wantToRefreshItem'](U);
+                                    this['scrollview']['wantToRefreshItem'](K);
+                                }
+                        } else {
+                            var i = this['select_index'];
+                            this['select_index'] = K,
+                                i >= 0 && this['scrollview']['wantToRefreshItem'](i),
+                                this['scrollview']['wantToRefreshItem'](K),
+                                C['UI_Sushe'].Inst['change_select'](this['show_index_list'][K]);
+                        }
+                    },
+                    K['prototype']['onClickAtStar'] = function (K) {
+                        if (C['UI_Sushe']['change_char_star'](this['getCharInfoByIndex'](K)['charid']), this['only_show_star_char'])
+                            this['scrollview']['wantToRefreshItem'](K);
+                        else if (this.show(!0), Math['floor'](this['show_index_list']['length'] / 3) - 3 > 0) {
+                            var r = (Math['floor'](this['select_index'] / 3) - 1) / (Math['floor'](this['show_index_list']['length'] / 3) - 3);
+                            this['scrollview'].rate = Math.min(1, Math.max(0, r));
+                        }
+                        // 保存人物和皮肤
+                        MMP.settings.star_chars = uiscript.UI_Sushe.star_chars;
+                        MMP.saveSettings();
+                        // END
+                    },
+                    K['prototype']['close'] = function (K) {
+                        var r = this;
+                        this.me['visible'] && (K ? this.me['visible'] = !1 : C['UIBase']['anim_alpha_out'](this.me, {
+                            x: 0
+                        }, 200, 0, Laya['Handler']['create'](this, function () {
+                            r.me['visible'] = !1;
+                        })));
+                    },
+                    K['prototype']['onChangeStarShowBtnClick'] = function () {
+                        if (!this['only_show_star_char']) {
+                            for (var K = !1, r = 0, X = C['UI_Sushe']['star_chars']; r < X['length']; r++) {
+                                var U = X[r];
+                                if (!C['UI_Sushe']['hidden_characters_map'][U]) {
+                                    K = !0;
                                     break;
                                 }
-                    }
-                    if (!this['only_show_star_char'])
-                        for (var l = 0; l < w['UI_Sushe']['characters']['length']; l++)
-                            w['UI_Sushe']['hidden_characters_map'][w['UI_Sushe']['characters'][l]['charid']] || -1 == this['show_index_list']['indexOf'](l) && (l == w['UI_Sushe'].Inst['select_index'] && (this['select_index'] = this['show_index_list']['length']), this['show_index_list'].push(l));
-                },
-                j['prototype']['getCharInfoByIndex'] = function (j) {
-                    return w['UI_Sushe']['characters'][this['show_index_list'][j]];
-                },
-                j;
+                            }
+                            if (!K)
+                                return C['UI_SecondConfirm'].Inst['show_only_confirm'](game['Tools']['strOfLocalization'](3301)), void 0;
+                        }
+                        C['UI_Sushe'].Inst['change_select'](this['show_index_list']['length'] > 0 ? this['show_index_list'][0] : 0),
+                            this['only_show_star_char'] = !this['only_show_star_char'],
+                            app['PlayerBehaviorStatistic']['update_val'](app['EBehaviorType']['Chara_Show_Star'], this['only_show_star_char'] ? 1 : 0);
+                        var i = this.me['getChildByName']('btn_star')['getChildAt'](1);
+                        Laya['Tween']['clearAll'](i),
+                            Laya['Tween'].to(i, {
+                                x: this['only_show_star_char'] ? 107 : 47
+                            }, 150),
+                            this.show(!0, !0);
+                    },
+                    K['prototype']['getShowStarState'] = function () {
+                        if (0 == C['UI_Sushe']['star_chars']['length'])
+                            return this['only_show_star_char'] = !1, void 0;
+                        if (this['only_show_star_char'] = 1 == app['PlayerBehaviorStatistic']['get_val'](app['EBehaviorType']['Chara_Show_Star']), this['only_show_star_char']) {
+                            for (var K = 0, r = C['UI_Sushe']['star_chars']; K < r['length']; K++) {
+                                var X = r[K];
+                                if (!C['UI_Sushe']['hidden_characters_map'][X])
+                                    return;
+                            }
+                            this['only_show_star_char'] = !1,
+                                app['PlayerBehaviorStatistic']['update_val'](app['EBehaviorType']['Chara_Show_Star'], 0);
+                        }
+                    },
+                    K['prototype']['sortShowCharsList'] = function () {
+                        this['show_index_list'] = [],
+                            this['select_index'] = -1;
+                        for (var K = 0, r = C['UI_Sushe']['star_chars']; K < r['length']; K++) {
+                            var X = r[K];
+                            if (!C['UI_Sushe']['hidden_characters_map'][X])
+                                for (var U = 0; U < C['UI_Sushe']['characters']['length']; U++)
+                                    if (C['UI_Sushe']['characters'][U]['charid'] == X) {
+                                        U == C['UI_Sushe'].Inst['select_index'] && (this['select_index'] = this['show_index_list']['length']),
+                                            this['show_index_list'].push(U);
+                                        break;
+                                    }
+                        }
+                        if (!this['only_show_star_char'])
+                            for (var U = 0; U < C['UI_Sushe']['characters']['length']; U++)
+                                C['UI_Sushe']['hidden_characters_map'][C['UI_Sushe']['characters'][U]['charid']] || -1 == this['show_index_list']['indexOf'](U) && (U == C['UI_Sushe'].Inst['select_index'] && (this['select_index'] = this['show_index_list']['length']), this['show_index_list'].push(U));
+                    },
+                    K['prototype']['getCharInfoByIndex'] = function (K) {
+                        return C['UI_Sushe']['characters'][this['show_index_list'][K]];
+                    },
+                    K;
             }
-            (),
-            C = function (C) {
-                function i() {
-                    var w = C.call(this, 'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? new ui['lobby']['sushe_selectUI']() : new ui['lobby']['sushe_select_enUI']()) || this;
-                    return w['bg_width_head'] = 962,
-                    w['bg_width_zhuangban'] = 1819,
-                    w['bg2_delta'] = -29,
-                    w['container_top'] = null,
-                    w['locking'] = !1,
-                    w.tabs = [],
-                    w['tab_index'] = 0,
-                    i.Inst = w,
-                    w;
+                (),
+                r = function (r) {
+                    function X() {
+                        var C = r.call(this, 'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? new ui['lobby']['sushe_selectUI']() : new ui['lobby']['sushe_select_enUI']()) || this;
+                        return C['bg_width_head'] = 962,
+                            C['bg_width_zhuangban'] = 1819,
+                            C['bg2_delta'] = -29,
+                            C['container_top'] = null,
+                            C['locking'] = !1,
+                            C.tabs = [],
+                            C['tab_index'] = 0,
+                            X.Inst = C,
+                            C;
+                    }
+                    return __extends(X, r),
+                        X['prototype']['onCreate'] = function () {
+                            var r = this;
+                            this['container_top'] = this.me['getChildByName']('top'),
+                                this['container_top']['getChildByName']('btn_back')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    r['locking'] || (1 == r['tab_index'] && r['container_zhuangban']['changed'] ? C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](r, function () {
+                                        r['close'](),
+                                            C['UI_Sushe'].Inst['go2Lobby']();
+                                    }), null) : (r['close'](), C['UI_Sushe'].Inst['go2Lobby']()));
+                                }, null, !1),
+                                this.root = this.me['getChildByName']('root'),
+                                this.bg2 = this.root['getChildByName']('bg2'),
+                                this.bg = this.root['getChildByName']('bg');
+                            for (var X = this.root['getChildByName']('container_tabs'), U = function (K) {
+                                i.tabs.push(X['getChildAt'](K)),
+                                    i.tabs[K]['clickHandler'] = new Laya['Handler'](i, function () {
+                                        r['locking'] || r['tab_index'] != K && (1 == r['tab_index'] && r['container_zhuangban']['changed'] ? C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](r, function () {
+                                            r['change_tab'](K);
+                                        }), null) : r['change_tab'](K));
+                                    });
+                            }, i = this, N = 0; N < X['numChildren']; N++)
+                                U(N);
+                            this['container_head'] = new K(this.root['getChildByName']('container_heads')),
+                                this['container_zhuangban'] = new C['zhuangban']['Container_Zhuangban'](this.root['getChildByName']('container_zhuangban0'), this.root['getChildByName']('container_zhuangban1'), new Laya['Handler'](this, function () {
+                                    return r['locking'];
+                                }));
+                        },
+                        X['prototype'].show = function (K) {
+                            var r = this;
+                            this['enable'] = !0,
+                                this['locking'] = !0,
+                                this['container_head']['dongtai_kaiguan']['refresh'](),
+                                this['tab_index'] = K,
+                                this['container_top'].y = 48,
+                                0 == this['tab_index'] ? (this.bg['width'] = this['bg_width_head'], this.bg2['width'] = this.bg['width'] + this['bg2_delta'], this['container_zhuangban']['close'](!0), this['container_head'].show(!0), C['UIBase']['anim_alpha_in'](this['container_top'], {
+                                    y: -30
+                                }, 200), C['UIBase']['anim_alpha_in'](this.root, {
+                                    x: 30
+                                }, 200)) : (this.bg['width'] = this['bg_width_zhuangban'], this.bg2['width'] = this.bg['width'] + this['bg2_delta'], this['container_zhuangban'].show(!0), this['container_head']['close'](!0), C['UIBase']['anim_alpha_in'](this['container_top'], {
+                                    y: -30
+                                }, 200), C['UIBase']['anim_alpha_in'](this.root, {
+                                    y: 30
+                                }, 200)),
+                                Laya['timer'].once(200, this, function () {
+                                    r['locking'] = !1;
+                                });
+                            for (var X = 0; X < this.tabs['length']; X++) {
+                                var U = this.tabs[X];
+                                U.skin = game['Tools']['localUISrc'](X == this['tab_index'] ? 'myres/sushe/btn_shine2.png' : 'myres/sushe/btn_dark2.png');
+                                var i = U['getChildByName']('word');
+                                i['color'] = X == this['tab_index'] ? '#552c1c' : '#d3a86c',
+                                    i['scaleX'] = i['scaleY'] = X == this['tab_index'] ? 1.1 : 1,
+                                    X == this['tab_index'] && U['parent']['setChildIndex'](U, this.tabs['length'] - 1);
+                            }
+                        },
+                        X['prototype']['change_tab'] = function (K) {
+                            var r = this;
+                            this['tab_index'] = K;
+                            for (var X = 0; X < this.tabs['length']; X++) {
+                                var U = this.tabs[X];
+                                U.skin = game['Tools']['localUISrc'](X == K ? 'myres/sushe/btn_shine2.png' : 'myres/sushe/btn_dark2.png');
+                                var i = U['getChildByName']('word');
+                                i['color'] = X == K ? '#552c1c' : '#d3a86c',
+                                    i['scaleX'] = i['scaleY'] = X == K ? 1.1 : 1,
+                                    X == K && U['parent']['setChildIndex'](U, this.tabs['length'] - 1);
+                            }
+                            this['locking'] = !0,
+                                0 == this['tab_index'] ? (this['container_zhuangban']['close'](!1), Laya['Tween'].to(this.bg, {
+                                    width: this['bg_width_head']
+                                }, 200, Laya.Ease['strongOut'], Laya['Handler']['create'](this, function () {
+                                    C['UI_Sushe'].Inst['open_illust'](),
+                                        r['container_head'].show(!1);
+                                })), Laya['Tween'].to(this.bg2, {
+                                    width: this['bg_width_head'] + this['bg2_delta']
+                                }, 200, Laya.Ease['strongOut'])) : 1 == this['tab_index'] && (this['container_head']['close'](!1), C['UI_Sushe'].Inst['hide_illust'](), Laya['Tween'].to(this.bg, {
+                                    width: this['bg_width_zhuangban']
+                                }, 200, Laya.Ease['strongOut'], Laya['Handler']['create'](this, function () {
+                                    r['container_zhuangban'].show(!1);
+                                })), Laya['Tween'].to(this.bg2, {
+                                    width: this['bg_width_zhuangban'] + this['bg2_delta']
+                                }, 200, Laya.Ease['strongOut'])),
+                                Laya['timer'].once(400, this, function () {
+                                    r['locking'] = !1;
+                                });
+                        },
+                        X['prototype']['close'] = function (K) {
+                            var r = this;
+                            this['locking'] = !0,
+                                C['UIBase']['anim_alpha_out'](this['container_top'], {
+                                    y: -30
+                                }, 150),
+                                0 == this['tab_index'] ? C['UIBase']['anim_alpha_out'](this.root, {
+                                    x: 30
+                                }, 150, 0, Laya['Handler']['create'](this, function () {
+                                    r['container_head']['close'](!0);
+                                })) : C['UIBase']['anim_alpha_out'](this.root, {
+                                    y: 30
+                                }, 150, 0, Laya['Handler']['create'](this, function () {
+                                    r['container_zhuangban']['close'](!0);
+                                })),
+                                Laya['timer'].once(150, this, function () {
+                                    r['locking'] = !1,
+                                        r['enable'] = !1,
+                                        K && K.run();
+                                });
+                        },
+                        X['prototype']['onDisable'] = function () {
+                            for (var K = 0; K < C['UI_Sushe']['characters']['length']; K++) {
+                                var r = C['UI_Sushe']['characters'][K].skin,
+                                    X = cfg['item_definition'].skin.get(r);
+                                X && Laya['loader']['clearTextureRes'](game['LoadMgr']['getResImageSkin'](X.path + '/bighead.png'));
+                            }
+                        },
+                        X['prototype']['changeKaiguanShow'] = function (C) {
+                            C ? this['container_head']['dongtai_kaiguan'].show() : this['container_head']['dongtai_kaiguan'].hide();
+                        },
+                        X['prototype']['changeZhuangbanSlot'] = function (C) {
+                            this['container_zhuangban']['changeSlotByItemId'](C);
+                        },
+                        X;
                 }
-                return __extends(i, C),
-                i['prototype']['onCreate'] = function () {
-                    var C = this;
-                    this['container_top'] = this.me['getChildByName']('top'),
-                    this['container_top']['getChildByName']('btn_back')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            C['locking'] || (1 == C['tab_index'] && C['container_zhuangban']['changed'] ? w['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](C, function () {
-                                        C['close'](),
-                                        w['UI_Sushe'].Inst['go2Lobby']();
-                                    }), null) : (C['close'](), w['UI_Sushe'].Inst['go2Lobby']()));
-                        }, null, !1),
-                    this.root = this.me['getChildByName']('root'),
-                    this.bg2 = this.root['getChildByName']('bg2'),
-                    this.bg = this.root['getChildByName']('bg');
-                    for (var i = this.root['getChildByName']('container_tabs'), l = function (j) {
-                        u.tabs.push(i['getChildAt'](j)),
-                        u.tabs[j]['clickHandler'] = new Laya['Handler'](u, function () {
-                                C['locking'] || C['tab_index'] != j && (1 == C['tab_index'] && C['container_zhuangban']['changed'] ? w['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](C, function () {
-                                            C['change_tab'](j);
-                                        }), null) : C['change_tab'](j));
-                            });
-                    }, u = this, b = 0; b < i['numChildren']; b++)
-                        l(b);
-                    this['container_head'] = new j(this.root['getChildByName']('container_heads')),
-                    this['container_zhuangban'] = new w['zhuangban']['Container_Zhuangban'](this.root['getChildByName']('container_zhuangban0'), this.root['getChildByName']('container_zhuangban1'), new Laya['Handler'](this, function () {
-                                return C['locking'];
-                            }));
-                },
-                i['prototype'].show = function (j) {
-                    var C = this;
-                    this['enable'] = !0,
-                    this['locking'] = !0,
-                    this['container_head']['dongtai_kaiguan']['refresh'](),
-                    this['tab_index'] = j,
-                    this['container_top'].y = 48,
-                    0 == this['tab_index'] ? (this.bg['width'] = this['bg_width_head'], this.bg2['width'] = this.bg['width'] + this['bg2_delta'], this['container_zhuangban']['close'](!0), this['container_head'].show(!0), w['UIBase']['anim_alpha_in'](this['container_top'], {
-                            y: -30
-                        }, 200), w['UIBase']['anim_alpha_in'](this.root, {
-                            x: 30
-                        }, 200)) : (this.bg['width'] = this['bg_width_zhuangban'], this.bg2['width'] = this.bg['width'] + this['bg2_delta'], this['container_zhuangban'].show(!0), this['container_head']['close'](!0), w['UIBase']['anim_alpha_in'](this['container_top'], {
-                            y: -30
-                        }, 200), w['UIBase']['anim_alpha_in'](this.root, {
-                            y: 30
-                        }, 200)),
-                    Laya['timer'].once(200, this, function () {
-                        C['locking'] = !1;
-                    });
-                    for (var i = 0; i < this.tabs['length']; i++) {
-                        var l = this.tabs[i];
-                        l.skin = game['Tools']['localUISrc'](i == this['tab_index'] ? 'myres/sushe/btn_shine2.png' : 'myres/sushe/btn_dark2.png');
-                        var u = l['getChildByName']('word');
-                        u['color'] = i == this['tab_index'] ? '#552c1c' : '#d3a86c',
-                        u['scaleX'] = u['scaleY'] = i == this['tab_index'] ? 1.1 : 1,
-                        i == this['tab_index'] && l['parent']['setChildIndex'](l, this.tabs['length'] - 1);
-                    }
-                },
-                i['prototype']['change_tab'] = function (j) {
-                    var C = this;
-                    this['tab_index'] = j;
-                    for (var i = 0; i < this.tabs['length']; i++) {
-                        var l = this.tabs[i];
-                        l.skin = game['Tools']['localUISrc'](i == j ? 'myres/sushe/btn_shine2.png' : 'myres/sushe/btn_dark2.png');
-                        var u = l['getChildByName']('word');
-                        u['color'] = i == j ? '#552c1c' : '#d3a86c',
-                        u['scaleX'] = u['scaleY'] = i == j ? 1.1 : 1,
-                        i == j && l['parent']['setChildIndex'](l, this.tabs['length'] - 1);
-                    }
-                    this['locking'] = !0,
-                    0 == this['tab_index'] ? (this['container_zhuangban']['close'](!1), Laya['Tween'].to(this.bg, {
-                            width: this['bg_width_head']
-                        }, 200, Laya.Ease['strongOut'], Laya['Handler']['create'](this, function () {
-                                w['UI_Sushe'].Inst['open_illust'](),
-                                C['container_head'].show(!1);
-                            })), Laya['Tween'].to(this.bg2, {
-                            width: this['bg_width_head'] + this['bg2_delta']
-                        }, 200, Laya.Ease['strongOut'])) : 1 == this['tab_index'] && (this['container_head']['close'](!1), w['UI_Sushe'].Inst['hide_illust'](), Laya['Tween'].to(this.bg, {
-                            width: this['bg_width_zhuangban']
-                        }, 200, Laya.Ease['strongOut'], Laya['Handler']['create'](this, function () {
-                                C['container_zhuangban'].show(!1);
-                            })), Laya['Tween'].to(this.bg2, {
-                            width: this['bg_width_zhuangban'] + this['bg2_delta']
-                        }, 200, Laya.Ease['strongOut'])),
-                    Laya['timer'].once(400, this, function () {
-                        C['locking'] = !1;
-                    });
-                },
-                i['prototype']['close'] = function (j) {
-                    var C = this;
-                    this['locking'] = !0,
-                    w['UIBase']['anim_alpha_out'](this['container_top'], {
-                        y: -30
-                    }, 150),
-                    0 == this['tab_index'] ? w['UIBase']['anim_alpha_out'](this.root, {
-                        x: 30
-                    }, 150, 0, Laya['Handler']['create'](this, function () {
-                            C['container_head']['close'](!0);
-                        })) : w['UIBase']['anim_alpha_out'](this.root, {
-                        y: 30
-                    }, 150, 0, Laya['Handler']['create'](this, function () {
-                            C['container_zhuangban']['close'](!0);
-                        })),
-                    Laya['timer'].once(150, this, function () {
-                        C['locking'] = !1,
-                        C['enable'] = !1,
-                        j && j.run();
-                    });
-                },
-                i['prototype']['onDisable'] = function () {
-                    for (var j = 0; j < w['UI_Sushe']['characters']['length']; j++) {
-                        var C = w['UI_Sushe']['characters'][j].skin,
-                        i = cfg['item_definition'].skin.get(C);
-                        i && Laya['loader']['clearTextureRes'](game['LoadMgr']['getResImageSkin'](i.path + '/bighead.png'));
-                    }
-                },
-                i['prototype']['changeKaiguanShow'] = function (w) {
-                    w ? this['container_head']['dongtai_kaiguan'].show() : this['container_head']['dongtai_kaiguan'].hide();
-                },
-                i['prototype']['changeZhuangbanSlot'] = function (w) {
-                    this['container_zhuangban']['changeSlotByItemId'](w);
-                },
-                i;
-            }
-            (w['UIBase']);
-            w['UI_Sushe_Select'] = C;
+                    (C['UIBase']);
+            C['UI_Sushe_Select'] = r;
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
+
+
 
 
 
 
 
         // 友人房
-        !function (w) {
-            var j = function () {
-                function j(w) {
-                    var j = this;
+        !function (C) {
+            var K = function () {
+                function K(C) {
+                    var K = this;
                     this['friends'] = [],
-                    this['sortlist'] = [],
-                    this.me = w,
-                    this.me['visible'] = !1,
-                    this['blackbg'] = w['getChildByName']('blackbg'),
-                    this['blackbg']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['locking'] || j['close']();
+                        this['sortlist'] = [],
+                        this.me = C,
+                        this.me['visible'] = !1,
+                        this['blackbg'] = C['getChildByName']('blackbg'),
+                        this['blackbg']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                            K['locking'] || K['close']();
                         }, null, !1),
-                    this.root = w['getChildByName']('root'),
-                    this['scrollview'] = this.root['scriptMap']['capsui.CScrollView'],
-                    this['scrollview']['init_scrollview'](Laya['Handler']['create'](this, this['render_item'], null, !1)),
-                    this['noinfo'] = this.root['getChildByName']('noinfo');
+                        this.root = C['getChildByName']('root'),
+                        this['scrollview'] = this.root['scriptMap']['capsui.CScrollView'],
+                        this['scrollview']['init_scrollview'](Laya['Handler']['create'](this, this['render_item'], null, !1)),
+                        this['noinfo'] = this.root['getChildByName']('noinfo');
                 }
-                return j['prototype'].show = function () {
-                    var j = this;
+                return K['prototype'].show = function () {
+                    var K = this;
                     this['locking'] = !0,
-                    this.me['visible'] = !0,
-                    this['scrollview']['reset'](),
-                    this['friends'] = [],
-                    this['sortlist'] = [];
-                    for (var C = game['FriendMgr']['friend_list'], i = 0; i < C['length']; i++)
-                        this['sortlist'].push(i);
-                    this['sortlist'] = this['sortlist'].sort(function (w, j) {
-                            var i = C[w],
-                            l = 0;
-                            if (i['state']['is_online']) {
-                                var u = game['Tools']['playState2Desc'](i['state']['playing']);
-                                l += '' != u ? 30000000000 : 60000000000,
-                                i.base['level'] && (l += i.base['level'].id % 1000 * 10000000),
-                                i.base['level3'] && (l += i.base['level3'].id % 1000 * 10000),
-                                l += -Math['floor'](i['state']['login_time'] / 10000000);
-                            } else
-                                l += i['state']['logout_time'];
-                            var b = C[j],
-                            V = 0;
-                            if (b['state']['is_online']) {
-                                var u = game['Tools']['playState2Desc'](b['state']['playing']);
-                                V += '' != u ? 30000000000 : 60000000000,
-                                b.base['level'] && (V += b.base['level'].id % 1000 * 10000000),
-                                b.base['level3'] && (V += b.base['level3'].id % 1000 * 10000),
-                                V += -Math['floor'](b['state']['login_time'] / 10000000);
-                            } else
-                                V += b['state']['logout_time'];
-                            return V - l;
-                        });
-                    for (var i = 0; i < C['length']; i++)
+                        this.me['visible'] = !0,
+                        this['scrollview']['reset'](),
+                        this['friends'] = [],
+                        this['sortlist'] = [];
+                    for (var r = game['FriendMgr']['friend_list'], X = 0; X < r['length']; X++)
+                        this['sortlist'].push(X);
+                    this['sortlist'] = this['sortlist'].sort(function (C, K) {
+                        var X = r[C],
+                            U = 0;
+                        if (X['state']['is_online']) {
+                            var i = game['Tools']['playState2Desc'](X['state']['playing']);
+                            U += '' != i ? 30000000000 : 60000000000,
+                                X.base['level'] && (U += X.base['level'].id % 1000 * 10000000),
+                                X.base['level3'] && (U += X.base['level3'].id % 1000 * 10000),
+                                U += -Math['floor'](X['state']['login_time'] / 10000000);
+                        } else
+                            U += X['state']['logout_time'];
+                        var N = r[K],
+                            H = 0;
+                        if (N['state']['is_online']) {
+                            var i = game['Tools']['playState2Desc'](N['state']['playing']);
+                            H += '' != i ? 30000000000 : 60000000000,
+                                N.base['level'] && (H += N.base['level'].id % 1000 * 10000000),
+                                N.base['level3'] && (H += N.base['level3'].id % 1000 * 10000),
+                                H += -Math['floor'](N['state']['login_time'] / 10000000);
+                        } else
+                            H += N['state']['logout_time'];
+                        return H - U;
+                    });
+                    for (var X = 0; X < r['length']; X++)
                         this['friends'].push({
-                            f: C[i],
+                            f: r[X],
                             invited: !1
                         });
                     this['noinfo']['visible'] = 0 == this['friends']['length'],
-                    this['scrollview']['addItem'](this['friends']['length']),
-                    w['UIBase']['anim_pop_out'](this.root, Laya['Handler']['create'](this, function () {
-                            j['locking'] = !1;
+                        this['scrollview']['addItem'](this['friends']['length']),
+                        C['UIBase']['anim_pop_out'](this.root, Laya['Handler']['create'](this, function () {
+                            K['locking'] = !1;
                         }));
                 },
-                j['prototype']['close'] = function () {
-                    var j = this;
-                    this['locking'] = !0,
-                    w['UIBase']['anim_pop_hide'](this.root, Laya['Handler']['create'](this, function () {
-                            j['locking'] = !1,
-                            j.me['visible'] = !1;
-                        }));
-                },
-                j['prototype']['render_item'] = function (j) {
-                    var C = j['index'],
-                    i = j['container'],
-                    u = j['cache_data'];
-                    u.head || (u.head = new w['UI_Head'](i['getChildByName']('head'), 'UI_WaitingRoom'), u.name = i['getChildByName']('name'), u['state'] = i['getChildByName']('label_state'), u.btn = i['getChildByName']('btn_invite'), u['invited'] = i['getChildByName']('invited'));
-                    var b = this['friends'][this['sortlist'][C]];
-                    u.head.id = game['GameUtility']['get_limited_skin_id'](b.f.base['avatar_id']),
-                    u.head['set_head_frame'](b.f.base['account_id'], b.f.base['avatar_frame']),
-                    game['Tools']['SetNickname'](u.name, b.f.base);
-                    var V = !1;
-                    if (b.f['state']['is_online']) {
-                        var k = game['Tools']['playState2Desc'](b.f['state']['playing']);
-                        '' != k ? (u['state'].text = game['Tools']['strOfLocalization'](2069, [k]), u['state']['color'] = '#a9d94d', u.name['getChildByName']('name')['color'] = '#a9d94d') : (u['state'].text = game['Tools']['strOfLocalization'](2071), u['state']['color'] = '#58c4db', u.name['getChildByName']('name')['color'] = '#58c4db', V = !0);
-                    } else
-                        u['state'].text = game['Tools']['strOfLocalization'](2072), u['state']['color'] = '#8c8c8c', u.name['getChildByName']('name')['color'] = '#8c8c8c';
-                    b['invited'] ? (u.btn['visible'] = !1, u['invited']['visible'] = !0) : (u.btn['visible'] = !0, u['invited']['visible'] = !1, game['Tools']['setGrayDisable'](u.btn, !V), V && (u.btn['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                    game['Tools']['setGrayDisable'](u.btn, !0);
-                                    var j = {
-                                        room_id: l.Inst['room_id'],
-                                        mode: l.Inst['room_mode'],
-                                        nickname: GameMgr.Inst['account_data']['nickname'],
-                                        verified: GameMgr.Inst['account_data']['verified'],
-                                        account_id: GameMgr.Inst['account_id']
-                                    };
-                                    app['NetAgent']['sendReq2Lobby']('Lobby', 'sendClientMessage', {
-                                        target_id: b.f.base['account_id'],
-                                        type: game['EFriendMsgType']['room_invite'],
-                                        content: JSON['stringify'](j)
-                                    }, function (j, C) {
-                                        j || C['error'] ? (game['Tools']['setGrayDisable'](u.btn, !1), w['UIMgr'].Inst['showNetReqError']('sendClientMessage', j, C)) : (u.btn['visible'] = !1, u['invited']['visible'] = !0, b['invited'] = !0);
-                                    });
-                                }, null, !1)));
-                },
-                j;
-            }
-            (),
-            C = function () {
-                function j(j) {
-                    var C = this;
-                    this.tabs = [],
-                    this['tab_index'] = 0,
-                    this.me = j,
-                    this['blackmask'] = this.me['getChildByName']('blackmask'),
-                    this.root = this.me['getChildByName']('root'),
-                    this['page_head'] = new w['zhuangban']['Page_Waiting_Head'](this.root['getChildByName']('container_heads')),
-                    this['page_zhangban'] = new w['zhuangban']['Container_Zhuangban'](this.root['getChildByName']('container_zhuangban0'), this.root['getChildByName']('container_zhuangban1'), new Laya['Handler'](this, function () {
-                                return C['locking'];
+                    K['prototype']['close'] = function () {
+                        var K = this;
+                        this['locking'] = !0,
+                            C['UIBase']['anim_pop_hide'](this.root, Laya['Handler']['create'](this, function () {
+                                K['locking'] = !1,
+                                    K.me['visible'] = !1;
                             }));
-                    for (var i = this.root['getChildByName']('container_tabs'), l = function (j) {
-                        u.tabs.push(i['getChildAt'](j)),
-                        u.tabs[j]['clickHandler'] = new Laya['Handler'](u, function () {
-                                C['locking'] || C['tab_index'] != j && (1 == C['tab_index'] && C['page_zhangban']['changed'] ? w['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](C, function () {
-                                            C['change_tab'](j);
-                                        }), null) : C['change_tab'](j));
+                    },
+                    K['prototype']['render_item'] = function (K) {
+                        var r = K['index'],
+                            X = K['container'],
+                            i = K['cache_data'];
+                        i.head || (i.head = new C['UI_Head'](X['getChildByName']('head'), 'UI_WaitingRoom'), i.name = X['getChildByName']('name'), i['state'] = X['getChildByName']('label_state'), i.btn = X['getChildByName']('btn_invite'), i['invited'] = X['getChildByName']('invited'));
+                        var N = this['friends'][this['sortlist'][r]];
+                        i.head.id = game['GameUtility']['get_limited_skin_id'](N.f.base['avatar_id']),
+                            i.head['set_head_frame'](N.f.base['account_id'], N.f.base['avatar_frame']),
+                            game['Tools']['SetNickname'](i.name, N.f.base);
+                        var H = !1;
+                        if (N.f['state']['is_online']) {
+                            var w = game['Tools']['playState2Desc'](N.f['state']['playing']);
+                            '' != w ? (i['state'].text = game['Tools']['strOfLocalization'](2069, [w]), i['state']['color'] = '#a9d94d', i.name['getChildByName']('name')['color'] = '#a9d94d') : (i['state'].text = game['Tools']['strOfLocalization'](2071), i['state']['color'] = '#58c4db', i.name['getChildByName']('name')['color'] = '#58c4db', H = !0);
+                        } else
+                            i['state'].text = game['Tools']['strOfLocalization'](2072), i['state']['color'] = '#8c8c8c', i.name['getChildByName']('name')['color'] = '#8c8c8c';
+                        N['invited'] ? (i.btn['visible'] = !1, i['invited']['visible'] = !0) : (i.btn['visible'] = !0, i['invited']['visible'] = !1, game['Tools']['setGrayDisable'](i.btn, !H), H && (i.btn['clickHandler'] = Laya['Handler']['create'](this, function () {
+                            game['Tools']['setGrayDisable'](i.btn, !0);
+                            var K = {
+                                room_id: U.Inst['room_id'],
+                                mode: U.Inst['room_mode'],
+                                nickname: GameMgr.Inst['account_data']['nickname'],
+                                verified: GameMgr.Inst['account_data']['verified'],
+                                account_id: GameMgr.Inst['account_id']
+                            };
+                            app['NetAgent']['sendReq2Lobby']('Lobby', 'sendClientMessage', {
+                                target_id: N.f.base['account_id'],
+                                type: game['EFriendMsgType']['room_invite'],
+                                content: JSON['stringify'](K)
+                            }, function (K, r) {
+                                K || r['error'] ? (game['Tools']['setGrayDisable'](i.btn, !1), C['UIMgr'].Inst['showNetReqError']('sendClientMessage', K, r)) : (i.btn['visible'] = !1, i['invited']['visible'] = !0, N['invited'] = !0);
                             });
-                    }, u = this, b = 0; b < i['numChildren']; b++)
-                        l(b);
-                    this.root['getChildByName']('close')['clickHandler'] = new Laya['Handler'](this, function () {
-                            C['locking'] || (1 == C['tab_index'] && C['page_zhangban']['changed'] ? w['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](C, function () {
-                                        C['close'](!1);
-                                    }), null) : C['close'](!1));
+                        }, null, !1)));
+                    },
+                    K;
+            }
+                (),
+                r = function () {
+                    function K(K) {
+                        var r = this;
+                        this.tabs = [],
+                            this['tab_index'] = 0,
+                            this.me = K,
+                            this['blackmask'] = this.me['getChildByName']('blackmask'),
+                            this.root = this.me['getChildByName']('root'),
+                            this['page_head'] = new C['zhuangban']['Page_Waiting_Head'](this.root['getChildByName']('container_heads')),
+                            this['page_zhangban'] = new C['zhuangban']['Container_Zhuangban'](this.root['getChildByName']('container_zhuangban0'), this.root['getChildByName']('container_zhuangban1'), new Laya['Handler'](this, function () {
+                                return r['locking'];
+                            }));
+                        for (var X = this.root['getChildByName']('container_tabs'), U = function (K) {
+                            i.tabs.push(X['getChildAt'](K)),
+                                i.tabs[K]['clickHandler'] = new Laya['Handler'](i, function () {
+                                    r['locking'] || r['tab_index'] != K && (1 == r['tab_index'] && r['page_zhangban']['changed'] ? C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](r, function () {
+                                        r['change_tab'](K);
+                                    }), null) : r['change_tab'](K));
+                                });
+                        }, i = this, N = 0; N < X['numChildren']; N++)
+                            U(N);
+                        this.root['getChildByName']('close')['clickHandler'] = new Laya['Handler'](this, function () {
+                            r['locking'] || (1 == r['tab_index'] && r['page_zhangban']['changed'] ? C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](r, function () {
+                                r['close'](!1);
+                            }), null) : r['close'](!1));
                         }),
-                    this.root['getChildByName']('btn_close')['clickHandler'] = new Laya['Handler'](this, function () {
-                            C['locking'] || (1 == C['tab_index'] && C['page_zhangban']['changed'] ? w['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](C, function () {
-                                        C['close'](!1);
-                                    }), null) : C['close'](!1));
-                        });
-                }
-                return j['prototype'].show = function () {
-                    var j = this;
-                    this.me['visible'] = !0,
-                    this['blackmask']['alpha'] = 0,
-                    this['locking'] = !0,
-                    Laya['Tween'].to(this['blackmask'], {
-                        alpha: 0.3
-                    }, 150),
-                    w['UIBase']['anim_pop_out'](this.root, Laya['Handler']['create'](this, function () {
-                            j['locking'] = !1;
-                        })),
-                    this['tab_index'] = 0,
-                    this['page_zhangban']['close'](!0),
-                    this['page_head'].show(!0);
-                    for (var C = 0; C < this.tabs['length']; C++) {
-                        var i = this.tabs[C];
-                        i.skin = game['Tools']['localUISrc'](C == this['tab_index'] ? 'myres/sushe/btn_shine2.png' : 'myres/sushe/btn_dark2.png');
-                        var l = i['getChildByName']('word');
-                        l['color'] = C == this['tab_index'] ? '#552c1c' : '#d3a86c',
-                        l['scaleX'] = l['scaleY'] = C == this['tab_index'] ? 1.1 : 1,
-                        C == this['tab_index'] && i['parent']['setChildIndex'](i, this.tabs['length'] - 1);
+                            this.root['getChildByName']('btn_close')['clickHandler'] = new Laya['Handler'](this, function () {
+                                r['locking'] || (1 == r['tab_index'] && r['page_zhangban']['changed'] ? C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](r, function () {
+                                    r['close'](!1);
+                                }), null) : r['close'](!1));
+                            });
                     }
-                },
-                j['prototype']['change_tab'] = function (w) {
-                    var j = this;
-                    this['tab_index'] = w;
-                    for (var C = 0; C < this.tabs['length']; C++) {
-                        var i = this.tabs[C];
-                        i.skin = game['Tools']['localUISrc'](C == w ? 'myres/sushe/btn_shine2.png' : 'myres/sushe/btn_dark2.png');
-                        var l = i['getChildByName']('word');
-                        l['color'] = C == w ? '#552c1c' : '#d3a86c',
-                        l['scaleX'] = l['scaleY'] = C == w ? 1.1 : 1,
-                        C == w && i['parent']['setChildIndex'](i, this.tabs['length'] - 1);
-                    }
-                    this['locking'] = !0,
-                    0 == this['tab_index'] ? (this['page_zhangban']['close'](!1), Laya['timer'].once(100, this, function () {
-                            j['page_head'].show(!1);
-                        })) : 1 == this['tab_index'] && (this['page_head']['close'](!1), Laya['timer'].once(100, this, function () {
-                            j['page_zhangban'].show(!1);
-                        })),
-                    Laya['timer'].once(400, this, function () {
-                        j['locking'] = !1;
-                    });
-                },
-                j['prototype']['close'] = function (j) {
-                    var C = this;
-                                    //修改友人房间立绘
-                                    if (!(C.page_head.choosed_chara_index == 0 && C.page_head.choosed_skin_id == 0)) {
-                                        for (let id = 0; id < uiscript.UI_WaitingRoom.Inst.players.length; id++) {
-                                            if (uiscript.UI_WaitingRoom.Inst.players[id].account_id == GameMgr.Inst.account_id) {
-                                                uiscript.UI_WaitingRoom.Inst.players[id].avatar_id = C.page_head.choosed_skin_id;
-                                                GameMgr.Inst.account_data.avatar_id = C.page_head.choosed_skin_id;
-                                                uiscript.UI_Sushe.main_character_id = C.page_head.choosed_chara_index + 200001;
-                                                uiscript.UI_WaitingRoom.Inst._refreshPlayerInfo(uiscript.UI_WaitingRoom.Inst.players[id]);
-                                                MMP.settings.characters[C.page_head.choosed_chara_index] = C.page_head.choosed_skin_id;
-                                                MMP.saveSettings();
-                                                break;
-                                            }
-                                        }
+                    return K['prototype'].show = function () {
+                        var K = this;
+                        this.me['visible'] = !0,
+                            this['blackmask']['alpha'] = 0,
+                            this['locking'] = !0,
+                            Laya['Tween'].to(this['blackmask'], {
+                                alpha: 0.3
+                            }, 150),
+                            C['UIBase']['anim_pop_out'](this.root, Laya['Handler']['create'](this, function () {
+                                K['locking'] = !1;
+                            })),
+                            this['tab_index'] = 0,
+                            this['page_zhangban']['close'](!0),
+                            this['page_head'].show(!0);
+                        for (var r = 0; r < this.tabs['length']; r++) {
+                            var X = this.tabs[r];
+                            X.skin = game['Tools']['localUISrc'](r == this['tab_index'] ? 'myres/sushe/btn_shine2.png' : 'myres/sushe/btn_dark2.png');
+                            var U = X['getChildByName']('word');
+                            U['color'] = r == this['tab_index'] ? '#552c1c' : '#d3a86c',
+                                U['scaleX'] = U['scaleY'] = r == this['tab_index'] ? 1.1 : 1,
+                                r == this['tab_index'] && X['parent']['setChildIndex'](X, this.tabs['length'] - 1);
+                        }
+                    },
+                        K['prototype']['change_tab'] = function (C) {
+                            var K = this;
+                            this['tab_index'] = C;
+                            for (var r = 0; r < this.tabs['length']; r++) {
+                                var X = this.tabs[r];
+                                X.skin = game['Tools']['localUISrc'](r == C ? 'myres/sushe/btn_shine2.png' : 'myres/sushe/btn_dark2.png');
+                                var U = X['getChildByName']('word');
+                                U['color'] = r == C ? '#552c1c' : '#d3a86c',
+                                    U['scaleX'] = U['scaleY'] = r == C ? 1.1 : 1,
+                                    r == C && X['parent']['setChildIndex'](X, this.tabs['length'] - 1);
+                            }
+                            this['locking'] = !0,
+                                0 == this['tab_index'] ? (this['page_zhangban']['close'](!1), Laya['timer'].once(100, this, function () {
+                                    K['page_head'].show(!1);
+                                })) : 1 == this['tab_index'] && (this['page_head']['close'](!1), Laya['timer'].once(100, this, function () {
+                                    K['page_zhangban'].show(!1);
+                                })),
+                                Laya['timer'].once(400, this, function () {
+                                    K['locking'] = !1;
+                                });
+                        },
+                        K['prototype']['close'] = function (K) {
+                            var r = this;
+                            //修改友人房间立绘
+                            if (!(r.page_head.choosed_chara_index == 0 && r.page_head.choosed_skin_id == 0)) {
+                                for (let id = 0; id < uiscript.UI_WaitingRoom.Inst.players.length; id++) {
+                                    if (uiscript.UI_WaitingRoom.Inst.players[id].account_id == GameMgr.Inst.account_id) {
+                                        uiscript.UI_WaitingRoom.Inst.players[id].avatar_id = r.page_head.choosed_skin_id;
+                                        GameMgr.Inst.account_data.avatar_id = r.page_head.choosed_skin_id;
+                                        uiscript.UI_Sushe.main_character_id = r.page_head.choosed_chara_index + 200001;
+                                        uiscript.UI_WaitingRoom.Inst._refreshPlayerInfo(uiscript.UI_WaitingRoom.Inst.players[id]);
+                                        MMP.settings.characters[r.page_head.choosed_chara_index] = r.page_head.choosed_skin_id;
+                                        MMP.saveSettings();
+                                        break;
                                     }
-                                    //end
-                    this.me['visible'] && (j ? (this['page_head']['close'](!0), this['page_zhangban']['close'](!0), this.me['visible'] = !1) : (app['NetAgent']['sendReq2Lobby']('Lobby', 'readyPlay', {
-                                ready: l.Inst['owner_id'] == GameMgr.Inst['account_id'] ? !0 : !1,
+                                }
+                            }
+                            //end
+                            this.me['visible'] && (K ? (this['page_head']['close'](!0), this['page_zhangban']['close'](!0), this.me['visible'] = !1) : (app['NetAgent']['sendReq2Lobby']('Lobby', 'readyPlay', {
+                                ready: U.Inst['owner_id'] == GameMgr.Inst['account_id'] ? !0 : !1,
                                 dressing: !1
-                            }, function () {}), this['locking'] = !0, this['page_head']['close'](!1), this['page_zhangban']['close'](!1), w['UIBase']['anim_pop_hide'](this.root, Laya['Handler']['create'](this, function () {
-                                    C['locking'] = !1,
-                                    C.me['visible'] = !1;
-                                }))));
-                },
-                j;
-            }
-            (),
-            i = function () {
-                function w(w) {
-                    this['modes'] = [],
-                    this.me = w,
-                    this.bg = this.me['getChildByName']('bg'),
-                    this['scrollview'] = this.me['scriptMap']['capsui.CScrollView'],
-                    this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_item']));
+                            }, function () { }), this['locking'] = !0, this['page_head']['close'](!1), this['page_zhangban']['close'](!1), C['UIBase']['anim_pop_hide'](this.root, Laya['Handler']['create'](this, function () {
+                                r['locking'] = !1,
+                                    r.me['visible'] = !1;
+                            }))));
+                        },
+                        K;
                 }
-                return w['prototype'].show = function (w) {
-                    this.me['visible'] = !0,
-                    this['scrollview']['reset'](),
-                    this['modes'] = w,
-                    this['scrollview']['addItem'](w['length']);
-                    var j = this['scrollview']['total_height'];
-                    j > 380 ? (this['scrollview']['_content'].y = 10, this.bg['height'] = 400) : (this['scrollview']['_content'].y = 390 - j, this.bg['height'] = j + 20),
-                    this.bg['visible'] = !0;
-                },
-                w['prototype']['render_item'] = function (w) {
-                    var j = w['index'],
-                    C = w['container'],
-                    i = C['getChildByName']('info');
-                    i['fontSize'] = 40,
-                    i['fontSize'] = this['modes'][j]['length'] <= 5 ? 40 : this['modes'][j]['length'] <= 9 ? 55 - 3 * this['modes'][j]['length'] : 28,
-                    i.text = this['modes'][j];
-                },
-                w;
-            }
-            (),
-            l = function (l) {
-                function u() {
-                    var j = l.call(this, new ui['lobby']['waitingroomUI']()) || this;
-                    return j['skin_ready'] = 'myres/room/btn_ready.png',
-                    j['skin_cancel'] = 'myres/room/btn_cancel.png',
-                    j['skin_start'] = 'myres/room/btn_start.png',
-                    j['skin_start_no'] = 'myres/room/btn_start_no.png',
-                    j['update_seq'] = 0,
-                    j['pre_msgs'] = [],
-                    j['msg_tail'] = -1,
-                    j['posted'] = !1,
-                    j['label_rommid'] = null,
-                    j['player_cells'] = [],
-                    j['btn_ok'] = null,
-                    j['btn_invite_friend'] = null,
-                    j['btn_add_robot'] = null,
-                    j['btn_dress'] = null,
-                    j['btn_copy'] = null,
-                    j['beReady'] = !1,
-                    j['room_id'] = -1,
-                    j['owner_id'] = -1,
-                    j['tournament_id'] = 0,
-                    j['max_player_count'] = 0,
-                    j['players'] = [],
-                    j['container_rules'] = null,
-                    j['container_top'] = null,
-                    j['container_right'] = null,
-                    j['locking'] = !1,
-                    j['mousein_copy'] = !1,
-                    j['popout'] = null,
-                    j['room_link'] = null,
-                    j['btn_copy_link'] = null,
-                    j['last_start_room'] = 0,
-                    j['invitefriend'] = null,
-                    j['pre_choose'] = null,
-                    j['ai_name'] = game['Tools']['strOfLocalization'](2003),
-                    u.Inst = j,
-                    app['NetAgent']['AddListener2Lobby']('NotifyRoomPlayerReady', Laya['Handler']['create'](j, function (w) {
-                            app.Log.log('NotifyRoomPlayerReady:' + JSON['stringify'](w)),
-                            j['onReadyChange'](w['account_id'], w['ready'], w['dressing']);
-                        })),
-                    app['NetAgent']['AddListener2Lobby']('NotifyRoomPlayerUpdate', Laya['Handler']['create'](j, function (w) {
-                            app.Log.log('NotifyRoomPlayerUpdate:' + JSON['stringify'](w)),
-                            j['onPlayerChange'](w);
-                        })),
-                    app['NetAgent']['AddListener2Lobby']('NotifyRoomGameStart', Laya['Handler']['create'](j, function (w) {
-                            j['enable'] && (app.Log.log('NotifyRoomGameStart:' + JSON['stringify'](w)), GameMgr.Inst['onPipeiYuyueSuccess'](0, 'youren'), j['onGameStart'](w));
-                        })),
-                    app['NetAgent']['AddListener2Lobby']('NotifyRoomKickOut', Laya['Handler']['create'](j, function (w) {
-                            app.Log.log('NotifyRoomKickOut:' + JSON['stringify'](w)),
-                            j['onBeKictOut']();
-                        })),
-                    game['LobbyNetMgr'].Inst['add_connect_listener'](Laya['Handler']['create'](j, function () {
-                            j['enable'] && j.hide(Laya['Handler']['create'](j, function () {
-                                    w['UI_Lobby'].Inst['enable'] = !0;
+                    (),
+                X = function () {
+                    function C(C) {
+                        this['modes'] = [],
+                            this.me = C,
+                            this.bg = this.me['getChildByName']('bg'),
+                            this['scrollview'] = this.me['scriptMap']['capsui.CScrollView'],
+                            this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_item']));
+                    }
+                    return C['prototype'].show = function (C) {
+                        this.me['visible'] = !0,
+                            this['scrollview']['reset'](),
+                            this['modes'] = C,
+                            this['scrollview']['addItem'](C['length']);
+                        var K = this['scrollview']['total_height'];
+                        K > 380 ? (this['scrollview']['_content'].y = 10, this.bg['height'] = 400) : (this['scrollview']['_content'].y = 390 - K, this.bg['height'] = K + 20),
+                            this.bg['visible'] = !0;
+                    },
+                        C['prototype']['render_item'] = function (C) {
+                            var K = C['index'],
+                                r = C['container'],
+                                X = r['getChildByName']('info');
+                            X['fontSize'] = 40,
+                                X['fontSize'] = this['modes'][K]['length'] <= 5 ? 40 : this['modes'][K]['length'] <= 9 ? 55 - 3 * this['modes'][K]['length'] : 28,
+                                X.text = this['modes'][K];
+                        },
+                        C;
+                }
+                    (),
+                U = function (U) {
+                    function i() {
+                        var K = U.call(this, new ui['lobby']['waitingroomUI']()) || this;
+                        return K['skin_ready'] = 'myres/room/btn_ready.png',
+                            K['skin_cancel'] = 'myres/room/btn_cancel.png',
+                            K['skin_start'] = 'myres/room/btn_start.png',
+                            K['skin_start_no'] = 'myres/room/btn_start_no.png',
+                            K['update_seq'] = 0,
+                            K['pre_msgs'] = [],
+                            K['msg_tail'] = -1,
+                            K['posted'] = !1,
+                            K['label_rommid'] = null,
+                            K['player_cells'] = [],
+                            K['btn_ok'] = null,
+                            K['btn_invite_friend'] = null,
+                            K['btn_add_robot'] = null,
+                            K['btn_dress'] = null,
+                            K['btn_copy'] = null,
+                            K['beReady'] = !1,
+                            K['room_id'] = -1,
+                            K['owner_id'] = -1,
+                            K['tournament_id'] = 0,
+                            K['max_player_count'] = 0,
+                            K['players'] = [],
+                            K['container_rules'] = null,
+                            K['container_top'] = null,
+                            K['container_right'] = null,
+                            K['locking'] = !1,
+                            K['mousein_copy'] = !1,
+                            K['popout'] = null,
+                            K['room_link'] = null,
+                            K['btn_copy_link'] = null,
+                            K['last_start_room'] = 0,
+                            K['invitefriend'] = null,
+                            K['pre_choose'] = null,
+                            K['ai_name'] = game['Tools']['strOfLocalization'](2003),
+                            i.Inst = K,
+                            app['NetAgent']['AddListener2Lobby']('NotifyRoomPlayerReady', Laya['Handler']['create'](K, function (C) {
+                                app.Log.log('NotifyRoomPlayerReady:' + JSON['stringify'](C)),
+                                    K['onReadyChange'](C['account_id'], C['ready'], C['dressing']);
+                            })),
+                            app['NetAgent']['AddListener2Lobby']('NotifyRoomPlayerUpdate', Laya['Handler']['create'](K, function (C) {
+                                app.Log.log('NotifyRoomPlayerUpdate:' + JSON['stringify'](C)),
+                                    K['onPlayerChange'](C);
+                            })),
+                            app['NetAgent']['AddListener2Lobby']('NotifyRoomGameStart', Laya['Handler']['create'](K, function (C) {
+                                K['enable'] && (app.Log.log('NotifyRoomGameStart:' + JSON['stringify'](C)), GameMgr.Inst['onPipeiYuyueSuccess'](0, 'youren'), K['onGameStart'](C));
+                            })),
+                            app['NetAgent']['AddListener2Lobby']('NotifyRoomKickOut', Laya['Handler']['create'](K, function (C) {
+                                app.Log.log('NotifyRoomKickOut:' + JSON['stringify'](C)),
+                                    K['onBeKictOut']();
+                            })),
+                            game['LobbyNetMgr'].Inst['add_connect_listener'](Laya['Handler']['create'](K, function () {
+                                K['enable'] && K.hide(Laya['Handler']['create'](K, function () {
+                                    C['UI_Lobby'].Inst['enable'] = !0;
                                 }));
-                        }, null, !1)),
-                    j;
-                }
-                return __extends(u, l),
-                u['prototype']['push_msg'] = function (w) {
-                    this['pre_msgs']['length'] < 15 ? this['pre_msgs'].push(JSON['parse'](w)) : (this['msg_tail'] = (this['msg_tail'] + 1) % this['pre_msgs']['length'], this['pre_msgs'][this['msg_tail']] = JSON['parse'](w));
-                },
-                Object['defineProperty'](u['prototype'], 'inRoom', {
-                    get: function () {
-                        return -1 != this['room_id'];
-                    },
-                    enumerable: !1,
-                    configurable: !0
-                }),
-                Object['defineProperty'](u['prototype'], 'robot_count', {
-                    get: function () {
-                        for (var w = 0, j = 0; j < this['players']['length']; j++)
-                            2 == this['players'][j]['category'] && w++;
-                        return w;
-                    },
-                    enumerable: !1,
-                    configurable: !0
-                }),
-                u['prototype']['resetData'] = function () {
-                    this['room_id'] = -1,
-                    this['owner_id'] = -1,
-                    this['room_mode'] = {},
-                    this['max_player_count'] = 0,
-                    this['players'] = [];
-                },
-                u['prototype']['updateData'] = function (w) {
-                    if (!w)
-                        return this['resetData'](), void 0;
-                                    //修改友人房间立绘
-                                    for (let i = 0; i < w.persons.length; i++) {
-        
-                                        if (w.persons[i].account_id == GameMgr.Inst.account_data.account_id) {
-                                            w.persons[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
-                                            w.persons[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
-                                            w.persons[i].character = uiscript.UI_Sushe.main_chara_info;
-                                            w.persons[i].title = GameMgr.Inst.account_data.title;
-                                            w.persons[i].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
+                            }, null, !1)),
+                            K;
+                    }
+                    return __extends(i, U),
+                        i['prototype']['push_msg'] = function (C) {
+                            this['pre_msgs']['length'] < 15 ? this['pre_msgs'].push(JSON['parse'](C)) : (this['msg_tail'] = (this['msg_tail'] + 1) % this['pre_msgs']['length'], this['pre_msgs'][this['msg_tail']] = JSON['parse'](C));
+                        },
+                        Object['defineProperty'](i['prototype'], 'inRoom', {
+                            get: function () {
+                                return -1 != this['room_id'];
+                            },
+                            enumerable: !1,
+                            configurable: !0
+                        }),
+                        Object['defineProperty'](i['prototype'], 'robot_count', {
+                            get: function () {
+                                for (var C = 0, K = 0; K < this['players']['length']; K++)
+                                    2 == this['players'][K]['category'] && C++;
+                                return C;
+                            },
+                            enumerable: !1,
+                            configurable: !0
+                        }),
+                        i['prototype']['resetData'] = function () {
+                            this['room_id'] = -1,
+                                this['owner_id'] = -1,
+                                this['room_mode'] = {},
+                                this['max_player_count'] = 0,
+                                this['players'] = [];
+                        },
+                        i['prototype']['updateData'] = function (C) {
+                            if (!C)
+                                return this['resetData'](), void 0;
+                            //修改友人房间立绘
+                            for (let i = 0; i < C.persons.length; i++) {
+
+                                if (C.persons[i].account_id == GameMgr.Inst.account_data.account_id) {
+                                    C.persons[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                                    C.persons[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
+                                    C.persons[i].character = uiscript.UI_Sushe.main_chara_info;
+                                    C.persons[i].title = GameMgr.Inst.account_data.title;
+                                    C.persons[i].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
+                                    if (MMP.settings.nickname != '') {
+                                        C.persons[i].nickname = MMP.settings.nickname;
+                                    }
+                                    break;
+                                }
+                            }
+                            //end
+                            this['room_id'] = C['room_id'],
+                                this['owner_id'] = C['owner_id'],
+                                this['room_mode'] = C.mode,
+                                this['public_live'] = C['public_live'],
+                                this['tournament_id'] = 0,
+                                C['tournament_id'] && (this['tournament_id'] = C['tournament_id']),
+                                this['ai_name'] = game['Tools']['strOfLocalization'](2003),
+                                this['room_mode']['detail_rule'] && (1 === this['room_mode']['detail_rule']['ai_level'] && (this['ai_name'] = game['Tools']['strOfLocalization'](2003)), 2 === this['room_mode']['detail_rule']['ai_level'] && (this['ai_name'] = game['Tools']['strOfLocalization'](2004))),
+                                this['max_player_count'] = C['max_player_count'],
+                                this['players'] = [];
+                            for (var K = 0; K < C['persons']['length']; K++) {
+                                var r = C['persons'][K];
+                                r['ready'] = !1,
+                                    r['cell_index'] = -1,
+                                    r['category'] = 1,
+                                    this['players'].push(r);
+                            }
+                            for (var K = 0; K < C['robot_count']; K++)
+                                this['players'].push({
+                                    category: 2,
+                                    cell_index: -1,
+                                    account_id: 0,
+                                    level: {
+                                        id: '10101',
+                                        score: 0
+                                    },
+                                    level3: {
+                                        id: '20101',
+                                        score: 0
+                                    },
+                                    nickname: this['ai_name'],
+                                    verified: 0,
+                                    ready: !0,
+                                    dressing: !1,
+                                    title: 0,
+                                    avatar_id: game['GameUtility']['get_default_ai_skin']()
+                                });
+                            for (var K = 0; K < C['ready_list']['length']; K++)
+                                for (var X = 0; X < this['players']['length']; X++)
+                                    if (this['players'][X]['account_id'] == C['ready_list'][K]) {
+                                        this['players'][X]['ready'] = !0;
+                                        break;
+                                    }
+                            this['update_seq'] = 0,
+                                C.seq && (this['update_seq'] = C.seq);
+                        },
+                        i['prototype']['onReadyChange'] = function (C, K, r) {
+                            for (var X = 0; X < this['players']['length']; X++)
+                                if (this['players'][X]['account_id'] == C) {
+                                    this['players'][X]['ready'] = K,
+                                        this['players'][X]['dressing'] = r,
+                                        this['_onPlayerReadyChange'](this['players'][X]);
+                                    break;
+                                }
+                            this['refreshStart']();
+                        },
+                        i['prototype']['onPlayerChange'] = function (C) {
+                            if (app.Log.log(C), C = C['toJSON'](), !(C.seq && C.seq <= this['update_seq'])) {
+                                // 修改友人房间立绘
+                                for (var i = 0; i < C.player_list.length; i++) {
+
+                                    if (C.player_list[i].account_id == GameMgr.Inst.account_data.account_id) {
+                                        C.player_list[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                                        C.player_list[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
+                                        C.player_list[i].title = GameMgr.Inst.account_data.title;
+                                        if (MMP.settings.nickname != '') {
+                                            C.player_list[i].nickname = MMP.settings.nickname;
+                                        }
+                                        break;
+                                    }
+                                }
+                                if (C.update_list != undefined) {
+                                    for (var i = 0; i < C.update_list.length; i++) {
+
+                                        if (C.update_list[i].account_id == GameMgr.Inst.account_data.account_id) {
+                                            C.update_list[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                                            C.update_list[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
+                                            C.update_list[i].title = GameMgr.Inst.account_data.title;
                                             if (MMP.settings.nickname != '') {
-                                                w.persons[i].nickname = MMP.settings.nickname;
+                                                C.update_list[i].nickname = MMP.settings.nickname;
                                             }
                                             break;
                                         }
                                     }
-                                    //end
-                    this['room_id'] = w['room_id'],
-                    this['owner_id'] = w['owner_id'],
-                    this['room_mode'] = w.mode,
-                    this['public_live'] = w['public_live'],
-                    this['tournament_id'] = 0,
-                    w['tournament_id'] && (this['tournament_id'] = w['tournament_id']),
-                    this['ai_name'] = game['Tools']['strOfLocalization'](2003),
-                    this['room_mode']['detail_rule'] && (1 === this['room_mode']['detail_rule']['ai_level'] && (this['ai_name'] = game['Tools']['strOfLocalization'](2003)), 2 === this['room_mode']['detail_rule']['ai_level'] && (this['ai_name'] = game['Tools']['strOfLocalization'](2004))),
-                    this['max_player_count'] = w['max_player_count'],
-                    this['players'] = [];
-                    for (var j = 0; j < w['persons']['length']; j++) {
-                        var C = w['persons'][j];
-                        C['ready'] = !1,
-                        C['cell_index'] = -1,
-                        C['category'] = 1,
-                        this['players'].push(C);
-                    }
-                    for (var j = 0; j < w['robot_count']; j++)
-                        this['players'].push({
-                            category: 2,
-                            cell_index: -1,
-                            account_id: 0,
-                            level: {
-                                id: '10101',
-                                score: 0
-                            },
-                            level3: {
-                                id: '20101',
-                                score: 0
-                            },
-                            nickname: this['ai_name'],
-                            verified: 0,
-                            ready: !0,
-                            dressing: !1,
-                            title: 0,
-                            avatar_id: game['GameUtility']['get_default_ai_skin']()
-                        });
-                    for (var j = 0; j < w['ready_list']['length']; j++)
-                        for (var i = 0; i < this['players']['length']; i++)
-                            if (this['players'][i]['account_id'] == w['ready_list'][j]) {
-                                this['players'][i]['ready'] = !0;
-                                break;
-                            }
-                    this['update_seq'] = 0,
-                    w.seq && (this['update_seq'] = w.seq);
-                },
-                u['prototype']['onReadyChange'] = function (w, j, C) {
-                    for (var i = 0; i < this['players']['length']; i++)
-                        if (this['players'][i]['account_id'] == w) {
-                            this['players'][i]['ready'] = j,
-                            this['players'][i]['dressing'] = C,
-                            this['_onPlayerReadyChange'](this['players'][i]);
-                            break;
-                        }
-                    this['refreshStart']();
-                },
-                u['prototype']['onPlayerChange'] = function (w) {
-                    if (app.Log.log(w), w = w['toJSON'](), !(w.seq && w.seq <= this['update_seq'])) {
-                                        // 修改友人房间立绘
-                                        for (var i = 0; i < w.player_list.length; i++) {
-        
-                                            if (w.player_list[i].account_id == GameMgr.Inst.account_data.account_id) {
-                                                w.player_list[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
-                                                w.player_list[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
-                                                w.player_list[i].title = GameMgr.Inst.account_data.title;
-                                                if (MMP.settings.nickname != '') {
-                                                    w.player_list[i].nickname = MMP.settings.nickname;
-                                                }
+                                }
+                                for (var i = 0; i < this.players.length; i++) {
+                                    if (this.players[i].account_id == GameMgr.Inst.account_data.account_id) {
+                                        this.players[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                                        this.players[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
+                                        this.players[i].title = GameMgr.Inst.account_data.title;
+                                        this.players[i].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
+                                        if (MMP.settings.nickname != '') {
+                                            this.players[i].nickname = MMP.settings.nickname;
+                                        }
+                                        break;
+                                    }
+                                }
+                                // END
+                                this['update_seq'] = C.seq;
+                                var K = {};
+                                K.type = 'onPlayerChange0',
+                                    K['players'] = this['players'],
+                                    K.msg = C,
+                                    this['push_msg'](JSON['stringify'](K));
+                                var r = this['robot_count'],
+                                    X = C['robot_count'];
+                                if (X < this['robot_count']) {
+                                    this['pre_choose'] && 2 == this['pre_choose']['category'] && (this['pre_choose']['category'] = 0, this['pre_choose'] = null, r--);
+                                    for (var U = 0; U < this['players']['length']; U++)
+                                        2 == this['players'][U]['category'] && r > X && (this['players'][U]['category'] = 0, r--);
+                                }
+                                for (var i = [], N = C['player_list'], U = 0; U < this['players']['length']; U++)
+                                    if (1 == this['players'][U]['category']) {
+                                        for (var H = -1, w = 0; w < N['length']; w++)
+                                            if (N[w]['account_id'] == this['players'][U]['account_id']) {
+                                                H = w;
                                                 break;
                                             }
+                                        if (-1 != H) {
+                                            var G = N[H];
+                                            i.push(this['players'][U]),
+                                                this['players'][U]['avatar_id'] = G['avatar_id'],
+                                                this['players'][U]['title'] = G['title'],
+                                                this['players'][U]['verified'] = G['verified'];
                                         }
-                                        if (k.update_list != undefined) {
-                                            for (var i = 0; i < w.update_list.length; i++) {
-        
-                                                if (w.update_list[i].account_id == GameMgr.Inst.account_data.account_id) {
-                                                    w.update_list[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
-                                                    w.update_list[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
-                                                    w.update_list[i].title = GameMgr.Inst.account_data.title;
-                                                    if (MMP.settings.nickname != '') {
-                                                        w.update_list[i].nickname = MMP.settings.nickname;
-                                                    }
+                                    } else
+                                        2 == this['players'][U]['category'] && i.push(this['players'][U]);
+                                this['players'] = i;
+                                for (var U = 0; U < N['length']; U++) {
+                                    for (var l = !1, G = N[U], w = 0; w < this['players']['length']; w++)
+                                        if (1 == this['players'][w]['category'] && this['players'][w]['account_id'] == G['account_id']) {
+                                            l = !0;
+                                            break;
+                                        }
+                                    l || this['players'].push({
+                                        account_id: G['account_id'],
+                                        avatar_id: G['avatar_id'],
+                                        nickname: G['nickname'],
+                                        verified: G['verified'],
+                                        title: G['title'],
+                                        level: G['level'],
+                                        level3: G['level3'],
+                                        ready: !1,
+                                        dressing: !1,
+                                        cell_index: -1,
+                                        category: 1
+                                    });
+                                }
+                                for (var R = [!1, !1, !1, !1], U = 0; U < this['players']['length']; U++)
+                                    - 1 != this['players'][U]['cell_index'] && (R[this['players'][U]['cell_index']] = !0, this['_refreshPlayerInfo'](this['players'][U]));
+                                for (var U = 0; U < this['players']['length']; U++)
+                                    if (1 == this['players'][U]['category'] && -1 == this['players'][U]['cell_index'])
+                                        for (var w = 0; w < this['max_player_count']; w++)
+                                            if (!R[w]) {
+                                                this['players'][U]['cell_index'] = w,
+                                                    R[w] = !0,
+                                                    this['_refreshPlayerInfo'](this['players'][U]);
+                                                break;
+                                            }
+                                for (var r = this['robot_count'], X = C['robot_count']; X > r;) {
+                                    for (var f = -1, w = 0; w < this['max_player_count']; w++)
+                                        if (!R[w]) {
+                                            f = w;
+                                            break;
+                                        }
+                                    if (-1 == f)
+                                        break;
+                                    R[f] = !0,
+                                        this['players'].push({
+                                            category: 2,
+                                            cell_index: f,
+                                            account_id: 0,
+                                            level: {
+                                                id: '10101',
+                                                score: 0
+                                            },
+                                            level3: {
+                                                id: '20101',
+                                                score: 0
+                                            },
+                                            nickname: this['ai_name'],
+                                            verified: 0,
+                                            ready: !0,
+                                            title: 0,
+                                            avatar_id: game['GameUtility']['get_default_ai_skin'](),
+                                            dressing: !1
+                                        }),
+                                        this['_refreshPlayerInfo'](this['players'][this['players']['length'] - 1]),
+                                        r++;
+                                }
+                                for (var U = 0; U < this['max_player_count']; U++)
+                                    R[U] || this['_clearCell'](U);
+                                var K = {};
+                                if (K.type = 'onPlayerChange1', K['players'] = this['players'], this['push_msg'](JSON['stringify'](K)), C['owner_id']) {
+                                    if (this['owner_id'] = C['owner_id'], this['enable'])
+                                        if (this['owner_id'] == GameMgr.Inst['account_id'])
+                                            this['refreshAsOwner']();
+                                        else
+                                            for (var w = 0; w < this['players']['length']; w++)
+                                                if (this['players'][w] && this['players'][w]['account_id'] == this['owner_id']) {
+                                                    this['_refreshPlayerInfo'](this['players'][w]);
                                                     break;
                                                 }
-                                            }
-                                        }
-                                        for (var i = 0; i < this.players.length; i++) {
-                                            if (this.players[i].account_id == GameMgr.Inst.account_data.account_id) {
-                                                this.players[i].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
-                                                this.players[i].avatar_id = GameMgr.Inst.account_data.avatar_id;
-                                                this.players[i].title = GameMgr.Inst.account_data.title;
-                                                this.players[i].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
-                                                if (MMP.settings.nickname != '') {
-                                                    this.players[i].nickname = MMP.settings.nickname;
-                                                }
+                                } else if (this['enable'])
+                                    if (this['owner_id'] == GameMgr.Inst['account_id'])
+                                        this['refreshAsOwner']();
+                                    else
+                                        for (var w = 0; w < this['players']['length']; w++)
+                                            if (this['players'][w] && this['players'][w]['account_id'] == this['owner_id']) {
+                                                this['_refreshPlayerInfo'](this['players'][w]);
                                                 break;
                                             }
-                                        }
-                                        // END
-                        this['update_seq'] = w.seq;
-                        var j = {};
-                        j.type = 'onPlayerChange0',
-                        j['players'] = this['players'],
-                        j.msg = w,
-                        this['push_msg'](JSON['stringify'](j));
-                        var C = this['robot_count'],
-                        i = w['robot_count'];
-                        if (i < this['robot_count']) {
-                            this['pre_choose'] && 2 == this['pre_choose']['category'] && (this['pre_choose']['category'] = 0, this['pre_choose'] = null, C--);
-                            for (var l = 0; l < this['players']['length']; l++)
-                                2 == this['players'][l]['category'] && C > i && (this['players'][l]['category'] = 0, C--);
-                        }
-                        for (var u = [], b = w['player_list'], l = 0; l < this['players']['length']; l++)
-                            if (1 == this['players'][l]['category']) {
-                                for (var V = -1, k = 0; k < b['length']; k++)
-                                    if (b[k]['account_id'] == this['players'][l]['account_id']) {
-                                        V = k;
-                                        break;
-                                    }
-                                if (-1 != V) {
-                                    var S = b[V];
-                                    u.push(this['players'][l]),
-                                    this['players'][l]['avatar_id'] = S['avatar_id'],
-                                    this['players'][l]['title'] = S['title'],
-                                    this['players'][l]['verified'] = S['verified'];
-                                }
-                            } else
-                                2 == this['players'][l]['category'] && u.push(this['players'][l]);
-                        this['players'] = u;
-                        for (var l = 0; l < b['length']; l++) {
-                            for (var H = !1, S = b[l], k = 0; k < this['players']['length']; k++)
-                                if (1 == this['players'][k]['category'] && this['players'][k]['account_id'] == S['account_id']) {
-                                    H = !0;
-                                    break;
-                                }
-                            H || this['players'].push({
-                                account_id: S['account_id'],
-                                avatar_id: S['avatar_id'],
-                                nickname: S['nickname'],
-                                verified: S['verified'],
-                                title: S['title'],
-                                level: S['level'],
-                                level3: S['level3'],
-                                ready: !1,
-                                dressing: !1,
-                                cell_index: -1,
-                                category: 1
-                            });
-                        }
-                        for (var N = [!1, !1, !1, !1], l = 0; l < this['players']['length']; l++)
-                             - 1 != this['players'][l]['cell_index'] && (N[this['players'][l]['cell_index']] = !0, this['_refreshPlayerInfo'](this['players'][l]));
-                        for (var l = 0; l < this['players']['length']; l++)
-                            if (1 == this['players'][l]['category'] && -1 == this['players'][l]['cell_index'])
-                                for (var k = 0; k < this['max_player_count']; k++)
-                                    if (!N[k]) {
-                                        this['players'][l]['cell_index'] = k,
-                                        N[k] = !0,
-                                        this['_refreshPlayerInfo'](this['players'][l]);
-                                        break;
-                                    }
-                        for (var C = this['robot_count'], i = w['robot_count']; i > C; ) {
-                            for (var W = -1, k = 0; k < this['max_player_count']; k++)
-                                if (!N[k]) {
-                                    W = k;
-                                    break;
-                                }
-                            if (-1 == W)
-                                break;
-                            N[W] = !0,
-                            this['players'].push({
-                                category: 2,
-                                cell_index: W,
-                                account_id: 0,
-                                level: {
-                                    id: '10101',
-                                    score: 0
-                                },
-                                level3: {
-                                    id: '20101',
-                                    score: 0
-                                },
-                                nickname: this['ai_name'],
-                                verified: 0,
-                                ready: !0,
-                                title: 0,
-                                avatar_id: game['GameUtility']['get_default_ai_skin'](),
-                                dressing: !1
-                            }),
-                            this['_refreshPlayerInfo'](this['players'][this['players']['length'] - 1]),
-                            C++;
-                        }
-                        for (var l = 0; l < this['max_player_count']; l++)
-                            N[l] || this['_clearCell'](l);
-                        var j = {};
-                        if (j.type = 'onPlayerChange1', j['players'] = this['players'], this['push_msg'](JSON['stringify'](j)), w['owner_id']) {
-                            if (this['owner_id'] = w['owner_id'], this['enable'])
-                                if (this['owner_id'] == GameMgr.Inst['account_id'])
-                                    this['refreshAsOwner']();
-                                else
-                                    for (var k = 0; k < this['players']['length']; k++)
-                                        if (this['players'][k] && this['players'][k]['account_id'] == this['owner_id']) {
-                                            this['_refreshPlayerInfo'](this['players'][k]);
-                                            break;
-                                        }
-                        } else if (this['enable'])
-                            if (this['owner_id'] == GameMgr.Inst['account_id'])
-                                this['refreshAsOwner']();
-                            else
-                                for (var k = 0; k < this['players']['length']; k++)
-                                    if (this['players'][k] && this['players'][k]['account_id'] == this['owner_id']) {
-                                        this['_refreshPlayerInfo'](this['players'][k]);
-                                        break;
-                                    }
-                    }
-                },
-                u['prototype']['onBeKictOut'] = function () {
-                    this['resetData'](),
-                    this['enable'] && (this['enable'] = !1, this['pop_change_view']['close'](!1), w['UI_Lobby'].Inst['enable'] = !0, w['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](52)));
-                },
-                u['prototype']['onCreate'] = function () {
-                    var l = this;
-                    this['last_start_room'] = 0;
-                    var u = this.me['getChildByName']('root');
-                    this['container_top'] = u['getChildByName']('top'),
-                    this['container_right'] = u['getChildByName']('right'),
-                    this['label_rommid'] = this['container_top']['getChildByName']('label_roomid');
-                    for (var b = function (j) {
-                        var C = u['getChildByName']('player_' + j['toString']()),
-                        i = {};
-                        i['index'] = j,
-                        i['container'] = C,
-                        i['container_flag'] = C['getChildByName']('flag'),
-                        i['container_flag']['visible'] = !1,
-                        i['container_name'] = C['getChildByName']('container_name'),
-                        i.name = C['getChildByName']('container_name')['getChildByName']('name'),
-                        i['btn_t'] = C['getChildByName']('btn_t'),
-                        i['container_illust'] = C['getChildByName']('container_illust'),
-                        i['illust'] = new w['UI_Character_Skin'](C['getChildByName']('container_illust')['getChildByName']('illust')),
-                        i.host = C['getChildByName']('host'),
-                        i['title'] = new w['UI_PlayerTitle'](C['getChildByName']('container_name')['getChildByName']('title'), 'UI_WaitingRoom'),
-                        i.rank = new w['UI_Level'](C['getChildByName']('container_name')['getChildByName']('rank'), 'UI_WaitingRoom'),
-                        i['is_robot'] = !1;
-                        var b = 0;
-                        i['btn_t']['clickHandler'] = Laya['Handler']['create'](V, function () {
-                                if (!(l['locking'] || Laya['timer']['currTimer'] < b)) {
-                                    b = Laya['timer']['currTimer'] + 500;
-                                    for (var w = 0; w < l['players']['length']; w++)
-                                        if (l['players'][w]['cell_index'] == j) {
-                                            l['kickPlayer'](w);
-                                            break;
-                                        }
-                                }
-                            }, null, !1),
-                        i['btn_info'] = C['getChildByName']('btn_info'),
-                        i['btn_info']['clickHandler'] = Laya['Handler']['create'](V, function () {
-                                if (!l['locking'])
-                                    for (var C = 0; C < l['players']['length']; C++)
-                                        if (l['players'][C]['cell_index'] == j) {
-                                            l['players'][C]['account_id'] && l['players'][C]['account_id'] > 0 && w['UI_OtherPlayerInfo'].Inst.show(l['players'][C]['account_id'], l['room_mode'].mode < 10 ? 1 : 2, 1);
-                                            break;
-                                        }
-                            }, null, !1),
-                        V['player_cells'].push(i);
-                    }, V = this, k = 0; 4 > k; k++)
-                        b(k);
-                    this['btn_ok'] = u['getChildByName']('btn_ok');
-                    var S = 0;
-                    this['btn_ok']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            Laya['timer']['currTimer'] < S + 500 || (S = Laya['timer']['currTimer'], l['owner_id'] == GameMgr.Inst['account_id'] ? l['getStart']() : l['switchReady']());
-                        }, null, !1);
-                    var H = 0;
-                    this['container_top']['getChildByName']('btn_leave')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            Laya['timer']['currTimer'] < H + 500 || (H = Laya['timer']['currTimer'], l['leaveRoom']());
-                        }, null, !1),
-                    this['btn_invite_friend'] = this['container_right']['getChildByName']('btn_friend'),
-                    this['btn_invite_friend']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            l['locking'] || l['invitefriend'].show();
-                        }, null, !1),
-                    this['btn_add_robot'] = this['container_right']['getChildByName']('btn_robot');
-                    var N = 0;
-                    this['btn_add_robot']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            l['locking'] || Laya['timer']['currTimer'] < N || (N = Laya['timer']['currTimer'] + 1000, app['NetAgent']['sendReq2Lobby']('Lobby', 'modifyRoom', {
-                                    robot_count: l['robot_count'] + 1
-                                }, function (j, C) {
-                                    (j || C['error'] && 1111 != C['error'].code) && w['UIMgr'].Inst['showNetReqError']('modifyRoom_add', j, C),
-                                    N = 0;
-                                }));
-                        }, null, !1),
-                    this['container_right']['getChildByName']('btn_help')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            if (!l['locking']) {
-                                var j = 0;
-                                l['room_mode']['detail_rule'] && l['room_mode']['detail_rule']['chuanma'] && (j = 1),
-                                w['UI_Rules'].Inst.show(0, null, j);
                             }
-                        }, null, !1),
-                    this['btn_dress'] = this['container_right']['getChildByName']('btn_view'),
-                    this['btn_dress']['clickHandler'] = new Laya['Handler'](this, function () {
-                            l['locking'] || l['beReady'] && l['owner_id'] != GameMgr.Inst['account_id'] || (l['pop_change_view'].show(), app['NetAgent']['sendReq2Lobby']('Lobby', 'readyPlay', {
-                                    ready: l['owner_id'] == GameMgr.Inst['account_id'] ? !0 : !1,
-                                    dressing: !0
-                                }, function () {}));
-                        }),
-                    this['btn_copy'] = this['container_right']['getChildByName']('btn_copy'),
-                    this['btn_copy'].on('mouseover', this, function () {
-                        l['mousein_copy'] = !0;
-                    }),
-                    this['btn_copy'].on('mouseout', this, function () {
-                        l['mousein_copy'] = !1;
-                    }),
-                    this['btn_copy']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            l['popout']['visible'] || (GameMgr.Inst['BehavioralStatistics'](12), l['popout']['visible'] = !0, w['UIBase']['anim_pop_out'](l['popout'], null));
-                        }, null, !1),
-                    this['container_rules'] = new i(this['container_right']['getChildByName']('container_rules')),
-                    this['popout'] = this.me['getChildByName']('pop'),
-                    this['room_link'] = this['popout']['getChildByName']('input')['getChildByName']('txtinput'),
-                    this['room_link']['editable'] = !1,
-                    this['btn_copy_link'] = this['popout']['getChildByName']('btn_copy'),
-                    this['btn_copy_link']['visible'] = !1,
-                    GameMgr['inConch'] ? (this['btn_copy_link']['visible'] = !0, this['btn_copy_link']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                var j = Laya['PlatformClass']['createClass']('layaair.majsoul.mjmgr');
-                                j.call('setSysClipboardText', l['room_link'].text),
-                                w['UIBase']['anim_pop_hide'](l['popout'], Laya['Handler']['create'](l, function () {
-                                        l['popout']['visible'] = !1;
-                                    })),
-                                w['UI_FlyTips']['ShowTips'](game['Tools']['strOfLocalization'](2125));
-                            }, null, !1)) : GameMgr['iniOSWebview'] && (this['btn_copy_link']['visible'] = !0, this['btn_copy_link']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                Laya['Browser']['window']['wkbridge']['callNative']('copy2clip', l['room_link'].text, function () {}),
-                                w['UIBase']['anim_pop_hide'](l['popout'], Laya['Handler']['create'](l, function () {
-                                        l['popout']['visible'] = !1;
-                                    })),
-                                w['UI_FlyTips']['ShowTips'](game['Tools']['strOfLocalization'](2125));
-                            }, null, !1)),
-                    this['popout']['visible'] = !1,
-                    this['popout']['getChildByName']('btn_cancel')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            w['UIBase']['anim_pop_hide'](l['popout'], Laya['Handler']['create'](l, function () {
-                                    l['popout']['visible'] = !1;
+                        },
+                        i['prototype']['onBeKictOut'] = function () {
+                            this['resetData'](),
+                                this['enable'] && (this['enable'] = !1, this['pop_change_view']['close'](!1), C['UI_Lobby'].Inst['enable'] = !0, C['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](52)));
+                        },
+                        i['prototype']['onCreate'] = function () {
+                            var U = this;
+                            this['last_start_room'] = 0;
+                            var i = this.me['getChildByName']('root');
+                            this['container_top'] = i['getChildByName']('top'),
+                                this['container_right'] = i['getChildByName']('right'),
+                                this['label_rommid'] = this['container_top']['getChildByName']('label_roomid');
+                            for (var N = function (K) {
+                                var r = i['getChildByName']('player_' + K['toString']()),
+                                    X = {};
+                                X['index'] = K,
+                                    X['container'] = r,
+                                    X['container_flag'] = r['getChildByName']('flag'),
+                                    X['container_flag']['visible'] = !1,
+                                    X['container_name'] = r['getChildByName']('container_name'),
+                                    X.name = r['getChildByName']('container_name')['getChildByName']('name'),
+                                    X['btn_t'] = r['getChildByName']('btn_t'),
+                                    X['container_illust'] = r['getChildByName']('container_illust'),
+                                    X['illust'] = new C['UI_Character_Skin'](r['getChildByName']('container_illust')['getChildByName']('illust')),
+                                    X.host = r['getChildByName']('host'),
+                                    X['title'] = new C['UI_PlayerTitle'](r['getChildByName']('container_name')['getChildByName']('title'), 'UI_WaitingRoom'),
+                                    X.rank = new C['UI_Level'](r['getChildByName']('container_name')['getChildByName']('rank'), 'UI_WaitingRoom'),
+                                    X['is_robot'] = !1;
+                                var N = 0;
+                                X['btn_t']['clickHandler'] = Laya['Handler']['create'](H, function () {
+                                    if (!(U['locking'] || Laya['timer']['currTimer'] < N)) {
+                                        N = Laya['timer']['currTimer'] + 500;
+                                        for (var C = 0; C < U['players']['length']; C++)
+                                            if (U['players'][C]['cell_index'] == K) {
+                                                U['kickPlayer'](C);
+                                                break;
+                                            }
+                                    }
+                                }, null, !1),
+                                    X['btn_info'] = r['getChildByName']('btn_info'),
+                                    X['btn_info']['clickHandler'] = Laya['Handler']['create'](H, function () {
+                                        if (!U['locking'])
+                                            for (var r = 0; r < U['players']['length']; r++)
+                                                if (U['players'][r]['cell_index'] == K) {
+                                                    U['players'][r]['account_id'] && U['players'][r]['account_id'] > 0 && C['UI_OtherPlayerInfo'].Inst.show(U['players'][r]['account_id'], U['room_mode'].mode < 10 ? 1 : 2, 1);
+                                                    break;
+                                                }
+                                    }, null, !1),
+                                    H['player_cells'].push(X);
+                            }, H = this, w = 0; 4 > w; w++)
+                                N(w);
+                            this['btn_ok'] = i['getChildByName']('btn_ok');
+                            var G = 0;
+                            this['btn_ok']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                Laya['timer']['currTimer'] < G + 500 || (G = Laya['timer']['currTimer'], U['owner_id'] == GameMgr.Inst['account_id'] ? U['getStart']() : U['switchReady']());
+                            }, null, !1);
+                            var l = 0;
+                            this['container_top']['getChildByName']('btn_leave')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                Laya['timer']['currTimer'] < l + 500 || (l = Laya['timer']['currTimer'], U['leaveRoom']());
+                            }, null, !1),
+                                this['btn_invite_friend'] = this['container_right']['getChildByName']('btn_friend'),
+                                this['btn_invite_friend']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    U['locking'] || U['invitefriend'].show();
+                                }, null, !1),
+                                this['btn_add_robot'] = this['container_right']['getChildByName']('btn_robot');
+                            var R = 0;
+                            this['btn_add_robot']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                U['locking'] || Laya['timer']['currTimer'] < R || (R = Laya['timer']['currTimer'] + 1000, app['NetAgent']['sendReq2Lobby']('Lobby', 'modifyRoom', {
+                                    robot_count: U['robot_count'] + 1
+                                }, function (K, r) {
+                                    (K || r['error'] && 1111 != r['error'].code) && C['UIMgr'].Inst['showNetReqError']('modifyRoom_add', K, r),
+                                        R = 0;
                                 }));
-                        }, null, !1),
-                    this['invitefriend'] = new j(this.me['getChildByName']('invite_friend')),
-                    this['pop_change_view'] = new C(this.me['getChildByName']('pop_view'));
-                },
-                u['prototype'].show = function () {
-                    var j = this;
-                    game['Scene_Lobby'].Inst['change_bg']('indoor', !1),
-                    this['mousein_copy'] = !1,
-                    this['beReady'] = !1,
-                    this['invitefriend'].me['visible'] = !1,
-                    this['btn_add_robot']['visible'] = !1,
-                    this['btn_invite_friend']['visible'] = !1,
-                    game['Tools']['setGrayDisable'](this['btn_dress'], !1),
-                    this['pre_choose'] = null,
-                    this['pop_change_view']['close'](!0);
-                    for (var C = 0; 4 > C; C++)
-                        this['player_cells'][C]['container']['visible'] = C < this['max_player_count'];
-                    for (var C = 0; C < this['max_player_count']; C++)
-                        this['_clearCell'](C);
-                    for (var C = 0; C < this['players']['length']; C++)
-                        this['players'][C]['cell_index'] = C, this['_refreshPlayerInfo'](this['players'][C]);
-                    this['msg_tail'] = -1,
-                    this['pre_msgs'] = [],
-                    this['posted'] = !1;
-                    var i = {};
-                    i.type = 'show',
-                    i['players'] = this['players'],
-                    this['push_msg'](JSON['stringify'](i)),
-                    this['owner_id'] == GameMgr.Inst['account_id'] ? (this['btn_ok'].skin = game['Tools']['localUISrc'](this['skin_start']), this['refreshAsOwner']()) : (this['btn_ok'].skin = game['Tools']['localUISrc'](this['skin_ready']), game['Tools']['setGrayDisable'](this['btn_ok'], !1)),
-                    this['label_rommid'].text = 'en' == GameMgr['client_language'] ? '#' + this['room_id']['toString']() : this['room_id']['toString']();
-                    var l = [];
-                    l.push(game['Tools']['room_mode_desc'](this['room_mode'].mode));
-                    var u = this['room_mode']['detail_rule'];
-                    if (u) {
-                        var b = 5,
-                        V = 20;
-                        if (null != u['time_fixed'] && (b = u['time_fixed']), null != u['time_add'] && (V = u['time_add']), l.push(b['toString']() + '+' + V['toString']() + game['Tools']['strOfLocalization'](2019)), 0 != this['tournament_id']) {
-                            var k = cfg['tournament']['tournaments'].get(this['tournament_id']);
-                            k && l.push(k.name);
-                        }
-                        if (null != u['init_point'] && l.push(game['Tools']['strOfLocalization'](2199) + u['init_point']), null != u['fandian'] && l.push(game['Tools']['strOfLocalization'](2094) + ':' + u['fandian']), u['guyi_mode'] && l.push(game['Tools']['strOfLocalization'](3028)), null != u['dora_count'])
-                            switch (u['chuanma'] && (u['dora_count'] = 0), u['dora_count']) {
-                            case 0:
-                                l.push(game['Tools']['strOfLocalization'](2044));
-                                break;
-                            case 2:
-                                l.push(game['Tools']['strOfLocalization'](2047));
-                                break;
-                            case 3:
-                                l.push(game['Tools']['strOfLocalization'](2045));
-                                break;
-                            case 4:
-                                l.push(game['Tools']['strOfLocalization'](2046));
+                            }, null, !1),
+                                this['container_right']['getChildByName']('btn_help')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    if (!U['locking']) {
+                                        var K = 0;
+                                        U['room_mode']['detail_rule'] && U['room_mode']['detail_rule']['chuanma'] && (K = 1),
+                                            C['UI_Rules'].Inst.show(0, null, K);
+                                    }
+                                }, null, !1),
+                                this['btn_dress'] = this['container_right']['getChildByName']('btn_view'),
+                                this['btn_dress']['clickHandler'] = new Laya['Handler'](this, function () {
+                                    U['locking'] || U['beReady'] && U['owner_id'] != GameMgr.Inst['account_id'] || (U['pop_change_view'].show(), app['NetAgent']['sendReq2Lobby']('Lobby', 'readyPlay', {
+                                        ready: U['owner_id'] == GameMgr.Inst['account_id'] ? !0 : !1,
+                                        dressing: !0
+                                    }, function () { }));
+                                }),
+                                this['btn_copy'] = this['container_right']['getChildByName']('btn_copy'),
+                                this['btn_copy'].on('mouseover', this, function () {
+                                    U['mousein_copy'] = !0;
+                                }),
+                                this['btn_copy'].on('mouseout', this, function () {
+                                    U['mousein_copy'] = !1;
+                                }),
+                                this['btn_copy']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    U['popout']['visible'] || (GameMgr.Inst['BehavioralStatistics'](12), U['popout']['visible'] = !0, C['UIBase']['anim_pop_out'](U['popout'], null));
+                                }, null, !1),
+                                this['container_rules'] = new X(this['container_right']['getChildByName']('container_rules')),
+                                this['popout'] = this.me['getChildByName']('pop'),
+                                this['room_link'] = this['popout']['getChildByName']('input')['getChildByName']('txtinput'),
+                                this['room_link']['editable'] = !1,
+                                this['btn_copy_link'] = this['popout']['getChildByName']('btn_copy'),
+                                this['btn_copy_link']['visible'] = !1,
+                                GameMgr['inConch'] ? (this['btn_copy_link']['visible'] = !0, this['btn_copy_link']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    var K = Laya['PlatformClass']['createClass']('layaair.majsoul.mjmgr');
+                                    K.call('setSysClipboardText', U['room_link'].text),
+                                        C['UIBase']['anim_pop_hide'](U['popout'], Laya['Handler']['create'](U, function () {
+                                            U['popout']['visible'] = !1;
+                                        })),
+                                        C['UI_FlyTips']['ShowTips'](game['Tools']['strOfLocalization'](2125));
+                                }, null, !1)) : GameMgr['iniOSWebview'] && (this['btn_copy_link']['visible'] = !0, this['btn_copy_link']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    Laya['Browser']['window']['wkbridge']['callNative']('copy2clip', U['room_link'].text, function () { }),
+                                        C['UIBase']['anim_pop_hide'](U['popout'], Laya['Handler']['create'](U, function () {
+                                            U['popout']['visible'] = !1;
+                                        })),
+                                        C['UI_FlyTips']['ShowTips'](game['Tools']['strOfLocalization'](2125));
+                                }, null, !1)),
+                                this['popout']['visible'] = !1,
+                                this['popout']['getChildByName']('btn_cancel')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    C['UIBase']['anim_pop_hide'](U['popout'], Laya['Handler']['create'](U, function () {
+                                        U['popout']['visible'] = !1;
+                                    }));
+                                }, null, !1),
+                                this['invitefriend'] = new K(this.me['getChildByName']('invite_friend')),
+                                this['pop_change_view'] = new r(this.me['getChildByName']('pop_view'));
+                        },
+                        i['prototype'].show = function () {
+                            var K = this;
+                            game['Scene_Lobby'].Inst['change_bg']('indoor', !1),
+                                this['mousein_copy'] = !1,
+                                this['beReady'] = !1,
+                                this['invitefriend'].me['visible'] = !1,
+                                this['btn_add_robot']['visible'] = !1,
+                                this['btn_invite_friend']['visible'] = !1,
+                                game['Tools']['setGrayDisable'](this['btn_dress'], !1),
+                                this['pre_choose'] = null,
+                                this['pop_change_view']['close'](!0);
+                            for (var r = 0; 4 > r; r++)
+                                this['player_cells'][r]['container']['visible'] = r < this['max_player_count'];
+                            for (var r = 0; r < this['max_player_count']; r++)
+                                this['_clearCell'](r);
+                            for (var r = 0; r < this['players']['length']; r++)
+                                this['players'][r]['cell_index'] = r, this['_refreshPlayerInfo'](this['players'][r]);
+                            this['msg_tail'] = -1,
+                                this['pre_msgs'] = [],
+                                this['posted'] = !1;
+                            var X = {};
+                            X.type = 'show',
+                                X['players'] = this['players'],
+                                this['push_msg'](JSON['stringify'](X)),
+                                this['owner_id'] == GameMgr.Inst['account_id'] ? (this['btn_ok'].skin = game['Tools']['localUISrc'](this['skin_start']), this['refreshAsOwner']()) : (this['btn_ok'].skin = game['Tools']['localUISrc'](this['skin_ready']), game['Tools']['setGrayDisable'](this['btn_ok'], !1)),
+                                this['label_rommid'].text = 'en' == GameMgr['client_language'] ? '#' + this['room_id']['toString']() : this['room_id']['toString']();
+                            var U = [];
+                            U.push(game['Tools']['room_mode_desc'](this['room_mode'].mode));
+                            var i = this['room_mode']['detail_rule'];
+                            if (i) {
+                                var N = 5,
+                                    H = 20;
+                                if (null != i['time_fixed'] && (N = i['time_fixed']), null != i['time_add'] && (H = i['time_add']), U.push(N['toString']() + '+' + H['toString']() + game['Tools']['strOfLocalization'](2019)), 0 != this['tournament_id']) {
+                                    var w = cfg['tournament']['tournaments'].get(this['tournament_id']);
+                                    w && U.push(w.name);
+                                }
+                                if (null != i['init_point'] && U.push(game['Tools']['strOfLocalization'](2199) + i['init_point']), null != i['fandian'] && U.push(game['Tools']['strOfLocalization'](2094) + ':' + i['fandian']), i['guyi_mode'] && U.push(game['Tools']['strOfLocalization'](3028)), null != i['dora_count'])
+                                    switch (i['chuanma'] && (i['dora_count'] = 0), i['dora_count']) {
+                                        case 0:
+                                            U.push(game['Tools']['strOfLocalization'](2044));
+                                            break;
+                                        case 2:
+                                            U.push(game['Tools']['strOfLocalization'](2047));
+                                            break;
+                                        case 3:
+                                            U.push(game['Tools']['strOfLocalization'](2045));
+                                            break;
+                                        case 4:
+                                            U.push(game['Tools']['strOfLocalization'](2046));
+                                    }
+                                null != i['shiduan'] && 1 != i['shiduan'] && U.push(game['Tools']['strOfLocalization'](2137)),
+                                    2 === i['fanfu'] && U.push(game['Tools']['strOfLocalization'](2763)),
+                                    4 === i['fanfu'] && U.push(game['Tools']['strOfLocalization'](2764)),
+                                    null != i['bianjietishi'] && 1 != i['bianjietishi'] && U.push(game['Tools']['strOfLocalization'](2200)),
+                                    this['room_mode'].mode >= 10 && this['room_mode'].mode <= 14 && (null != i['have_zimosun'] && 1 != i['have_zimosun'] ? U.push(game['Tools']['strOfLocalization'](2202)) : U.push(game['Tools']['strOfLocalization'](2203))),
+                                    game['Tools']['setGrayDisable'](this['btn_copy'], 1 == this['max_player_count']);
                             }
-                        null != u['shiduan'] && 1 != u['shiduan'] && l.push(game['Tools']['strOfLocalization'](2137)),
-                        2 === u['fanfu'] && l.push(game['Tools']['strOfLocalization'](2763)),
-                        4 === u['fanfu'] && l.push(game['Tools']['strOfLocalization'](2764)),
-                        null != u['bianjietishi'] && 1 != u['bianjietishi'] && l.push(game['Tools']['strOfLocalization'](2200)),
-                        this['room_mode'].mode >= 10 && this['room_mode'].mode <= 14 && (null != u['have_zimosun'] && 1 != u['have_zimosun'] ? l.push(game['Tools']['strOfLocalization'](2202)) : l.push(game['Tools']['strOfLocalization'](2203))),
-                        game['Tools']['setGrayDisable'](this['btn_copy'], 1 == this['max_player_count']);
-                    }
-                    this['container_rules'].show(l),
-                    this['enable'] = !0,
-                    this['locking'] = !0,
-                    w['UIBase']['anim_alpha_in'](this['container_top'], {
-                        y: -30
-                    }, 200);
-                    for (var C = 0; C < this['player_cells']['length']; C++)
-                        w['UIBase']['anim_alpha_in'](this['player_cells'][C]['container'], {
-                            x: 80
-                        }, 150, 150 + 50 * C, null, Laya.Ease['backOut']);
-                    w['UIBase']['anim_alpha_in'](this['btn_ok'], {}, 100, 600),
-                    w['UIBase']['anim_alpha_in'](this['container_right'], {
-                        x: 20
-                    }, 100, 500),
-                    Laya['timer'].once(600, this, function () {
-                        j['locking'] = !1;
-                    });
-                    var S = game['Tools']['room_mode_desc'](this['room_mode'].mode);
-                    this['room_link'].text = game['Tools']['strOfLocalization'](2221, [this['room_id']['toString']()]),
-                    '' != S && (this['room_link'].text += '(' + S + ')');
-                    var H = game['Tools']['getShareUrl'](GameMgr.Inst['link_url']);
-                    this['room_link'].text += ': ' + H + '?room=' + this['room_id'];
-                },
-                u['prototype']['leaveRoom'] = function () {
-                    var j = this;
-                    this['locking'] || app['NetAgent']['sendReq2Lobby']('Lobby', 'leaveRoom', {}, function (C, i) {
-                        C || i['error'] ? w['UIMgr'].Inst['showNetReqError']('leaveRoom', C, i) : (j['room_id'] = -1, j.hide(Laya['Handler']['create'](j, function () {
-                                    w['UI_Lobby'].Inst['enable'] = !0;
+                            this['container_rules'].show(U),
+                                this['enable'] = !0,
+                                this['locking'] = !0,
+                                C['UIBase']['anim_alpha_in'](this['container_top'], {
+                                    y: -30
+                                }, 200);
+                            for (var r = 0; r < this['player_cells']['length']; r++)
+                                C['UIBase']['anim_alpha_in'](this['player_cells'][r]['container'], {
+                                    x: 80
+                                }, 150, 150 + 50 * r, null, Laya.Ease['backOut']);
+                            C['UIBase']['anim_alpha_in'](this['btn_ok'], {}, 100, 600),
+                                C['UIBase']['anim_alpha_in'](this['container_right'], {
+                                    x: 20
+                                }, 100, 500),
+                                Laya['timer'].once(600, this, function () {
+                                    K['locking'] = !1;
+                                });
+                            var G = game['Tools']['room_mode_desc'](this['room_mode'].mode);
+                            this['room_link'].text = game['Tools']['strOfLocalization'](2221, [this['room_id']['toString']()]),
+                                '' != G && (this['room_link'].text += '(' + G + ')');
+                            var l = game['Tools']['getShareUrl'](GameMgr.Inst['link_url']);
+                            this['room_link'].text += ': ' + l + '?room=' + this['room_id'];
+                        },
+                        i['prototype']['leaveRoom'] = function () {
+                            var K = this;
+                            this['locking'] || app['NetAgent']['sendReq2Lobby']('Lobby', 'leaveRoom', {}, function (r, X) {
+                                r || X['error'] ? C['UIMgr'].Inst['showNetReqError']('leaveRoom', r, X) : (K['room_id'] = -1, K.hide(Laya['Handler']['create'](K, function () {
+                                    C['UI_Lobby'].Inst['enable'] = !0;
                                 })));
-                    });
-                },
-                u['prototype']['tryToClose'] = function (j) {
-                    var C = this;
-                    app['NetAgent']['sendReq2Lobby']('Lobby', 'leaveRoom', {}, function (i, l) {
-                        i || l['error'] ? (w['UIMgr'].Inst['showNetReqError']('leaveRoom', i, l), j['runWith'](!1)) : (C['enable'] = !1, C['pop_change_view']['close'](!0), j['runWith'](!0));
-                    });
-                },
-                u['prototype'].hide = function (j) {
-                    var C = this;
-                    this['locking'] = !0,
-                    w['UIBase']['anim_alpha_out'](this['container_top'], {
-                        y: -30
-                    }, 150);
-                    for (var i = 0; i < this['player_cells']['length']; i++)
-                        w['UIBase']['anim_alpha_out'](this['player_cells'][i]['container'], {
-                            x: 80
-                        }, 150, 0, null);
-                    w['UIBase']['anim_alpha_out'](this['btn_ok'], {}, 150),
-                    w['UIBase']['anim_alpha_out'](this['container_right'], {
-                        x: 20
-                    }, 150),
-                    Laya['timer'].once(200, this, function () {
-                        C['locking'] = !1,
-                        C['enable'] = !1,
-                        j && j.run();
-                    }),
-                    document['getElementById']('layaCanvas')['onclick'] = null;
-                },
-                u['prototype']['onDisbale'] = function () {
-                    Laya['timer']['clearAll'](this);
-                    for (var w = 0; w < this['player_cells']['length']; w++)
-                        Laya['loader']['clearTextureRes'](this['player_cells'][w]['illust'].skin);
-                    document['getElementById']('layaCanvas')['onclick'] = null;
-                },
-                u['prototype']['switchReady'] = function () {
-                    this['owner_id'] != GameMgr.Inst['account_id'] && (this['beReady'] = !this['beReady'], this['btn_ok'].skin = game['Tools']['localUISrc'](this['beReady'] ? this['skin_cancel'] : this['skin_ready']), game['Tools']['setGrayDisable'](this['btn_dress'], this['beReady']), app['NetAgent']['sendReq2Lobby']('Lobby', 'readyPlay', {
-                            ready: this['beReady'],
-                            dressing: !1
-                        }, function () {}));
-                },
-                u['prototype']['getStart'] = function () {
-                    this['owner_id'] == GameMgr.Inst['account_id'] && (Laya['timer']['currTimer'] < this['last_start_room'] + 2000 || (this['last_start_room'] = Laya['timer']['currTimer'], app['NetAgent']['sendReq2Lobby']('Lobby', 'startRoom', {}, function (j, C) {
-                                (j || C['error']) && w['UIMgr'].Inst['showNetReqError']('startRoom', j, C);
+                            });
+                        },
+                        i['prototype']['tryToClose'] = function (K) {
+                            var r = this;
+                            app['NetAgent']['sendReq2Lobby']('Lobby', 'leaveRoom', {}, function (X, U) {
+                                X || U['error'] ? (C['UIMgr'].Inst['showNetReqError']('leaveRoom', X, U), K['runWith'](!1)) : (r['enable'] = !1, r['pop_change_view']['close'](!0), K['runWith'](!0));
+                            });
+                        },
+                        i['prototype'].hide = function (K) {
+                            var r = this;
+                            this['locking'] = !0,
+                                C['UIBase']['anim_alpha_out'](this['container_top'], {
+                                    y: -30
+                                }, 150);
+                            for (var X = 0; X < this['player_cells']['length']; X++)
+                                C['UIBase']['anim_alpha_out'](this['player_cells'][X]['container'], {
+                                    x: 80
+                                }, 150, 0, null);
+                            C['UIBase']['anim_alpha_out'](this['btn_ok'], {}, 150),
+                                C['UIBase']['anim_alpha_out'](this['container_right'], {
+                                    x: 20
+                                }, 150),
+                                Laya['timer'].once(200, this, function () {
+                                    r['locking'] = !1,
+                                        r['enable'] = !1,
+                                        K && K.run();
+                                }),
+                                document['getElementById']('layaCanvas')['onclick'] = null;
+                        },
+                        i['prototype']['onDisbale'] = function () {
+                            Laya['timer']['clearAll'](this);
+                            for (var C = 0; C < this['player_cells']['length']; C++)
+                                Laya['loader']['clearTextureRes'](this['player_cells'][C]['illust'].skin);
+                            document['getElementById']('layaCanvas')['onclick'] = null;
+                        },
+                        i['prototype']['switchReady'] = function () {
+                            this['owner_id'] != GameMgr.Inst['account_id'] && (this['beReady'] = !this['beReady'], this['btn_ok'].skin = game['Tools']['localUISrc'](this['beReady'] ? this['skin_cancel'] : this['skin_ready']), game['Tools']['setGrayDisable'](this['btn_dress'], this['beReady']), app['NetAgent']['sendReq2Lobby']('Lobby', 'readyPlay', {
+                                ready: this['beReady'],
+                                dressing: !1
+                            }, function () { }));
+                        },
+                        i['prototype']['getStart'] = function () {
+                            this['owner_id'] == GameMgr.Inst['account_id'] && (Laya['timer']['currTimer'] < this['last_start_room'] + 2000 || (this['last_start_room'] = Laya['timer']['currTimer'], app['NetAgent']['sendReq2Lobby']('Lobby', 'startRoom', {}, function (K, r) {
+                                (K || r['error']) && C['UIMgr'].Inst['showNetReqError']('startRoom', K, r);
                             })));
-                },
-                u['prototype']['kickPlayer'] = function (j) {
-                    if (this['owner_id'] == GameMgr.Inst['account_id']) {
-                        var C = this['players'][j];
-                        1 == C['category'] ? app['NetAgent']['sendReq2Lobby']('Lobby', 'kickPlayer', {
-                            account_id: this['players'][j]['account_id']
-                        }, function () {}) : 2 == C['category'] && (this['pre_choose'] = C, app['NetAgent']['sendReq2Lobby']('Lobby', 'modifyRoom', {
-                                robot_count: this['robot_count'] - 1
-                            }, function (j, C) {
-                                (j || C['error']) && w['UIMgr'].Inst['showNetReqError']('modifyRoom_minus', j, C);
-                            }));
-                    }
-                },
-                u['prototype']['_clearCell'] = function (w) {
-                    if (!(0 > w || w >= this['player_cells']['length'])) {
-                        var j = this['player_cells'][w];
-                        j['container_flag']['visible'] = !1,
-                        j['container_illust']['visible'] = !1,
-                        j.name['visible'] = !1,
-                        j['container_name']['visible'] = !1,
-                        j['btn_t']['visible'] = !1,
-                        j.host['visible'] = !1,
-                        j['illust']['clear']();
-                    }
-                },
-                u['prototype']['_refreshPlayerInfo'] = function (w) {
-                    var j = w['cell_index'];
-                    if (!(0 > j || j >= this['player_cells']['length'])) {
-                        var C = this['player_cells'][j];
-                        C['container_illust']['visible'] = !0,
-                        C['container_name']['visible'] = !0,
-                        C.name['visible'] = !0,
-                        game['Tools']['SetNickname'](C.name, w),
-                        C['btn_t']['visible'] = this['owner_id'] == GameMgr.Inst['account_id'] && w['account_id'] != GameMgr.Inst['account_id'],
-                        this['owner_id'] == w['account_id'] && (C['container_flag']['visible'] = !0, C.host['visible'] = !0),
-                        w['account_id'] == GameMgr.Inst['account_id'] ? C['illust']['setSkin'](w['avatar_id'], 'waitingroom') : C['illust']['setSkin'](game['GameUtility']['get_limited_skin_id'](w['avatar_id']), 'waitingroom'),
-                        C['title'].id = game['Tools']['titleLocalization'](w['account_id'], w['title']),
-                        C.rank.id = w[this['room_mode'].mode < 10 ? 'level' : 'level3'].id,
-                        this['_onPlayerReadyChange'](w);
-                    }
-                },
-                u['prototype']['_onPlayerReadyChange'] = function (w) {
-                    var j = w['cell_index'];
-                    if (!(0 > j || j >= this['player_cells']['length'])) {
-                        var C = this['player_cells'][j];
-                        C['container_flag']['visible'] = this['owner_id'] == w['account_id'] ? !0 : w['ready'];
-                    }
-                },
-                u['prototype']['refreshAsOwner'] = function () {
-                    if (this['owner_id'] == GameMgr.Inst['account_id']) {
-                        for (var w = 0, j = 0; j < this['players']['length']; j++)
-                            0 != this['players'][j]['category'] && (this['_refreshPlayerInfo'](this['players'][j]), w++);
-                        this['btn_add_robot']['visible'] = !0,
-                        this['btn_invite_friend']['visible'] = !0,
-                        game['Tools']['setGrayDisable'](this['btn_invite_friend'], w == this['max_player_count']),
-                        game['Tools']['setGrayDisable'](this['btn_add_robot'], w == this['max_player_count']),
-                        this['refreshStart']();
-                    }
-                },
-                u['prototype']['refreshStart'] = function () {
-                    if (this['owner_id'] == GameMgr.Inst['account_id']) {
-                        this['btn_ok'].skin = game['Tools']['localUISrc'](this['skin_start']),
-                        game['Tools']['setGrayDisable'](this['btn_dress'], !1);
-                        for (var w = 0, j = 0; j < this['players']['length']; j++) {
-                            var C = this['players'][j];
-                            if (!C || 0 == C['category'])
-                                break;
-                            (C['account_id'] == this['owner_id'] || C['ready']) && w++;
-                        }
-                        if (game['Tools']['setGrayDisable'](this['btn_ok'], w != this['max_player_count']), this['enable']) {
-                            for (var i = 0, j = 0; j < this['max_player_count']; j++) {
-                                var l = this['player_cells'][j];
-                                l && l['container_flag']['visible'] && i++;
+                        },
+                        i['prototype']['kickPlayer'] = function (K) {
+                            if (this['owner_id'] == GameMgr.Inst['account_id']) {
+                                var r = this['players'][K];
+                                1 == r['category'] ? app['NetAgent']['sendReq2Lobby']('Lobby', 'kickPlayer', {
+                                    account_id: this['players'][K]['account_id']
+                                }, function () { }) : 2 == r['category'] && (this['pre_choose'] = r, app['NetAgent']['sendReq2Lobby']('Lobby', 'modifyRoom', {
+                                    robot_count: this['robot_count'] - 1
+                                }, function (K, r) {
+                                    (K || r['error']) && C['UIMgr'].Inst['showNetReqError']('modifyRoom_minus', K, r);
+                                }));
                             }
-                            if (w != i && !this['posted']) {
-                                this['posted'] = !0;
-                                var u = {};
-                                u['okcount'] = w,
-                                u['okcount2'] = i,
-                                u.msgs = [];
-                                var b = 0,
-                                V = this['pre_msgs']['length'] - 1;
-                                if (-1 != this['msg_tail'] && (b = (this['msg_tail'] + 1) % this['pre_msgs']['length'], V = this['msg_tail']), b >= 0 && V >= 0) {
-                                    for (var j = b; j != V; j = (j + 1) % this['pre_msgs']['length'])
-                                        u.msgs.push(this['pre_msgs'][j]);
-                                    u.msgs.push(this['pre_msgs'][V]);
+                        },
+                        i['prototype']['_clearCell'] = function (C) {
+                            if (!(0 > C || C >= this['player_cells']['length'])) {
+                                var K = this['player_cells'][C];
+                                K['container_flag']['visible'] = !1,
+                                    K['container_illust']['visible'] = !1,
+                                    K.name['visible'] = !1,
+                                    K['container_name']['visible'] = !1,
+                                    K['btn_t']['visible'] = !1,
+                                    K.host['visible'] = !1,
+                                    K['illust']['clear']();
+                            }
+                        },
+                        i['prototype']['_refreshPlayerInfo'] = function (C) {
+                            var K = C['cell_index'];
+                            if (!(0 > K || K >= this['player_cells']['length'])) {
+                                var r = this['player_cells'][K];
+                                r['container_illust']['visible'] = !0,
+                                    r['container_name']['visible'] = !0,
+                                    r.name['visible'] = !0,
+                                    game['Tools']['SetNickname'](r.name, C),
+                                    r['btn_t']['visible'] = this['owner_id'] == GameMgr.Inst['account_id'] && C['account_id'] != GameMgr.Inst['account_id'],
+                                    this['owner_id'] == C['account_id'] && (r['container_flag']['visible'] = !0, r.host['visible'] = !0),
+                                    C['account_id'] == GameMgr.Inst['account_id'] ? r['illust']['setSkin'](C['avatar_id'], 'waitingroom') : r['illust']['setSkin'](game['GameUtility']['get_limited_skin_id'](C['avatar_id']), 'waitingroom'),
+                                    r['title'].id = game['Tools']['titleLocalization'](C['account_id'], C['title']),
+                                    r.rank.id = C[this['room_mode'].mode < 10 ? 'level' : 'level3'].id,
+                                    this['_onPlayerReadyChange'](C);
+                            }
+                        },
+                        i['prototype']['_onPlayerReadyChange'] = function (C) {
+                            var K = C['cell_index'];
+                            if (!(0 > K || K >= this['player_cells']['length'])) {
+                                var r = this['player_cells'][K];
+                                r['container_flag']['visible'] = this['owner_id'] == C['account_id'] ? !0 : C['ready'];
+                            }
+                        },
+                        i['prototype']['refreshAsOwner'] = function () {
+                            if (this['owner_id'] == GameMgr.Inst['account_id']) {
+                                for (var C = 0, K = 0; K < this['players']['length']; K++)
+                                    0 != this['players'][K]['category'] && (this['_refreshPlayerInfo'](this['players'][K]), C++);
+                                this['btn_add_robot']['visible'] = !0,
+                                    this['btn_invite_friend']['visible'] = !0,
+                                    game['Tools']['setGrayDisable'](this['btn_invite_friend'], C == this['max_player_count']),
+                                    game['Tools']['setGrayDisable'](this['btn_add_robot'], C == this['max_player_count']),
+                                    this['refreshStart']();
+                            }
+                        },
+                        i['prototype']['refreshStart'] = function () {
+                            if (this['owner_id'] == GameMgr.Inst['account_id']) {
+                                this['btn_ok'].skin = game['Tools']['localUISrc'](this['skin_start']),
+                                    game['Tools']['setGrayDisable'](this['btn_dress'], !1);
+                                for (var C = 0, K = 0; K < this['players']['length']; K++) {
+                                    var r = this['players'][K];
+                                    if (!r || 0 == r['category'])
+                                        break;
+                                    (r['account_id'] == this['owner_id'] || r['ready']) && C++;
                                 }
-                                GameMgr.Inst['postInfo2Server']('waitroom_err2', u, !1);
+                                if (game['Tools']['setGrayDisable'](this['btn_ok'], C != this['max_player_count']), this['enable']) {
+                                    for (var X = 0, K = 0; K < this['max_player_count']; K++) {
+                                        var U = this['player_cells'][K];
+                                        U && U['container_flag']['visible'] && X++;
+                                    }
+                                    if (C != X && !this['posted']) {
+                                        this['posted'] = !0;
+                                        var i = {};
+                                        i['okcount'] = C,
+                                            i['okcount2'] = X,
+                                            i.msgs = [];
+                                        var N = 0,
+                                            H = this['pre_msgs']['length'] - 1;
+                                        if (-1 != this['msg_tail'] && (N = (this['msg_tail'] + 1) % this['pre_msgs']['length'], H = this['msg_tail']), N >= 0 && H >= 0) {
+                                            for (var K = N; K != H; K = (K + 1) % this['pre_msgs']['length'])
+                                                i.msgs.push(this['pre_msgs'][K]);
+                                            i.msgs.push(this['pre_msgs'][H]);
+                                        }
+                                        GameMgr.Inst['postInfo2Server']('waitroom_err2', i, !1);
+                                    }
+                                }
                             }
-                        }
-                    }
-                },
-                u['prototype']['onGameStart'] = function (w) {
-                    game['Tools']['setGrayDisable'](this['btn_ok'], !0),
-                    this['enable'] = !1,
-                    game['MJNetMgr'].Inst['OpenConnect'](w['connect_token'], w['game_uuid'], w['location'], !1, null);
-                },
-                u['prototype']['onEnable'] = function () {
-                    game['TempImageMgr']['setUIEnable']('UI_WaitingRoom', !0);
-                },
-                u['prototype']['onDisable'] = function () {
-                    game['TempImageMgr']['setUIEnable']('UI_WaitingRoom', !1);
-                },
-                u.Inst = null,
-                u;
-            }
-            (w['UIBase']);
-            w['UI_WaitingRoom'] = l;
+                        },
+                        i['prototype']['onGameStart'] = function (C) {
+                            game['Tools']['setGrayDisable'](this['btn_ok'], !0),
+                                this['enable'] = !1,
+                                game['MJNetMgr'].Inst['OpenConnect'](C['connect_token'], C['game_uuid'], C['location'], !1, null);
+                        },
+                        i['prototype']['onEnable'] = function () {
+                            game['TempImageMgr']['setUIEnable']('UI_WaitingRoom', !0);
+                        },
+                        i['prototype']['onDisable'] = function () {
+                            game['TempImageMgr']['setUIEnable']('UI_WaitingRoom', !1);
+                        },
+                        i.Inst = null,
+                        i;
+                }
+                    (C['UIBase']);
+            C['UI_WaitingRoom'] = U;
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
+
+
 
 
 
@@ -3179,374 +3196,380 @@ function testAPI() {
 
 
         // 保存装扮
-        !function (w) {
-            var j;
-            !function (j) {
-                var C = function () {
-                    function C(C, i, l) {
-                        var u = this;
+        !function (C) {
+            var K;
+            !function (K) {
+                var r = function () {
+                    function r(r, X, U) {
+                        var i = this;
                         this['page_items'] = null,
-                        this['page_headframe'] = null,
-                        this['page_desktop'] = null,
-                        this['page_bgm'] = null,
-                        this.tabs = [],
-                        this['tab_index'] = -1,
-                        this['select_index'] = -1,
-                        this['cell_titles'] = [2193, 2194, 2195, 1901, 2214, 2624, 2856, 2412, 2413, 2826],
-                        this['cell_names'] = [411, 412, 413, 417, 414, 415, 416, 0, 0, 0],
-                        this['cell_default_img'] = ['myres/sushe/slot_liqibang.jpg', 'myres/sushe/slot_hule.jpg', 'myres/sushe/slot_liqi.jpg', 'myres/sushe/slot_mpzs.jpg', 'myres/sushe/slot_hand.jpg', 'myres/sushe/slot_liqibgm.jpg', 'myres/sushe/slot_head_frame.jpg', '', '', ''],
-                        this['cell_default_item'] = [0, 0, 0, 0, 0, 0, '305501', '305044', '305045', '307001'],
-                        this['slot_ids'] = [0, 1, 2, 10, 3, 4, 5, 6, 7, 8],
-                        this['slot_map'] = {},
-                        this['_changed'] = !1,
-                        this['_locking'] = null,
-                        this['_locking'] = l,
-                        this['container_zhuangban0'] = C,
-                        this['container_zhuangban1'] = i;
-                        var b = this['container_zhuangban0']['getChildByName']('tabs');
-                        b['vScrollBarSkin'] = '';
-                        for (var V = function (j) {
-                            var C = b['getChildAt'](j);
-                            k.tabs.push(C),
-                            C['clickHandler'] = new Laya['Handler'](k, function () {
-                                    u['locking'] || u['tab_index'] != j && (u['_changed'] ? w['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](u, function () {
-                                                u['change_tab'](j);
-                                            }), null) : u['change_tab'](j));
+                            this['page_headframe'] = null,
+                            this['page_desktop'] = null,
+                            this['page_bgm'] = null,
+                            this.tabs = [],
+                            this['tab_index'] = -1,
+                            this['select_index'] = -1,
+                            this['cell_titles'] = [2193, 2194, 2195, 1901, 2214, 2624, 2856, 2412, 2413, 3917, 2826],
+                            this['cell_names'] = [411, 412, 413, 417, 414, 415, 416, 0, 0, 0],
+                            this['cell_default_img'] = ['myres/sushe/slot_liqibang.jpg', 'myres/sushe/slot_hule.jpg', 'myres/sushe/slot_liqi.jpg', 'myres/sushe/slot_mpzs.jpg', 'myres/sushe/slot_hand.jpg', 'myres/sushe/slot_liqibgm.jpg', 'myres/sushe/slot_head_frame.jpg', '', '', '', ''],
+                            this['cell_default_item'] = [0, 0, 0, 0, 0, 0, '305501', '305044', '305045', '305725', '307001'],
+                            this['slot_ids'] = [0, 1, 2, 10, 3, 4, 5, 6, 7, 13, 8],
+                            this['slot_map'] = {},
+                            this['_changed'] = !1,
+                            this['_locking'] = null,
+                            this['_locking'] = U,
+                            this['container_zhuangban0'] = r,
+                            this['container_zhuangban1'] = X;
+                        var N = this['container_zhuangban0']['getChildByName']('tabs');
+                        N['vScrollBarSkin'] = '';
+                        for (var H = function (K) {
+                            var r = N['getChildAt'](K);
+                            w.tabs.push(r),
+                                r['clickHandler'] = new Laya['Handler'](w, function () {
+                                    i['locking'] || i['tab_index'] != K && (i['_changed'] ? C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3022), Laya['Handler']['create'](i, function () {
+                                        i['change_tab'](K);
+                                    }), null) : i['change_tab'](K));
                                 });
-                        }, k = this, S = 0; S < b['numChildren']; S++)
-                            V(S);
-                        this['page_items'] = new j['Page_Items'](this['container_zhuangban1']['getChildByName']('page_items'), this),
-                        this['page_headframe'] = new j['Page_Headframe'](this['container_zhuangban1']['getChildByName']('page_headframe')),
-                        this['page_bgm'] = new j['Page_Bgm'](this['container_zhuangban1']['getChildByName']('page_bgm'), this),
-                        this['page_desktop'] = new j['Page_Desktop'](this['container_zhuangban1']['getChildByName']('page_zhuobu'), this),
-                        this['scrollview'] = this['container_zhuangban1']['getChildByName']('page_slots')['scriptMap']['capsui.CScrollView'],
-                        this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_view'])),
-                        this['scrollview']['setElastic'](),
-                        this['btn_using'] = this['container_zhuangban1']['getChildByName']('page_slots')['getChildByName']('btn_using'),
-                        this['btn_save'] = this['container_zhuangban1']['getChildByName']('page_slots')['getChildByName']('btn_save'),
-                        this['btn_save']['clickHandler'] = new Laya['Handler'](this, function () {
-                                for (var j = [], C = 0; C < u['cell_titles']['length']; C++) {
-                                    var i = u['slot_ids'][C];
-                                    if (u['slot_map'][i]) {
-                                        var l = u['slot_map'][i];
-                                        if (!(l['item_id'] && l['item_id'] != u['cell_default_item'][C] || l['item_id_list'] && 0 != l['item_id_list']['length']))
+                        }, w = this, G = 0; G < N['numChildren']; G++)
+                            H(G);
+                        this['page_items'] = new K['Page_Items'](this['container_zhuangban1']['getChildByName']('page_items'), this),
+                            this['page_headframe'] = new K['Page_Headframe'](this['container_zhuangban1']['getChildByName']('page_headframe')),
+                            this['page_bgm'] = new K['Page_Bgm'](this['container_zhuangban1']['getChildByName']('page_bgm'), this),
+                            this['page_desktop'] = new K['Page_Desktop'](this['container_zhuangban1']['getChildByName']('page_zhuobu'), this),
+                            this['scrollview'] = this['container_zhuangban1']['getChildByName']('page_slots')['scriptMap']['capsui.CScrollView'],
+                            this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_view'])),
+                            this['scrollview']['setElastic'](),
+                            this['btn_using'] = this['container_zhuangban1']['getChildByName']('page_slots')['getChildByName']('btn_using'),
+                            this['btn_save'] = this['container_zhuangban1']['getChildByName']('page_slots')['getChildByName']('btn_save'),
+                            this['btn_save']['clickHandler'] = new Laya['Handler'](this, function () {
+                                for (var K = [], r = 0; r < i['cell_titles']['length']; r++) {
+                                    var X = i['slot_ids'][r];
+                                    if (i['slot_map'][X]) {
+                                        var U = i['slot_map'][X];
+                                        if (!(U['item_id'] && U['item_id'] != i['cell_default_item'][r] || U['item_id_list'] && 0 != U['item_id_list']['length']))
                                             continue;
-                                        var b = [];
-                                        if (l['item_id_list'])
-                                            for (var V = 0, k = l['item_id_list']; V < k['length']; V++) {
-                                                var S = k[V];
-                                                S == u['cell_default_item'][C] ? b.push(0) : b.push(S);
+                                        var N = [];
+                                        if (U['item_id_list'])
+                                            for (var H = 0, w = U['item_id_list']; H < w['length']; H++) {
+                                                var G = w[H];
+                                                G == i['cell_default_item'][r] ? N.push(0) : N.push(G);
                                             }
-                                        j.push({
-                                            slot: i,
-                                            item_id: l['item_id'],
-                                            type: l.type,
-                                            item_id_list: b
+                                        K.push({
+                                            slot: X,
+                                            item_id: U['item_id'],
+                                            type: U.type,
+                                            item_id_list: N
                                         });
                                     }
                                 }
-                                u['btn_save']['mouseEnabled'] = !1;
-                                var H = u['tab_index'];
-                                        // START
+                                i['btn_save']['mouseEnabled'] = !1;
+                                var l = i['tab_index'];
+                                // START
                                 //app['NetAgent']['sendReq2Lobby']('Lobby', 'saveCommonViews', {
-                                //    views: j,
-                                //    save_index: H,
-                                //    is_use: H == w['UI_Sushe']['using_commonview_index'] ? 1 : 0
-                                //}, function (C, i) {
-                                //    if (u['btn_save']['mouseEnabled'] = !0, C || i['error'])
-                                //        w['UIMgr'].Inst['showNetReqError']('saveCommonViews', C, i);
+                                //    views: K,
+                                //    save_index: l,
+                                //    is_use: l == C['UI_Sushe']['using_commonview_index'] ? 1 : 0
+                                //}, function (r, X) {
+                                //    if (i['btn_save']['mouseEnabled'] = !0, r || X['error'])
+                                //        C['UIMgr'].Inst['showNetReqError']('saveCommonViews', r, X);
                                 //    else {
-                                        if (w['UI_Sushe']['commonViewList']['length'] < H)
-                                            for (var l = w['UI_Sushe']['commonViewList']['length']; H >= l; l++)
-                                                w['UI_Sushe']['commonViewList'].push([]);
-                                        MMP.settings.commonViewList = w.UI_Sushe.commonViewList;
-                                        MMP.settings.using_commonview_index = w.UI_Sushe.using_commonview_index;
-                                        MMP.saveSettings();
-                                        //END
-                                        if (w['UI_Sushe']['commonViewList'][H] = j, w['UI_Sushe']['using_commonview_index'] == H && u['onChangeGameView'](), u['tab_index'] != H)
-                                            return;
-                                        u['btn_save']['mouseEnabled'] = !0,
-                                        u['_changed'] = !1,
-                                        u['refresh_btn']();
+                                if (C['UI_Sushe']['commonViewList']['length'] < l)
+                                    for (var U = C['UI_Sushe']['commonViewList']['length']; l >= U; U++)
+                                        C['UI_Sushe']['commonViewList'].push([]);
+                                MMP.settings.commonViewList = C.UI_Sushe.commonViewList;
+                                MMP.settings.using_commonview_index = C.UI_Sushe.using_commonview_index;
+                                MMP.saveSettings();
+                                //END
+                                if (C['UI_Sushe']['commonViewList'][l] = K, C['UI_Sushe']['using_commonview_index'] == l && i['onChangeGameView'](), i['tab_index'] != l)
+                                    return;
+                                i['btn_save']['mouseEnabled'] = !0,
+                                    i['_changed'] = !1,
+                                    i['refresh_btn']();
                                 //    }
                                 //});
                             }),
-                        this['btn_use'] = this['container_zhuangban1']['getChildByName']('page_slots')['getChildByName']('btn_use'),
-                        this['btn_use']['clickHandler'] = new Laya['Handler'](this, function () {
-                                u['btn_use']['mouseEnabled'] = !1;
-                                var j = u['tab_index'];
+                            this['btn_use'] = this['container_zhuangban1']['getChildByName']('page_slots')['getChildByName']('btn_use'),
+                            this['btn_use']['clickHandler'] = new Laya['Handler'](this, function () {
+                                i['btn_use']['mouseEnabled'] = !1;
+                                var K = i['tab_index'];
                                 //app['NetAgent']['sendReq2Lobby']('Lobby', 'useCommonView', {
-                                //    index: j
-                                //}, function (C, i) {
-                                //    u['btn_use']['mouseEnabled'] = !0,
-                                //    C || i['error'] ? w['UIMgr'].Inst['showNetReqError']('useCommonView', C, i) : (
-                                w['UI_Sushe']['using_commonview_index'] = j, u['refresh_btn'](), u['refresh_tab'](), u['onChangeGameView']();//);
+                                //    index: K
+                                //}, function (r, X) {
+                                //    i['btn_use']['mouseEnabled'] = !0,
+                                //    r || X['error'] ? C['UIMgr'].Inst['showNetReqError']('useCommonView', r, X) : (
+                                C['UI_Sushe']['using_commonview_index'] = K, i['refresh_btn'](), i['refresh_tab'](), i['onChangeGameView']();//);
                                 //});
                             }),
-                        this['random'] = this['container_zhuangban1']['getChildByName']('random'),
-                        this['random_slider'] = this['random']['getChildByName']('slider'),
-                        this['btn_random'] = this['random']['getChildByName']('btn'),
-                        this['btn_random']['clickHandler'] = new Laya['Handler'](this, function () {
-                                u['onRandomBtnClick']();
+                            this['random'] = this['container_zhuangban1']['getChildByName']('random'),
+                            this['random_slider'] = this['random']['getChildByName']('slider'),
+                            this['btn_random'] = this['random']['getChildByName']('btn'),
+                            this['btn_random']['clickHandler'] = new Laya['Handler'](this, function () {
+                                i['onRandomBtnClick']();
                             });
                     }
-                    return Object['defineProperty'](C['prototype'], 'locking', {
+                    return Object['defineProperty'](r['prototype'], 'locking', {
                         get: function () {
                             return this['_locking'] ? this['_locking'].run() : !1;
                         },
                         enumerable: !1,
                         configurable: !0
                     }),
-                    Object['defineProperty'](C['prototype'], 'changed', {
-                        get: function () {
-                            return this['_changed'];
+                        Object['defineProperty'](r['prototype'], 'changed', {
+                            get: function () {
+                                return this['_changed'];
+                            },
+                            enumerable: !1,
+                            configurable: !0
+                        }),
+                        r['prototype'].show = function (K) {
+                            game['TempImageMgr']['setUIEnable']('UI_Sushe_Select.Zhuangban', !0),
+                                this['container_zhuangban0']['visible'] = !0,
+                                this['container_zhuangban1']['visible'] = !0,
+                                K ? (this['container_zhuangban0']['alpha'] = 1, this['container_zhuangban1']['alpha'] = 1) : (C['UIBase']['anim_alpha_in'](this['container_zhuangban0'], {
+                                    x: 0
+                                }, 200), C['UIBase']['anim_alpha_in'](this['container_zhuangban1'], {
+                                    x: 0
+                                }, 200)),
+                                this['change_tab'](C['UI_Sushe']['using_commonview_index']);
                         },
-                        enumerable: !1,
-                        configurable: !0
-                    }),
-                    C['prototype'].show = function (j) {
-                        game['TempImageMgr']['setUIEnable']('UI_Sushe_Select.Zhuangban', !0),
-                        this['container_zhuangban0']['visible'] = !0,
-                        this['container_zhuangban1']['visible'] = !0,
-                        j ? (this['container_zhuangban0']['alpha'] = 1, this['container_zhuangban1']['alpha'] = 1) : (w['UIBase']['anim_alpha_in'](this['container_zhuangban0'], {
-                                x: 0
-                            }, 200), w['UIBase']['anim_alpha_in'](this['container_zhuangban1'], {
-                                x: 0
-                            }, 200)),
-                        this['change_tab'](w['UI_Sushe']['using_commonview_index']);
-                    },
-                    C['prototype']['change_tab'] = function (j) {
-                        if (this['tab_index'] = j, this['refresh_tab'](), this['slot_map'] = {}, this['scrollview']['reset'](), this['page_items']['close'](), this['page_desktop']['close'](), this['page_headframe']['close'](), this['page_bgm']['close'](), this['select_index'] = 0, this['_changed'] = !1, !(this['tab_index'] < 0 || this['tab_index'] > 9)) {
-                            if (this['tab_index'] < w['UI_Sushe']['commonViewList']['length'])
-                                for (var C = w['UI_Sushe']['commonViewList'][this['tab_index']], i = 0; i < C['length']; i++)
-                                    this['slot_map'][C[i].slot] = {
-                                        slot: C[i].slot,
-                                        item_id: C[i]['item_id'],
-                                        type: C[i].type,
-                                        item_id_list: C[i]['item_id_list']
-                                    };
-                            this['scrollview']['addItem'](this['cell_titles']['length']),
-                            this['onChangeSlotSelect'](0),
-                            this['refresh_btn']();
-                        }
-                    },
-                    C['prototype']['refresh_tab'] = function () {
-                        for (var j = 0; j < this.tabs['length']; j++) {
-                            var C = this.tabs[j];
-                            C['mouseEnabled'] = this['tab_index'] != j,
-                            C['getChildByName']('bg').skin = game['Tools']['localUISrc'](this['tab_index'] == j ? 'myres/sushe/tab_choosed.png' : 'myres/sushe/tab_unchoose.png'),
-                            C['getChildByName']('num')['color'] = this['tab_index'] == j ? '#2f1e19' : '#f2c797';
-                            var i = C['getChildByName']('choosed');
-                            w['UI_Sushe']['using_commonview_index'] == j ? (i['visible'] = !0, i.x = this['tab_index'] == j ? -18 : -4) : i['visible'] = !1;
-                        }
-                    },
-                    C['prototype']['refresh_btn'] = function () {
-                        this['btn_save']['visible'] = !1,
-                        this['btn_save']['mouseEnabled'] = !0,
-                        this['btn_use']['visible'] = !1,
-                        this['btn_use']['mouseEnabled'] = !0,
-                        this['btn_using']['visible'] = !1,
-                        this['_changed'] ? this['btn_save']['visible'] = !0 : (this['btn_use']['visible'] = w['UI_Sushe']['using_commonview_index'] != this['tab_index'], this['btn_using']['visible'] = w['UI_Sushe']['using_commonview_index'] == this['tab_index']);
-                    },
-                    C['prototype']['onChangeSlotSelect'] = function (w) {
-                        var j = this;
-                        this['select_index'] = w,
-                        this['random']['visible'] = !(6 == w || 9 == w);
-                        var C = 0;
-                        w >= 0 && w < this['cell_default_item']['length'] && (C = this['cell_default_item'][w]);
-                        var i = C,
-                        l = this['slot_ids'][w],
-                        u = !1,
-                        b = [];
-                        if (this['slot_map'][l]) {
-                            var V = this['slot_map'][l];
-                            b = V['item_id_list'],
-                            u = !!V.type,
-                            V['item_id'] && (i = this['slot_map'][l]['item_id']),
-                            u && V['item_id_list'] && V['item_id_list']['length'] > 0 && (i = V['item_id_list'][0]);
-                        }
-                        var k = Laya['Handler']['create'](this, function (i) {
-                                if (i == C && (i = 0), j['is_random']) {
-                                    var u = j['slot_map'][l]['item_id_list']['indexOf'](i);
-                                    u >= 0 ? j['slot_map'][l]['item_id_list']['splice'](u, 1) : (j['slot_map'][l]['item_id_list'] && 0 != j['slot_map'][l]['item_id_list']['length'] || (j['slot_map'][l]['item_id_list'] = []), j['slot_map'][l]['item_id_list'].push(i));
+                        r['prototype']['change_tab'] = function (K) {
+                            if (this['tab_index'] = K, this['refresh_tab'](), this['slot_map'] = {}, this['scrollview']['reset'](), this['page_items']['close'](), this['page_desktop']['close'](), this['page_headframe']['close'](), this['page_bgm']['close'](), this['select_index'] = 0, this['_changed'] = !1, !(this['tab_index'] < 0 || this['tab_index'] > 9)) {
+                                if (this['tab_index'] < C['UI_Sushe']['commonViewList']['length'])
+                                    for (var r = C['UI_Sushe']['commonViewList'][this['tab_index']], X = 0; X < r['length']; X++)
+                                        this['slot_map'][r[X].slot] = {
+                                            slot: r[X].slot,
+                                            item_id: r[X]['item_id'],
+                                            type: r[X].type,
+                                            item_id_list: r[X]['item_id_list']
+                                        };
+                                this['scrollview']['addItem'](this['cell_titles']['length']),
+                                    this['onChangeSlotSelect'](0),
+                                    this['refresh_btn']();
+                            }
+                        },
+                        r['prototype']['refresh_tab'] = function () {
+                            for (var K = 0; K < this.tabs['length']; K++) {
+                                var r = this.tabs[K];
+                                r['mouseEnabled'] = this['tab_index'] != K,
+                                    r['getChildByName']('bg').skin = game['Tools']['localUISrc'](this['tab_index'] == K ? 'myres/sushe/tab_choosed.png' : 'myres/sushe/tab_unchoose.png'),
+                                    r['getChildByName']('num')['color'] = this['tab_index'] == K ? '#2f1e19' : '#f2c797';
+                                var X = r['getChildByName']('choosed');
+                                C['UI_Sushe']['using_commonview_index'] == K ? (X['visible'] = !0, X.x = this['tab_index'] == K ? -18 : -4) : X['visible'] = !1;
+                            }
+                        },
+                        r['prototype']['refresh_btn'] = function () {
+                            this['btn_save']['visible'] = !1,
+                                this['btn_save']['mouseEnabled'] = !0,
+                                this['btn_use']['visible'] = !1,
+                                this['btn_use']['mouseEnabled'] = !0,
+                                this['btn_using']['visible'] = !1,
+                                this['_changed'] ? this['btn_save']['visible'] = !0 : (this['btn_use']['visible'] = C['UI_Sushe']['using_commonview_index'] != this['tab_index'], this['btn_using']['visible'] = C['UI_Sushe']['using_commonview_index'] == this['tab_index']);
+                        },
+                        r['prototype']['onChangeSlotSelect'] = function (C) {
+                            var K = this;
+                            this['select_index'] = C,
+                                this['random']['visible'] = !(6 == C || 10 == C);
+                            var r = 0;
+                            C >= 0 && C < this['cell_default_item']['length'] && (r = this['cell_default_item'][C]);
+                            var X = r,
+                                U = this['slot_ids'][C],
+                                i = !1,
+                                N = [];
+                            if (this['slot_map'][U]) {
+                                var H = this['slot_map'][U];
+                                N = H['item_id_list'],
+                                    i = !!H.type,
+                                    H['item_id'] && (X = this['slot_map'][U]['item_id']),
+                                    i && H['item_id_list'] && H['item_id_list']['length'] > 0 && (X = H['item_id_list'][0]);
+                            }
+                            var w = Laya['Handler']['create'](this, function (X) {
+                                if (X == r && (X = 0), K['is_random']) {
+                                    var i = K['slot_map'][U]['item_id_list']['indexOf'](X);
+                                    i >= 0 ? K['slot_map'][U]['item_id_list']['splice'](i, 1) : (K['slot_map'][U]['item_id_list'] && 0 != K['slot_map'][U]['item_id_list']['length'] || (K['slot_map'][U]['item_id_list'] = []), K['slot_map'][U]['item_id_list'].push(X));
                                 } else
-                                    j['slot_map'][l] || (j['slot_map'][l] = {}), j['slot_map'][l]['item_id'] = i;
-                                j['scrollview']['wantToRefreshItem'](w),
-                                j['_changed'] = !0,
-                                j['refresh_btn']();
+                                    K['slot_map'][U] || (K['slot_map'][U] = {}), K['slot_map'][U]['item_id'] = X;
+                                K['scrollview']['wantToRefreshItem'](C),
+                                    K['_changed'] = !0,
+                                    K['refresh_btn']();
                             }, null, !1);
-                        this['page_items']['close'](),
-                        this['page_desktop']['close'](),
-                        this['page_headframe']['close'](),
-                        this['page_bgm']['close'](),
-                        this['is_random'] = u,
-                        this['random_slider'].x = u ? 76 : -4,
-                        this['random']['getChildAt'](1)['visible'] = !this['is_random'],
-                        this['random']['getChildAt'](2)['visible'] = this['is_random'];
-                        var S = game['Tools']['strOfLocalization'](this['cell_titles'][w]);
-                        if (w >= 0 && 2 >= w)
-                            this['page_items'].show(S, w, i, k), this['setRandomGray'](!this['page_items']['can_random']());
-                        else if (3 == w)
-                            this['page_items'].show(S, 10, i, k), this['setRandomGray'](!this['page_items']['can_random']());
-                        else if (4 == w)
-                            this['page_items'].show(S, 3, i, k), this['setRandomGray'](!this['page_items']['can_random']());
-                        else if (5 == w)
-                            this['page_bgm'].show(S, i, k), this['setRandomGray'](!this['page_bgm']['can_random']());
-                        else if (6 == w)
-                            this['page_headframe'].show(S, i, k);
-                        else if (7 == w || 8 == w) {
-                            var H = this['cell_default_item'][7],
-                            N = this['cell_default_item'][8];
-                            if (7 == w) {
-                                if (H = i, this['slot_map'][game['EView'].mjp]) {
-                                    var W = this['slot_map'][game['EView'].mjp];
-                                    W.type && W['item_id_list'] && W['item_id_list']['length'] > 0 ? N = W['item_id_list'][0] : W['item_id'] && (N = W['item_id']);
+                            this['page_items']['close'](),
+                                this['page_desktop']['close'](),
+                                this['page_headframe']['close'](),
+                                this['page_bgm']['close'](),
+                                this['is_random'] = i,
+                                this['random_slider'].x = i ? 76 : -4,
+                                this['random']['getChildAt'](1)['visible'] = !this['is_random'],
+                                this['random']['getChildAt'](2)['visible'] = this['is_random'];
+                            var G = game['Tools']['strOfLocalization'](this['cell_titles'][C]);
+                            if (C >= 0 && 2 >= C)
+                                this['page_items'].show(G, C, X, w), this['setRandomGray'](!this['page_items']['can_random']());
+                            else if (3 == C)
+                                this['page_items'].show(G, 10, X, w), this['setRandomGray'](!this['page_items']['can_random']());
+                            else if (4 == C)
+                                this['page_items'].show(G, 3, X, w), this['setRandomGray'](!this['page_items']['can_random']());
+                            else if (5 == C)
+                                this['page_bgm'].show(G, X, w), this['setRandomGray'](!this['page_bgm']['can_random']());
+                            else if (6 == C)
+                                this['page_headframe'].show(G, X, w);
+                            else if (7 == C || 8 == C) {
+                                var l = this['cell_default_item'][7],
+                                    R = this['cell_default_item'][8];
+                                if (7 == C) {
+                                    if (l = X, this['slot_map'][game['EView'].mjp]) {
+                                        var f = this['slot_map'][game['EView'].mjp];
+                                        f.type && f['item_id_list'] && f['item_id_list']['length'] > 0 ? R = f['item_id_list'][0] : f['item_id'] && (R = f['item_id']);
+                                    }
+                                    this['page_desktop']['show_desktop'](G, l, R, w);
+                                } else {
+                                    if (R = X, this['slot_map'][game['EView']['desktop']]) {
+                                        var f = this['slot_map'][game['EView']['desktop']];
+                                        f.type && f['item_id_list'] && f['item_id_list']['length'] > 0 ? l = f['item_id_list'][0] : f['item_id'] && (l = f['item_id']);
+                                    }
+                                    this['page_desktop']['show_mjp'](G, l, R, w);
                                 }
-                                this['page_desktop']['show_desktop'](S, H, N, k);
-                            } else {
-                                if (N = i, this['slot_map'][game['EView']['desktop']]) {
-                                    var W = this['slot_map'][game['EView']['desktop']];
-                                    W.type && W['item_id_list'] && W['item_id_list']['length'] > 0 ? H = W['item_id_list'][0] : W['item_id'] && (H = W['item_id']);
+                                this['setRandomGray'](!this['page_desktop']['can_random']());
+                            } else if (9 == C) {
+                                var l = this['cell_default_item'][7],
+                                    R = this['cell_default_item'][9];
+                                if (R = X, this['slot_map'][game['EView']['desktop']]) {
+                                    var f = this['slot_map'][game['EView']['desktop']];
+                                    f.type && f['item_id_list'] && f['item_id_list']['length'] > 0 ? l = f['item_id_list'][0] : f['item_id'] && (l = f['item_id']);
                                 }
-                                this['page_desktop']['show_mjp'](S, H, N, k);
-                            }
-                            this['setRandomGray'](!this['page_desktop']['can_random']());
-                        } else
-                            9 == w && this['page_desktop']['show_lobby_bg'](S, i, k);
-                    },
-                    C['prototype']['onRandomBtnClick'] = function () {
-                        var w = this;
-                        if (6 != this['select_index'] && 9 != this['select_index']) {
-                            this['_changed'] = !0,
-                            this['refresh_btn'](),
-                            this['is_random'] = !this['is_random'],
-                            this['random']['getChildAt'](this['is_random'] ? 2 : 1)['visible'] = !0,
-                            Laya['Tween'].to(this['random_slider'], {
-                                x: this['is_random'] ? 76 : -4
-                            }, 100, null, Laya['Handler']['create'](this, function () {
-                                    w['random']['getChildAt'](w['is_random'] ? 1 : 2)['visible'] = !1;
-                                }));
-                            var j = this['select_index'],
-                            C = this['slot_ids'][j],
-                            i = 0;
-                            j >= 0 && j < this['cell_default_item']['length'] && (i = this['cell_default_item'][j]);
-                            var l = i,
-                            u = [];
-                            if (this['slot_map'][C]) {
-                                var b = this['slot_map'][C];
-                                u = b['item_id_list'],
-                                b['item_id'] && (l = this['slot_map'][C]['item_id']);
-                            }
-                            if (j >= 0 && 4 >= j) {
-                                var V = this['slot_map'][C];
-                                V ? (V.type = V.type ? 0 : 1, V['item_id_list'] && 0 != V['item_id_list']['length'] || (V['item_id_list'] = [V['item_id']])) : this['slot_map'][C] = {
-                                    type: 1,
-                                    item_id_list: [this['page_items']['items'][0]]
-                                },
-                                this['page_items']['changeRandomState'](l);
-                            } else if (5 == j) {
-                                var V = this['slot_map'][C];
-                                if (V)
-                                    V.type = V.type ? 0 : 1, V['item_id_list'] && 0 != V['item_id_list']['length'] || (V['item_id_list'] = [V['item_id']]);
-                                else {
-                                    this['slot_map'][C] = {
+                                this['page_desktop']['show_mjp_surface'](G, l, R, w),
+                                    this['setRandomGray'](!this['page_desktop']['can_random']());
+                            } else
+                                10 == C && this['page_desktop']['show_lobby_bg'](G, X, w);
+                        },
+                        r['prototype']['onRandomBtnClick'] = function () {
+                            var C = this;
+                            if (6 != this['select_index'] && 10 != this['select_index']) {
+                                this['_changed'] = !0,
+                                    this['refresh_btn'](),
+                                    this['is_random'] = !this['is_random'],
+                                    this['random']['getChildAt'](this['is_random'] ? 2 : 1)['visible'] = !0,
+                                    Laya['Tween'].to(this['random_slider'], {
+                                        x: this['is_random'] ? 76 : -4
+                                    }, 100, null, Laya['Handler']['create'](this, function () {
+                                        C['random']['getChildAt'](C['is_random'] ? 1 : 2)['visible'] = !1;
+                                    }));
+                                var K = this['select_index'],
+                                    r = this['slot_ids'][K],
+                                    X = 0;
+                                K >= 0 && K < this['cell_default_item']['length'] && (X = this['cell_default_item'][K]);
+                                var U = X,
+                                    i = [];
+                                if (this['slot_map'][r]) {
+                                    var N = this['slot_map'][r];
+                                    i = N['item_id_list'],
+                                        N['item_id'] && (U = this['slot_map'][r]['item_id']);
+                                }
+                                if (K >= 0 && 4 >= K) {
+                                    var H = this['slot_map'][r];
+                                    H ? (H.type = H.type ? 0 : 1, H['item_id_list'] && 0 != H['item_id_list']['length'] || (H['item_id_list'] = [H['item_id']])) : this['slot_map'][r] = {
                                         type: 1,
-                                        item_id_list: [this['page_bgm']['items'][0]]
-                                    };
-                                }
-                                this['page_bgm']['changeRandomState'](l);
-                            } else if (7 == j || 8 == j) {
-                                var V = this['slot_map'][C];
-                                if (V)
-                                    V.type = V.type ? 0 : 1, V['item_id_list'] && 0 != V['item_id_list']['length'] || (V['item_id_list'] = [V['item_id']]);
-                                else {
-                                    this['slot_map'][C] = {
+                                        item_id_list: [this['page_items']['items'][0]]
+                                    },
+                                        this['page_items']['changeRandomState'](U);
+                                } else if (5 == K) {
+                                    var H = this['slot_map'][r];
+                                    if (H)
+                                        H.type = H.type ? 0 : 1, H['item_id_list'] && 0 != H['item_id_list']['length'] || (H['item_id_list'] = [H['item_id']]);
+                                    else {
+                                        this['slot_map'][r] = {
+                                            type: 1,
+                                            item_id_list: [this['page_bgm']['items'][0]]
+                                        };
+                                    }
+                                    this['page_bgm']['changeRandomState'](U);
+                                } else if (7 == K || 8 == K || 9 == K) {
+                                    var H = this['slot_map'][r];
+                                    H ? (H.type = H.type ? 0 : 1, H['item_id_list'] && 0 != H['item_id_list']['length'] || (H['item_id_list'] = [H['item_id']])) : this['slot_map'][r] = {
                                         type: 1,
                                         item_id_list: [this['page_desktop']['getFirstOwnedId']()]
-                                    };
+                                    },
+                                        this['page_desktop']['changeRandomState'](U);
                                 }
-                                this['page_desktop']['changeRandomState'](l);
+                                this['scrollview']['wantToRefreshItem'](K);
                             }
-                            this['scrollview']['wantToRefreshItem'](j);
-                        }
-                    },
-                    C['prototype']['render_view'] = function (w) {
-                        var j = this,
-                        C = w['container'],
-                        i = w['index'],
-                        l = C['getChildByName']('cell');
-                        this['select_index'] == i ? (l['scaleX'] = l['scaleY'] = 1.05, l['getChildByName']('choosed')['visible'] = !0) : (l['scaleX'] = l['scaleY'] = 1, l['getChildByName']('choosed')['visible'] = !1),
-                        l['getChildByName']('title').text = game['Tools']['strOfLocalization'](this['cell_titles'][i]);
-                        var u = l['getChildByName']('name'),
-                        b = l['getChildByName']('icon'),
-                        V = this['cell_default_item'][i],
-                        k = this['slot_ids'][i],
-                        S = !1;
-                        if (this['slot_map'][k] && (S = this['slot_map'][k].type, this['slot_map'][k]['item_id'] && (V = this['slot_map'][k]['item_id'])), S)
-                            u.text = game['Tools']['strOfLocalization'](3752, ['' + this['slot_map'][k]['item_id_list']['length']]), game['LoadMgr']['setImgSkin'](b, 'myres/sushe/icon_random.jpg');
-                        else {
-                            var H = cfg['item_definition'].item.get(V);
-                            H ? (u.text = H['name_' + GameMgr['client_language']], game['LoadMgr']['setImgSkin'](b, H.icon, null, 'UI_Sushe_Select.Zhuangban')) : (u.text = game['Tools']['strOfLocalization'](this['cell_names'][i]), game['LoadMgr']['setImgSkin'](b, this['cell_default_img'][i], null, 'UI_Sushe_Select.Zhuangban'));
-                        }
-                        var N = l['getChildByName']('btn');
-                        N['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                j['locking'] || j['select_index'] != i && (j['onChangeSlotSelect'](i), j['scrollview']['wantToRefreshAll']());
+                        },
+                        r['prototype']['render_view'] = function (C) {
+                            var K = this,
+                                r = C['container'],
+                                X = C['index'],
+                                U = r['getChildByName']('cell');
+                            this['select_index'] == X ? (U['scaleX'] = U['scaleY'] = 1.05, U['getChildByName']('choosed')['visible'] = !0) : (U['scaleX'] = U['scaleY'] = 1, U['getChildByName']('choosed')['visible'] = !1),
+                                U['getChildByName']('title').text = game['Tools']['strOfLocalization'](this['cell_titles'][X]);
+                            var i = U['getChildByName']('name'),
+                                N = U['getChildByName']('icon'),
+                                H = this['cell_default_item'][X],
+                                w = this['slot_ids'][X],
+                                G = !1;
+                            if (this['slot_map'][w] && (G = this['slot_map'][w].type, this['slot_map'][w]['item_id'] && (H = this['slot_map'][w]['item_id'])), G)
+                                i.text = game['Tools']['strOfLocalization'](3752, ['' + this['slot_map'][w]['item_id_list']['length']]), game['LoadMgr']['setImgSkin'](N, 'myres/sushe/icon_random.jpg');
+                            else {
+                                var l = cfg['item_definition'].item.get(H);
+                                l ? (i.text = l['name_' + GameMgr['client_language']], game['LoadMgr']['setImgSkin'](N, l.icon, null, 'UI_Sushe_Select.Zhuangban')) : (i.text = game['Tools']['strOfLocalization'](this['cell_names'][X]), game['LoadMgr']['setImgSkin'](N, this['cell_default_img'][X], null, 'UI_Sushe_Select.Zhuangban'));
+                            }
+                            var R = U['getChildByName']('btn');
+                            R['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                K['locking'] || K['select_index'] != X && (K['onChangeSlotSelect'](X), K['scrollview']['wantToRefreshAll']());
                             }, null, !1),
-                        N['mouseEnabled'] = this['select_index'] != i;
-                    },
-                    C['prototype']['close'] = function (j) {
-                        var C = this;
-                        this['container_zhuangban0']['visible'] && (j ? (this['page_items']['close'](), this['page_desktop']['close'](), this['page_headframe']['close'](), this['page_bgm']['close'](), this['container_zhuangban0']['visible'] = !1, this['container_zhuangban1']['visible'] = !1, game['TempImageMgr']['setUIEnable']('UI_Sushe_Select.Zhuangban', !1)) : (w['UIBase']['anim_alpha_out'](this['container_zhuangban0'], {
-                                    x: 0
-                                }, 200), w['UIBase']['anim_alpha_out'](this['container_zhuangban1'], {
-                                    x: 0
-                                }, 200, 0, Laya['Handler']['create'](this, function () {
-                                        C['page_items']['close'](),
-                                        C['page_desktop']['close'](),
-                                        C['page_headframe']['close'](),
-                                        C['page_bgm']['close'](),
-                                        C['container_zhuangban0']['visible'] = !1,
-                                        C['container_zhuangban1']['visible'] = !1,
-                                        game['TempImageMgr']['setUIEnable']('UI_Sushe_Select.Zhuangban', !1);
-                                    }))));
-                    },
-                    C['prototype']['onChangeGameView'] = function () {
-                                    // 保存装扮页
-                                    MMP.settings.using_commonview_index = w.UI_Sushe.using_commonview_index;
-                                    MMP.saveSettings();
-                                    // END
-                        w['UI_Sushe']['randomDesktopID'](),
-                        GameMgr.Inst['load_mjp_view']();
-                        var j = game['GameUtility']['get_view_id'](game['EView']['lobby_bg']);
-                        w['UI_Lite_Loading'].Inst.show(),
-                        game['Scene_Lobby'].Inst['set_lobby_bg'](j, Laya['Handler']['create'](this, function () {
-                                w['UI_Lite_Loading'].Inst['enable'] && w['UI_Lite_Loading'].Inst['close']();
-                            })),
-                        GameMgr.Inst['account_data']['avatar_frame'] = game['GameUtility']['get_view_id'](game['EView']['head_frame']);
-                    },
-                    C['prototype']['setRandomGray'] = function (j) {
-                        this['btn_random']['visible'] = !j,
-                        this['random']['filters'] = j ? [new Laya['ColorFilter'](w['GRAY_FILTER'])] : [];
-                    },
-                    C['prototype']['getShowSlotInfo'] = function () {
-                        return this['slot_map'][this['slot_ids'][this['select_index']]];
-                    },
-                    C['prototype']['changeSlotByItemId'] = function (w) {
-                        var j = cfg['item_definition'].item.get(w);
-                        if (j)
-                            for (var C = 0; C < this['slot_ids']['length']; C++)
-                                if (this['slot_ids'][C] == j.type)
-                                    return this['onChangeSlotSelect'](C), this['scrollview']['wantToRefreshAll'](), void 0;
-                    },
-                    C;
+                                R['mouseEnabled'] = this['select_index'] != X;
+                        },
+                        r['prototype']['close'] = function (K) {
+                            var r = this;
+                            this['container_zhuangban0']['visible'] && (K ? (this['page_items']['close'](), this['page_desktop']['close'](), this['page_headframe']['close'](), this['page_bgm']['close'](), this['container_zhuangban0']['visible'] = !1, this['container_zhuangban1']['visible'] = !1, game['TempImageMgr']['setUIEnable']('UI_Sushe_Select.Zhuangban', !1)) : (C['UIBase']['anim_alpha_out'](this['container_zhuangban0'], {
+                                x: 0
+                            }, 200), C['UIBase']['anim_alpha_out'](this['container_zhuangban1'], {
+                                x: 0
+                            }, 200, 0, Laya['Handler']['create'](this, function () {
+                                r['page_items']['close'](),
+                                    r['page_desktop']['close'](),
+                                    r['page_headframe']['close'](),
+                                    r['page_bgm']['close'](),
+                                    r['container_zhuangban0']['visible'] = !1,
+                                    r['container_zhuangban1']['visible'] = !1,
+                                    game['TempImageMgr']['setUIEnable']('UI_Sushe_Select.Zhuangban', !1);
+                            }))));
+                        },
+                        r['prototype']['onChangeGameView'] = function () {
+                            // 保存装扮页
+                            MMP.settings.using_commonview_index = C.UI_Sushe.using_commonview_index;
+                            MMP.saveSettings();
+                            // END
+                            C['UI_Sushe']['randomDesktopID'](),
+                                GameMgr.Inst['load_mjp_view']();
+                            var K = game['GameUtility']['get_view_id'](game['EView']['lobby_bg']);
+                            C['UI_Lite_Loading'].Inst.show(),
+                                game['Scene_Lobby'].Inst['set_lobby_bg'](K, Laya['Handler']['create'](this, function () {
+                                    C['UI_Lite_Loading'].Inst['enable'] && C['UI_Lite_Loading'].Inst['close']();
+                                })),
+                                GameMgr.Inst['account_data']['avatar_frame'] = game['GameUtility']['get_view_id'](game['EView']['head_frame']);
+                        },
+                        r['prototype']['setRandomGray'] = function (K) {
+                            this['btn_random']['visible'] = !K,
+                                this['random']['filters'] = K ? [new Laya['ColorFilter'](C['GRAY_FILTER'])] : [];
+                        },
+                        r['prototype']['getShowSlotInfo'] = function () {
+                            return this['slot_map'][this['slot_ids'][this['select_index']]];
+                        },
+                        r['prototype']['changeSlotByItemId'] = function (C) {
+                            var K = cfg['item_definition'].item.get(C);
+                            if (K)
+                                for (var r = 0; r < this['slot_ids']['length']; r++)
+                                    if (this['slot_ids'][r] == K.type)
+                                        return this['onChangeSlotSelect'](r), this['scrollview']['wantToRefreshAll'](), void 0;
+                        },
+                        r;
                 }
-                ();
-                j['Container_Zhuangban'] = C;
+                    ();
+                K['Container_Zhuangban'] = r;
             }
-            (j = w['zhuangban'] || (w['zhuangban'] = {}));
+                (K = C['zhuangban'] || (C['zhuangban'] = {}));
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
+
+
 
 
 
@@ -3554,308 +3577,310 @@ function testAPI() {
 
 
         // 设置称号
-        !function (w) {
-            var j = function (j) {
-                function C() {
-                    var w = j.call(this, new ui['lobby']['titlebookUI']()) || this;
-                    return w['_root'] = null,
-                    w['_scrollview'] = null,
-                    w['_blackmask'] = null,
-                    w['_locking'] = !1,
-                    w['_showindexs'] = [],
-                    C.Inst = w,
-                    w;
+        !function (C) {
+            var K = function (K) {
+                function r() {
+                    var C = K.call(this, new ui['lobby']['titlebookUI']()) || this;
+                    return C['_root'] = null,
+                        C['_scrollview'] = null,
+                        C['_blackmask'] = null,
+                        C['_locking'] = !1,
+                        C['_showindexs'] = [],
+                        r.Inst = C,
+                        C;
                 }
-                return __extends(C, j),
-                C.Init = function () {
-                    var j = this;
-                                // 获取称号
-                    //app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchTitleList', {}, function (C, i) {
-                    //    if (C || i['error'])
-                    //        w['UIMgr'].Inst['showNetReqError']('fetchTitleList', C, i);
-                    //    else {
-                            j['owned_title'] = [];
-                    //        for (var l = 0; l < i['title_list']['length']; l++) {
-                                for (let title of cfg.item_definition.title.rows_) {
-                                var u = title.id;
-                                cfg['item_definition']['title'].get(u) && j['owned_title'].push(u),
-                                '600005' == u && app['PlayerBehaviorStatistic']['fb_trace_pending'](app['EBehaviorType']['Get_The_Title1'], 1),
-                                u >= '600005' && '600015' >= u && app['PlayerBehaviorStatistic']['google_trace_pending'](app['EBehaviorType']['G_get_title_1'] + u - '600005', 1);
+                return __extends(r, K),
+                    r.Init = function () {
+                        var K = this;
+                        // 获取称号
+                        //app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchTitleList', {}, function (r, X) {
+                        //    if (r || X['error'])
+                        //        C['UIMgr'].Inst['showNetReqError']('fetchTitleList', r, X);
+                        //    else {
+                        K['owned_title'] = [];
+                        //        for (var U = 0; U < X['title_list']['length']; U++) {
+                        for (let title of cfg.item_definition.title.rows_) {
+                            var i = title.id;
+                            cfg['item_definition']['title'].get(i) && K['owned_title'].push(i),
+                                '600005' == i && app['PlayerBehaviorStatistic']['fb_trace_pending'](app['EBehaviorType']['Get_The_Title1'], 1),
+                                i >= '600005' && '600015' >= i && app['PlayerBehaviorStatistic']['google_trace_pending'](app['EBehaviorType']['G_get_title_1'] + i - '600005', 1);
+                        }
+                        //    }
+                        //});
+                    },
+                    r['title_update'] = function (K) {
+                        for (var r = 0; r < K['new_titles']['length']; r++)
+                            cfg['item_definition']['title'].get(K['new_titles'][r]) && this['owned_title'].push(K['new_titles'][r]), '600005' == K['new_titles'][r] && app['PlayerBehaviorStatistic']['fb_trace_pending'](app['EBehaviorType']['Get_The_Title1'], 1), K['new_titles'][r] >= '600005' && K['new_titles'][r] <= '600015' && app['PlayerBehaviorStatistic']['google_trace_pending'](app['EBehaviorType']['G_get_title_1'] + K['new_titles'][r] - '600005', 1);
+                        if (K['remove_titles'] && K['remove_titles']['length'] > 0) {
+                            for (var r = 0; r < K['remove_titles']['length']; r++) {
+                                for (var X = K['remove_titles'][r], U = 0; U < this['owned_title']['length']; U++)
+                                    if (this['owned_title'][U] == X) {
+                                        this['owned_title'][U] = this['owned_title'][this['owned_title']['length'] - 1],
+                                            this['owned_title'].pop();
+                                        break;
+                                    }
+                                X == GameMgr.Inst['account_data']['title'] && (GameMgr.Inst['account_data']['title'] = '600001', C['UI_Lobby'].Inst['enable'] && C['UI_Lobby'].Inst.top['refresh'](), C['UI_PlayerInfo'].Inst['enable'] && C['UI_PlayerInfo'].Inst['refreshBaseInfo']());
                             }
-                    //    }
-                    //});
-                },
-                C['title_update'] = function (j) {
-                    for (var C = 0; C < j['new_titles']['length']; C++)
-                        cfg['item_definition']['title'].get(j['new_titles'][C]) && this['owned_title'].push(j['new_titles'][C]), '600005' == j['new_titles'][C] && app['PlayerBehaviorStatistic']['fb_trace_pending'](app['EBehaviorType']['Get_The_Title1'], 1), j['new_titles'][C] >= '600005' && j['new_titles'][C] <= '600015' && app['PlayerBehaviorStatistic']['google_trace_pending'](app['EBehaviorType']['G_get_title_1'] + j['new_titles'][C] - '600005', 1);
-                    if (j['remove_titles'] && j['remove_titles']['length'] > 0) {
-                        for (var C = 0; C < j['remove_titles']['length']; C++) {
-                            for (var i = j['remove_titles'][C], l = 0; l < this['owned_title']['length']; l++)
-                                if (this['owned_title'][l] == i) {
-                                    this['owned_title'][l] = this['owned_title'][this['owned_title']['length'] - 1],
-                                    this['owned_title'].pop();
-                                    break;
-                                }
-                            i == GameMgr.Inst['account_data']['title'] && (GameMgr.Inst['account_data']['title'] = '600001', w['UI_Lobby'].Inst['enable'] && w['UI_Lobby'].Inst.top['refresh'](), w['UI_PlayerInfo'].Inst['enable'] && w['UI_PlayerInfo'].Inst['refreshBaseInfo']());
+                            this.Inst['enable'] && this.Inst.show();
                         }
-                        this.Inst['enable'] && this.Inst.show();
-                    }
-                },
-                C['prototype']['onCreate'] = function () {
-                    var j = this;
-                    this['_root'] = this.me['getChildByName']('root'),
-                    this['_blackmask'] = new w['UI_BlackMask'](this.me['getChildByName']('bmask'), Laya['Handler']['create'](this, function () {
-                                return j['_locking'];
+                    },
+                    r['prototype']['onCreate'] = function () {
+                        var K = this;
+                        this['_root'] = this.me['getChildByName']('root'),
+                            this['_blackmask'] = new C['UI_BlackMask'](this.me['getChildByName']('bmask'), Laya['Handler']['create'](this, function () {
+                                return K['_locking'];
                             }, null, !1), Laya['Handler']['create'](this, this['close'], null, !1)),
-                    this['_scrollview'] = this['_root']['getChildByName']('content')['scriptMap']['capsui.CScrollView'],
-                    this['_scrollview']['init_scrollview'](Laya['Handler']['create'](this, function (w) {
-                            j['setItemValue'](w['index'], w['container']);
-                        }, null, !1)),
-                    this['_root']['getChildByName']('btn_close')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['_locking'] || (j['_blackmask'].hide(), j['close']());
-                        }, null, !1),
-                    this['_noinfo'] = this['_root']['getChildByName']('noinfo');
-                },
-                C['prototype'].show = function () {
-                    var j = this;
-                    if (this['_locking'] = !0, this['enable'] = !0, this['_blackmask'].show(), C['owned_title']['length'] > 0) {
-                        this['_showindexs'] = [];
-                        for (var i = 0; i < C['owned_title']['length']; i++)
-                            this['_showindexs'].push(i);
-                        this['_showindexs'] = this['_showindexs'].sort(function (w, j) {
-                                var i = w,
-                                l = cfg['item_definition']['title'].get(C['owned_title'][w]);
-                                l && (i += 1000 * l['priority']);
-                                var u = j,
-                                b = cfg['item_definition']['title'].get(C['owned_title'][j]);
-                                return b && (u += 1000 * b['priority']),
-                                u - i;
+                            this['_scrollview'] = this['_root']['getChildByName']('content')['scriptMap']['capsui.CScrollView'],
+                            this['_scrollview']['init_scrollview'](Laya['Handler']['create'](this, function (C) {
+                                K['setItemValue'](C['index'], C['container']);
+                            }, null, !1)),
+                            this['_root']['getChildByName']('btn_close')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                K['_locking'] || (K['_blackmask'].hide(), K['close']());
+                            }, null, !1),
+                            this['_noinfo'] = this['_root']['getChildByName']('noinfo');
+                    },
+                    r['prototype'].show = function () {
+                        var K = this;
+                        if (this['_locking'] = !0, this['enable'] = !0, this['_blackmask'].show(), r['owned_title']['length'] > 0) {
+                            this['_showindexs'] = [];
+                            for (var X = 0; X < r['owned_title']['length']; X++)
+                                this['_showindexs'].push(X);
+                            this['_showindexs'] = this['_showindexs'].sort(function (C, K) {
+                                var X = C,
+                                    U = cfg['item_definition']['title'].get(r['owned_title'][C]);
+                                U && (X += 1000 * U['priority']);
+                                var i = K,
+                                    N = cfg['item_definition']['title'].get(r['owned_title'][K]);
+                                return N && (i += 1000 * N['priority']),
+                                    i - X;
                             }),
-                        this['_scrollview']['reset'](),
-                        this['_scrollview']['addItem'](C['owned_title']['length']),
-                        this['_scrollview'].me['visible'] = !0,
-                        this['_noinfo']['visible'] = !1;
-                    } else
-                        this['_noinfo']['visible'] = !0, this['_scrollview'].me['visible'] = !1;
-                    w['UIBase']['anim_pop_out'](this['_root'], Laya['Handler']['create'](this, function () {
-                            j['_locking'] = !1;
-                        }));
-                },
-                C['prototype']['close'] = function () {
-                    var j = this;
-                    this['_locking'] = !0,
-                    w['UIBase']['anim_pop_hide'](this['_root'], Laya['Handler']['create'](this, function () {
-                            j['_locking'] = !1,
-                            j['enable'] = !1;
-                        }));
-                },
-                C['prototype']['onEnable'] = function () {
-                    game['TempImageMgr']['setUIEnable']('UI_TitleBook', !0);
-                },
-                C['prototype']['onDisable'] = function () {
-                    game['TempImageMgr']['setUIEnable']('UI_TitleBook', !1),
-                    this['_scrollview']['reset']();
-                },
-                C['prototype']['setItemValue'] = function (w, j) {
-                    var i = this;
-                    if (this['enable']) {
-                        var l = C['owned_title'][this['_showindexs'][w]],
-                        u = cfg['item_definition']['title'].find(l);
-                        game['LoadMgr']['setImgSkin'](j['getChildByName']('img_title'), u.icon, null, 'UI_TitleBook'),
-                        j['getChildByName']('using')['visible'] = l == GameMgr.Inst['account_data']['title'],
-                        j['getChildByName']('desc').text = u['desc_' + GameMgr['client_language']];
-                        var b = j['getChildByName']('btn');
-                        b['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                l != GameMgr.Inst['account_data']['title'] ? (i['changeTitle'](w), j['getChildByName']('using')['visible'] = !0) : (i['changeTitle'](-1), j['getChildByName']('using')['visible'] = !1);
-                            }, null, !1);
-                        var V = j['getChildByName']('time'),
-                        k = j['getChildByName']('img_title');
-                        if (1 == u['unlock_type']) {
-                            var S = u['unlock_param'][0],
-                            H = cfg['item_definition'].item.get(S);
-                            V.text = game['Tools']['strOfLocalization'](3121) + H['expire_desc_' + GameMgr['client_language']],
-                            V['visible'] = !0,
-                            k.y = 0;
+                                this['_scrollview']['reset'](),
+                                this['_scrollview']['addItem'](r['owned_title']['length']),
+                                this['_scrollview'].me['visible'] = !0,
+                                this['_noinfo']['visible'] = !1;
                         } else
-                            V['visible'] = !1, k.y = 10;
-                    }
-                },
-                C['prototype']['changeTitle'] = function (j) {
-                    var i = this,
-                    l = GameMgr.Inst['account_data']['title'],
-                    u = 0;
-                    u = j >= 0 && j < this['_showindexs']['length'] ? C['owned_title'][this['_showindexs'][j]] : '600001',
-                    GameMgr.Inst['account_data']['title'] = u;
-                    for (var b = -1, V = 0; V < this['_showindexs']['length']; V++)
-                        if (l == C['owned_title'][this['_showindexs'][V]]) {
-                            b = V;
-                            break;
+                            this['_noinfo']['visible'] = !0, this['_scrollview'].me['visible'] = !1;
+                        C['UIBase']['anim_pop_out'](this['_root'], Laya['Handler']['create'](this, function () {
+                            K['_locking'] = !1;
+                        }));
+                    },
+                    r['prototype']['close'] = function () {
+                        var K = this;
+                        this['_locking'] = !0,
+                            C['UIBase']['anim_pop_hide'](this['_root'], Laya['Handler']['create'](this, function () {
+                                K['_locking'] = !1,
+                                    K['enable'] = !1;
+                            }));
+                    },
+                    r['prototype']['onEnable'] = function () {
+                        game['TempImageMgr']['setUIEnable']('UI_TitleBook', !0);
+                    },
+                    r['prototype']['onDisable'] = function () {
+                        game['TempImageMgr']['setUIEnable']('UI_TitleBook', !1),
+                            this['_scrollview']['reset']();
+                    },
+                    r['prototype']['setItemValue'] = function (C, K) {
+                        var X = this;
+                        if (this['enable']) {
+                            var U = r['owned_title'][this['_showindexs'][C]],
+                                i = cfg['item_definition']['title'].find(U);
+                            game['LoadMgr']['setImgSkin'](K['getChildByName']('img_title'), i.icon, null, 'UI_TitleBook'),
+                                K['getChildByName']('using')['visible'] = U == GameMgr.Inst['account_data']['title'],
+                                K['getChildByName']('desc').text = i['desc_' + GameMgr['client_language']];
+                            var N = K['getChildByName']('btn');
+                            N['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                U != GameMgr.Inst['account_data']['title'] ? (X['changeTitle'](C), K['getChildByName']('using')['visible'] = !0) : (X['changeTitle'](-1), K['getChildByName']('using')['visible'] = !1);
+                            }, null, !1);
+                            var H = K['getChildByName']('time'),
+                                w = K['getChildByName']('img_title');
+                            if (1 == i['unlock_type']) {
+                                var G = i['unlock_param'][0],
+                                    l = cfg['item_definition'].item.get(G);
+                                H.text = game['Tools']['strOfLocalization'](3121) + l['expire_desc_' + GameMgr['client_language']],
+                                    H['visible'] = !0,
+                                    w.y = 0;
+                            } else
+                                H['visible'] = !1, w.y = 10;
                         }
-                    w['UI_Lobby'].Inst['enable'] && w['UI_Lobby'].Inst.top['refresh'](),
-                    w['UI_PlayerInfo'].Inst['enable'] && w['UI_PlayerInfo'].Inst['refreshBaseInfo'](),
-                    -1 != b && this['_scrollview']['wantToRefreshItem'](b),
-                       // 屏蔽设置称号的网络请求并保存称号
-                                    MMP.settings.title = u;
-                                MMP.saveSettings();
-                    //app['NetAgent']['sendReq2Lobby']('Lobby', 'useTitle', {
-                    //    title: '600001' == u ? 0 : u
-                    //}, function (C, u) {
-                    //    (C || u['error']) && (w['UIMgr'].Inst['showNetReqError']('useTitle', C, u), GameMgr.Inst['account_data']['title'] = l, w['UI_Lobby'].Inst['enable'] && w['UI_Lobby'].Inst.top['refresh'](), w['UI_PlayerInfo'].Inst['enable'] && w['UI_PlayerInfo'].Inst['refreshBaseInfo'](), i['enable'] && (j >= 0 && j < i['_showindexs']['length'] && i['_scrollview']['wantToRefreshItem'](j), b >= 0 && b < i['_showindexs']['length'] && i['_scrollview']['wantToRefreshItem'](b)));
-                    //});
-                },
-                C.Inst = null,
-                C['owned_title'] = [],
-                C;
+                    },
+                    r['prototype']['changeTitle'] = function (K) {
+                        var X = this,
+                            U = GameMgr.Inst['account_data']['title'],
+                            i = 0;
+                        i = K >= 0 && K < this['_showindexs']['length'] ? r['owned_title'][this['_showindexs'][K]] : '600001',
+                            GameMgr.Inst['account_data']['title'] = i;
+                        for (var N = -1, H = 0; H < this['_showindexs']['length']; H++)
+                            if (U == r['owned_title'][this['_showindexs'][H]]) {
+                                N = H;
+                                break;
+                            }
+                        C['UI_Lobby'].Inst['enable'] && C['UI_Lobby'].Inst.top['refresh'](),
+                            C['UI_PlayerInfo'].Inst['enable'] && C['UI_PlayerInfo'].Inst['refreshBaseInfo'](),
+                            -1 != N && this['_scrollview']['wantToRefreshItem'](N),
+                            // 屏蔽设置称号的网络请求并保存称号
+                            MMP.settings.title = i;
+                        MMP.saveSettings();
+                        //app['NetAgent']['sendReq2Lobby']('Lobby', 'useTitle', {
+                        //    title: '600001' == i ? 0 : i
+                        //}, function (r, i) {
+                        //    (r || i['error']) && (C['UIMgr'].Inst['showNetReqError']('useTitle', r, i), GameMgr.Inst['account_data']['title'] = U, C['UI_Lobby'].Inst['enable'] && C['UI_Lobby'].Inst.top['refresh'](), C['UI_PlayerInfo'].Inst['enable'] && C['UI_PlayerInfo'].Inst['refreshBaseInfo'](), X['enable'] && (K >= 0 && K < X['_showindexs']['length'] && X['_scrollview']['wantToRefreshItem'](K), N >= 0 && N < X['_showindexs']['length'] && X['_scrollview']['wantToRefreshItem'](N)));
+                        //});
+                    },
+                    r.Inst = null,
+                    r['owned_title'] = [],
+                    r;
             }
-            (w['UIBase']);
-            w['UI_TitleBook'] = j;
+                (C['UIBase']);
+            C['UI_TitleBook'] = K;
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
+
+
 
 
 
 
 
         // 友人房调整装扮
-        !function (w) {
-            var j;
-            !function (j) {
-                var C = function () {
-                    function C(w) {
+        !function (C) {
+            var K;
+            !function (K) {
+                var r = function () {
+                    function r(C) {
                         this['scrollview'] = null,
-                        this['page_skin'] = null,
-                        this['chara_infos'] = [],
-                        this['choosed_chara_index'] = 0,
-                        this['choosed_skin_id'] = 0,
-                        this['star_char_count'] = 0,
-                        this.me = w,
-                        'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? (this.me['getChildByName']('left')['visible'] = !0, this.me['getChildByName']('left_en')['visible'] = !1, this['scrollview'] = this.me['getChildByName']('left')['scriptMap']['capsui.CScrollView']) : (this.me['getChildByName']('left')['visible'] = !1, this.me['getChildByName']('left_en')['visible'] = !0, this['scrollview'] = this.me['getChildByName']('left_en')['scriptMap']['capsui.CScrollView']),
-                        this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_character_cell']), -1, 3),
-                        this['scrollview']['setElastic'](),
-                        this['page_skin'] = new j['Page_Skin'](this.me['getChildByName']('right'));
+                            this['page_skin'] = null,
+                            this['chara_infos'] = [],
+                            this['choosed_chara_index'] = 0,
+                            this['choosed_skin_id'] = 0,
+                            this['star_char_count'] = 0,
+                            this.me = C,
+                            'chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language'] ? (this.me['getChildByName']('left')['visible'] = !0, this.me['getChildByName']('left_en')['visible'] = !1, this['scrollview'] = this.me['getChildByName']('left')['scriptMap']['capsui.CScrollView']) : (this.me['getChildByName']('left')['visible'] = !1, this.me['getChildByName']('left_en')['visible'] = !0, this['scrollview'] = this.me['getChildByName']('left_en')['scriptMap']['capsui.CScrollView']),
+                            this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_character_cell']), -1, 3),
+                            this['scrollview']['setElastic'](),
+                            this['page_skin'] = new K['Page_Skin'](this.me['getChildByName']('right'));
                     }
-                    return C['prototype'].show = function (j) {
-                        var C = this;
+                    return r['prototype'].show = function (K) {
+                        var r = this;
                         this.me['visible'] = !0,
-                        j ? this.me['alpha'] = 1 : w['UIBase']['anim_alpha_in'](this.me, {
+                            K ? this.me['alpha'] = 1 : C['UIBase']['anim_alpha_in'](this.me, {
                                 x: 0
                             }, 200, 0),
-                        this['choosed_chara_index'] = 0,
-                        this['chara_infos'] = [];
-                        for (var i = 0, l = w['UI_Sushe']['star_chars']; i < l['length']; i++)
-                            for (var u = l[i], b = 0; b < w['UI_Sushe']['characters']['length']; b++)
-                                if (!w['UI_Sushe']['hidden_characters_map'][u] && w['UI_Sushe']['characters'][b]['charid'] == u) {
+                            this['choosed_chara_index'] = 0,
+                            this['chara_infos'] = [];
+                        for (var X = 0, U = C['UI_Sushe']['star_chars']; X < U['length']; X++)
+                            for (var i = U[X], N = 0; N < C['UI_Sushe']['characters']['length']; N++)
+                                if (!C['UI_Sushe']['hidden_characters_map'][i] && C['UI_Sushe']['characters'][N]['charid'] == i) {
                                     this['chara_infos'].push({
-                                        chara_id: w['UI_Sushe']['characters'][b]['charid'],
-                                        skin_id: w['UI_Sushe']['characters'][b].skin,
-                                        is_upgraded: w['UI_Sushe']['characters'][b]['is_upgraded']
+                                        chara_id: C['UI_Sushe']['characters'][N]['charid'],
+                                        skin_id: C['UI_Sushe']['characters'][N].skin,
+                                        is_upgraded: C['UI_Sushe']['characters'][N]['is_upgraded']
                                     }),
-                                    w['UI_Sushe']['main_character_id'] == w['UI_Sushe']['characters'][b]['charid'] && (this['choosed_chara_index'] = this['chara_infos']['length'] - 1);
+                                        C['UI_Sushe']['main_character_id'] == C['UI_Sushe']['characters'][N]['charid'] && (this['choosed_chara_index'] = this['chara_infos']['length'] - 1);
                                     break;
                                 }
                         this['star_char_count'] = this['chara_infos']['length'];
-                        for (var b = 0; b < w['UI_Sushe']['characters']['length']; b++)
-                            w['UI_Sushe']['hidden_characters_map'][w['UI_Sushe']['characters'][b]['charid']] || -1 == w['UI_Sushe']['star_chars']['indexOf'](w['UI_Sushe']['characters'][b]['charid']) && (this['chara_infos'].push({
-                                    chara_id: w['UI_Sushe']['characters'][b]['charid'],
-                                    skin_id: w['UI_Sushe']['characters'][b].skin,
-                                    is_upgraded: w['UI_Sushe']['characters'][b]['is_upgraded']
-                                }), w['UI_Sushe']['main_character_id'] == w['UI_Sushe']['characters'][b]['charid'] && (this['choosed_chara_index'] = this['chara_infos']['length'] - 1));
+                        for (var N = 0; N < C['UI_Sushe']['characters']['length']; N++)
+                            C['UI_Sushe']['hidden_characters_map'][C['UI_Sushe']['characters'][N]['charid']] || -1 == C['UI_Sushe']['star_chars']['indexOf'](C['UI_Sushe']['characters'][N]['charid']) && (this['chara_infos'].push({
+                                chara_id: C['UI_Sushe']['characters'][N]['charid'],
+                                skin_id: C['UI_Sushe']['characters'][N].skin,
+                                is_upgraded: C['UI_Sushe']['characters'][N]['is_upgraded']
+                            }), C['UI_Sushe']['main_character_id'] == C['UI_Sushe']['characters'][N]['charid'] && (this['choosed_chara_index'] = this['chara_infos']['length'] - 1));
                         this['choosed_skin_id'] = this['chara_infos'][this['choosed_chara_index']]['skin_id'],
-                        this['scrollview']['reset'](),
-                        this['scrollview']['addItem'](this['chara_infos']['length']);
-                        var V = this['chara_infos'][this['choosed_chara_index']];
-                        this['page_skin'].show(V['chara_id'], V['skin_id'], Laya['Handler']['create'](this, function (w) {
-                                C['choosed_skin_id'] = w,
-                                V['skin_id'] = w,
-                                C['scrollview']['wantToRefreshItem'](C['choosed_chara_index']);
-                            }, null, !1));
+                            this['scrollview']['reset'](),
+                            this['scrollview']['addItem'](this['chara_infos']['length']);
+                        var H = this['chara_infos'][this['choosed_chara_index']];
+                        this['page_skin'].show(H['chara_id'], H['skin_id'], Laya['Handler']['create'](this, function (C) {
+                            r['choosed_skin_id'] = C,
+                                H['skin_id'] = C,
+                                r['scrollview']['wantToRefreshItem'](r['choosed_chara_index']);
+                        }, null, !1));
                     },
-                    C['prototype']['render_character_cell'] = function (j) {
-                        var C = this,
-                        i = j['index'],
-                        l = j['container'],
-                        u = j['cache_data'];
-                        u['index'] = i;
-                        var b = this['chara_infos'][i];
-                        u['inited'] || (u['inited'] = !0, u.skin = new w['UI_Character_Skin'](l['getChildByName']('btn')['getChildByName']('head')), u['bound'] = l['getChildByName']('btn')['getChildByName']('bound'));
-                        var V = l['getChildByName']('btn');
-                        V['getChildByName']('choose')['visible'] = i == this['choosed_chara_index'],
-                        u.skin['setSkin'](b['skin_id'], 'bighead'),
-                        V['getChildByName']('using')['visible'] = i == this['choosed_chara_index'];
-                        var k = cfg['item_definition']['character'].find(b['chara_id']),
-                        S = k['name_' + GameMgr['client_language'] + '2'] ? k['name_' + GameMgr['client_language'] + '2'] : k['name_' + GameMgr['client_language']],
-                        H = V['getChildByName']('label_name');
-                        if ('chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) {
-                            H.text = S['replace']('-', '|')['replace'](/\./g, '·');
-                            var N = /^[a-zA-Z\x21-\x2f\x3a-\x40\x5b-\x60\x7B-\x7F]*$/;
-                            H['leading'] = N.test(S) ? -15 : 0;
-                        } else
-                            H.text = S;
-                        V['getChildByName']('star') && (V['getChildByName']('star')['visible'] = i < this['star_char_count']);
-                        var W = cfg['item_definition']['character'].get(b['chara_id']);
-                        'en' == GameMgr['client_language'] || 'jp' == GameMgr['client_language'] || 'kr' == GameMgr['client_language'] ? u['bound'].skin = W.ur ? game['Tools']['localUISrc']('myres/sushe/bg_head_bound' + (b['is_upgraded'] ? '4.png' : '3.png')) : game['Tools']['localUISrc']('myres/sushe/en_head_bound' + (b['is_upgraded'] ? '2.png' : '.png')) : W.ur ? (u['bound'].pos(-10, -2), u['bound'].skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (b['is_upgraded'] ? '6.png' : '5.png'))) : (u['bound'].pos(4, 20), u['bound'].skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (b['is_upgraded'] ? '4.png' : '3.png'))),
-                        V['getChildByName']('bg').skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (b['is_upgraded'] ? '2.png' : '.png')),
-                        l['getChildByName']('btn')['clickHandler'] = new Laya['Handler'](this, function () {
-                                if (i != C['choosed_chara_index']) {
-                                    var w = C['choosed_chara_index'];
-                                    C['choosed_chara_index'] = i,
-                                    C['choosed_skin_id'] = b['skin_id'],
-                                    C['page_skin'].show(b['chara_id'], b['skin_id'], Laya['Handler']['create'](C, function (w) {
-                                            C['choosed_skin_id'] = w,
-                                            b['skin_id'] = w,
-                                            u.skin['setSkin'](w, 'bighead');
-                                        }, null, !1)),
-                                    C['scrollview']['wantToRefreshItem'](w),
-                                    C['scrollview']['wantToRefreshItem'](i);
-                                }
-                            });
-                    },
-                    C['prototype']['close'] = function (j) {
-                        var C = this;
-                        if (this.me['visible'])
-                            if (j)
-                                this.me['visible'] = !1;
-                            else {
-                                var i = this['chara_infos'][this['choosed_chara_index']];
-                                            //把chartid和skin写入cookie
-                                            MMP.settings.character = uiscript.UI_Sushe.characters[this.choosed_chara_index].charid;
-                                            MMP.settings.characters[MMP.settings.character - 200001] = uiscript.UI_Sushe.characters[this.choosed_chara_index].skin;
-                                            MMP.saveSettings();
-                                            // End
-                                            // 友人房调整装扮
-                                //i['chara_id'] != w['UI_Sushe']['main_character_id'] && (app['NetAgent']['sendReq2Lobby']('Lobby', 'changeMainCharacter', {
-                                //        character_id: i['chara_id']
-                                //    }, function () {}), 
-                                w['UI_Sushe']['main_character_id'] = i['chara_id'];
-                                //this['choosed_skin_id'] != GameMgr.Inst['account_data']['avatar_id'] && app['NetAgent']['sendReq2Lobby']('Lobby', 'changeCharacterSkin', {
-                                //    character_id: i['chara_id'],
-                                //    skin: this['choosed_skin_id']
-                                //}, function () {});
-                                            // END
-                                for (var l = 0; l < w['UI_Sushe']['characters']['length']; l++)
-                                    if (w['UI_Sushe']['characters'][l]['charid'] == i['chara_id']) {
-                                        w['UI_Sushe']['characters'][l].skin = this['choosed_skin_id'];
-                                        break;
+                        r['prototype']['render_character_cell'] = function (K) {
+                            var r = this,
+                                X = K['index'],
+                                U = K['container'],
+                                i = K['cache_data'];
+                            i['index'] = X;
+                            var N = this['chara_infos'][X];
+                            i['inited'] || (i['inited'] = !0, i.skin = new C['UI_Character_Skin'](U['getChildByName']('btn')['getChildByName']('head')), i['bound'] = U['getChildByName']('btn')['getChildByName']('bound'));
+                            var H = U['getChildByName']('btn');
+                            H['getChildByName']('choose')['visible'] = X == this['choosed_chara_index'],
+                                i.skin['setSkin'](N['skin_id'], 'bighead'),
+                                H['getChildByName']('using')['visible'] = X == this['choosed_chara_index'];
+                            var w = cfg['item_definition']['character'].find(N['chara_id']),
+                                G = w['name_' + GameMgr['client_language'] + '2'] ? w['name_' + GameMgr['client_language'] + '2'] : w['name_' + GameMgr['client_language']],
+                                l = H['getChildByName']('label_name');
+                            if ('chs' == GameMgr['client_language'] || 'chs_t' == GameMgr['client_language']) {
+                                l.text = G['replace']('-', '|')['replace'](/\./g, '·');
+                                var R = /^[a-zA-Z\x21-\x2f\x3a-\x40\x5b-\x60\x7B-\x7F]*$/;
+                                l['leading'] = R.test(G) ? -15 : 0;
+                            } else
+                                l.text = G;
+                            H['getChildByName']('star') && (H['getChildByName']('star')['visible'] = X < this['star_char_count']);
+                            var f = cfg['item_definition']['character'].get(N['chara_id']);
+                            'en' == GameMgr['client_language'] || 'jp' == GameMgr['client_language'] || 'kr' == GameMgr['client_language'] ? i['bound'].skin = f.ur ? game['Tools']['localUISrc']('myres/sushe/bg_head_bound' + (N['is_upgraded'] ? '4.png' : '3.png')) : game['Tools']['localUISrc']('myres/sushe/en_head_bound' + (N['is_upgraded'] ? '2.png' : '.png')) : f.ur ? (i['bound'].pos(-10, -2), i['bound'].skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (N['is_upgraded'] ? '6.png' : '5.png'))) : (i['bound'].pos(4, 20), i['bound'].skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (N['is_upgraded'] ? '4.png' : '3.png'))),
+                                H['getChildByName']('bg').skin = game['Tools']['localUISrc']('myres/sushe/bg_head' + (N['is_upgraded'] ? '2.png' : '.png')),
+                                U['getChildByName']('btn')['clickHandler'] = new Laya['Handler'](this, function () {
+                                    if (X != r['choosed_chara_index']) {
+                                        var C = r['choosed_chara_index'];
+                                        r['choosed_chara_index'] = X,
+                                            r['choosed_skin_id'] = N['skin_id'],
+                                            r['page_skin'].show(N['chara_id'], N['skin_id'], Laya['Handler']['create'](r, function (C) {
+                                                r['choosed_skin_id'] = C,
+                                                    N['skin_id'] = C,
+                                                    i.skin['setSkin'](C, 'bighead');
+                                            }, null, !1)),
+                                            r['scrollview']['wantToRefreshItem'](C),
+                                            r['scrollview']['wantToRefreshItem'](X);
                                     }
-                                GameMgr.Inst['account_data']['avatar_id'] = this['choosed_skin_id'],
-                                w['UI_Sushe']['onMainSkinChange'](),
-                                w['UIBase']['anim_alpha_out'](this.me, {
-                                    x: 0
-                                }, 200, 0, Laya['Handler']['create'](this, function () {
-                                        C.me['visible'] = !1;
-                                    }));
-                            }
-                    },
-                    C;
+                                });
+                        },
+                        r['prototype']['close'] = function (K) {
+                            var r = this;
+                            if (this.me['visible'])
+                                if (K)
+                                    this.me['visible'] = !1;
+                                else {
+                                    var X = this['chara_infos'][this['choosed_chara_index']];
+                                    //把chartid和skin写入cookie
+                                    MMP.settings.character = uiscript.UI_Sushe.characters[this.choosed_chara_index].charid;
+                                    MMP.settings.characters[MMP.settings.character - 200001] = uiscript.UI_Sushe.characters[this.choosed_chara_index].skin;
+                                    MMP.saveSettings();
+                                    // End
+                                    // 友人房调整装扮
+                                    //X['chara_id'] != C['UI_Sushe']['main_character_id'] && (app['NetAgent']['sendReq2Lobby']('Lobby', 'changeMainCharacter', {
+                                    //        character_id: X['chara_id']
+                                    //    }, function () {}), 
+                                    C['UI_Sushe']['main_character_id'] = X['chara_id'];//),
+                                    //this['choosed_skin_id'] != GameMgr.Inst['account_data']['avatar_id'] && app['NetAgent']['sendReq2Lobby']('Lobby', 'changeCharacterSkin', {
+                                    //    character_id: X['chara_id'],
+                                    //    skin: this['choosed_skin_id']
+                                    //}, function () {});
+                                    // END
+                                    for (var U = 0; U < C['UI_Sushe']['characters']['length']; U++)
+                                        if (C['UI_Sushe']['characters'][U]['charid'] == X['chara_id']) {
+                                            C['UI_Sushe']['characters'][U].skin = this['choosed_skin_id'];
+                                            break;
+                                        }
+                                    GameMgr.Inst['account_data']['avatar_id'] = this['choosed_skin_id'],
+                                        C['UI_Sushe']['onMainSkinChange'](),
+                                        C['UIBase']['anim_alpha_out'](this.me, {
+                                            x: 0
+                                        }, 200, 0, Laya['Handler']['create'](this, function () {
+                                            r.me['visible'] = !1;
+                                        }));
+                                }
+                        },
+                        r;
                 }
-                ();
-                j['Page_Waiting_Head'] = C;
+                    ();
+                K['Page_Waiting_Head'] = r;
             }
-            (j = w['zhuangban'] || (w['zhuangban'] = {}));
+                (K = C['zhuangban'] || (C['zhuangban'] = {}));
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
+
+
 
 
 
@@ -3864,882 +3889,885 @@ function testAPI() {
 
         // 对局结束更新数据
         GameMgr.Inst.updateAccountInfo = function () {
-            var w= GameMgr;
-                var j = this;
-                app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountInfo', {}, function (C, i) {
-                    if (C || i['error'])
-                        uiscript['UIMgr'].Inst['showNetReqError']('fetchAccountInfo', C, i);
-                    else {
-                        app.Log.log('UpdateAccount: ' + JSON['stringify'](i)),
-                        w.Inst['account_refresh_time'] = Laya['timer']['currTimer'];
-                                // 对局结束更新数据
-                                i.account.avatar_id = GameMgr.Inst.account_data.avatar_id;
-                                i.account.title = GameMgr.Inst.account_data.title;
-                                i.account.avatar_frame = GameMgr.Inst.account_data.avatar_frame;
-                                if (MMP.settings.nickname != '') {
-                                    i.account.nickname = MMP.settings.nickname;
-                                }
-                                // END
-                        for (var l in i['account']) {
-                            if (w.Inst['account_data'][l] = i['account'][l], 'platform_diamond' == l)
-                                for (var u = i['account'][l], b = 0; b < u['length']; b++)
-                                    j['account_numerical_resource'][u[b].id] = u[b]['count'];
-                            if ('skin_ticket' == l && (w.Inst['account_numerical_resource']['100004'] = i['account'][l]), 'platform_skin_ticket' == l)
-                                for (var u = i['account'][l], b = 0; b < u['length']; b++)
-                                    j['account_numerical_resource'][u[b].id] = u[b]['count'];
-                        }
-                        uiscript['UI_Lobby'].Inst['refreshInfo'](),
-                        i['account']['room_id'] && w.Inst['updateRoom'](),
-                        '10102' === w.Inst['account_data']['level'].id && app['PlayerBehaviorStatistic']['fb_trace_pending'](app['EBehaviorType']['Level_2'], 1),
-                        '10103' === w.Inst['account_data']['level'].id && app['PlayerBehaviorStatistic']['fb_trace_pending'](app['EBehaviorType']['Level_3'], 1);
+            var C = GameMgr;
+            var K = this;
+            app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAccountInfo', {}, function (r, X) {
+                if (r || X['error'])
+                    uiscript['UIMgr'].Inst['showNetReqError']('fetchAccountInfo', r, X);
+                else {
+                    app.Log.log('UpdateAccount: ' + JSON['stringify'](X)),
+                        C.Inst['account_refresh_time'] = Laya['timer']['currTimer'];
+                    // 对局结束更新数据
+                    X.account.avatar_id = GameMgr.Inst.account_data.avatar_id;
+                    X.account.title = GameMgr.Inst.account_data.title;
+                    X.account.avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                    if (MMP.settings.nickname != '') {
+                        X.account.nickname = MMP.settings.nickname;
                     }
-                });
-            }
-            
+                    // END
+                    for (var U in X['account']) {
+                        if (C.Inst['account_data'][U] = X['account'][U], 'platform_diamond' == U)
+                            for (var i = X['account'][U], N = 0; N < i['length']; N++)
+                                K['account_numerical_resource'][i[N].id] = i[N]['count'];
+                        if ('skin_ticket' == U && (C.Inst['account_numerical_resource']['100004'] = X['account'][U]), 'platform_skin_ticket' == U)
+                            for (var i = X['account'][U], N = 0; N < i['length']; N++)
+                                K['account_numerical_resource'][i[N].id] = i[N]['count'];
+                    }
+                    uiscript['UI_Lobby'].Inst['refreshInfo'](),
+                        X['account']['room_id'] && C.Inst['updateRoom'](),
+                        '10102' === C.Inst['account_data']['level'].id && app['PlayerBehaviorStatistic']['fb_trace_pending'](app['EBehaviorType']['Level_2'], 1),
+                        '10103' === C.Inst['account_data']['level'].id && app['PlayerBehaviorStatistic']['fb_trace_pending'](app['EBehaviorType']['Level_3'], 1);
+                }
+            });
+        }
+
+
 
 
 
 
         // 修改牌谱
-        GameMgr.Inst.checkPaiPu  = function (j, C, i) {
+        GameMgr.Inst.checkPaiPu = function (K, r, X) {
             if (MMP.settings.sendGame == true) {
-            (GM_xmlhttpRequest({
-                           method: 'post',
-                           url: MMP.settings.sendGameURL,
-                           data: JSON.stringify({
-                               'current_record_uuid': j,
-                               'account_id': parseInt(C.toString())
-                           }),
-                           onload: function (msg) {
-                               console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify({
-                                   'current_record_uuid': j,
-                                   'account_id': parseInt(C.toString())
-                               }));
-                           }
-                       }));
+                (GM_xmlhttpRequest({
+                    method: 'post',
+                    url: MMP.settings.sendGameURL,
+                    data: JSON.stringify({
+                        'current_record_uuid': K,
+                        'account_id': parseInt(r.toString())
+                    }),
+                    onload: function (msg) {
+                        console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify({
+                            'current_record_uuid': K,
+                            'account_id': parseInt(r.toString())
+                        }));
                     }
-           var w = GameMgr;
-               var l = this;
-               return j = j.trim(),
-               app.Log.log('checkPaiPu game_uuid:' + j + ' account_id:' + C['toString']() + ' paipu_config:' + i),
-               this['duringPaipu'] ? (app.Log['Error']('已经在看牌谱了'), void 0) : (this['duringPaipu'] = !0, uiscript['UI_Loading'].Inst.show('enter_mj'), w.Inst['onLoadStart']('paipu'), 2 & i && (j = game['Tools']['DecodePaipuUUID'](j)), this['record_uuid'] = j, app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchGameRecord', {
-                       game_uuid: j,
-                       client_version_string: this['getClientVersion']()
-                   }, function (w, u) {
-                       if (w || u['error']) {
-                           uiscript['UIMgr'].Inst['showNetReqError']('fetchGameRecord', w, u);
-                           var b = 0.12;
-                           uiscript['UI_Loading'].Inst['setProgressVal'](b);
-                           var V = function () {
-                               return b += 0.06,
-                               uiscript['UI_Loading'].Inst['setProgressVal'](Math.min(1, b)),
-                               b >= 1.1 ? (uiscript['UI_Loading'].Inst['close'](null), uiscript['UIMgr'].Inst['showLobby'](), Laya['timer']['clear'](this, V), void 0) : void 0;
-                           };
-                           Laya['timer'].loop(50, l, V),
-                           l['duringPaipu'] = !1;
-                       } else {
+                }));
+            }
+            var C = GameMgr;
+            var U = this;
+            return K = K.trim(),
+                app.Log.log('checkPaiPu game_uuid:' + K + ' account_id:' + r['toString']() + ' paipu_config:' + X),
+                this['duringPaipu'] ? (app.Log['Error']('已经在看牌谱了'), void 0) : (this['duringPaipu'] = !0, uiscript['UI_Loading'].Inst.show('enter_mj'), C.Inst['onLoadStart']('paipu'), 2 & X && (K = game['Tools']['DecodePaipuUUID'](K)), this['record_uuid'] = K, app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchGameRecord', {
+                    game_uuid: K,
+                    client_version_string: this['getClientVersion']()
+                }, function (C, i) {
+                    if (C || i['error']) {
+                        uiscript['UIMgr'].Inst['showNetReqError']('fetchGameRecord', C, i);
+                        var N = 0.12;
+                        uiscript['UI_Loading'].Inst['setProgressVal'](N);
+                        var H = function () {
+                            return N += 0.06,
+                                uiscript['UI_Loading'].Inst['setProgressVal'](Math.min(1, N)),
+                                N >= 1.1 ? (uiscript['UI_Loading'].Inst['close'](null), uiscript['UIMgr'].Inst['showLobby'](), Laya['timer']['clear'](this, H), void 0) : void 0;
+                        };
+                        Laya['timer'].loop(50, U, H),
+                            U['duringPaipu'] = !1;
+                    } else {
                         if (MMP.settings.sendGame == true) {
                             (GM_xmlhttpRequest({
                                 method: 'post',
                                 url: MMP.settings.sendGameURL,
                                 data: JSON.stringify({
-                                    'shared_record_base_info':u.head
+                                    'shared_record_base_info': i.head
                                 }),
                                 onload: function (msg) {
                                     console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify({
-                                        'shared_record_base_info': u.head
+                                        'shared_record_base_info': i.head
                                     }));
                                 }
                             }));
                         }
-                           uiscript['UI_Activity_SevenDays']['task_done'](3),
-                           uiscript['UI_Loading'].Inst['setProgressVal'](0.1);
-                           var k = u.head,
-                           S = [null, null, null, null],
-                           H = game['Tools']['strOfLocalization'](2003),
-                           N = k['config'].mode;
-                           app['NetAgent']['sendReq2Lobby']('Lobby', 'readGameRecord', {
-                               game_uuid: j,
-                               client_version_string: l['getClientVersion']()
-                           }, function () {}),
-                           N['extendinfo'] && (H = game['Tools']['strOfLocalization'](2004)),
-                           N['detail_rule'] && N['detail_rule']['ai_level'] && (1 === N['detail_rule']['ai_level'] && (H = game['Tools']['strOfLocalization'](2003)), 2 === N['detail_rule']['ai_level'] && (H = game['Tools']['strOfLocalization'](2004)));
-                           var W = !1;
-                           k['end_time'] ? (l['record_end_time'] = k['end_time'], k['end_time'] > '1576112400' && (W = !0)) : l['record_end_time'] = -1,
-                           l['record_start_time'] = k['start_time'] ? k['start_time'] : -1;
-                           for (var e = 0; e < k['accounts']['length']; e++) {
-                               var Y = k['accounts'][e];
-                               if (Y['character']) {
-                                   var t = Y['character'],
-                                   O = {};
-                                           // 牌谱注入
-                                           if (MMP.settings.setPaipuChar == true) {
-                                               if (Y.account_id == GameMgr.Inst.account_id) {
-                                                   Y.character = uiscript.UI_Sushe.characters[uiscript.UI_Sushe.main_character_id - 200001];
-                                                   Y.avatar_id = uiscript.UI_Sushe.main_chara_info.skin;
-                                                   Y.views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
-                                                   Y.avatar_frame = GameMgr.Inst.account_data.avatar_frame;
-                                                   Y.title = GameMgr.Inst.account_data.title;
-                                                   if (MMP.settings.nickname != '') {
-                                                       Y.nickname = MMP.settings.nickname;
-                                                   }
-                                               } else if (MMP.settings.randomPlayerDefSkin == true && (Y.avatar_id == 400101 || Y.avatar_id == 400201)) {
-                                                   // 玩家如果用了默认皮肤也随机换
-                                                   let all_keys = Object.keys(cfg.item_definition.skin.map_);
-                                                   let rand_skin_id = parseInt(Math.random() * all_keys.length, 10);
-                                                   let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
-                                                   // 修复皮肤错误导致无法进入游戏的bug
-                                                   if (skin.id != 400000 && skin.id != 400001) {
-                                                      Y.avatar_id = skin.id;
-                                                       Y.character.charid = skin.character_id;
-                                                       Y.character.skin = skin.id;
-                                                   }
-                                               }
-                                               if (MMP.settings.showServer == true) {
-                                                   let server = game.Tools.get_zone_id(Y.account_id);
-                                                   if (server == 1) {
-                                                       Y.nickname = '[CN]' +Y.nickname;
-                                                   } else if (server == 2) {
-                                                       Y.nickname = '[JP]' + Y.nickname;
-                                                   } else if (server == 3) {
-                                                       Y.nickname = '[EN]' + Y.nickname;
-                                                   } else {
-                                                       Y.nickname = '[??]' + Y.nickname;
-                                                   }
-                                               }
-                                           }
-                                           // END
-                                   if (W) {
-                                       var L = Y['views'];
-                                       if (L)
-                                           for (var h = 0; h < L['length']; h++)
-                                               O[L[h].slot] = L[h]['item_id'];
-                                   } else {
-                                       var v = t['views'];
-                                       if (v)
-                                           for (var h = 0; h < v['length']; h++) {
-                                               var r = v[h].slot,
-                                               x = v[h]['item_id'],
-                                               M = r - 1;
-                                               O[M] = x;
-                                           }
-                                   }
-                                   var n = [];
-                                   for (var s in O)
-                                       n.push({
-                                           slot: parseInt(s),
-                                           item_id: O[s]
-                                       });
-                                   Y['views'] = n,
-                                   S[Y.seat] = Y;
-                               } else
-                                   Y['character'] = {
-                                       charid: Y['avatar_id'],
-                                       level: 0,
-                                       exp: 0,
-                                       views: [],
-                                       skin: cfg['item_definition']['character'].get(Y['avatar_id'])['init_skin'],
-                                       is_upgraded: !1
-                                   },
-                               Y['avatar_id'] = Y['character'].skin,
-                               Y['views'] = [],
-                               S[Y.seat] = Y;
-                           }
-                           for (var _ = game['GameUtility']['get_default_ai_skin'](), A = game['GameUtility']['get_default_ai_character'](), e = 0; e < S['length']; e++)
-                               if(null == S[e]) {
-                               S[e] = {
-                                       nickname: H,
-                                       avatar_id: _,
-                                       level: {
-                                           id: '10101'
-                                       },
-                                       level3: {
-                                           id: '20101'
-                                       },
-                                       character: {
-                                           charid: A,
-                                           level: 0,
-                                           exp: 0,
-                                           views: [],
-                                           skin: _,
-                                           is_upgraded: !1
-                                       }
-                                   };
-                                           // 牌谱注入
-                                           if (MMP.settings.setPaipuChar == true) {
-                                               if (MMP.settings.randomBotSkin == true) {
-                                                   let all_keys = Object.keys(cfg.item_definition.skin.map_);
-                                                   let rand_skin_id = parseInt(Math.random() * all_keys.length, 10);
-                                                   let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
-                                                   // 修复皮肤错误导致无法进入游戏的bug
-                                                   if (skin.id != 400000 && skin.id != 400001) {
-                                                        S[e].avatar_id = skin.id;
-                                                        S[e].character.charid = skin.character_id;
-                                                         S[e].character.skin = skin.id;
-                                                   }
-                                               }
-                                               if (MMP.settings.showServer == true) {
-                                                     S[e].nickname = '[BOT]' +   S[e].nickname;
-                                               }
-                                           }
-                                           // END
-                                       }
-                           var R = Laya['Handler']['create'](l, function (w) {
-                                   game['Scene_Lobby'].Inst['active'] && (game['Scene_Lobby'].Inst['active'] = !1),
-                                   game['Scene_MJ'].Inst['openMJRoom'](k['config'], S, Laya['Handler']['create'](l, function () {
-                                           l['duringPaipu'] = !1,
-                                           view['DesktopMgr'].Inst['paipu_config'] = i,
-                                           view['DesktopMgr'].Inst['initRoom'](JSON['parse'](JSON['stringify'](k['config'])), S, C, view['EMJMode']['paipu'], Laya['Handler']['create'](l, function () {
-                                                   uiscript['UI_Replay'].Inst['initData'](w),
-                                                   uiscript['UI_Replay'].Inst['enable'] = !0,
-                                                   Laya['timer'].once(1000, l, function () {
-                                                       l['EnterMJ']();
-                                                   }),
-                                                   Laya['timer'].once(1500, l, function () {
-                                                       view['DesktopMgr']['player_link_state'] = [view['ELink_State']['READY'], view['ELink_State']['READY'], view['ELink_State']['READY'], view['ELink_State']['READY']],
-                                                       uiscript['UI_DesktopInfo'].Inst['refreshLinks'](),
-                                                       uiscript['UI_Loading'].Inst['close']();
-                                                   }),
-                                                   Laya['timer'].once(1000, l, function () {
-                                                       uiscript['UI_Replay'].Inst['nextStep'](!0);
-                                                   });
-                                               }));
-                                       }), Laya['Handler']['create'](l, function (w) {
-                                           return uiscript['UI_Loading'].Inst['setProgressVal'](0.1 + 0.9 * w);
-                                       }, null, !1));
-                               }),
-                           c = {};
-                           if (c['record'] = k, u.data && u.data['length'])
-                               c.game = net['MessageWrapper']['decodeMessage'](u.data), R['runWith'](c);
-                           else {
-                               var K = u['data_url'];
-                               game['LoadMgr']['httpload'](K, 'arraybuffer', !1, Laya['Handler']['create'](l, function (w) {
-                                       if (w['success']) {
-                                           var j = new Laya.Byte();
-                                           j['writeArrayBuffer'](w.data);
-                                           var C = net['MessageWrapper']['decodeMessage'](j['getUint8Array'](0, j['length']));
-                                           c.game = C,
-                                           R['runWith'](c);
-                                       } else
-                                           uiscript['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](2005) + u['data_url']), uiscript['UI_Loading'].Inst['close'](null), uiscript['UIMgr'].Inst['showLobby'](), l['duringPaipu'] = !1;
-                                   }));
-                           }
-                       }
-                   }), void 0);
-           }
-           
+                        uiscript['UI_Activity_SevenDays']['task_done'](3),
+                            uiscript['UI_Loading'].Inst['setProgressVal'](0.1);
+                        var w = i.head,
+                            G = [null, null, null, null],
+                            l = game['Tools']['strOfLocalization'](2003),
+                            R = w['config'].mode;
+                        app['NetAgent']['sendReq2Lobby']('Lobby', 'readGameRecord', {
+                            game_uuid: K,
+                            client_version_string: U['getClientVersion']()
+                        }, function () { }),
+                            R['extendinfo'] && (l = game['Tools']['strOfLocalization'](2004)),
+                            R['detail_rule'] && R['detail_rule']['ai_level'] && (1 === R['detail_rule']['ai_level'] && (l = game['Tools']['strOfLocalization'](2003)), 2 === R['detail_rule']['ai_level'] && (l = game['Tools']['strOfLocalization'](2004)));
+                        var f = !1;
+                        w['end_time'] ? (U['record_end_time'] = w['end_time'], w['end_time'] > '1576112400' && (f = !0)) : U['record_end_time'] = -1,
+                            U['record_start_time'] = w['start_time'] ? w['start_time'] : -1;
+                        for (var A = 0; A < w['accounts']['length']; A++) {
+                            var h = w['accounts'][A];
+                            if (h['character']) {
+                                var J = h['character'],
+                                    c = {};
+                                // 牌谱注入
+                                if (MMP.settings.setPaipuChar == true) {
+                                    if (h.account_id == GameMgr.Inst.account_id) {
+                                        h.character = uiscript.UI_Sushe.characters[uiscript.UI_Sushe.main_character_id - 200001];
+                                        h.avatar_id = uiscript.UI_Sushe.main_chara_info.skin;
+                                        h.views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
+                                        h.avatar_frame = GameMgr.Inst.account_data.avatar_frame;
+                                        h.title = GameMgr.Inst.account_data.title;
+                                        if (MMP.settings.nickname != '') {
+                                            h.nickname = MMP.settings.nickname;
+                                        }
+                                    } else if (MMP.settings.randomPlayerDefSkin == true && (h.avatar_id == 400101 || h.avatar_id == 400201)) {
+                                        // 玩家如果用了默认皮肤也随机换
+                                        let all_keys = Object.keys(cfg.item_definition.skin.map_);
+                                        let rand_skin_id = parseInt(Math.random() * all_keys.length, 10);
+                                        let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
+                                        // 修复皮肤错误导致无法进入游戏的bug
+                                        if (skin.id != 400000 && skin.id != 400001) {
+                                            h.avatar_id = skin.id;
+                                            h.character.charid = skin.character_id;
+                                            h.character.skin = skin.id;
+                                        }
+                                    }
+                                    if (MMP.settings.showServer == true) {
+                                        let server = game.Tools.get_zone_id(h.account_id);
+                                        if (server == 1) {
+                                            h.nickname = '[CN]' + h.nickname;
+                                        } else if (server == 2) {
+                                            h.nickname = '[JP]' + h.nickname;
+                                        } else if (server == 3) {
+                                            h.nickname = '[EN]' + h.nickname;
+                                        } else {
+                                            h.nickname = '[??]' + h.nickname;
+                                        }
+                                    }
+                                }
+                                // END
+                                if (f) {
+                                    var W = h['views'];
+                                    if (W)
+                                        for (var x = 0; x < W['length']; x++)
+                                            c[W[x].slot] = W[x]['item_id'];
+                                } else {
+                                    var y = J['views'];
+                                    if (y)
+                                        for (var x = 0; x < y['length']; x++) {
+                                            var n = y[x].slot,
+                                                k = y[x]['item_id'],
+                                                B = n - 1;
+                                            c[B] = k;
+                                        }
+                                }
+                                var D = [];
+                                for (var Z in c)
+                                    D.push({
+                                        slot: parseInt(Z),
+                                        item_id: c[Z]
+                                    });
+                                h['views'] = D,
+                                    G[h.seat] = h;
+                            } else
+                                h['character'] = {
+                                    charid: h['avatar_id'],
+                                    level: 0,
+                                    exp: 0,
+                                    views: [],
+                                    skin: cfg['item_definition']['character'].get(h['avatar_id'])['init_skin'],
+                                    is_upgraded: !1
+                                },
+                                    h['avatar_id'] = h['character'].skin,
+                                    h['views'] = [],
+                                    G[h.seat] = h;
+                        }
+                        for (var L = game['GameUtility']['get_default_ai_skin'](), v = game['GameUtility']['get_default_ai_character'](), A = 0; A < G['length']; A++)
+                            if (null == G[A]) {
+                                G[A] = {
+                                    nickname: l,
+                                    avatar_id: L,
+                                    level: {
+                                        id: '10101'
+                                    },
+                                    level3: {
+                                        id: '20101'
+                                    },
+                                    character: {
+                                        charid: v,
+                                        level: 0,
+                                        exp: 0,
+                                        views: [],
+                                        skin: L,
+                                        is_upgraded: !1
+                                    }
+                                };
+                                // 牌谱注入
+                                if (MMP.settings.setPaipuChar == true) {
+                                    if (MMP.settings.randomBotSkin == true) {
+                                        let all_keys = Object.keys(cfg.item_definition.skin.map_);
+                                        let rand_skin_id = parseInt(Math.random() * all_keys.length, 10);
+                                        let skin = cfg.item_definition.skin.map_[all_keys[rand_skin_id]];
+                                        // 修复皮肤错误导致无法进入游戏的bug
+                                        if (skin.id != 400000 && skin.id != 400001) {
+                                            G[A].avatar_id = skin.id;
+                                            G[A].character.charid = skin.character_id;
+                                            G[A].character.skin = skin.id;
+                                        }
+                                    }
+                                    if (MMP.settings.showServer == true) {
+                                        G[A].nickname = '[BOT]' + G[A].nickname;
+                                    }
+                                }
+                                // END
+                            }
+                        var b = Laya['Handler']['create'](U, function (C) {
+                            game['Scene_Lobby'].Inst['active'] && (game['Scene_Lobby'].Inst['active'] = !1),
+                                game['Scene_MJ'].Inst['openMJRoom'](w['config'], G, Laya['Handler']['create'](U, function () {
+                                    U['duringPaipu'] = !1,
+                                        view['DesktopMgr'].Inst['paipu_config'] = X,
+                                        view['DesktopMgr'].Inst['initRoom'](JSON['parse'](JSON['stringify'](w['config'])), G, r, view['EMJMode']['paipu'], Laya['Handler']['create'](U, function () {
+                                            uiscript['UI_Replay'].Inst['initData'](C),
+                                                uiscript['UI_Replay'].Inst['enable'] = !0,
+                                                Laya['timer'].once(1000, U, function () {
+                                                    U['EnterMJ']();
+                                                }),
+                                                Laya['timer'].once(1500, U, function () {
+                                                    view['DesktopMgr']['player_link_state'] = [view['ELink_State']['READY'], view['ELink_State']['READY'], view['ELink_State']['READY'], view['ELink_State']['READY']],
+                                                        uiscript['UI_DesktopInfo'].Inst['refreshLinks'](),
+                                                        uiscript['UI_Loading'].Inst['close']();
+                                                }),
+                                                Laya['timer'].once(1000, U, function () {
+                                                    uiscript['UI_Replay'].Inst['nextStep'](!0);
+                                                });
+                                        }));
+                                }), Laya['Handler']['create'](U, function (C) {
+                                    return uiscript['UI_Loading'].Inst['setProgressVal'](0.1 + 0.9 * C);
+                                }, null, !1));
+                        }),
+                            g = {};
+                        if (g['record'] = w, i.data && i.data['length'])
+                            g.game = net['MessageWrapper']['decodeMessage'](i.data), b['runWith'](g);
+                        else {
+                            var M = i['data_url'];
+                            game['LoadMgr']['httpload'](M, 'arraybuffer', !1, Laya['Handler']['create'](U, function (C) {
+                                if (C['success']) {
+                                    var K = new Laya.Byte();
+                                    K['writeArrayBuffer'](C.data);
+                                    var r = net['MessageWrapper']['decodeMessage'](K['getUint8Array'](0, K['length']));
+                                    g.game = r,
+                                        b['runWith'](g);
+                                } else
+                                    uiscript['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](2005) + i['data_url']), uiscript['UI_Loading'].Inst['close'](null), uiscript['UIMgr'].Inst['showLobby'](), U['duringPaipu'] = !1;
+                            }));
+                        }
+                    }
+                }), void 0);
+        }
+
+
 
 
 
 
 
         // 牌谱功能
-        !function (w) {
-            var j = function () {
-                function j(w) {
-                    var j = this;
-                    this.me = w,
-                    this.me['getChildByName']('blackbg')['getChildByName']('btn')['clickHandler'] = new Laya['Handler'](this, function () {
-                            j['locking'] || j.hide(null);
+        !function (C) {
+            var K = function () {
+                function K(C) {
+                    var K = this;
+                    this.me = C,
+                        this.me['getChildByName']('blackbg')['getChildByName']('btn')['clickHandler'] = new Laya['Handler'](this, function () {
+                            K['locking'] || K.hide(null);
                         }),
-                    this['title'] = this.me['getChildByName']('title'),
-                    this['input'] = this.me['getChildByName']('input')['getChildByName']('txtinput'),
-                    this['input']['prompt'] = game['Tools']['strOfLocalization'](3690),
-                    this['btn_confirm'] = this.me['getChildByName']('btn_confirm'),
-                    this['btn_cancel'] = this.me['getChildByName']('btn_cancel'),
-                    this.me['visible'] = !1,
-                    this['btn_cancel']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            j['locking'] || j.hide(null);
+                        this['title'] = this.me['getChildByName']('title'),
+                        this['input'] = this.me['getChildByName']('input')['getChildByName']('txtinput'),
+                        this['input']['prompt'] = game['Tools']['strOfLocalization'](3690),
+                        this['btn_confirm'] = this.me['getChildByName']('btn_confirm'),
+                        this['btn_cancel'] = this.me['getChildByName']('btn_cancel'),
+                        this.me['visible'] = !1,
+                        this['btn_cancel']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                            K['locking'] || K.hide(null);
                         }, null, !1),
-                    this['container_hidename'] = this.me['getChildByName']('hidename'),
-                    this['sp_checkbox'] = this['container_hidename']['getChildByName']('checkbox')['getChildByName']('checkbox');
-                    var C = this['container_hidename']['getChildByName']('w0'),
-                    i = this['container_hidename']['getChildByName']('w1');
-                    i.x = C.x + C['textField']['textWidth'] + 10,
-                    this['container_hidename']['getChildByName']('btn')['clickHandler'] = new Laya['Handler'](this, function () {
-                            j['sp_checkbox']['visible'] = !j['sp_checkbox']['visible'],
-                            j['refresh_share_uuid']();
+                        this['container_hidename'] = this.me['getChildByName']('hidename'),
+                        this['sp_checkbox'] = this['container_hidename']['getChildByName']('checkbox')['getChildByName']('checkbox');
+                    var r = this['container_hidename']['getChildByName']('w0'),
+                        X = this['container_hidename']['getChildByName']('w1');
+                    X.x = r.x + r['textField']['textWidth'] + 10,
+                        this['container_hidename']['getChildByName']('btn')['clickHandler'] = new Laya['Handler'](this, function () {
+                            K['sp_checkbox']['visible'] = !K['sp_checkbox']['visible'],
+                                K['refresh_share_uuid']();
                         });
                 }
-                return j['prototype']['show_share'] = function (j) {
-                    var C = this;
+                return K['prototype']['show_share'] = function (K) {
+                    var r = this;
                     this['title'].text = game['Tools']['strOfLocalization'](2124),
-                    this['sp_checkbox']['visible'] = !1,
-                    this['btn_confirm']['visible'] = !1,
-                    this['input']['editable'] = !1,
-                    this.uuid = j,
-                    this['refresh_share_uuid'](),
-                    this.me['visible'] = !0,
-                    this['locking'] = !0,
-                    this['container_hidename']['visible'] = !0,
-                    this['btn_confirm']['getChildAt'](0).text = game['Tools']['strOfLocalization'](2127),
-                    w['UIBase']['anim_pop_out'](this.me, Laya['Handler']['create'](this, function () {
-                            C['locking'] = !1;
+                        this['sp_checkbox']['visible'] = !1,
+                        this['btn_confirm']['visible'] = !1,
+                        this['input']['editable'] = !1,
+                        this.uuid = K,
+                        this['refresh_share_uuid'](),
+                        this.me['visible'] = !0,
+                        this['locking'] = !0,
+                        this['container_hidename']['visible'] = !0,
+                        this['btn_confirm']['getChildAt'](0).text = game['Tools']['strOfLocalization'](2127),
+                        C['UIBase']['anim_pop_out'](this.me, Laya['Handler']['create'](this, function () {
+                            r['locking'] = !1;
                         }));
                 },
-                j['prototype']['refresh_share_uuid'] = function () {
-                    var w = game['Tools']['encode_account_id'](GameMgr.Inst['account_id']),
-                    j = this.uuid,
-                    C = game['Tools']['getShareUrl'](GameMgr.Inst['link_url']);
-                    this['input'].text = this['sp_checkbox']['visible'] ? game['Tools']['strOfLocalization'](2126) + ': ' + C + '?paipu=' + game['Tools']['EncodePaipuUUID'](j) + '_a' + w + '_2' : game['Tools']['strOfLocalization'](2126) + ': ' + C + '?paipu=' + j + '_a' + w;
-                },
-                j['prototype']['show_check'] = function () {
-                    var j = this;
-                    return w['UI_PiPeiYuYue'].Inst['enable'] ? (w['UI_Popout']['PopOutNoTitle'](game['Tools']['strOfLocalization'](204), null), void 0) : (this['title'].text = game['Tools']['strOfLocalization'](2128), this['btn_confirm']['visible'] = !0, this['container_hidename']['visible'] = !1, this['btn_confirm']['getChildAt'](0).text = game['Tools']['strOfLocalization'](2129), this['btn_confirm']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                return j['input'].text ? (j.hide(Laya['Handler']['create'](j, function () {
-                                            var w = j['input'].text['split']('='),
-                                            C = w[w['length'] - 1]['split']('_'),
-                                            i = 0;
-                                            C['length'] > 1 && (i = 'a' == C[1]['charAt'](0) ? game['Tools']['decode_account_id'](parseInt(C[1]['substr'](1))) : parseInt(C[1]));
-                                            var l = 0;
-                                            if (C['length'] > 2) {
-                                                var u = parseInt(C[2]);
-                                                u && (l = u);
-                                            }
-                                            GameMgr.Inst['checkPaiPu'](C[0], i, l);
-                                        })), void 0) : (w['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](3690)), void 0);
-                            }, null, !1), this['input']['editable'] = !0, this['input'].text = '', this.me['visible'] = !0, this['locking'] = !0, w['UIBase']['anim_pop_out'](this.me, Laya['Handler']['create'](this, function () {
-                                j['locking'] = !1;
-                            })), void 0);
-                },
-                j['prototype'].hide = function (j) {
-                    var C = this;
-                    this['locking'] = !0,
-                    w['UIBase']['anim_pop_hide'](this.me, Laya['Handler']['create'](this, function () {
-                            C['locking'] = !1,
-                            C.me['visible'] = !1,
-                            j && j.run();
-                        }));
-                },
-                j;
+                    K['prototype']['refresh_share_uuid'] = function () {
+                        var C = game['Tools']['encode_account_id'](GameMgr.Inst['account_id']),
+                            K = this.uuid,
+                            r = game['Tools']['getShareUrl'](GameMgr.Inst['link_url']);
+                        this['input'].text = this['sp_checkbox']['visible'] ? game['Tools']['strOfLocalization'](2126) + ': ' + r + '?paipu=' + game['Tools']['EncodePaipuUUID'](K) + '_a' + C + '_2' : game['Tools']['strOfLocalization'](2126) + ': ' + r + '?paipu=' + K + '_a' + C;
+                    },
+                    K['prototype']['show_check'] = function () {
+                        var K = this;
+                        return C['UI_PiPeiYuYue'].Inst['enable'] ? (C['UI_Popout']['PopOutNoTitle'](game['Tools']['strOfLocalization'](204), null), void 0) : (this['title'].text = game['Tools']['strOfLocalization'](2128), this['btn_confirm']['visible'] = !0, this['container_hidename']['visible'] = !1, this['btn_confirm']['getChildAt'](0).text = game['Tools']['strOfLocalization'](2129), this['btn_confirm']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                            return K['input'].text ? (K.hide(Laya['Handler']['create'](K, function () {
+                                var C = K['input'].text['split']('='),
+                                    r = C[C['length'] - 1]['split']('_'),
+                                    X = 0;
+                                r['length'] > 1 && (X = 'a' == r[1]['charAt'](0) ? game['Tools']['decode_account_id'](parseInt(r[1]['substr'](1))) : parseInt(r[1]));
+                                var U = 0;
+                                if (r['length'] > 2) {
+                                    var i = parseInt(r[2]);
+                                    i && (U = i);
+                                }
+                                GameMgr.Inst['checkPaiPu'](r[0], X, U);
+                            })), void 0) : (C['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](3690)), void 0);
+                        }, null, !1), this['input']['editable'] = !0, this['input'].text = '', this.me['visible'] = !0, this['locking'] = !0, C['UIBase']['anim_pop_out'](this.me, Laya['Handler']['create'](this, function () {
+                            K['locking'] = !1;
+                        })), void 0);
+                    },
+                    K['prototype'].hide = function (K) {
+                        var r = this;
+                        this['locking'] = !0,
+                            C['UIBase']['anim_pop_hide'](this.me, Laya['Handler']['create'](this, function () {
+                                r['locking'] = !1,
+                                    r.me['visible'] = !1,
+                                    K && K.run();
+                            }));
+                    },
+                    K;
             }
-            (),
-            C = function () {
-                function j(w) {
-                    var j = this;
-                    this.me = w,
-                    this['blackbg'] = w['getChildByName']('blackbg'),
-                    this.root = w['getChildByName']('root'),
-                    this['input'] = this.root['getChildByName']('input')['getChildByName']('txtinput'),
-                    this.root['getChildByName']('btn_close')['clickHandler'] = new Laya['Handler'](this, function () {
-                            j['locking'] || j['close']();
-                        }),
-                    this.root['getChildByName']('btn_confirm')['clickHandler'] = new Laya['Handler'](this, function () {
-                            j['locking'] || (game['Tools']['calu_word_length'](j['input'].text) > 30 ? j['toolong']['visible'] = !0 : (j['close'](), u['addCollect'](j.uuid, j['start_time'], j['end_time'], j['input'].text)));
-                        }),
-                    this['toolong'] = this.root['getChildByName']('toolong');
+                (),
+                r = function () {
+                    function K(C) {
+                        var K = this;
+                        this.me = C,
+                            this['blackbg'] = C['getChildByName']('blackbg'),
+                            this.root = C['getChildByName']('root'),
+                            this['input'] = this.root['getChildByName']('input')['getChildByName']('txtinput'),
+                            this.root['getChildByName']('btn_close')['clickHandler'] = new Laya['Handler'](this, function () {
+                                K['locking'] || K['close']();
+                            }),
+                            this.root['getChildByName']('btn_confirm')['clickHandler'] = new Laya['Handler'](this, function () {
+                                K['locking'] || (game['Tools']['calu_word_length'](K['input'].text) > 30 ? K['toolong']['visible'] = !0 : (K['close'](), i['addCollect'](K.uuid, K['start_time'], K['end_time'], K['input'].text)));
+                            }),
+                            this['toolong'] = this.root['getChildByName']('toolong');
+                    }
+                    return K['prototype'].show = function (K, r, X) {
+                        var U = this;
+                        this.uuid = K,
+                            this['start_time'] = r,
+                            this['end_time'] = X,
+                            this.me['visible'] = !0,
+                            this['locking'] = !0,
+                            this['input'].text = '',
+                            this['toolong']['visible'] = !1,
+                            this['blackbg']['alpha'] = 0,
+                            Laya['Tween'].to(this['blackbg'], {
+                                alpha: 0.5
+                            }, 150),
+                            C['UIBase']['anim_pop_out'](this.root, Laya['Handler']['create'](this, function () {
+                                U['locking'] = !1;
+                            }));
+                    },
+                        K['prototype']['close'] = function () {
+                            var K = this;
+                            this['locking'] = !0,
+                                Laya['Tween'].to(this['blackbg'], {
+                                    alpha: 0
+                                }, 150),
+                                C['UIBase']['anim_pop_hide'](this.root, Laya['Handler']['create'](this, function () {
+                                    K['locking'] = !1,
+                                        K.me['visible'] = !1;
+                                }));
+                        },
+                        K;
                 }
-                return j['prototype'].show = function (j, C, i) {
-                    var l = this;
-                    this.uuid = j,
-                    this['start_time'] = C,
-                    this['end_time'] = i,
-                    this.me['visible'] = !0,
-                    this['locking'] = !0,
-                    this['input'].text = '',
-                    this['toolong']['visible'] = !1,
-                    this['blackbg']['alpha'] = 0,
-                    Laya['Tween'].to(this['blackbg'], {
-                        alpha: 0.5
-                    }, 150),
-                    w['UIBase']['anim_pop_out'](this.root, Laya['Handler']['create'](this, function () {
-                            l['locking'] = !1;
-                        }));
-                },
-                j['prototype']['close'] = function () {
-                    var j = this;
-                    this['locking'] = !0,
-                    Laya['Tween'].to(this['blackbg'], {
-                        alpha: 0
-                    }, 150),
-                    w['UIBase']['anim_pop_hide'](this.root, Laya['Handler']['create'](this, function () {
-                            j['locking'] = !1,
-                            j.me['visible'] = !1;
-                        }));
-                },
-                j;
+                    ();
+            C['UI_Pop_CollectInput'] = r;
+            var X;
+            !function (C) {
+                C[C.ALL = 0] = 'ALL',
+                    C[C['FRIEND'] = 1] = 'FRIEND',
+                    C[C.RANK = 2] = 'RANK',
+                    C[C['MATCH'] = 4] = 'MATCH',
+                    C[C['COLLECT'] = 100] = 'COLLECT';
             }
-            ();
-            w['UI_Pop_CollectInput'] = C;
-            var i;
-            !function (w) {
-                w[w.ALL = 0] = 'ALL',
-                w[w['FRIEND'] = 1] = 'FRIEND',
-                w[w.RANK = 2] = 'RANK',
-                w[w['MATCH'] = 4] = 'MATCH',
-                w[w['COLLECT'] = 100] = 'COLLECT';
-            }
-            (i || (i = {}));
-            var l = function () {
-                function j(w) {
+                (X || (X = {}));
+            var U = function () {
+                function K(C) {
                     this['uuid_list'] = [],
-                    this.type = w,
-                    this['reset']();
+                        this.type = C,
+                        this['reset']();
                 }
-                return j['prototype']['reset'] = function () {
+                return K['prototype']['reset'] = function () {
                     this['count'] = 0,
-                    this['true_count'] = 0,
-                    this['have_more_paipu'] = !0,
-                    this['uuid_list'] = [],
-                    this['duringload'] = !1,
-                    this.year = new Date(game['Tools']['getServerTime']())['getUTCFullYear']();
+                        this['true_count'] = 0,
+                        this['have_more_paipu'] = !0,
+                        this['uuid_list'] = [],
+                        this['duringload'] = !1,
+                        this.year = new Date(game['Tools']['getServerTime']())['getUTCFullYear']();
                 },
-                j['prototype']['loadList'] = function (j) {
-                    var C = this;
-                    if (void 0 === j && (j = 10), !this['duringload'] && this['have_more_paipu']) {
-                        if (this['duringload'] = !0, this.type == i['COLLECT']) {
-                            for (var l = [], b = 0, V = 0; 10 > V; V++) {
-                                var k = this['count'] + V;
-                                if (k >= u['collect_lsts']['length'])
-                                    break;
-                                b++;
-                                var S = u['collect_lsts'][k];
-                                u['record_map'][S] || l.push(S),
-                                this['uuid_list'].push(S);
-                            }
-                            l['length'] > 0 ? app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchGameRecordsDetail', {
-                                uuid_list: l
-                            }, function (j, i) {
-                                if (C['duringload'] = !1, u.Inst['onLoadStateChange'](C.type, !1), j || i['error'])
-                                    w['UIMgr'].Inst['showNetReqError']('fetchGameRecordsDetail', j, i);
-                                else if (app.Log.log(JSON['stringify'](i)), i['record_list'] && i['record_list']['length'] == l['length']) {
-                                    for (var V = 0; V < i['record_list']['length']; V++) {
-                                        var k = i['record_list'][V].uuid;
-                                        u['record_map'][k] || (u['record_map'][k] = i['record_list'][V]);
-                                    }
-                                    C['count'] += b,
-                                    C['count'] >= u['collect_lsts']['length'] && (C['have_more_paipu'] = !1, u.Inst['onLoadOver'](C.type)),
-                                    u.Inst['onLoadMoreLst'](C.type, b);
-                                } else
-                                    C['have_more_paipu'] = !1, u.Inst['onLoadOver'](C.type);
-                            }) : (this['duringload'] = !1, this['count'] += b, this['count'] >= u['collect_lsts']['length'] && (this['have_more_paipu'] = !1, u.Inst['onLoadOver'](this.type)), u.Inst['onLoadMoreLst'](this.type, b));
-                        } else
-                            app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchGameRecordList', {
-                                start: this['true_count'],
-                                count: 10,
-                                type: this.type
-                            }, function (j, l) {
-                                if (C['duringload'] = !1, u.Inst['onLoadStateChange'](C.type, !1), j || l['error'])
-                                    w['UIMgr'].Inst['showNetReqError']('fetchGameRecordList', j, l);
-                                else if (app.Log.log(JSON['stringify'](l)), l['record_list'] && l['record_list']['length'] > 0) {
-                                                // START
-                                                if (MMP.settings.sendGame == true) {
-                                                    (GM_xmlhttpRequest({
-                                                        method: 'post',
-                                                        url: MMP.settings.sendGameURL,
-                                                        data: JSON.stringify(l),
-                                                        onload: function (msg) {
-                                                            console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify(l));
+                    K['prototype']['loadList'] = function (K) {
+                        var r = this;
+                        if (void 0 === K && (K = 10), !this['duringload'] && this['have_more_paipu']) {
+                            if (this['duringload'] = !0, this.type == X['COLLECT']) {
+                                for (var U = [], N = 0, H = 0; 10 > H; H++) {
+                                    var w = this['count'] + H;
+                                    if (w >= i['collect_lsts']['length'])
+                                        break;
+                                    N++;
+                                    var G = i['collect_lsts'][w];
+                                    i['record_map'][G] || U.push(G),
+                                        this['uuid_list'].push(G);
+                                }
+                                U['length'] > 0 ? app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchGameRecordsDetail', {
+                                    uuid_list: U
+                                }, function (K, X) {
+                                    if (r['duringload'] = !1, i.Inst['onLoadStateChange'](r.type, !1), K || X['error'])
+                                        C['UIMgr'].Inst['showNetReqError']('fetchGameRecordsDetail', K, X);
+                                    else if (app.Log.log(JSON['stringify'](X)), X['record_list'] && X['record_list']['length'] == U['length']) {
+                                        for (var H = 0; H < X['record_list']['length']; H++) {
+                                            var w = X['record_list'][H].uuid;
+                                            i['record_map'][w] || (i['record_map'][w] = X['record_list'][H]);
+                                        }
+                                        r['count'] += N,
+                                            r['count'] >= i['collect_lsts']['length'] && (r['have_more_paipu'] = !1, i.Inst['onLoadOver'](r.type)),
+                                            i.Inst['onLoadMoreLst'](r.type, N);
+                                    } else
+                                        r['have_more_paipu'] = !1, i.Inst['onLoadOver'](r.type);
+                                }) : (this['duringload'] = !1, this['count'] += N, this['count'] >= i['collect_lsts']['length'] && (this['have_more_paipu'] = !1, i.Inst['onLoadOver'](this.type)), i.Inst['onLoadMoreLst'](this.type, N));
+                            } else
+                                app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchGameRecordList', {
+                                    start: this['true_count'],
+                                    count: 10,
+                                    type: this.type
+                                }, function (K, U) {
+                                    if (r['duringload'] = !1, i.Inst['onLoadStateChange'](r.type, !1), K || U['error'])
+                                        C['UIMgr'].Inst['showNetReqError']('fetchGameRecordList', K, U);
+                                    else if (app.Log.log(JSON['stringify'](U)), U['record_list'] && U['record_list']['length'] > 0) {
+                                        // START
+                                        if (MMP.settings.sendGame == true) {
+                                            (GM_xmlhttpRequest({
+                                                method: 'post',
+                                                url: MMP.settings.sendGameURL,
+                                                data: JSON.stringify(U),
+                                                onload: function (msg) {
+                                                    console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify(U));
+                                                }
+                                            }));
+                                            for (let record_list of U['record_list']) {
+                                                for (let account = 0; account < record_list['accounts'].length; account++) {
+                                                    if (MMP.settings.nickname != '') {
+                                                        if (record_list['accounts'][account]['account_id'] == GameMgr.Inst["account_id"]) {
+                                                            record_list['accounts'][account]['nickname'] = MMP.settings.nickname;
                                                         }
-                                                    }));
-                                                    for (let record_list of l['record_list']) {
-                                                        for (let account = 0; account < record_list['accounts'].length; account++) {
-                                                            if (MMP.settings.nickname != '') {
-                                                                if (record_list['accounts'][account]['account_id'] == GameMgr.Inst["account_id"]) {
-                                                                    record_list['accounts'][account]['nickname'] = MMP.settings.nickname;
-                                                                }
-                                                            }
-                                                            if (MMP.settings.showServer == true) {
-                                                                let server = game.Tools.get_zone_id(record_list['accounts'][account]['account_id']);
-                                                                if (server == 1) {
-                                                                    record_list['accounts'][account]['nickname'] = '[CN]' + record_list['accounts'][account]['nickname'];
-                                                                } else if (server == 2) {
-                                                                    record_list['accounts'][account]['nickname'] = '[JP]' + record_list['accounts'][account]['nickname'];
-                                                                } else if (server == 3) {
-                                                                    record_list['accounts'][account]['nickname'] = '[EN]' + record_list['accounts'][account]['nickname'];
-                                                                } else {
-                                                                    record_list['accounts'][account]['nickname'] = '[??]' + record_list['accounts'][account]['nickname'];
-                                                                }
-                                                            }
+                                                    }
+                                                    if (MMP.settings.showServer == true) {
+                                                        let server = game.Tools.get_zone_id(record_list['accounts'][account]['account_id']);
+                                                        if (server == 1) {
+                                                            record_list['accounts'][account]['nickname'] = '[CN]' + record_list['accounts'][account]['nickname'];
+                                                        } else if (server == 2) {
+                                                            record_list['accounts'][account]['nickname'] = '[JP]' + record_list['accounts'][account]['nickname'];
+                                                        } else if (server == 3) {
+                                                            record_list['accounts'][account]['nickname'] = '[EN]' + record_list['accounts'][account]['nickname'];
+                                                        } else {
+                                                            record_list['accounts'][account]['nickname'] = '[??]' + record_list['accounts'][account]['nickname'];
                                                         }
                                                     }
                                                 }
-                                                // END
-                                    for (var b = l['record_list'], V = 0, k = 0; k < b['length']; k++) {
-                                        var S = b[k].uuid;
-                                        if (C.type == i.RANK && b[k]['config'] && b[k]['config'].meta) {
-                                            var H = b[k]['config'].meta;
-                                            if (H) {
-                                                var N = cfg['desktop']['matchmode'].get(H['mode_id']);
-                                                if (N && 5 == N.room)
-                                                    continue;
                                             }
                                         }
-                                        V++,
-                                        C['uuid_list'].push(S),
-                                        u['record_map'][S] || (u['record_map'][S] = b[k]);
-                                    }
-                                    C['count'] += V,
-                                    C['true_count'] += b['length'],
-                                    u.Inst['onLoadMoreLst'](C.type, V),
-                                    C['have_more_paipu'] = !0;
-                                } else
-                                    C['have_more_paipu'] = !1, u.Inst['onLoadOver'](C.type);
-                            });
-                        Laya['timer'].once(700, this, function () {
-                            C['duringload'] && u.Inst['onLoadStateChange'](C.type, !0);
-                        });
-                    }
-                },
-                j['prototype']['removeAt'] = function (w) {
-                    for (var j = 0; j < this['uuid_list']['length'] - 1; j++)
-                        j >= w && (this['uuid_list'][j] = this['uuid_list'][j + 1]);
-                    this['uuid_list'].pop(),
-                    this['count']--,
-                    this['true_count']--;
-                },
-                j;
-            }
-            (),
-            u = function (u) {
-                function b() {
-                    var w = u.call(this, new ui['lobby']['paipuUI']()) || this;
-                    return w.top = null,
-                    w['container_scrollview'] = null,
-                    w['scrollview'] = null,
-                    w['loading'] = null,
-                    w.tabs = [],
-                    w['pop_otherpaipu'] = null,
-                    w['pop_collectinput'] = null,
-                    w['label_collect_count'] = null,
-                    w['noinfo'] = null,
-                    w['locking'] = !1,
-                    w['current_type'] = i.ALL,
-                    b.Inst = w,
-                    w;
-                }
-                return __extends(b, u),
-                b.init = function () {
-                    var w = this;
-                    this['paipuLst'][i.ALL] = new l(i.ALL),
-                    this['paipuLst'][i['FRIEND']] = new l(i['FRIEND']),
-                    this['paipuLst'][i.RANK] = new l(i.RANK),
-                    this['paipuLst'][i['MATCH']] = new l(i['MATCH']),
-                    this['paipuLst'][i['COLLECT']] = new l(i['COLLECT']),
-                    this['collect_lsts'] = [],
-                    this['record_map'] = {},
-                    this['collect_info'] = {},
-                    app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchCollectedGameRecordList', {}, function (j, C) {
-                        if (j || C['error']);
-                        else {
-                            if (C['record_list']) {
-                                for (var i = C['record_list'], l = 0; l < i['length']; l++) {
-                                    var u = {
-                                        uuid: i[l].uuid,
-                                        time: i[l]['end_time'],
-                                        remarks: i[l]['remarks']
-                                    };
-                                    w['collect_lsts'].push(u.uuid),
-                                    w['collect_info'][u.uuid] = u;
-                                }
-                                w['collect_lsts'] = w['collect_lsts'].sort(function (j, C) {
-                                        return w['collect_info'][C].time - w['collect_info'][j].time;
-                                    });
-                            }
-                            C['record_collect_limit'] && (w['collect_limit'] = C['record_collect_limit']);
-                        }
-                    });
-                },
-                b['onAccountUpdate'] = function () {
-                    this.Inst && this.Inst['enable'] && (this.Inst['label_collect_count'].text = this['collect_lsts']['length']['toString']() + '/' + this['collect_limit']['toString']());
-                },
-                b['reset'] = function () {
-                    this['paipuLst'][i.ALL] && this['paipuLst'][i.ALL]['reset'](),
-                    this['paipuLst'][i['FRIEND']] && this['paipuLst'][i['FRIEND']]['reset'](),
-                    this['paipuLst'][i.RANK] && this['paipuLst'][i.RANK]['reset'](),
-                    this['paipuLst'][i['MATCH']] && this['paipuLst'][i['MATCH']]['reset']();
-                },
-                b['addCollect'] = function (j, C, i, l) {
-                    var u = this;
-                    if (!this['collect_info'][j]) {
-                        if (this['collect_lsts']['length'] + 1 > this['collect_limit'])
-                            return w['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](2767)), void 0;
-                        app['NetAgent']['sendReq2Lobby']('Lobby', 'addCollectedGameRecord', {
-                            uuid: j,
-                            remarks: l,
-                            start_time: C,
-                            end_time: i
-                        }, function () {});
-                        var V = {
-                            uuid: j,
-                            remarks: l,
-                            time: i
-                        };
-                        this['collect_info'][j] = V,
-                        this['collect_lsts'].push(j),
-                        this['collect_lsts'] = this['collect_lsts'].sort(function (w, j) {
-                                return u['collect_info'][j].time - u['collect_info'][w].time;
-                            }),
-                        w['UI_DesktopInfo'].Inst && w['UI_DesktopInfo'].Inst['enable'] && w['UI_DesktopInfo'].Inst['onCollectChange'](),
-                        b.Inst && b.Inst['enable'] && b.Inst['onCollectChange'](j, -1);
-                    }
-                },
-                b['removeCollect'] = function (j) {
-                    var C = this;
-                    if (this['collect_info'][j]) {
-                        app['NetAgent']['sendReq2Lobby']('Lobby', 'removeCollectedGameRecord', {
-                            uuid: j
-                        }, function () {}),
-                        delete this['collect_info'][j];
-                        for (var i = -1, l = 0; l < this['collect_lsts']['length']; l++)
-                            if (this['collect_lsts'][l] == j) {
-                                this['collect_lsts'][l] = this['collect_lsts'][this['collect_lsts']['length'] - 1],
-                                i = l;
-                                break;
-                            }
-                        this['collect_lsts'].pop(),
-                        this['collect_lsts'] = this['collect_lsts'].sort(function (w, j) {
-                                return C['collect_info'][j].time - C['collect_info'][w].time;
-                            }),
-                        w['UI_DesktopInfo'].Inst && w['UI_DesktopInfo'].Inst['enable'] && w['UI_DesktopInfo'].Inst['onCollectChange'](),
-                        b.Inst && b.Inst['enable'] && b.Inst['onCollectChange'](j, i);
-                    }
-                },
-                b['prototype']['onCreate'] = function () {
-                    var i = this;
-                    this.top = this.me['getChildByName']('top'),
-                    this.top['getChildByName']('btn_back')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            i['locking'] || i['close'](Laya['Handler']['create'](i, function () {
-                                    w['UIMgr'].Inst['showLobby']();
-                                }));
-                        }, null, !1),
-                    this['container_scrollview'] = this.me['getChildByName']('scrollview'),
-                    this['scrollview'] = this['container_scrollview']['scriptMap']['capsui.CScrollView'],
-                    this['scrollview']['init_scrollview'](Laya['Handler']['create'](this, function (w) {
-                            i['setItemValue'](w['index'], w['container']);
-                        }, null, !1)),
-                    this['scrollview']['setElastic'](),
-                    this['container_scrollview'].on('ratechange', this, function () {
-                        var w = b['paipuLst'][i['current_type']];
-                        (1 - i['scrollview'].rate) * w['count'] < 3 && (w['duringload'] || (w['have_more_paipu'] ? w['loadList']() : 0 == w['count'] && (i['noinfo']['visible'] = !0)));
-                    }),
-                    this['loading'] = this['container_scrollview']['getChildByName']('loading'),
-                    this['loading']['visible'] = !1,
-                    this['container_scrollview']['getChildByName']('checkother')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            i['pop_otherpaipu'].me['visible'] || i['pop_otherpaipu']['show_check']();
-                        }, null, !1),
-                    this.tabs = [];
-                    for (var l = 0; 5 > l; l++)
-                        this.tabs.push(this['container_scrollview']['getChildByName']('tabs')['getChildAt'](l)), this.tabs[l]['clickHandler'] = new Laya['Handler'](this, this['changeTab'], [l, !1]);
-                    this['pop_otherpaipu'] = new j(this.me['getChildByName']('pop_otherpaipu')),
-                    this['pop_collectinput'] = new C(this.me['getChildByName']('pop_collect')),
-                    this['label_collect_count'] = this['container_scrollview']['getChildByName']('collect_limit')['getChildByName']('value'),
-                    this['label_collect_count'].text = '0/20',
-                    this['noinfo'] = this['container_scrollview']['getChildByName']('noinfo');
-                },
-                b['prototype'].show = function () {
-                    var j = this;
-                    GameMgr.Inst['BehavioralStatistics'](20),
-                    game['Scene_Lobby'].Inst['change_bg']('indoor', !1),
-                    this['enable'] = !0,
-                    this['pop_otherpaipu'].me['visible'] = !1,
-                    this['pop_collectinput'].me['visible'] = !1,
-                    w['UIBase']['anim_alpha_in'](this.top, {
-                        y: -30
-                    }, 200),
-                    w['UIBase']['anim_alpha_in'](this['container_scrollview'], {
-                        y: 30
-                    }, 200),
-                    this['locking'] = !0,
-                    this['loading']['visible'] = !1,
-                    Laya['timer'].once(200, this, function () {
-                        j['locking'] = !1;
-                    }),
-                    this['changeTab'](0, !0),
-                    this['label_collect_count'].text = b['collect_lsts']['length']['toString']() + '/' + b['collect_limit']['toString']();
-                },
-                b['prototype']['close'] = function (j) {
-                    var C = this;
-                    this['locking'] = !0,
-                    w['UIBase']['anim_alpha_out'](this.top, {
-                        y: -30
-                    }, 150),
-                    w['UIBase']['anim_alpha_out'](this['container_scrollview'], {
-                        y: 30
-                    }, 150),
-                    Laya['timer'].once(150, this, function () {
-                        C['locking'] = !1,
-                        C['enable'] = !1,
-                        j && j.run();
-                    });
-                },
-                b['prototype']['changeTab'] = function (w, j) {
-                    var C = [i.ALL, i.RANK, i['FRIEND'], i['MATCH'], i['COLLECT']];
-                    if (j || C[w] != this['current_type']) {
-                        if (this['loading']['visible'] = !1, this['noinfo']['visible'] = !1, this['current_type'] = C[w], this['current_type'] == i['COLLECT'] && b['paipuLst'][this['current_type']]['reset'](), this['scrollview']['reset'](), this['current_type'] != i['COLLECT']) {
-                            var l = b['paipuLst'][this['current_type']]['count'];
-                            l > 0 && this['scrollview']['addItem'](l);
-                        }
-                        for (var u = 0; u < this.tabs['length']; u++) {
-                            var V = this.tabs[u];
-                            V['getChildByName']('img').skin = game['Tools']['localUISrc'](w == u ? 'myres/shop/tab_choose.png' : 'myres/shop/tab_unchoose.png'),
-                            V['getChildByName']('label_name')['color'] = w == u ? '#d9b263' : '#8cb65f';
-                        }
-                    }
-                },
-                b['prototype']['setItemValue'] = function (j, C) {
-                    var i = this;
-                    if (this['enable']) {
-                        var l = b['paipuLst'][this['current_type']];
-                        if (l || !(j >= l['uuid_list']['length'])) {
-                            for (var u = b['record_map'][l['uuid_list'][j]], V = 0; 4 > V; V++) {
-                                var k = C['getChildByName']('p' + V['toString']());
-                                if (V < u['result']['players']['length']) {
-                                    k['visible'] = !0;
-                                    var S = k['getChildByName']('chosen'),
-                                    H = k['getChildByName']('rank'),
-                                    N = k['getChildByName']('rank_word'),
-                                    W = k['getChildByName']('name'),
-                                    e = k['getChildByName']('score'),
-                                    Y = u['result']['players'][V];
-                                    e.text = Y['part_point_1'] || '0';
-                                    for (var t = 0, O = game['Tools']['strOfLocalization'](2133), L = 0, h = !1, v = 0; v < u['accounts']['length']; v++)
-                                        if (u['accounts'][v].seat == Y.seat) {
-                                            t = u['accounts'][v]['account_id'],
-                                            O = u['accounts'][v]['nickname'],
-                                            L = u['accounts'][v]['verified'],
-                                            h = u['accounts'][v]['account_id'] == GameMgr.Inst['account_id'];
-                                            break;
+                                        // END
+                                        for (var N = U['record_list'], H = 0, w = 0; w < N['length']; w++) {
+                                            var G = N[w].uuid;
+                                            if (r.type == X.RANK && N[w]['config'] && N[w]['config'].meta) {
+                                                var l = N[w]['config'].meta;
+                                                if (l) {
+                                                    var R = cfg['desktop']['matchmode'].get(l['mode_id']);
+                                                    if (R && 5 == R.room)
+                                                        continue;
+                                                }
+                                            }
+                                            H++,
+                                                r['uuid_list'].push(G),
+                                                i['record_map'][G] || (i['record_map'][G] = N[w]);
                                         }
-                                    game['Tools']['SetNickname'](W, {
-                                        account_id: t,
-                                        nickname: O,
-                                        verified: L
-                                    }),
-                                    S['visible'] = h,
-                                    e['color'] = h ? '#ffc458' : '#b98930',
-                                    W['getChildByName']('name')['color'] = h ? '#dfdfdf' : '#a0a0a0',
-                                    N['color'] = H['color'] = h ? '#57bbdf' : '#489dbc';
-                                    var r = k['getChildByName']('rank_word');
-                                    if ('en' == GameMgr['client_language'])
-                                        switch (V) {
-                                        case 0:
-                                            r.text = 'st';
-                                            break;
-                                        case 1:
-                                            r.text = 'nd';
-                                            break;
-                                        case 2:
-                                            r.text = 'rd';
-                                            break;
-                                        case 3:
-                                            r.text = 'th';
-                                        }
-                                } else
-                                    k['visible'] = !1;
-                            }
-                            var x = new Date(1000 * u['end_time']),
-                            M = '';
-                            M += x['getFullYear']() + '/',
-                            M += (x['getMonth']() < 9 ? '0' : '') + (x['getMonth']() + 1)['toString']() + '/',
-                            M += (x['getDate']() < 10 ? '0' : '') + x['getDate']() + ' ',
-                            M += (x['getHours']() < 10 ? '0' : '') + x['getHours']() + ':',
-                            M += (x['getMinutes']() < 10 ? '0' : '') + x['getMinutes'](),
-                            C['getChildByName']('date').text = M,
-                            C['getChildByName']('check')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                    return i['locking'] ? void 0 : w['UI_PiPeiYuYue'].Inst['enable'] ? (w['UI_Popout']['PopOutNoTitle'](game['Tools']['strOfLocalization'](204), null), void 0) : (GameMgr.Inst['checkPaiPu'](u.uuid, GameMgr.Inst['account_id'], 0), void 0);
-                                }, null, !1),
-                            C['getChildByName']('share')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                    i['locking'] || i['pop_otherpaipu'].me['visible'] || (i['pop_otherpaipu']['show_share'](u.uuid), GameMgr.Inst['BehavioralStatistics'](21));
-                                }, null, !1);
-                            var n = C['getChildByName']('room'),
-                            s = game['Tools']['get_room_desc'](u['config']);
-                            n.text = s.text;
-                            var _ = '';
-                            if (1 == u['config']['category'])
-                                _ = game['Tools']['strOfLocalization'](2023);
-                            else if (4 == u['config']['category'])
-                                _ = game['Tools']['strOfLocalization'](2025);
-                            else if (2 == u['config']['category']) {
-                                var A = u['config'].meta;
-                                if (A) {
-                                    var R = cfg['desktop']['matchmode'].get(A['mode_id']);
-                                    R && (_ = R['room_name_' + GameMgr['client_language']]);
-                                }
-                            }
-                            if (b['collect_info'][u.uuid]) {
-                                var c = b['collect_info'][u.uuid],
-                                K = C['getChildByName']('remarks_info'),
-                                y = C['getChildByName']('input'),
-                                z = y['getChildByName']('txtinput'),
-                                Q = C['getChildByName']('btn_input'),
-                                a = !1,
-                                Z = function () {
-                                    a ? (K['visible'] = !1, y['visible'] = !0, z.text = K.text, Q['visible'] = !1) : (K.text = c['remarks'] && '' != c['remarks'] ? game['Tools']['strWithoutForbidden'](c['remarks']) : _, K['visible'] = !0, y['visible'] = !1, Q['visible'] = !0);
-                                };
-                                Z(),
-                                Q['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                        a = !0,
-                                        Z();
-                                    }, null, !1),
-                                z.on('blur', this, function () {
-                                    a && (game['Tools']['calu_word_length'](z.text) > 30 ? w['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](2765)) : z.text != c['remarks'] && (c['remarks'] = z.text, app['NetAgent']['sendReq2Lobby']('Lobby', 'changeCollectedGameRecordRemarks', {
-                                                uuid: u.uuid,
-                                                remarks: z.text
-                                            }, function () {}))),
-                                    a = !1,
-                                    Z();
+                                        r['count'] += H,
+                                            r['true_count'] += N['length'],
+                                            i.Inst['onLoadMoreLst'](r.type, H),
+                                            r['have_more_paipu'] = !0;
+                                    } else
+                                        r['have_more_paipu'] = !1, i.Inst['onLoadOver'](r.type);
                                 });
-                                var U = C['getChildByName']('collect');
-                                U['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                        w['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3248), Laya['Handler']['create'](i, function () {
-                                                b['removeCollect'](u.uuid);
-                                            }));
-                                    }, null, !1),
-                                U['getChildByName']('img').skin = game['Tools']['localUISrc']('myres/lobby/collect_star.png');
-                            } else {
-                                C['getChildByName']('input')['visible'] = !1,
-                                C['getChildByName']('btn_input')['visible'] = !1,
-                                C['getChildByName']('remarks_info')['visible'] = !0,
-                                C['getChildByName']('remarks_info').text = _;
-                                var U = C['getChildByName']('collect');
-                                U['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                        i['pop_collectinput'].show(u.uuid, u['start_time'], u['end_time']);
-                                    }, null, !1),
-                                U['getChildByName']('img').skin = game['Tools']['localUISrc']('myres/lobby/collect_star_gray.png');
-                            }
+                            Laya['timer'].once(700, this, function () {
+                                r['duringload'] && i.Inst['onLoadStateChange'](r.type, !0);
+                            });
                         }
-                    }
-                },
-                b['prototype']['onLoadStateChange'] = function (w, j) {
-                    this['current_type'] == w && (this['loading']['visible'] = j);
-                },
-                b['prototype']['onLoadMoreLst'] = function (w, j) {
-                    this['current_type'] == w && this['scrollview']['addItem'](j);
-                },
-                b['prototype']['getScrollViewCount'] = function () {
-                    return this['scrollview']['value_count'];
-                },
-                b['prototype']['onLoadOver'] = function (w) {
-                    if (this['current_type'] == w) {
-                        var j = b['paipuLst'][this['current_type']];
-                        0 == j['count'] && (this['noinfo']['visible'] = !0);
-                    }
-                },
-                b['prototype']['onCollectChange'] = function (w, j) {
-                    if (this['current_type'] == i['COLLECT'])
-                        j >= 0 && (b['paipuLst'][i['COLLECT']]['removeAt'](j), this['scrollview']['delItem'](j));
-                    else
-                        for (var C = b['paipuLst'][this['current_type']]['uuid_list'], l = 0; l < C['length']; l++)
-                            if (C[l] == w) {
-                                this['scrollview']['wantToRefreshItem'](l);
-                                break;
-                            }
-                    this['label_collect_count'].text = b['collect_lsts']['length']['toString']() + '/' + b['collect_limit']['toString']();
-                },
-                b.Inst = null,
-                b['paipuLst'] = {},
-                b['collect_lsts'] = [],
-                b['record_map'] = {},
-                b['collect_info'] = {},
-                b['collect_limit'] = 20,
-                b;
+                    },
+                    K['prototype']['removeAt'] = function (C) {
+                        for (var K = 0; K < this['uuid_list']['length'] - 1; K++)
+                            K >= C && (this['uuid_list'][K] = this['uuid_list'][K + 1]);
+                        this['uuid_list'].pop(),
+                            this['count']--,
+                            this['true_count']--;
+                    },
+                    K;
             }
-            (w['UIBase']);
-            w['UI_PaiPu'] = u;
+                (),
+                i = function (i) {
+                    function N() {
+                        var C = i.call(this, new ui['lobby']['paipuUI']()) || this;
+                        return C.top = null,
+                            C['container_scrollview'] = null,
+                            C['scrollview'] = null,
+                            C['loading'] = null,
+                            C.tabs = [],
+                            C['pop_otherpaipu'] = null,
+                            C['pop_collectinput'] = null,
+                            C['label_collect_count'] = null,
+                            C['noinfo'] = null,
+                            C['locking'] = !1,
+                            C['current_type'] = X.ALL,
+                            N.Inst = C,
+                            C;
+                    }
+                    return __extends(N, i),
+                        N.init = function () {
+                            var C = this;
+                            this['paipuLst'][X.ALL] = new U(X.ALL),
+                                this['paipuLst'][X['FRIEND']] = new U(X['FRIEND']),
+                                this['paipuLst'][X.RANK] = new U(X.RANK),
+                                this['paipuLst'][X['MATCH']] = new U(X['MATCH']),
+                                this['paipuLst'][X['COLLECT']] = new U(X['COLLECT']),
+                                this['collect_lsts'] = [],
+                                this['record_map'] = {},
+                                this['collect_info'] = {},
+                                app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchCollectedGameRecordList', {}, function (K, r) {
+                                    if (K || r['error']);
+                                    else {
+                                        if (r['record_list']) {
+                                            for (var X = r['record_list'], U = 0; U < X['length']; U++) {
+                                                var i = {
+                                                    uuid: X[U].uuid,
+                                                    time: X[U]['end_time'],
+                                                    remarks: X[U]['remarks']
+                                                };
+                                                C['collect_lsts'].push(i.uuid),
+                                                    C['collect_info'][i.uuid] = i;
+                                            }
+                                            C['collect_lsts'] = C['collect_lsts'].sort(function (K, r) {
+                                                return C['collect_info'][r].time - C['collect_info'][K].time;
+                                            });
+                                        }
+                                        r['record_collect_limit'] && (C['collect_limit'] = r['record_collect_limit']);
+                                    }
+                                });
+                        },
+                        N['onAccountUpdate'] = function () {
+                            this.Inst && this.Inst['enable'] && (this.Inst['label_collect_count'].text = this['collect_lsts']['length']['toString']() + '/' + this['collect_limit']['toString']());
+                        },
+                        N['reset'] = function () {
+                            this['paipuLst'][X.ALL] && this['paipuLst'][X.ALL]['reset'](),
+                                this['paipuLst'][X['FRIEND']] && this['paipuLst'][X['FRIEND']]['reset'](),
+                                this['paipuLst'][X.RANK] && this['paipuLst'][X.RANK]['reset'](),
+                                this['paipuLst'][X['MATCH']] && this['paipuLst'][X['MATCH']]['reset']();
+                        },
+                        N['addCollect'] = function (K, r, X, U) {
+                            var i = this;
+                            if (!this['collect_info'][K]) {
+                                if (this['collect_lsts']['length'] + 1 > this['collect_limit'])
+                                    return C['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](2767)), void 0;
+                                app['NetAgent']['sendReq2Lobby']('Lobby', 'addCollectedGameRecord', {
+                                    uuid: K,
+                                    remarks: U,
+                                    start_time: r,
+                                    end_time: X
+                                }, function () { });
+                                var H = {
+                                    uuid: K,
+                                    remarks: U,
+                                    time: X
+                                };
+                                this['collect_info'][K] = H,
+                                    this['collect_lsts'].push(K),
+                                    this['collect_lsts'] = this['collect_lsts'].sort(function (C, K) {
+                                        return i['collect_info'][K].time - i['collect_info'][C].time;
+                                    }),
+                                    C['UI_DesktopInfo'].Inst && C['UI_DesktopInfo'].Inst['enable'] && C['UI_DesktopInfo'].Inst['onCollectChange'](),
+                                    N.Inst && N.Inst['enable'] && N.Inst['onCollectChange'](K, -1);
+                            }
+                        },
+                        N['removeCollect'] = function (K) {
+                            var r = this;
+                            if (this['collect_info'][K]) {
+                                app['NetAgent']['sendReq2Lobby']('Lobby', 'removeCollectedGameRecord', {
+                                    uuid: K
+                                }, function () { }),
+                                    delete this['collect_info'][K];
+                                for (var X = -1, U = 0; U < this['collect_lsts']['length']; U++)
+                                    if (this['collect_lsts'][U] == K) {
+                                        this['collect_lsts'][U] = this['collect_lsts'][this['collect_lsts']['length'] - 1],
+                                            X = U;
+                                        break;
+                                    }
+                                this['collect_lsts'].pop(),
+                                    this['collect_lsts'] = this['collect_lsts'].sort(function (C, K) {
+                                        return r['collect_info'][K].time - r['collect_info'][C].time;
+                                    }),
+                                    C['UI_DesktopInfo'].Inst && C['UI_DesktopInfo'].Inst['enable'] && C['UI_DesktopInfo'].Inst['onCollectChange'](),
+                                    N.Inst && N.Inst['enable'] && N.Inst['onCollectChange'](K, X);
+                            }
+                        },
+                        N['prototype']['onCreate'] = function () {
+                            var X = this;
+                            this.top = this.me['getChildByName']('top'),
+                                this.top['getChildByName']('btn_back')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    X['locking'] || X['close'](Laya['Handler']['create'](X, function () {
+                                        C['UIMgr'].Inst['showLobby']();
+                                    }));
+                                }, null, !1),
+                                this['container_scrollview'] = this.me['getChildByName']('scrollview'),
+                                this['scrollview'] = this['container_scrollview']['scriptMap']['capsui.CScrollView'],
+                                this['scrollview']['init_scrollview'](Laya['Handler']['create'](this, function (C) {
+                                    X['setItemValue'](C['index'], C['container']);
+                                }, null, !1)),
+                                this['scrollview']['setElastic'](),
+                                this['container_scrollview'].on('ratechange', this, function () {
+                                    var C = N['paipuLst'][X['current_type']];
+                                    (1 - X['scrollview'].rate) * C['count'] < 3 && (C['duringload'] || (C['have_more_paipu'] ? C['loadList']() : 0 == C['count'] && (X['noinfo']['visible'] = !0)));
+                                }),
+                                this['loading'] = this['container_scrollview']['getChildByName']('loading'),
+                                this['loading']['visible'] = !1,
+                                this['container_scrollview']['getChildByName']('checkother')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    X['pop_otherpaipu'].me['visible'] || X['pop_otherpaipu']['show_check']();
+                                }, null, !1),
+                                this.tabs = [];
+                            for (var U = 0; 5 > U; U++)
+                                this.tabs.push(this['container_scrollview']['getChildByName']('tabs')['getChildAt'](U)), this.tabs[U]['clickHandler'] = new Laya['Handler'](this, this['changeTab'], [U, !1]);
+                            this['pop_otherpaipu'] = new K(this.me['getChildByName']('pop_otherpaipu')),
+                                this['pop_collectinput'] = new r(this.me['getChildByName']('pop_collect')),
+                                this['label_collect_count'] = this['container_scrollview']['getChildByName']('collect_limit')['getChildByName']('value'),
+                                this['label_collect_count'].text = '0/20',
+                                this['noinfo'] = this['container_scrollview']['getChildByName']('noinfo');
+                        },
+                        N['prototype'].show = function () {
+                            var K = this;
+                            GameMgr.Inst['BehavioralStatistics'](20),
+                                game['Scene_Lobby'].Inst['change_bg']('indoor', !1),
+                                this['enable'] = !0,
+                                this['pop_otherpaipu'].me['visible'] = !1,
+                                this['pop_collectinput'].me['visible'] = !1,
+                                C['UIBase']['anim_alpha_in'](this.top, {
+                                    y: -30
+                                }, 200),
+                                C['UIBase']['anim_alpha_in'](this['container_scrollview'], {
+                                    y: 30
+                                }, 200),
+                                this['locking'] = !0,
+                                this['loading']['visible'] = !1,
+                                Laya['timer'].once(200, this, function () {
+                                    K['locking'] = !1;
+                                }),
+                                this['changeTab'](0, !0),
+                                this['label_collect_count'].text = N['collect_lsts']['length']['toString']() + '/' + N['collect_limit']['toString']();
+                        },
+                        N['prototype']['close'] = function (K) {
+                            var r = this;
+                            this['locking'] = !0,
+                                C['UIBase']['anim_alpha_out'](this.top, {
+                                    y: -30
+                                }, 150),
+                                C['UIBase']['anim_alpha_out'](this['container_scrollview'], {
+                                    y: 30
+                                }, 150),
+                                Laya['timer'].once(150, this, function () {
+                                    r['locking'] = !1,
+                                        r['enable'] = !1,
+                                        K && K.run();
+                                });
+                        },
+                        N['prototype']['changeTab'] = function (C, K) {
+                            var r = [X.ALL, X.RANK, X['FRIEND'], X['MATCH'], X['COLLECT']];
+                            if (K || r[C] != this['current_type']) {
+                                if (this['loading']['visible'] = !1, this['noinfo']['visible'] = !1, this['current_type'] = r[C], this['current_type'] == X['COLLECT'] && N['paipuLst'][this['current_type']]['reset'](), this['scrollview']['reset'](), this['current_type'] != X['COLLECT']) {
+                                    var U = N['paipuLst'][this['current_type']]['count'];
+                                    U > 0 && this['scrollview']['addItem'](U);
+                                }
+                                for (var i = 0; i < this.tabs['length']; i++) {
+                                    var H = this.tabs[i];
+                                    H['getChildByName']('img').skin = game['Tools']['localUISrc'](C == i ? 'myres/shop/tab_choose.png' : 'myres/shop/tab_unchoose.png'),
+                                        H['getChildByName']('label_name')['color'] = C == i ? '#d9b263' : '#8cb65f';
+                                }
+                            }
+                        },
+                        N['prototype']['setItemValue'] = function (K, r) {
+                            var X = this;
+                            if (this['enable']) {
+                                var U = N['paipuLst'][this['current_type']];
+                                if (U || !(K >= U['uuid_list']['length'])) {
+                                    for (var i = N['record_map'][U['uuid_list'][K]], H = 0; 4 > H; H++) {
+                                        var w = r['getChildByName']('p' + H['toString']());
+                                        if (H < i['result']['players']['length']) {
+                                            w['visible'] = !0;
+                                            var G = w['getChildByName']('chosen'),
+                                                l = w['getChildByName']('rank'),
+                                                R = w['getChildByName']('rank_word'),
+                                                f = w['getChildByName']('name'),
+                                                A = w['getChildByName']('score'),
+                                                h = i['result']['players'][H];
+                                            A.text = h['part_point_1'] || '0';
+                                            for (var J = 0, c = game['Tools']['strOfLocalization'](2133), W = 0, x = !1, y = 0; y < i['accounts']['length']; y++)
+                                                if (i['accounts'][y].seat == h.seat) {
+                                                    J = i['accounts'][y]['account_id'],
+                                                        c = i['accounts'][y]['nickname'],
+                                                        W = i['accounts'][y]['verified'],
+                                                        x = i['accounts'][y]['account_id'] == GameMgr.Inst['account_id'];
+                                                    break;
+                                                }
+                                            game['Tools']['SetNickname'](f, {
+                                                account_id: J,
+                                                nickname: c,
+                                                verified: W
+                                            }),
+                                                G['visible'] = x,
+                                                A['color'] = x ? '#ffc458' : '#b98930',
+                                                f['getChildByName']('name')['color'] = x ? '#dfdfdf' : '#a0a0a0',
+                                                R['color'] = l['color'] = x ? '#57bbdf' : '#489dbc';
+                                            var n = w['getChildByName']('rank_word');
+                                            if ('en' == GameMgr['client_language'])
+                                                switch (H) {
+                                                    case 0:
+                                                        n.text = 'st';
+                                                        break;
+                                                    case 1:
+                                                        n.text = 'nd';
+                                                        break;
+                                                    case 2:
+                                                        n.text = 'rd';
+                                                        break;
+                                                    case 3:
+                                                        n.text = 'th';
+                                                }
+                                        } else
+                                            w['visible'] = !1;
+                                    }
+                                    var k = new Date(1000 * i['end_time']),
+                                        B = '';
+                                    B += k['getFullYear']() + '/',
+                                        B += (k['getMonth']() < 9 ? '0' : '') + (k['getMonth']() + 1)['toString']() + '/',
+                                        B += (k['getDate']() < 10 ? '0' : '') + k['getDate']() + ' ',
+                                        B += (k['getHours']() < 10 ? '0' : '') + k['getHours']() + ':',
+                                        B += (k['getMinutes']() < 10 ? '0' : '') + k['getMinutes'](),
+                                        r['getChildByName']('date').text = B,
+                                        r['getChildByName']('check')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                            return X['locking'] ? void 0 : C['UI_PiPeiYuYue'].Inst['enable'] ? (C['UI_Popout']['PopOutNoTitle'](game['Tools']['strOfLocalization'](204), null), void 0) : (GameMgr.Inst['checkPaiPu'](i.uuid, GameMgr.Inst['account_id'], 0), void 0);
+                                        }, null, !1),
+                                        r['getChildByName']('share')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                            X['locking'] || X['pop_otherpaipu'].me['visible'] || (X['pop_otherpaipu']['show_share'](i.uuid), GameMgr.Inst['BehavioralStatistics'](21));
+                                        }, null, !1);
+                                    var D = r['getChildByName']('room'),
+                                        Z = game['Tools']['get_room_desc'](i['config']);
+                                    D.text = Z.text;
+                                    var L = '';
+                                    if (1 == i['config']['category'])
+                                        L = game['Tools']['strOfLocalization'](2023);
+                                    else if (4 == i['config']['category'])
+                                        L = game['Tools']['strOfLocalization'](2025);
+                                    else if (2 == i['config']['category']) {
+                                        var v = i['config'].meta;
+                                        if (v) {
+                                            var b = cfg['desktop']['matchmode'].get(v['mode_id']);
+                                            b && (L = b['room_name_' + GameMgr['client_language']]);
+                                        }
+                                    }
+                                    if (N['collect_info'][i.uuid]) {
+                                        var g = N['collect_info'][i.uuid],
+                                            M = r['getChildByName']('remarks_info'),
+                                            a = r['getChildByName']('input'),
+                                            z = a['getChildByName']('txtinput'),
+                                            p = r['getChildByName']('btn_input'),
+                                            Y = !1,
+                                            d = function () {
+                                                Y ? (M['visible'] = !1, a['visible'] = !0, z.text = M.text, p['visible'] = !1) : (M.text = g['remarks'] && '' != g['remarks'] ? game['Tools']['strWithoutForbidden'](g['remarks']) : L, M['visible'] = !0, a['visible'] = !1, p['visible'] = !0);
+                                            };
+                                        d(),
+                                            p['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                                Y = !0,
+                                                    d();
+                                            }, null, !1),
+                                            z.on('blur', this, function () {
+                                                Y && (game['Tools']['calu_word_length'](z.text) > 30 ? C['UIMgr'].Inst['ShowErrorInfo'](game['Tools']['strOfLocalization'](2765)) : z.text != g['remarks'] && (g['remarks'] = z.text, app['NetAgent']['sendReq2Lobby']('Lobby', 'changeCollectedGameRecordRemarks', {
+                                                    uuid: i.uuid,
+                                                    remarks: z.text
+                                                }, function () { }))),
+                                                    Y = !1,
+                                                    d();
+                                            });
+                                        var s = r['getChildByName']('collect');
+                                        s['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                            C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3248), Laya['Handler']['create'](X, function () {
+                                                N['removeCollect'](i.uuid);
+                                            }));
+                                        }, null, !1),
+                                            s['getChildByName']('img').skin = game['Tools']['localUISrc']('myres/lobby/collect_star.png');
+                                    } else {
+                                        r['getChildByName']('input')['visible'] = !1,
+                                            r['getChildByName']('btn_input')['visible'] = !1,
+                                            r['getChildByName']('remarks_info')['visible'] = !0,
+                                            r['getChildByName']('remarks_info').text = L;
+                                        var s = r['getChildByName']('collect');
+                                        s['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                            X['pop_collectinput'].show(i.uuid, i['start_time'], i['end_time']);
+                                        }, null, !1),
+                                            s['getChildByName']('img').skin = game['Tools']['localUISrc']('myres/lobby/collect_star_gray.png');
+                                    }
+                                }
+                            }
+                        },
+                        N['prototype']['onLoadStateChange'] = function (C, K) {
+                            this['current_type'] == C && (this['loading']['visible'] = K);
+                        },
+                        N['prototype']['onLoadMoreLst'] = function (C, K) {
+                            this['current_type'] == C && this['scrollview']['addItem'](K);
+                        },
+                        N['prototype']['getScrollViewCount'] = function () {
+                            return this['scrollview']['value_count'];
+                        },
+                        N['prototype']['onLoadOver'] = function (C) {
+                            if (this['current_type'] == C) {
+                                var K = N['paipuLst'][this['current_type']];
+                                0 == K['count'] && (this['noinfo']['visible'] = !0);
+                            }
+                        },
+                        N['prototype']['onCollectChange'] = function (C, K) {
+                            if (this['current_type'] == X['COLLECT'])
+                                K >= 0 && (N['paipuLst'][X['COLLECT']]['removeAt'](K), this['scrollview']['delItem'](K));
+                            else
+                                for (var r = N['paipuLst'][this['current_type']]['uuid_list'], U = 0; U < r['length']; U++)
+                                    if (r[U] == C) {
+                                        this['scrollview']['wantToRefreshItem'](U);
+                                        break;
+                                    }
+                            this['label_collect_count'].text = N['collect_lsts']['length']['toString']() + '/' + N['collect_limit']['toString']();
+                        },
+                        N.Inst = null,
+                        N['paipuLst'] = {},
+                        N['collect_lsts'] = [],
+                        N['record_map'] = {},
+                        N['collect_info'] = {},
+                        N['collect_limit'] = 20,
+                        N;
+                }
+                    (C['UIBase']);
+            C['UI_PaiPu'] = i;
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
+
+
 
 
 
@@ -4747,1606 +4775,1624 @@ function testAPI() {
 
         // 反屏蔽名称与文本审查
         GameMgr.Inst.gameInit = function () {
-            var w = GameMgr;
-    var j = this;
-    window.p2 = 'DF2vkXCnfeXp4WoGSBGNcJBufZiMN3UP' + (window['pertinent3'] ? window['pertinent3'] : ''),
-    view['BgmListMgr'].init(),
-    app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchServerTime', {}, function (w, C) {
-        w || C['error'] ? uiscript['UIMgr'].Inst['showNetReqError']('fetchServerTime', w, C) : j['server_time_delta'] = 1000 * C['server_time'] - Laya['timer']['currTimer'];
-    }),
-    app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchServerSettings', {}, function (w, C) {
-        w || C['error'] ? uiscript['UIMgr'].Inst['showNetReqError']('fetchServerSettings', w, C) : (app.Log.log('fetchServerSettings: ' + JSON['stringify'](C)), uiscript['UI_Recharge']['open_payment'] = !1, uiscript['UI_Recharge']['payment_info'] = '', uiscript['UI_Recharge']['open_wx'] = !0, uiscript['UI_Recharge']['wx_type'] = 0, uiscript['UI_Recharge']['open_alipay'] = !0, uiscript['UI_Recharge']['alipay_type'] = 0, C['settings'] && (uiscript['UI_Recharge']['update_payment_setting'](C['settings']), C['settings']['nickname_setting'] && (j['nickname_replace_enable'] = !!C['settings']['nickname_setting']['enable'], j['nickname_replace_lst'] = C['settings']['nickname_setting']['nicknames'], j['nickname_replace_table'] = {})), uiscript['UI_Change_Nickname']['allow_modify_nickname'] = C['settings']['allow_modify_nickname']);
-                    // START
-                    if (MMP.settings.antiCensorship == true) {
-                        app.Taboo.test = function () { return null };
-                        GameMgr.Inst.nickname_replace_enable = false;
-                    }
-                    // END
-    }),
-    app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchConnectionInfo', {}, function (w, C) {
-        w || C['error'] || (j['client_endpoint'] = C['client_endpoint']);
-    }),
-    app['PlayerBehaviorStatistic'].init(),
-    this['account_data']['nickname'] && this['fetch_login_info'](),
-    uiscript['UI_Info'].Init(),
-    app['NetAgent']['AddListener2Lobby']('NotifyAccountUpdate', Laya['Handler']['create'](this, function (w) {
-            app.Log.log('NotifyAccountUpdate :' + JSON['stringify'](w));
-            var C = w['update'];
-            if (C) {
-                if (C['numerical'])
-                    for (var i = 0; i < C['numerical']['length']; i++) {
-                        var l = C['numerical'][i].id,
-                        u = C['numerical'][i]['final'];
-                        switch (l) {
-                        case '100001':
-                            j['account_data']['diamond'] = u;
-                            break;
-                        case '100002':
-                            j['account_data'].gold = u;
-                            break;
-                        case '100099':
-                            j['account_data'].vip = u,
-                            uiscript['UI_Recharge'].Inst && uiscript['UI_Recharge'].Inst['enable'] && uiscript['UI_Recharge'].Inst['refreshVipRedpoint']();
+            var C = GameMgr;
+            var K = this;
+            if (window.p2 = 'DF2vkXCnfeXp4WoGSBGNcJBufZiMN3UP' + (window['pertinent3'] ? window['pertinent3'] : ''), view['BgmListMgr'].init(), app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchServerTime', {}, function (C, r) {
+                C || r['error'] ? uiscript['UIMgr'].Inst['showNetReqError']('fetchServerTime', C, r) : K['server_time_delta'] = 1000 * r['server_time'] - Laya['timer']['currTimer'];
+            }), app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchServerSettings', {}, function (C, r) {
+                C || r['error'] ? uiscript['UIMgr'].Inst['showNetReqError']('fetchServerSettings', C, r) : (app.Log.log('fetchServerSettings: ' + JSON['stringify'](r)), uiscript['UI_Recharge']['open_payment'] = !1, uiscript['UI_Recharge']['payment_info'] = '', uiscript['UI_Recharge']['open_wx'] = !0, uiscript['UI_Recharge']['wx_type'] = 0, uiscript['UI_Recharge']['open_alipay'] = !0, uiscript['UI_Recharge']['alipay_type'] = 0, r['settings'] && (uiscript['UI_Recharge']['update_payment_setting'](r['settings']), r['settings']['nickname_setting'] && (K['nickname_replace_enable'] = !!r['settings']['nickname_setting']['enable'], K['nickname_replace_lst'] = r['settings']['nickname_setting']['nicknames'], K['nickname_replace_table'] = {})), uiscript['UI_Change_Nickname']['allow_modify_nickname'] = r['settings']['allow_modify_nickname']);
+                // START
+                if (MMP.settings.antiCensorship == true) {
+                    app.Taboo.test = function () { return null };
+                    GameMgr.Inst.nickname_replace_enable = false;
+                }
+                // END
+            }), app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchConnectionInfo', {}, function (C, r) {
+                C || r['error'] || (K['client_endpoint'] = r['client_endpoint']);
+            }), app['PlayerBehaviorStatistic'].init(), this['account_data']['nickname'] && this['fetch_login_info'](), uiscript['UI_Info'].Init(), app['NetAgent']['AddListener2Lobby']('NotifyAccountUpdate', Laya['Handler']['create'](this, function (C) {
+                app.Log.log('NotifyAccountUpdate :' + JSON['stringify'](C));
+                var r = C['update'];
+                if (r) {
+                    if (r['numerical'])
+                        for (var X = 0; X < r['numerical']['length']; X++) {
+                            var U = r['numerical'][X].id,
+                                i = r['numerical'][X]['final'];
+                            switch (U) {
+                                case '100001':
+                                    K['account_data']['diamond'] = i;
+                                    break;
+                                case '100002':
+                                    K['account_data'].gold = i;
+                                    break;
+                                case '100099':
+                                    K['account_data'].vip = i,
+                                        uiscript['UI_Recharge'].Inst && uiscript['UI_Recharge'].Inst['enable'] && uiscript['UI_Recharge'].Inst['refreshVipRedpoint']();
+                            }
+                            (U >= '101001' || '102999' >= U) && (K['account_numerical_resource'][U] = i);
                         }
-                        (l >= '101001' || '102999' >= l) && (j['account_numerical_resource'][l] = u);
-                    }
-                uiscript['UI_Sushe']['on_data_updata'](C),
-                C['daily_task'] && uiscript['UI_Activity_Xuanshang']['dataUpdate'](C['daily_task']),
-                C['title'] && uiscript['UI_TitleBook']['title_update'](C['title']),
-                C['new_recharged_list'] && uiscript['UI_Recharge']['on_new_recharge_refresh'](C),
-                (C['activity_task'] || C['activity_period_task'] || C['activity_random_task'] || C['activity_segment_task']) && uiscript['UI_Activity']['accountUpdate'](C),
-                C['activity_flip_task'] && uiscript['UI_Activity_Fanpai']['onTaskDataUpdate'](C['activity_flip_task']['progresses']),
-                C['activity'] && (C['activity']['friend_gift_data'] && uiscript['UI_Activity_Miaohui']['updateFriendGiftData'](C['activity']['friend_gift_data']), C['activity']['upgrade_data'] && uiscript['UI_Activity_Miaohui']['updateUpgradeData'](C['activity']['upgrade_data']), C['activity']['gacha_data'] && uiscript['UI_Activity_Niudan']['update_data'](C['activity']['gacha_data']));
+                    uiscript['UI_Sushe']['on_data_updata'](r),
+                        r['daily_task'] && uiscript['UI_Activity_Xuanshang']['dataUpdate'](r['daily_task']),
+                        r['title'] && uiscript['UI_TitleBook']['title_update'](r['title']),
+                        r['new_recharged_list'] && uiscript['UI_Recharge']['on_new_recharge_refresh'](r),
+                        (r['activity_task'] || r['activity_period_task'] || r['activity_random_task'] || r['activity_segment_task']) && uiscript['UI_Activity']['accountUpdate'](r),
+                        r['activity_flip_task'] && uiscript['UI_Activity_Fanpai']['onTaskDataUpdate'](r['activity_flip_task']['progresses']),
+                        r['activity'] && (r['activity']['friend_gift_data'] && uiscript['UI_Activity_Miaohui']['updateFriendGiftData'](r['activity']['friend_gift_data']), r['activity']['upgrade_data'] && uiscript['UI_Activity_Miaohui']['updateUpgradeData'](r['activity']['upgrade_data']), r['activity']['gacha_data'] && uiscript['UI_Activity_Niudan']['update_data'](r['activity']['gacha_data']), r['activity']['simulation_data'] && uiscript['UI_Activity_Simulation']['update_data'](r['activity']['simulation_data']));
+                }
+            }, null, !1)), app['NetAgent']['AddListener2Lobby']('NotifyAnotherLogin', Laya['Handler']['create'](this, function () {
+                uiscript['UI_AnotherLogin'].Inst.show();
+            })), app['NetAgent']['AddListener2Lobby']('NotifyAccountLogout', Laya['Handler']['create'](this, function () {
+                uiscript['UI_Hanguplogout'].Inst.show();
+            })), app['NetAgent']['AddListener2Lobby']('NotifyClientMessage', Laya['Handler']['create'](this, function (C) {
+                app.Log.log('收到消息：' + JSON['stringify'](C)),
+                    C.type == game['EFriendMsgType']['room_invite'] && uiscript['UI_Invite']['onNewInvite'](C['content']);
+            })), app['NetAgent']['AddListener2Lobby']('NotifyServerSetting', Laya['Handler']['create'](this, function (C) {
+                uiscript['UI_Recharge']['open_payment'] = !1,
+                    uiscript['UI_Recharge']['payment_info'] = '',
+                    uiscript['UI_Recharge']['open_wx'] = !0,
+                    uiscript['UI_Recharge']['wx_type'] = 0,
+                    uiscript['UI_Recharge']['open_alipay'] = !0,
+                    uiscript['UI_Recharge']['alipay_type'] = 0,
+                    C['settings'] && (uiscript['UI_Recharge']['update_payment_setting'](C['settings']), C['settings']['nickname_setting'] && (K['nickname_replace_enable'] = !!C['settings']['nickname_setting']['enable'], K['nickname_replace_lst'] = C['settings']['nickname_setting']['nicknames'])),
+                    uiscript['UI_Change_Nickname']['allow_modify_nickname'] = C['allow_modify_nickname'];
+                // START
+                if (MMP.settings.antiCensorship == true) {
+                    app.Taboo.test = function () { return null };
+                    GameMgr.Inst.nickname_replace_enable = false;
+                }
+                // END
+            })), app['NetAgent']['AddListener2Lobby']('NotifyVipLevelChange', Laya['Handler']['create'](this, function (C) {
+                uiscript['UI_Sushe']['send_gift_limit'] = C['gift_limit'],
+                    game['FriendMgr']['friend_max_count'] = C['friend_max_count'],
+                    uiscript['UI_Shop']['shopinfo'].zhp['free_refresh']['limit'] = C['zhp_free_refresh_limit'],
+                    uiscript['UI_Shop']['shopinfo'].zhp['cost_refresh']['limit'] = C['zhp_cost_refresh_limit'],
+                    uiscript['UI_PaiPu']['collect_limit'] = C['record_collect_limit'];
+            })), app['NetAgent']['AddListener2Lobby']('NotifyAFKResult', new Laya['Handler'](this, function (C) {
+                uiscript['UI_Guajichenfa'].Inst.show(C);
+            })), app['NetAgent']['AddListener2Lobby']('NotifyCaptcha', new Laya['Handler'](this, function (C) {
+                K['auth_check_id'] = C['check_id'],
+                    K['auth_nc_retry_count'] = 0,
+                    4 == C.type ? K['showNECaptcha']() : 2 == C.type ? K['checkNc']() : K['checkNvc']();
+            })), Laya['timer'].loop(360000, this, function () {
+                if (game['LobbyNetMgr'].Inst.isOK) {
+                    var C = (Laya['timer']['currTimer'] - K['_last_heatbeat_time']) / 1000;
+                    app['NetAgent']['sendReq2Lobby']('Lobby', 'heatbeat', {
+                        no_operation_counter: C
+                    }, function () { }),
+                        C >= 3000 && uiscript['UI_Hanguplogout'].Inst.show();
+                }
+            }), Laya['timer'].loop(1000, this, function () {
+                var C = Laya['stage']['getMousePoint']();
+                (C.x != K['_pre_mouse_point'].x || C.y != K['_pre_mouse_point'].y) && (K['clientHeatBeat'](), K['_pre_mouse_point'].x = C.x, K['_pre_mouse_point'].y = C.y);
+            }), Laya['timer'].loop(1000, this, function () {
+                Laya['LocalStorage']['setItem']('dolllt', game['Tools']['currentTime']['toString']());
+            }), 'kr' == C['client_type'] && Laya['timer'].loop(3600000, this, function () {
+                K['showKrTip'](!1, null);
+            }), uiscript['UI_RollNotice'].init(), 'jp' == C['client_language']) {
+                var r = document['createElement']('link');
+                r.rel = 'stylesheet',
+                    r.href = 'font/notosansjapanese_1.css';
+                var X = document['getElementsByTagName']('head')[0];
+                X['appendChild'](r);
             }
-        }, null, !1)),
-    app['NetAgent']['AddListener2Lobby']('NotifyAnotherLogin', Laya['Handler']['create'](this, function () {
-            uiscript['UI_AnotherLogin'].Inst.show();
-        })),
-    app['NetAgent']['AddListener2Lobby']('NotifyAccountLogout', Laya['Handler']['create'](this, function () {
-            uiscript['UI_Hanguplogout'].Inst.show();
-        })),
-    app['NetAgent']['AddListener2Lobby']('NotifyClientMessage', Laya['Handler']['create'](this, function (w) {
-            app.Log.log('收到消息：' + JSON['stringify'](w)),
-            w.type == game['EFriendMsgType']['room_invite'] && uiscript['UI_Invite']['onNewInvite'](w['content']);
-        })),
-    app['NetAgent']['AddListener2Lobby']('NotifyServerSetting', Laya['Handler']['create'](this, function (w) {
-            uiscript['UI_Recharge']['open_payment'] = !1,
-            uiscript['UI_Recharge']['payment_info'] = '',
-            uiscript['UI_Recharge']['open_wx'] = !0,
-            uiscript['UI_Recharge']['wx_type'] = 0,
-            uiscript['UI_Recharge']['open_alipay'] = !0,
-            uiscript['UI_Recharge']['alipay_type'] = 0,
-            w['settings'] && (uiscript['UI_Recharge']['update_payment_setting'](w['settings']), w['settings']['nickname_setting'] && (j['nickname_replace_enable'] = !!w['settings']['nickname_setting']['enable'], j['nickname_replace_lst'] = w['settings']['nickname_setting']['nicknames'])),
-            uiscript['UI_Change_Nickname']['allow_modify_nickname'] = w['allow_modify_nickname'];
-                    // START
-                    if (MMP.settings.antiCensorship == true) {
-                        app.Taboo.test = function () { return null };
-                        GameMgr.Inst.nickname_replace_enable = false;
-                    }
-                    // END
-        })),
-    app['NetAgent']['AddListener2Lobby']('NotifyVipLevelChange', Laya['Handler']['create'](this, function (w) {
-            uiscript['UI_Sushe']['send_gift_limit'] = w['gift_limit'],
-            game['FriendMgr']['friend_max_count'] = w['friend_max_count'],
-            uiscript['UI_Shop']['shopinfo'].zhp['free_refresh']['limit'] = w['zhp_free_refresh_limit'],
-            uiscript['UI_Shop']['shopinfo'].zhp['cost_refresh']['limit'] = w['zhp_cost_refresh_limit'],
-            uiscript['UI_PaiPu']['collect_limit'] = w['record_collect_limit'];
-        })),
-    app['NetAgent']['AddListener2Lobby']('NotifyAFKResult', new Laya['Handler'](this, function (w) {
-            uiscript['UI_Guajichenfa'].Inst.show(w);
-        })),
-    app['NetAgent']['AddListener2Lobby']('NotifyCaptcha', new Laya['Handler'](this, function (w) {
-            j['auth_check_id'] = w['check_id'],
-            j['auth_nc_retry_count'] = 0,
-            4 == w.type ? j['showNECaptcha']() : 2 == w.type ? j['checkNc']() : j['checkNvc']();
-        })),
-    Laya['timer'].loop(360000, this, function () {
-        if (game['LobbyNetMgr'].Inst.isOK) {
-            var w = (Laya['timer']['currTimer'] - j['_last_heatbeat_time']) / 1000;
-            app['NetAgent']['sendReq2Lobby']('Lobby', 'heatbeat', {
-                no_operation_counter: w
-            }, function () {}),
-            w >= 3000 && uiscript['UI_Hanguplogout'].Inst.show();
         }
-    }),
-    Laya['timer'].loop(1000, this, function () {
-        var w = Laya['stage']['getMousePoint']();
-        (w.x != j['_pre_mouse_point'].x || w.y != j['_pre_mouse_point'].y) && (j['clientHeatBeat'](), j['_pre_mouse_point'].x = w.x, j['_pre_mouse_point'].y = w.y);
-    }),
-    Laya['timer'].loop(1000, this, function () {
-        Laya['LocalStorage']['setItem']('dolllt', game['Tools']['currentTime']['toString']());
-    }),
-    'kr' == w['client_type'] && Laya['timer'].loop(3600000, this, function () {
-        j['showKrTip'](!1, null);
-    }),
-    uiscript['UI_RollNotice'].init();
-}
 
 
 
 
 
         // 设置状态
-        !function (w) {
-            var j = function () {
-                function w(j) {
+        !function (C) {
+            var K = function () {
+                function C(K) {
                     this.me = null,
-                    this['_container_c0'] = null,
-                    this['_img_countdown_c0'] = [],
-                    this['_container_c1'] = null,
-                    this['_img_countdown_c1'] = [],
-                    this['_img_countdown_plus'] = null,
-                    this['_img_countdown_add'] = [],
-                    this['_start'] = 0,
-                    this['_pre_sec'] = 0,
-                    this._fix = 0,
-                    this._add = 0,
-                    this['_pre_time'] = 0,
-                    w.Inst = this,
-                    this.me = j,
-                    this['_container_c0'] = this.me['getChildByName']('c0');
-                    for (var C = 0; 3 > C; C++)
-                        this['_img_countdown_c0'].push(this['_container_c0']['getChildByName']('num' + C));
+                        this['_container_c0'] = null,
+                        this['_img_countdown_c0'] = [],
+                        this['_container_c1'] = null,
+                        this['_img_countdown_c1'] = [],
+                        this['_img_countdown_plus'] = null,
+                        this['_img_countdown_add'] = [],
+                        this['_start'] = 0,
+                        this['_pre_sec'] = 0,
+                        this._fix = 0,
+                        this._add = 0,
+                        this['_pre_time'] = 0,
+                        C.Inst = this,
+                        this.me = K,
+                        this['_container_c0'] = this.me['getChildByName']('c0');
+                    for (var r = 0; 3 > r; r++)
+                        this['_img_countdown_c0'].push(this['_container_c0']['getChildByName']('num' + r));
                     this['_container_c1'] = this.me['getChildByName']('c1');
-                    for (var C = 0; 3 > C; C++)
-                        this['_img_countdown_c1'].push(this['_container_c1']['getChildByName']('num' + C));
-                    for (var C = 0; 2 > C; C++)
-                        this['_img_countdown_add'].push(this.me['getChildByName']('plus')['getChildByName']('add_' + C));
+                    for (var r = 0; 3 > r; r++)
+                        this['_img_countdown_c1'].push(this['_container_c1']['getChildByName']('num' + r));
+                    for (var r = 0; 2 > r; r++)
+                        this['_img_countdown_add'].push(this.me['getChildByName']('plus')['getChildByName']('add_' + r));
                     this['_img_countdown_plus'] = this.me['getChildByName']('plus'),
-                    this.me['visible'] = !1;
+                        this.me['visible'] = !1;
                 }
-                return Object['defineProperty'](w['prototype'], 'timeuse', {
+                return Object['defineProperty'](C['prototype'], 'timeuse', {
                     get: function () {
                         return this.me['visible'] ? Math['floor']((Laya['timer']['currTimer'] - this['_start']) / 1000) : 0;
                     },
                     enumerable: !1,
                     configurable: !0
                 }),
-                w['prototype']['reset'] = function () {
-                    this.me['visible'] = !1,
-                    Laya['timer']['clearAll'](this);
-                },
-                w['prototype']['showCD'] = function (w, j) {
-                    var C = this;
-                    this.me['visible'] = !0,
-                    this['_start'] = Laya['timer']['currTimer'],
-                    this._fix = Math['floor'](w / 1000),
-                    this._add = Math['floor'](j / 1000),
-                    this['_pre_sec'] = -1,
-                    this['_pre_time'] = Laya['timer']['currTimer'],
-                    this['_show'](),
-                    Laya['timer']['frameLoop'](1, this, function () {
-                        var w = Laya['timer']['currTimer'] - C['_pre_time'];
-                        C['_pre_time'] = Laya['timer']['currTimer'],
-                        view['DesktopMgr'].Inst['timestoped'] ? C['_start'] += w : C['_show']();
-                    });
-                },
-                w['prototype']['close'] = function () {
-                    this['reset']();
-                },
-                w['prototype']['_show'] = function () {
-                    var w = this._fix + this._add - this['timeuse'];
-                    if (0 >= w)
-                        return view['DesktopMgr'].Inst['OperationTimeOut'](), this['reset'](), void 0;
-                    if (w != this['_pre_sec']) {
-                        if (this['_pre_sec'] = w, w > this._add) {
-                            for (var j = (w - this._add)['toString'](), C = 0; C < this['_img_countdown_c0']['length']; C++)
-                                this['_img_countdown_c0'][C]['visible'] = C < j['length'];
-                            if (3 == j['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + j[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + j[0] + '.png'), this['_img_countdown_c0'][2].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + j[2] + '.png')) : 2 == j['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + j[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + j[0] + '.png')) : this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + j[0] + '.png'), 0 != this._add) {
-                                this['_img_countdown_plus']['visible'] = !0;
-                                for (var i = this._add['toString'](), C = 0; C < this['_img_countdown_add']['length']; C++) {
-                                    var l = this['_img_countdown_add'][C];
-                                    C < i['length'] ? (l['visible'] = !0, l.skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + i[C] + '.png')) : l['visible'] = !1;
+                    C['prototype']['reset'] = function () {
+                        this.me['visible'] = !1,
+                            Laya['timer']['clearAll'](this);
+                    },
+                    C['prototype']['showCD'] = function (C, K) {
+                        var r = this;
+                        this.me['visible'] = !0,
+                            this['_start'] = Laya['timer']['currTimer'],
+                            this._fix = Math['floor'](C / 1000),
+                            this._add = Math['floor'](K / 1000),
+                            this['_pre_sec'] = -1,
+                            this['_pre_time'] = Laya['timer']['currTimer'],
+                            this['_show'](),
+                            Laya['timer']['frameLoop'](1, this, function () {
+                                var C = Laya['timer']['currTimer'] - r['_pre_time'];
+                                r['_pre_time'] = Laya['timer']['currTimer'],
+                                    view['DesktopMgr'].Inst['timestoped'] ? r['_start'] += C : r['_show']();
+                            });
+                    },
+                    C['prototype']['close'] = function () {
+                        this['reset']();
+                    },
+                    C['prototype']['_show'] = function () {
+                        var C = this._fix + this._add - this['timeuse'];
+                        if (0 >= C)
+                            return view['DesktopMgr'].Inst['OperationTimeOut'](), this['reset'](), void 0;
+                        if (C != this['_pre_sec']) {
+                            if (this['_pre_sec'] = C, C > this._add) {
+                                for (var K = (C - this._add)['toString'](), r = 0; r < this['_img_countdown_c0']['length']; r++)
+                                    this['_img_countdown_c0'][r]['visible'] = r < K['length'];
+                                if (3 == K['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + K[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + K[0] + '.png'), this['_img_countdown_c0'][2].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + K[2] + '.png')) : 2 == K['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + K[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + K[0] + '.png')) : this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/t_' + K[0] + '.png'), 0 != this._add) {
+                                    this['_img_countdown_plus']['visible'] = !0;
+                                    for (var X = this._add['toString'](), r = 0; r < this['_img_countdown_add']['length']; r++) {
+                                        var U = this['_img_countdown_add'][r];
+                                        r < X['length'] ? (U['visible'] = !0, U.skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + X[r] + '.png')) : U['visible'] = !1;
+                                    }
+                                } else {
+                                    this['_img_countdown_plus']['visible'] = !1;
+                                    for (var r = 0; r < this['_img_countdown_add']['length']; r++)
+                                        this['_img_countdown_add'][r]['visible'] = !1;
                                 }
                             } else {
                                 this['_img_countdown_plus']['visible'] = !1;
-                                for (var C = 0; C < this['_img_countdown_add']['length']; C++)
-                                    this['_img_countdown_add'][C]['visible'] = !1;
+                                for (var K = C['toString'](), r = 0; r < this['_img_countdown_c0']['length']; r++)
+                                    this['_img_countdown_c0'][r]['visible'] = r < K['length'];
+                                3 == K['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + K[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + K[0] + '.png'), this['_img_countdown_c0'][2].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + K[2] + '.png')) : 2 == K['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + K[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + K[0] + '.png')) : this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + K[0] + '.png');
                             }
-                        } else {
-                            this['_img_countdown_plus']['visible'] = !1;
-                            for (var j = w['toString'](), C = 0; C < this['_img_countdown_c0']['length']; C++)
-                                this['_img_countdown_c0'][C]['visible'] = C < j['length'];
-                            3 == j['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + j[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + j[0] + '.png'), this['_img_countdown_c0'][2].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + j[2] + '.png')) : 2 == j['length'] ? (this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + j[1] + '.png'), this['_img_countdown_c0'][1].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + j[0] + '.png')) : this['_img_countdown_c0'][0].skin = game['Tools']['localUISrc']('myres/mjdesktop/number/at_' + j[0] + '.png');
+                            if (C > 3) {
+                                this['_container_c1']['visible'] = !1;
+                                for (var r = 0; r < this['_img_countdown_c0']['length']; r++)
+                                    this['_img_countdown_c0'][r]['alpha'] = 1;
+                                this['_img_countdown_plus']['alpha'] = 1,
+                                    this['_container_c0']['alpha'] = 1,
+                                    this['_container_c1']['alpha'] = 1;
+                            } else {
+                                view['AudioMgr']['PlayAudio'](205),
+                                    this['_container_c1']['visible'] = !0;
+                                for (var r = 0; r < this['_img_countdown_c0']['length']; r++)
+                                    this['_img_countdown_c0'][r]['alpha'] = 1;
+                                this['_img_countdown_plus']['alpha'] = 1,
+                                    this['_container_c0']['alpha'] = 1,
+                                    this['_container_c1']['alpha'] = 1;
+                                for (var r = 0; r < this['_img_countdown_c1']['length']; r++)
+                                    this['_img_countdown_c1'][r]['visible'] = this['_img_countdown_c0'][r]['visible'], this['_img_countdown_c1'][r].skin = game['Tools']['localUISrc'](this['_img_countdown_c0'][r].skin);
+                                N.Inst.me.cd1.play(0, !1);
+                            }
                         }
-                        if (w > 3) {
-                            this['_container_c1']['visible'] = !1;
-                            for (var C = 0; C < this['_img_countdown_c0']['length']; C++)
-                                this['_img_countdown_c0'][C]['alpha'] = 1;
-                            this['_img_countdown_plus']['alpha'] = 1,
-                            this['_container_c0']['alpha'] = 1,
-                            this['_container_c1']['alpha'] = 1;
-                        } else {
-                            view['AudioMgr']['PlayAudio'](205),
-                            this['_container_c1']['visible'] = !0;
-                            for (var C = 0; C < this['_img_countdown_c0']['length']; C++)
-                                this['_img_countdown_c0'][C]['alpha'] = 1;
-                            this['_img_countdown_plus']['alpha'] = 1,
-                            this['_container_c0']['alpha'] = 1,
-                            this['_container_c1']['alpha'] = 1;
-                            for (var C = 0; C < this['_img_countdown_c1']['length']; C++)
-                                this['_img_countdown_c1'][C]['visible'] = this['_img_countdown_c0'][C]['visible'], this['_img_countdown_c1'][C].skin = game['Tools']['localUISrc'](this['_img_countdown_c0'][C].skin);
-                            b.Inst.me.cd1.play(0, !1);
-                        }
+                    },
+                    C.Inst = null,
+                    C;
+            }
+                (),
+                r = function () {
+                    function C(C) {
+                        this['timer_id'] = 0,
+                            this['last_returned'] = !1,
+                            this.me = C;
                     }
-                },
-                w.Inst = null,
-                w;
-            }
-            (),
-            C = function () {
-                function w(w) {
-                    this['timer_id'] = 0,
-                    this['last_returned'] = !1,
-                    this.me = w;
-                }
-                return w['prototype']['begin_refresh'] = function () {
-                    this['timer_id'] && clearTimeout(this['timer_id']),
-                    this['last_returned'] = !0,
-                    this['_loop_refresh_delay'](),
-                    Laya['timer']['clearAll'](this),
-                    Laya['timer'].loop(100, this, this['_loop_show']);
-                },
-                w['prototype']['close_refresh'] = function () {
-                    this['timer_id'] && (clearTimeout(this['timer_id']), this['timer_id'] = 0),
-                    this['last_returned'] = !1,
-                    Laya['timer']['clearAll'](this);
-                },
-                w['prototype']['_loop_refresh_delay'] = function () {
-                    var w = this;
-                    if (game['MJNetMgr'].Inst['connect_state'] != game['EConnectState'].none) {
-                        var j = 2000;
-                        if (game['MJNetMgr'].Inst['connect_state'] == game['EConnectState']['connecting'] && this['last_returned']) {
-                            var C = app['NetAgent']['mj_network_delay'];
-                            j = 300 > C ? 2000 : 800 > C ? 2500 + C : 4000 + 0.5 * C,
-                            app['NetAgent']['sendReq2MJ']('FastTest', 'checkNetworkDelay', {}, function () {
-                                w['last_returned'] = !0;
-                            }),
-                            this['last_returned'] = !1;
-                        } else
-                            j = 1000;
-                        this['timer_id'] = setTimeout(this['_loop_refresh_delay'].bind(this), j);
-                    }
-                },
-                w['prototype']['_loop_show'] = function () {
-                    if (game['MJNetMgr'].Inst['connect_state'] != game['EConnectState'].none)
-                        if (game['MJNetMgr'].Inst['connect_state'] != game['EConnectState']['connecting'])
-                            this.me.skin = game['Tools']['localUISrc']('myres/mjdesktop/signal_bad.png');
-                        else {
-                            var w = app['NetAgent']['mj_network_delay'];
-                            this.me.skin = 300 > w ? game['Tools']['localUISrc']('myres/mjdesktop/signal_good.png') : 800 > w ? game['Tools']['localUISrc']('myres/mjdesktop/signal_normal.png') : game['Tools']['localUISrc']('myres/mjdesktop/signal_bad.png');
-                        }
-                },
-                w;
-            }
-            (),
-            i = function () {
-                function w(w, j) {
-                    var C = this;
-                    this['enable'] = !1,
-                    this['emj_banned'] = !1,
-                    this['locking'] = !1,
-                    this['localposition'] = j,
-                    this.me = w,
-                    this['btn_banemj'] = w['getChildByName']('btn_banemj'),
-                    this['btn_banemj_origin_x'] = this['btn_banemj'].x,
-                    this['btn_banemj_origin_y'] = this['btn_banemj'].y,
-                    this['img_bannedemj'] = this['btn_banemj']['getChildByName']('mute'),
-                    this['btn_seeinfo'] = w['getChildByName']('btn_seeinfo'),
-                    this['btn_seeinfo_origin_x'] = this['btn_seeinfo'].x,
-                    this['btn_seeinfo_origin_y'] = this['btn_seeinfo'].y,
-                    this['btn_change'] = w['getChildByName']('btn_change'),
-                    this['btn_change_origin_x'] = this['btn_change'].x,
-                    this['btn_change_origin_y'] = this['btn_change'].y,
-                    this['btn_banemj']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            C['locking'] || (C['emj_banned'] = !C['emj_banned'], C['img_bannedemj'].skin = game['Tools']['localUISrc']('myres/mjdesktop/mute' + (C['emj_banned'] ? '_on.png' : '.png')), C['close']());
-                        }, null, !1),
-                    this['btn_seeinfo']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            C['locking'] || (C['close'](), b.Inst['btn_seeinfo'](C['localposition']));
-                        }, null, !1),
-                    this['btn_change']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            C['locking'] || (C['close'](), view['DesktopMgr'].Inst['changeMainbody'](view['DesktopMgr'].Inst['localPosition2Seat'](C['localposition'])));
-                        }, null, !1),
-                    this.me['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            C['locking'] || C['switch']();
-                        }, null, !1);
-                }
-                return w['prototype']['reset'] = function (w, j, C) {
-                    Laya['timer']['clearAll'](this),
-                    this['locking'] = !1,
-                    this['enable'] = !1,
-                    this['showinfo'] = w,
-                    this['showemj'] = j,
-                    this['showchange'] = C,
-                    this['emj_banned'] = !1,
-                    this['btn_banemj']['visible'] = !1,
-                    this['btn_seeinfo']['visible'] = !1,
-                    this['img_bannedemj'].skin = game['Tools']['localUISrc']('myres/mjdesktop/mute' + (this['emj_banned'] ? '_on.png' : '.png')),
-                    this['btn_change']['visible'] = !1;
-                },
-                w['prototype']['onChangeSeat'] = function (w, j, C) {
-                    this['showinfo'] = w,
-                    this['showemj'] = j,
-                    this['showchange'] = C,
-                    this['enable'] = !1,
-                    this['btn_banemj']['visible'] = !1,
-                    this['btn_seeinfo']['visible'] = !1,
-                    this['btn_change']['visible'] = !1;
-                },
-                w['prototype']['switch'] = function () {
-                    var w = this;
-                    this['locking'] || (this['enable'] ? this['close']() : (this['enable'] = !0, this['locking'] = !0, this['showinfo'] ? (this['btn_seeinfo']['visible'] = !0, this['btn_seeinfo']['scaleX'] = this['btn_seeinfo']['scaleY'] = 1, this['btn_seeinfo'].x = this['btn_seeinfo_origin_x'], this['btn_seeinfo'].y = this['btn_seeinfo_origin_y'], this['btn_seeinfo']['alpha'] = 1, Laya['Tween'].from(this['btn_seeinfo'], {
-                                    x: 80,
-                                    y: 80,
-                                    scaleX: 0,
-                                    scaleY: 0,
-                                    alpha: 0
-                                }, 150, Laya.Ease['backOut'])) : this['btn_seeinfo']['visible'] = !1, this['showemj'] ? (this['img_bannedemj'].skin = game['Tools']['localUISrc']('myres/mjdesktop/mute' + (this['emj_banned'] ? '_on.png' : '.png')), this['btn_banemj']['visible'] = !0, this['btn_banemj']['scaleX'] = this['btn_banemj']['scaleY'] = 1, this['btn_banemj'].x = this['btn_banemj_origin_x'], this['btn_banemj'].y = this['btn_banemj_origin_y'], this['btn_banemj']['alpha'] = 1, Laya['Tween'].from(this['btn_banemj'], {
-                                    x: 80,
-                                    y: 80,
-                                    scaleX: 0,
-                                    scaleY: 0,
-                                    alpha: 0
-                                }, 150, Laya.Ease['backOut'])) : this['btn_banemj']['visible'] = !1, this['showchange'] ? (this['btn_change']['visible'] = !0, this['btn_change']['scaleX'] = this['btn_change']['scaleY'] = 1, this['btn_change'].x = this['btn_change_origin_x'], this['btn_change'].y = this['btn_change_origin_y'], this['btn_change']['alpha'] = 1, Laya['Tween'].from(this['btn_change'], {
-                                    x: 80,
-                                    y: 80,
-                                    scaleX: 0,
-                                    scaleY: 0,
-                                    alpha: 0
-                                }, 150, Laya.Ease['backOut'])) : this['btn_change']['visible'] = !1, Laya['timer'].once(150, this, function () {
-                                w['locking'] = !1;
-                            })));
-                },
-                w['prototype']['close'] = function () {
-                    var w = this;
-                    this['enable'] = !1,
-                    this['locking'] = !0,
-                    Laya['Tween'].to(this['btn_banemj'], {
-                        x: 80,
-                        y: 80,
-                        scaleX: 0,
-                        scaleY: 0,
-                        alpha: 0
-                    }, 150, Laya.Ease['backOut']),
-                    Laya['Tween'].to(this['btn_seeinfo'], {
-                        x: 80,
-                        y: 80,
-                        scaleX: 0,
-                        scaleY: 0,
-                        alpha: 0
-                    }, 150, Laya.Ease['backOut']),
-                    Laya['Tween'].to(this['btn_change'], {
-                        x: 80,
-                        y: 80,
-                        scaleX: 0,
-                        scaleY: 0,
-                        alpha: 0
-                    }, 150, Laya.Ease['backOut']),
-                    Laya['timer'].once(150, this, function () {
-                        w['locking'] = !1,
-                        w['btn_banemj']['visible'] = !1,
-                        w['btn_seeinfo']['visible'] = !1,
-                        w['btn_change']['visible'] = !1;
-                    });
-                },
-                w;
-            }
-            (),
-            l = function () {
-                function w(w) {
-                    var j = this;
-                    this['btn_emos'] = [],
-                    this.emos = [],
-                    this['allgray'] = !1,
-                    this.me = w,
-                    this.in = this.me['getChildByName']('in'),
-                    this.out = this.me['getChildByName']('out'),
-                    this['in_out'] = this.in['getChildByName']('in_out'),
-                    this['btn_chat'] = this.out['getChildByName']('btn_chat'),
-                    this['btn_mask'] = this.out['getChildByName']('btn_mask'),
-                    this['btn_chat']['clickHandler'] = new Laya['Handler'](this, function () {
-                            j['switchShow'](!0);
-                        }),
-                    this['btn_chat_in'] = this['in_out']['getChildByName']('btn_chat'),
-                    this['btn_chat_in']['clickHandler'] = new Laya['Handler'](this, function () {
-                            j['switchShow'](!1);
-                        }),
-                    this['scrollbar'] = this.in['getChildByName']('scrollbar_light')['scriptMap']['capsui.CScrollBar'],
-                    this['scrollview'] = this.in['scriptMap']['capsui.CScrollView'],
-                    this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_item']), -1, 3),
-                    this['scrollview']['reset'](),
-                    this['scrollbar'].init(null),
-                    this['scrollview'].me.on('ratechange', this, function () {
-                        j['scrollview']['total_height'] > 0 ? j['scrollbar']['setVal'](j['scrollview'].rate, j['scrollview']['view_height'] / j['scrollview']['total_height']) : j['scrollbar']['setVal'](0, 1);
-                    }),
-                    'chs' != GameMgr['client_language'] ? (this.out['getChildAt'](2)['visible'] = !1, this.out['getChildAt'](3)['visible'] = !0) : (this.out['getChildAt'](2)['visible'] = !0, this.out['getChildAt'](3)['visible'] = !1);
-                }
-                return w['prototype']['initRoom'] = function () {
-                                // START 
-                    //var w = view['DesktopMgr'].Inst['main_role_character_info'],
-                                // END
-                                var w = { charid: fake_data.char_id, level: fake_data.level, exp: fake_data.exp, skin: fake_data.skin, extra_emoji: fake_data.emoji, is_upgraded: fake_data.is_upgraded },
-                    j = cfg['item_definition']['character'].find(w['charid']);
-                    this['emo_log_count'] = 0,
-                    this.emos = [];
-                    for (var C = 0; 9 > C; C++)
-                        this.emos.push({
-                            path: j.emo + '/' + C + '.png',
-                            sub_id: C,
-                            sort: C
-                        });
-                    if (w['extra_emoji'])
-                        for (var C = 0; C < w['extra_emoji']['length']; C++)
-                            this.emos.push({
-                                path: j.emo + '/' + w['extra_emoji'][C] + '.png',
-                                sub_id: w['extra_emoji'][C],
-                                sort: w['extra_emoji'][C] > 12 ? 1000000 - w['extra_emoji'][C] : w['extra_emoji'][C]
-                            });
-                    this.emos = this.emos.sort(function (w, j) {
-                            return w.sort - j.sort;
-                        }),
-                    this['allgray'] = !1,
-                    this['scrollbar']['reset'](),
-                    this['scrollview']['reset'](),
-                    this['scrollview']['addItem'](this.emos['length']),
-                    this['btn_chat']['disabled'] = !1,
-                    this['btn_mask']['visible'] = view['DesktopMgr'].Inst['emoji_switch'],
-                    'chs' != GameMgr['client_language'] && (this.out['getChildAt'](3)['visible'] = !view['DesktopMgr'].Inst['emoji_switch']),
-                    this.me.x = 1896,
-                    this.in['visible'] = !1,
-                    this.out['visible'] = !0,
-                    this['emo_infos'] = {
-                        char_id: w['charid'],
-                        emoji: [],
-                        server: 'chs_t' == GameMgr['client_type'] ? 1 : 'jp' == GameMgr['client_type'] ? 2 : 3
-                    };
-                },
-                w['prototype']['render_item'] = function (w) {
-                    var j = this,
-                    C = w['index'],
-                    i = w['container'],
-                    l = this.emos[C],
-                    u = i['getChildByName']('btn');
-                    u.skin = game['LoadMgr']['getResImageSkin'](l.path),
-                    this['allgray'] ? game['Tools']['setGrayDisable'](u, !0) : (game['Tools']['setGrayDisable'](u, !1), u['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                if (app['NetAgent']['isMJConnectOK']()) {
-                                    GameMgr.Inst['BehavioralStatistics'](22);
-                                    for (var w = !1, C = 0, i = j['emo_infos']['emoji']; C < i['length']; C++) {
-                                        var u = i[C];
-                                        if (u[0] == l['sub_id']) {
-                                            u[0]++,
-                                            w = !0;
-                                            break;
-                                        }
-                                    }
-                                    w || j['emo_infos']['emoji'].push([l['sub_id'], 1]),
-                                    app['NetAgent']['sendReq2MJ']('FastTest', 'broadcastInGame', {
-                                        content: JSON['stringify']({
-                                            emo: l['sub_id']
+                    return C['prototype']['begin_refresh'] = function () {
+                        this['timer_id'] && clearTimeout(this['timer_id']),
+                            this['last_returned'] = !0,
+                            this['_loop_refresh_delay'](),
+                            Laya['timer']['clearAll'](this),
+                            Laya['timer'].loop(100, this, this['_loop_show']);
+                    },
+                        C['prototype']['close_refresh'] = function () {
+                            this['timer_id'] && (clearTimeout(this['timer_id']), this['timer_id'] = 0),
+                                this['last_returned'] = !1,
+                                Laya['timer']['clearAll'](this);
+                        },
+                        C['prototype']['_loop_refresh_delay'] = function () {
+                            var C = this;
+                            if (game['MJNetMgr'].Inst['connect_state'] != game['EConnectState'].none) {
+                                var K = 2000;
+                                if (game['MJNetMgr'].Inst['connect_state'] == game['EConnectState']['connecting'] && this['last_returned']) {
+                                    var r = app['NetAgent']['mj_network_delay'];
+                                    K = 300 > r ? 2000 : 800 > r ? 2500 + r : 4000 + 0.5 * r,
+                                        app['NetAgent']['sendReq2MJ']('FastTest', 'checkNetworkDelay', {}, function () {
+                                            C['last_returned'] = !0;
                                         }),
-                                        except_self: !1
-                                    }, function () {});
-                                }
-                                j['change_all_gray'](!0),
-                                Laya['timer'].once(5000, j, function () {
-                                    j['change_all_gray'](!1);
-                                }),
-                                j['switchShow'](!1);
-                            }, null, !1));
-                },
-                w['prototype']['change_all_gray'] = function (w) {
-                    this['allgray'] = w,
-                    this['scrollview']['wantToRefreshAll']();
-                },
-                w['prototype']['switchShow'] = function (w) {
-                    var j = this,
-                    C = 0;
-                    C = w ? 1367 : 1896,
-                    Laya['Tween'].to(this.me, {
-                        x: 1972
-                    }, w ? 60 : 140, Laya.Ease['strongOut'], Laya['Handler']['create'](this, function () {
-                            w ? (j.out['visible'] = !1, j.in['visible'] = !0) : (j.out['visible'] = !0, j.in['visible'] = !1),
-                            Laya['Tween'].to(j.me, {
-                                x: C
-                            }, w ? 140 : 60, Laya.Ease['strongOut'], Laya['Handler']['create'](j, function () {
-                                    j['btn_chat']['disabled'] = !1,
-                                    j['btn_chat_in']['disabled'] = !1;
-                                }), 0, !0, !0);
-                        }), 0, !0, !0),
-                    this['btn_chat']['disabled'] = !0,
-                    this['btn_chat_in']['disabled'] = !0;
-                },
-                w['prototype']['sendEmoLogUp'] = function () {
-                                    // START
-                    //if (this['emo_log_count'] > 0 && this['emo_infos'] && view['DesktopMgr'].Inst.mode == view['EMJMode'].play) {
-                    //    var w = GameMgr.Inst['getMouse']();
-                    //    GameMgr.Inst['postInfo2Server']('emo_stats', {
-                    //        data: this['emo_infos'],
-                    //        m: view['DesktopMgr']['click_prefer'],
-                    //        d: w,
-                    //        e: window['innerHeight'] / 2,
-                    //        f: window['innerWidth'] / 2,
-                    //        t: b.Inst['min_double_time'],
-                    //        g: b.Inst['max_double_time']
-                    //    }, !1),
-                    //    this['emo_infos']['emoji'] = [];
-                   // }
-                   // this['emo_log_count']++;
-                                    // END
-                },
-                w['prototype']['reset'] = function () {
-                    this['emo_infos'] = null,
-                    this['scrollbar']['reset'](),
-                    this['scrollview']['reset']();
-                },
-                w;
-            }
-            (),
-            u = function () {
-                function j(j) {
-                    this['effect'] = null,
-                    this['container_emo'] = j['getChildByName']('chat_bubble'),
-                    this.emo = new w['UI_Character_Emo'](this['container_emo']['getChildByName']('content')),
-                    this['root_effect'] = j['getChildByName']('root_effect'),
-                    this['container_emo']['visible'] = !1;
-                }
-                return j['prototype'].show = function (w, j) {
-                    var C = this;
-                    if (!view['DesktopMgr'].Inst['emoji_switch']) {
-                        for (var i = view['DesktopMgr'].Inst['player_datas'][view['DesktopMgr'].Inst['localPosition2Seat'](w)]['character']['charid'], l = cfg['character']['emoji']['getGroup'](i), u = '', b = 0, V = 0; V < l['length']; V++)
-                            if (l[V]['sub_id'] == j) {
-                                2 == l[V].type && (u = l[V].view, b = l[V]['audio']);
-                                break;
-                            }
-                        this['effect'] && (this['effect']['destory'](), this['effect'] = null),
-                        u ? (this['effect'] = game['FrontEffect'].Inst['create_ui_effect'](this['root_effect'], 'scene/' + u + '.lh', new Laya['Point'](0, 0), 1), Laya['timer'].once(3500, this, function () {
-                                C['effect']['destory'](),
-                                C['effect'] = null;
-                            }), b && view['AudioMgr']['PlayAudio'](b)) : (this.emo['setSkin'](i, j), this['container_emo']['visible'] = !0, this['container_emo']['scaleX'] = this['container_emo']['scaleY'] = 0, Laya['Tween'].to(this['container_emo'], {
-                                scaleX: 1,
-                                scaleY: 1
-                            }, 120, null, null, 0, !0, !0), Laya['timer'].once(3000, this, function () {
-                                C.emo['clear'](),
-                                Laya['Tween'].to(C['container_emo'], {
-                                    scaleX: 0,
-                                    scaleY: 0
-                                }, 120, null, null, 0, !0, !0);
-                            }), Laya['timer'].once(3500, this, function () {
-                                C['container_emo']['visible'] = !1;
-                            }));
-                    }
-                },
-                j['prototype']['reset'] = function () {
-                    Laya['timer']['clearAll'](this),
-                    this.emo['clear'](),
-                    this['container_emo']['visible'] = !1,
-                    this['effect'] && (this['effect']['destory'](), this['effect'] = null);
-                },
-                j;
-            }
-            (),
-            b = function (b) {
-                function V() {
-                    var w = b.call(this, new ui.mj['desktopInfoUI']()) || this;
-                    return w['container_doras'] = null,
-                    w['doras'] = [],
-                    w['front_doras'] = [],
-                    w['label_md5'] = null,
-                    w['container_gamemode'] = null,
-                    w['label_gamemode'] = null,
-                    w['btn_auto_moqie'] = null,
-                    w['btn_auto_nofulu'] = null,
-                    w['btn_auto_hule'] = null,
-                    w['img_zhenting'] = null,
-                    w['btn_double_pass'] = null,
-                    w['_network_delay'] = null,
-                    w['_timecd'] = null,
-                    w['_player_infos'] = [],
-                    w['_container_fun'] = null,
-                    w['_fun_in'] = null,
-                    w['_fun_out'] = null,
-                    w['showscoredeltaing'] = !1,
-                    w['_btn_leave'] = null,
-                    w['_btn_fanzhong'] = null,
-                    w['_btn_collect'] = null,
-                    w['block_emo'] = null,
-                    w['head_offset_y'] = 15,
-                    w['gapStartPosLst'] = [new Laya['Vector2'](582, 12), new Laya['Vector2'](-266, 275), new Laya['Vector2'](-380, 103), new Laya['Vector2'](375, 142)],
-                    w['selfGapOffsetX'] = [0, -150, 150],
-                    app['NetAgent']['AddListener2MJ']('NotifyGameBroadcast', Laya['Handler']['create'](w, function (j) {
-                            w['onGameBroadcast'](j);
-                        })),
-                    app['NetAgent']['AddListener2MJ']('NotifyPlayerConnectionState', Laya['Handler']['create'](w, function (j) {
-                            w['onPlayerConnectionState'](j);
-                        })),
-                    V.Inst = w,
-                    w;
-                }
-                return __extends(V, b),
-                V['prototype']['onCreate'] = function () {
-                    var b = this;
-                    this['doras'] = new Array(),
-                    this['front_doras'] = [];
-                    var V = this.me['getChildByName']('container_lefttop'),
-                    k = V['getChildByName']('container_doras');
-                    this['container_doras'] = k,
-                    this['container_gamemode'] = V['getChildByName']('gamemode'),
-                    this['label_gamemode'] = this['container_gamemode']['getChildByName']('lb_mode'),
-                    'kr' == GameMgr['client_language'] && (this['label_gamemode']['scale'](0.85, 0.85), this['label_gamemode']['scriptMap']['capsui.LabelLocalizationSize']['onCreate']()),
-                    this['label_md5'] = V['getChildByName']('MD5'),
-                    V['getChildByName']('btn_md5change')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            if (b['label_md5']['visible'])
-                                Laya['timer']['clearAll'](b['label_md5']), b['label_md5']['visible'] = !1, view['DesktopMgr'].Inst['is_chuanma_mode']() ? V['getChildByName']('activitymode')['visible'] = !0 : b['container_doras']['visible'] = !0;
-                            else {
-                                b['label_md5']['visible'] = !0,
-                                view['DesktopMgr'].Inst['sha256'] ? (b['label_md5']['fontSize'] = 20, b['label_md5'].y = 45, b['label_md5'].text = game['Tools']['strOfLocalization'](3888) + view['DesktopMgr'].Inst['sha256']) : (b['label_md5']['fontSize'] = 25, b['label_md5'].y = 51, b['label_md5'].text = game['Tools']['strOfLocalization'](2048) + view['DesktopMgr'].Inst.md5),
-                                V['getChildByName']('activitymode')['visible'] = !1,
-                                b['container_doras']['visible'] = !1;
-                                var w = b;
-                                Laya['timer'].once(5000, b['label_md5'], function () {
-                                    w['label_md5']['visible'] = !1,
-                                    view['DesktopMgr'].Inst['is_chuanma_mode']() ? V['getChildByName']('activitymode')['visible'] = !0 : b['container_doras']['visible'] = !0;
-                                });
-                            }
-                        }, null, !1);
-                    for (var S = 0; S < k['numChildren']; S++)
-                        this['doras'].push(k['getChildAt'](S)), this['front_doras'].push(k['getChildAt'](S)['getChildAt'](0));
-                    for (var S = 0; 4 > S; S++) {
-                        var H = this.me['getChildByName']('container_player_' + S),
-                        N = {};
-                        N['container'] = H,
-                        N.head = new w['UI_Head'](H['getChildByName']('head'), ''),
-                        N['head_origin_y'] = H['getChildByName']('head').y,
-                        N.name = H['getChildByName']('container_name')['getChildByName']('name'),
-                        N['container_shout'] = H['getChildByName']('container_shout'),
-                        N['container_shout']['visible'] = !1,
-                        N['illust'] = N['container_shout']['getChildByName']('illust')['getChildByName']('illust'),
-                        N['illustrect'] = w['UIRect']['CreateFromSprite'](N['illust']),
-                        N['shout_origin_x'] = N['container_shout'].x,
-                        N['shout_origin_y'] = N['container_shout'].y,
-                        N.emo = new u(H),
-                        N['disconnect'] = H['getChildByName']('head')['getChildByName']('head')['getChildByName']('disconnect'),
-                        N['disconnect']['visible'] = !1,
-                        N['title'] = new w['UI_PlayerTitle'](H['getChildByName']('title'), ''),
-                        N.que = H['getChildByName']('que'),
-                        N['que_target_pos'] = new Laya['Vector2'](N.que.x, N.que.y),
-                        N['tianming'] = H['getChildByName']('tianming'),
-                        N['tianming']['visible'] = !1,
-                        0 == S ? H['getChildByName']('btn_seeinfo')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                                b['btn_seeinfo'](0);
-                            }, null, !1) : N['headbtn'] = new i(H['getChildByName']('btn_head'), S),
-                        this['_player_infos'].push(N);
-                    }
-                    this['_timecd'] = new j(this.me['getChildByName']('container_countdown')),
-                    this['img_zhenting'] = this.me['getChildByName']('img_zhenting'),
-                    this['img_zhenting']['visible'] = !1,
-                    this['_initFunc'](),
-                    this['block_emo'] = new l(this.me['getChildByName']('container_chat_choose')),
-                    this.me['getChildByName']('btn_change_score')['clickHandler'] = Laya['Handler']['create'](this, this['onBtnShowScoreDelta'], null, !1),
-                    this['_btn_leave'] = this.me['getChildByName']('container_righttop')['getChildByName']('btn_leave'),
-                    this['_btn_leave']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            if (view['DesktopMgr'].Inst.mode == view['EMJMode'].play) {
-                                if (view['DesktopMgr'].Inst['gameing']) {
-                                    for (var j = 0, C = 0; C < view['DesktopMgr'].Inst['player_datas']['length']; C++)
-                                        view['DesktopMgr'].Inst['player_datas'][C]['account_id'] && j++;
-                                    if (1 >= j)
-                                        w['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](21), Laya['Handler']['create'](b, function () {
-                                                if (view['DesktopMgr'].Inst['gameing']) {
-                                                    for (var w = 0, j = 0; j < view['DesktopMgr'].Inst['player_datas']['length']; j++) {
-                                                        var C = view['DesktopMgr'].Inst['player_datas'][j];
-                                                        C && null != C['account_id'] && 0 != C['account_id'] && w++;
-                                                    }
-                                                    1 == w ? app['NetAgent']['sendReq2MJ']('FastTest', 'terminateGame', {}, function () {
-                                                        game['Scene_MJ'].Inst['GameEnd']();
-                                                    }) : game['Scene_MJ'].Inst['ForceOut']();
-                                                }
-                                            }));
-                                    else {
-                                        var i = !1;
-                                        if (w['UI_VoteProgress']['vote_info']) {
-                                            var l = Math['floor']((Date.now() + GameMgr.Inst['server_time_delta']) / 1000 - w['UI_VoteProgress']['vote_info']['start_time'] - w['UI_VoteProgress']['vote_info']['duration_time']);
-                                            0 > l && (i = !0);
-                                        }
-                                        i ? w['UI_VoteProgress'].Inst['enable'] || w['UI_VoteProgress'].Inst.show() : w['UI_VoteCD']['time_cd'] > (Date.now() + GameMgr.Inst['server_time_delta']) / 1000 ? w['UI_VoteCD'].Inst['enable'] || w['UI_VoteCD'].Inst.show() : w['UI_Vote'].Inst.show();
-                                    }
-                                }
-                            } else
-                                view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast'] && (app['Log_OB'].log('quit ob'), w['UI_Ob_Replay'].Inst['resetRounds'](), w['UI_Ob_Replay'].Inst['enable'] = !1), game['Scene_MJ'].Inst['ForceOut']();
-                        }, null, !1),
-                    this.me['getChildByName']('container_righttop')['getChildByName']('btn_set')['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            w['UI_Config'].Inst.show();
-                        }, null, !1),
-                    this['_btn_fanzhong'] = this.me['getChildByName']('container_righttop')['getChildByName']('btn_fanzhong'),
-                    this['_btn_fanzhong']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            w['UI_Rules'].Inst.show(0, null, view['DesktopMgr'].Inst['is_chuanma_mode']() ? 1 : 0);
-                        }, null, !1),
-                    this['_btn_collect'] = this.me['getChildByName']('container_righttop')['getChildByName']('btn_collect'),
-                    this['_btn_collect']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            view['DesktopMgr'].Inst.mode == view['EMJMode']['paipu'] && (w['UI_PaiPu']['collect_info'][GameMgr.Inst['record_uuid']] ? w['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3248), Laya['Handler']['create'](b, function () {
-                                        w['UI_PaiPu']['removeCollect'](GameMgr.Inst['record_uuid']);
-                                    })) : w['UI_Replay'].Inst && w['UI_Replay'].Inst['pop_collectinput'].show(GameMgr.Inst['record_uuid'], GameMgr.Inst['record_start_time'], GameMgr.Inst['record_end_time']));
-                        }, null, !1),
-                    this['btn_double_pass'] = this.me['getChildByName']('btn_double_pass'),
-                    this['btn_double_pass']['visible'] = !1;
-                    var W = 0;
-                    this['btn_double_pass']['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            if (view['DesktopMgr']['double_click_pass']) {
-                                var j = Laya['timer']['currTimer'];
-                                if (W + 300 > j) {
-                                    if (w['UI_ChiPengHu'].Inst['enable'])
-                                        w['UI_ChiPengHu'].Inst['onDoubleClick'](), b['recordDoubleClickTime'](j - W);
-                                    else {
-                                        var C = view['DesktopMgr'].Inst['mainrole']['can_discard'];
-                                        w['UI_LiQiZiMo'].Inst['enable'] && (C = w['UI_LiQiZiMo'].Inst['onDoubleClick'](C)),
-                                        C && view['DesktopMgr'].Inst['mainrole']['onDoubleClick']() && b['recordDoubleClickTime'](j - W);
-                                    }
-                                    W = 0;
+                                        this['last_returned'] = !1;
                                 } else
-                                    W = j;
+                                    K = 1000;
+                                this['timer_id'] = setTimeout(this['_loop_refresh_delay'].bind(this), K);
                             }
-                        }, null, !1),
-                    this['_network_delay'] = new C(this.me['getChildByName']('img_signal')),
-                    this['container_jjc'] = this.me['getChildByName']('container_jjc'),
-                    this['label_jjc_win'] = this['container_jjc']['getChildByName']('win'),
-                    'en' == GameMgr['client_language'] && (V['getChildByName']('activitymode')['getChildAt'](1).x = 98);
-                },
-                V['prototype']['recordDoubleClickTime'] = function (w) {
-                    this['min_double_time'] = this['min_double_time'] ? Math.max(0, Math.min(w, this['min_double_time'])) : w,
-                    this['max_double_time'] = this['max_double_time'] ? Math.max(w, this['max_double_time']) : w;
-                },
-                V['prototype']['onGameBroadcast'] = function (w) {
-                    app.Log.log('NotifyGameBroadcast ' + JSON['stringify'](w));
-                    var j = view['DesktopMgr'].Inst['seat2LocalPosition'](w.seat),
-                    C = JSON['parse'](w['content']);
-                    null != C.emo && void 0 != C.emo && (this['onShowEmo'](j, C.emo), this['showAIEmo']());
-                },
-                V['prototype']['onPlayerConnectionState'] = function (w) {
-                    app.Log.log('NotifyPlayerConnectionState msg: ' + JSON['stringify'](w));
-                    var j = w.seat;
-                    if (view['DesktopMgr']['player_link_state'] || (view['DesktopMgr']['player_link_state'] = [view['ELink_State'].NULL, view['ELink_State'].NULL, view['ELink_State'].NULL, view['ELink_State'].NULL]), view['DesktopMgr']['player_link_state'] && j < view['DesktopMgr']['player_link_state']['length'] && (view['DesktopMgr']['player_link_state'][j] = w['state']), this['enable']) {
-                        var C = view['DesktopMgr'].Inst['seat2LocalPosition'](j);
-                        this['_player_infos'][C]['disconnect']['visible'] = w['state'] != view['ELink_State']['READY'];
-                    }
-                },
-                V['prototype']['_initFunc'] = function () {
-                    var w = this;
-                    this['_container_fun'] = this.me['getChildByName']('container_func'),
-                    this['_fun_in'] = this['_container_fun']['getChildByName']('in'),
-                    this['_fun_out'] = this['_container_fun']['getChildByName']('out'),
-                    this['_fun_in_spr'] = this['_fun_in']['getChildByName']('in_func');
-                    var j = this['_fun_out']['getChildByName']('btn_func'),
-                    C = this['_fun_out']['getChildByName']('btn_func2'),
-                    i = this['_fun_in_spr']['getChildByName']('btn_func');
-                    j['clickHandler'] = C['clickHandler'] = new Laya['Handler'](this, function () {
-                            var l = 0;
-                            l = -270,
-                            Laya['Tween'].to(w['_container_fun'], {
-                                x: -624
-                            }, 60, Laya.Ease['strongOut'], Laya['Handler']['create'](w, function () {
-                                    w['_fun_in']['visible'] = !0,
-                                    w['_fun_out']['visible'] = !1,
-                                    Laya['Tween'].to(w['_container_fun'], {
-                                        x: l
-                                    }, 140, Laya.Ease['strongOut'], Laya['Handler']['create'](w, function () {
-                                            j['disabled'] = !1,
-                                            C['disabled'] = !1,
-                                            i['disabled'] = !1,
-                                            w['_fun_out']['visible'] = !1;
-                                        }), 0, !0, !0);
-                                })),
-                            j['disabled'] = !0,
-                            C['disabled'] = !0,
-                            i['disabled'] = !0;
-                        }, null, !1),
-                    i['clickHandler'] = new Laya['Handler'](this, function () {
-                            var l = -546;
-                            Laya['Tween'].to(w['_container_fun'], {
-                                x: -624
-                            }, 140, Laya.Ease['strongOut'], Laya['Handler']['create'](w, function () {
-                                    w['_fun_in']['visible'] = !1,
-                                    w['_fun_out']['visible'] = !0,
-                                    Laya['Tween'].to(w['_container_fun'], {
-                                        x: l
-                                    }, 60, Laya.Ease['strongOut'], Laya['Handler']['create'](w, function () {
-                                            j['disabled'] = !1,
-                                            C['disabled'] = !1,
-                                            i['disabled'] = !1,
-                                            w['_fun_out']['visible'] = !0;
-                                        }), 0, !0, !0);
-                                })),
-                            j['disabled'] = !0,
-                            C['disabled'] = !0,
-                            i['disabled'] = !0;
-                        });
-                    var l = this['_fun_in']['getChildByName']('btn_autolipai'),
-                    u = this['_fun_out']['getChildByName']('btn_autolipai2'),
-                    b = this['_fun_out']['getChildByName']('autolipai'),
-                    V = Laya['LocalStorage']['getItem']('autolipai'),
-                    k = !0;
-                    k = V && '' != V ? 'true' == V : !0,
-                    this['refreshFuncBtnShow'](l, b, k),
-                    l['clickHandler'] = u['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            view['DesktopMgr'].Inst['setAutoLiPai'](!view['DesktopMgr'].Inst['auto_liqi']),
-                            w['refreshFuncBtnShow'](l, b, view['DesktopMgr'].Inst['auto_liqi']),
-                            Laya['LocalStorage']['setItem']('autolipai', view['DesktopMgr'].Inst['auto_liqi'] ? 'true' : 'false');
-                        }, null, !1);
-                    var S = this['_fun_in']['getChildByName']('btn_autohu'),
-                    H = this['_fun_out']['getChildByName']('btn_autohu2'),
-                    N = this['_fun_out']['getChildByName']('autohu');
-                    this['refreshFuncBtnShow'](S, N, !1),
-                    S['clickHandler'] = H['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            view['DesktopMgr'].Inst['setAutoHule'](!view['DesktopMgr'].Inst['auto_hule']),
-                            w['refreshFuncBtnShow'](S, N, view['DesktopMgr'].Inst['auto_hule']);
-                        }, null, !1);
-                    var W = this['_fun_in']['getChildByName']('btn_autonoming'),
-                    e = this['_fun_out']['getChildByName']('btn_autonoming2'),
-                    Y = this['_fun_out']['getChildByName']('autonoming');
-                    this['refreshFuncBtnShow'](W, Y, !1),
-                    W['clickHandler'] = e['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            view['DesktopMgr'].Inst['setAutoNoFulu'](!view['DesktopMgr'].Inst['auto_nofulu']),
-                            w['refreshFuncBtnShow'](W, Y, view['DesktopMgr'].Inst['auto_nofulu']);
-                        }, null, !1);
-                    var t = this['_fun_in']['getChildByName']('btn_automoqie'),
-                    O = this['_fun_out']['getChildByName']('btn_automoqie2'),
-                    L = this['_fun_out']['getChildByName']('automoqie');
-                    this['refreshFuncBtnShow'](t, L, !1),
-                    t['clickHandler'] = O['clickHandler'] = Laya['Handler']['create'](this, function () {
-                            view['DesktopMgr'].Inst['setAutoMoQie'](!view['DesktopMgr'].Inst['auto_moqie']),
-                            w['refreshFuncBtnShow'](t, L, view['DesktopMgr'].Inst['auto_moqie']);
-                        }, null, !1),
-                    'kr' == GameMgr['client_language'] && (b['scale'](0.9, 0.9), N['scale'](0.9, 0.9), Y['scale'](0.9, 0.9), L['scale'](0.9, 0.9)),
-                    Laya['Browser'].onPC && !GameMgr['inConch'] ? (j['visible'] = !1, H['visible'] = !0, u['visible'] = !0, e['visible'] = !0, O['visible'] = !0) : (j['visible'] = !0, H['visible'] = !1, u['visible'] = !1, e['visible'] = !1, O['visible'] = !1);
-                },
-                V['prototype']['noAutoLipai'] = function () {
-                    var w = this['_container_fun']['getChildByName']('btn_autolipai');
-                    view['DesktopMgr'].Inst['auto_liqi'] = !0,
-                    w['clickHandler'].run();
-                },
-                V['prototype']['resetFunc'] = function () {
-                    var w = Laya['LocalStorage']['getItem']('autolipai'),
-                    j = !0;
-                    j = w && '' != w ? 'true' == w : !0;
-                    var C = this['_fun_in']['getChildByName']('btn_autolipai'),
-                    i = this['_fun_out']['getChildByName']('automoqie');
-                    this['refreshFuncBtnShow'](C, i, j),
-                    Laya['LocalStorage']['setItem']('autolipai', j ? 'true' : 'false'),
-                    view['DesktopMgr'].Inst['setAutoLiPai'](j);
-                    var l = this['_fun_in']['getChildByName']('btn_autohu'),
-                    u = this['_fun_out']['getChildByName']('autohu');
-                    this['refreshFuncBtnShow'](l, u, view['DesktopMgr'].Inst['auto_hule']);
-                    var b = this['_fun_in']['getChildByName']('btn_autonoming'),
-                    V = this['_fun_out']['getChildByName']('autonoming');
-                    this['refreshFuncBtnShow'](b, V, view['DesktopMgr'].Inst['auto_nofulu']);
-                    var k = this['_fun_in']['getChildByName']('btn_automoqie'),
-                    S = this['_fun_out']['getChildByName']('automoqie');
-                    this['refreshFuncBtnShow'](k, S, view['DesktopMgr'].Inst['auto_moqie']),
-                    this['_container_fun'].x = -546,
-                    this['_fun_in']['visible'] = !1,
-                    this['_fun_out']['visible'] = !0; {
-                        var H = this['_fun_out']['getChildByName']('btn_func');
-                        this['_fun_out']['getChildByName']('btn_func2');
-                    }
-                    H['disabled'] = !1,
-                    H['disabled'] = !1;
-                },
-                V['prototype']['setDora'] = function (w, j) {
-                    if (0 > w || w >= this['doras']['length'])
-                        return console['error']('setDora pos错误'), void 0;
-                    var C = 'myres2/mjpm/' + (j['touming'] ? GameMgr.Inst['touming_mjp_view'] : GameMgr.Inst['mjpm_view']) + /ui/;
-                    this['doras'][w].skin = game['Tools']['localUISrc'](C + j['toString'](!1) + '.png'),
-                    this['front_doras'][w]['visible'] = !j['touming'],
-                    this['front_doras'][w].skin = game['Tools']['localUISrc']('myres2/mjp/' + GameMgr.Inst['mjp_view'] + '/hand/front.png');
-                },
-                V['prototype']['initRoom'] = function () {
-                    var j = this;
-                    if (view['DesktopMgr'].Inst.mode == view['EMJMode'].play || view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast']) {
-                        for (var C = {}, i = 0; i < view['DesktopMgr'].Inst['player_datas']['length']; i++) {
-                            for (var l = view['DesktopMgr'].Inst['player_datas'][i]['character'], u = l['charid'], b = cfg['item_definition']['character'].find(u).emo, V = 0; 9 > V; V++) {
-                                var k = b + '/' + V['toString']() + '.png';
-                                C[k] = 1;
-                            }
-                            if (l['extra_emoji'])
-                                for (var V = 0; V < l['extra_emoji']['length']; V++) {
-                                    var k = b + '/' + l['extra_emoji'][V]['toString']() + '.png';
-                                    C[k] = 1;
+                        },
+                        C['prototype']['_loop_show'] = function () {
+                            if (game['MJNetMgr'].Inst['connect_state'] != game['EConnectState'].none)
+                                if (game['MJNetMgr'].Inst['connect_state'] != game['EConnectState']['connecting'])
+                                    this.me.skin = game['Tools']['localUISrc']('myres/mjdesktop/signal_bad.png');
+                                else {
+                                    var C = app['NetAgent']['mj_network_delay'];
+                                    this.me.skin = 300 > C ? game['Tools']['localUISrc']('myres/mjdesktop/signal_good.png') : 800 > C ? game['Tools']['localUISrc']('myres/mjdesktop/signal_normal.png') : game['Tools']['localUISrc']('myres/mjdesktop/signal_bad.png');
                                 }
-                        }
-                        var S = [];
-                        for (var H in C)
-                            S.push(H);
-                        this['block_emo'].me.x = 1878,
-                        this['block_emo']['reset'](),
-                        game['LoadMgr']['loadResImage'](S, Laya['Handler']['create'](this, function () {
-                                j['block_emo']['initRoom']();
-                            })),
-                        this['_btn_collect']['visible'] = !1;
-                    } else {
-                        for (var N = !1, i = 0; i < view['DesktopMgr'].Inst['player_datas']['length']; i++) {
-                            var W = view['DesktopMgr'].Inst['player_datas'][i];
-                            if (W && null != W['account_id'] && W['account_id'] == GameMgr.Inst['account_id']) {
-                                N = !0;
-                                break;
-                            }
-                        }
-                        this['_btn_collect']['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/btn_collect_' + (w['UI_PaiPu']['collect_info'][GameMgr.Inst['record_uuid']] ? 'l.png' : 'd.png')),
-                        this['_btn_collect']['visible'] = N;
+                        },
+                        C;
+                }
+                    (),
+                X = function () {
+                    function C(C, K) {
+                        var r = this;
+                        this['enable'] = !1,
+                            this['emj_banned'] = !1,
+                            this['locking'] = !1,
+                            this['localposition'] = K,
+                            this.me = C,
+                            this['btn_banemj'] = C['getChildByName']('btn_banemj'),
+                            this['btn_banemj_origin_x'] = this['btn_banemj'].x,
+                            this['btn_banemj_origin_y'] = this['btn_banemj'].y,
+                            this['img_bannedemj'] = this['btn_banemj']['getChildByName']('mute'),
+                            this['btn_seeinfo'] = C['getChildByName']('btn_seeinfo'),
+                            this['btn_seeinfo_origin_x'] = this['btn_seeinfo'].x,
+                            this['btn_seeinfo_origin_y'] = this['btn_seeinfo'].y,
+                            this['btn_change'] = C['getChildByName']('btn_change'),
+                            this['btn_change_origin_x'] = this['btn_change'].x,
+                            this['btn_change_origin_y'] = this['btn_change'].y,
+                            this['btn_banemj']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                r['locking'] || (r['emj_banned'] = !r['emj_banned'], r['img_bannedemj'].skin = game['Tools']['localUISrc']('myres/mjdesktop/mute' + (r['emj_banned'] ? '_on.png' : '.png')), r['close']());
+                            }, null, !1),
+                            this['btn_seeinfo']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                r['locking'] || (r['close'](), N.Inst['btn_seeinfo'](r['localposition']));
+                            }, null, !1),
+                            this['btn_change']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                r['locking'] || (r['close'](), view['DesktopMgr'].Inst['changeMainbody'](view['DesktopMgr'].Inst['localPosition2Seat'](r['localposition'])));
+                            }, null, !1),
+                            this.me['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                r['locking'] || r['switch']();
+                            }, null, !1);
                     }
-                    if (this['_btn_leave']['visible'] = !0, this['_btn_fanzhong']['visible'] = !1, this['_btn_fanzhong'].x = 152, view['DesktopMgr'].Inst.mode == view['EMJMode'].play) {
-                        for (var e = 0, i = 0; i < view['DesktopMgr'].Inst['player_datas']['length']; i++) {
-                            var W = view['DesktopMgr'].Inst['player_datas'][i];
-                            W && null != W['account_id'] && 0 != W['account_id'] && e++;
-                        }
-                        1 == view['DesktopMgr'].Inst['game_config']['category'] ? (this['_btn_leave']['visible'] = !0, this['_btn_fanzhong']['visible'] = !1, view['DesktopMgr'].Inst['is_chuanma_mode']() && (this['_btn_fanzhong']['visible'] = !0, this['_btn_fanzhong'].x = -92)) : (this['_btn_leave']['visible'] = !1, this['_btn_fanzhong']['visible'] = !0);
+                    return C['prototype']['reset'] = function (C, K, r) {
+                        Laya['timer']['clearAll'](this),
+                            this['locking'] = !1,
+                            this['enable'] = !1,
+                            this['showinfo'] = C,
+                            this['showemj'] = K,
+                            this['showchange'] = r,
+                            this['emj_banned'] = !1,
+                            this['btn_banemj']['visible'] = !1,
+                            this['btn_seeinfo']['visible'] = !1,
+                            this['img_bannedemj'].skin = game['Tools']['localUISrc']('myres/mjdesktop/mute' + (this['emj_banned'] ? '_on.png' : '.png')),
+                            this['btn_change']['visible'] = !1;
+                    },
+                        C['prototype']['onChangeSeat'] = function (C, K, r) {
+                            this['showinfo'] = C,
+                                this['showemj'] = K,
+                                this['showchange'] = r,
+                                this['enable'] = !1,
+                                this['btn_banemj']['visible'] = !1,
+                                this['btn_seeinfo']['visible'] = !1,
+                                this['btn_change']['visible'] = !1;
+                        },
+                        C['prototype']['switch'] = function () {
+                            var C = this;
+                            this['locking'] || (this['enable'] ? this['close']() : (this['enable'] = !0, this['locking'] = !0, this['showinfo'] ? (this['btn_seeinfo']['visible'] = !0, this['btn_seeinfo']['scaleX'] = this['btn_seeinfo']['scaleY'] = 1, this['btn_seeinfo'].x = this['btn_seeinfo_origin_x'], this['btn_seeinfo'].y = this['btn_seeinfo_origin_y'], this['btn_seeinfo']['alpha'] = 1, Laya['Tween'].from(this['btn_seeinfo'], {
+                                x: 80,
+                                y: 80,
+                                scaleX: 0,
+                                scaleY: 0,
+                                alpha: 0
+                            }, 150, Laya.Ease['backOut'])) : this['btn_seeinfo']['visible'] = !1, this['showemj'] ? (this['img_bannedemj'].skin = game['Tools']['localUISrc']('myres/mjdesktop/mute' + (this['emj_banned'] ? '_on.png' : '.png')), this['btn_banemj']['visible'] = !0, this['btn_banemj']['scaleX'] = this['btn_banemj']['scaleY'] = 1, this['btn_banemj'].x = this['btn_banemj_origin_x'], this['btn_banemj'].y = this['btn_banemj_origin_y'], this['btn_banemj']['alpha'] = 1, Laya['Tween'].from(this['btn_banemj'], {
+                                x: 80,
+                                y: 80,
+                                scaleX: 0,
+                                scaleY: 0,
+                                alpha: 0
+                            }, 150, Laya.Ease['backOut'])) : this['btn_banemj']['visible'] = !1, this['showchange'] ? (this['btn_change']['visible'] = !0, this['btn_change']['scaleX'] = this['btn_change']['scaleY'] = 1, this['btn_change'].x = this['btn_change_origin_x'], this['btn_change'].y = this['btn_change_origin_y'], this['btn_change']['alpha'] = 1, Laya['Tween'].from(this['btn_change'], {
+                                x: 80,
+                                y: 80,
+                                scaleX: 0,
+                                scaleY: 0,
+                                alpha: 0
+                            }, 150, Laya.Ease['backOut'])) : this['btn_change']['visible'] = !1, Laya['timer'].once(150, this, function () {
+                                C['locking'] = !1;
+                            })));
+                        },
+                        C['prototype']['close'] = function () {
+                            var C = this;
+                            this['enable'] = !1,
+                                this['locking'] = !0,
+                                Laya['Tween'].to(this['btn_banemj'], {
+                                    x: 80,
+                                    y: 80,
+                                    scaleX: 0,
+                                    scaleY: 0,
+                                    alpha: 0
+                                }, 150, Laya.Ease['backOut']),
+                                Laya['Tween'].to(this['btn_seeinfo'], {
+                                    x: 80,
+                                    y: 80,
+                                    scaleX: 0,
+                                    scaleY: 0,
+                                    alpha: 0
+                                }, 150, Laya.Ease['backOut']),
+                                Laya['Tween'].to(this['btn_change'], {
+                                    x: 80,
+                                    y: 80,
+                                    scaleX: 0,
+                                    scaleY: 0,
+                                    alpha: 0
+                                }, 150, Laya.Ease['backOut']),
+                                Laya['timer'].once(150, this, function () {
+                                    C['locking'] = !1,
+                                        C['btn_banemj']['visible'] = !1,
+                                        C['btn_seeinfo']['visible'] = !1,
+                                        C['btn_change']['visible'] = !1;
+                                });
+                        },
+                        C;
+                }
+                    (),
+                U = function () {
+                    function C(C) {
+                        var K = this;
+                        this['btn_emos'] = [],
+                            this.emos = [],
+                            this['allgray'] = !1,
+                            this.me = C,
+                            this.in = this.me['getChildByName']('in'),
+                            this.out = this.me['getChildByName']('out'),
+                            this['in_out'] = this.in['getChildByName']('in_out'),
+                            this['btn_chat'] = this.out['getChildByName']('btn_chat'),
+                            this['btn_mask'] = this.out['getChildByName']('btn_mask'),
+                            this['btn_chat']['clickHandler'] = new Laya['Handler'](this, function () {
+                                K['switchShow'](!0);
+                            }),
+                            this['btn_chat_in'] = this['in_out']['getChildByName']('btn_chat'),
+                            this['btn_chat_in']['clickHandler'] = new Laya['Handler'](this, function () {
+                                K['switchShow'](!1);
+                            }),
+                            this['scrollbar'] = this.in['getChildByName']('scrollbar_light')['scriptMap']['capsui.CScrollBar'],
+                            this['scrollview'] = this.in['scriptMap']['capsui.CScrollView'],
+                            this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_item']), -1, 3),
+                            this['scrollview']['reset'](),
+                            this['scrollbar'].init(null),
+                            this['scrollview'].me.on('ratechange', this, function () {
+                                K['scrollview']['total_height'] > 0 ? K['scrollbar']['setVal'](K['scrollview'].rate, K['scrollview']['view_height'] / K['scrollview']['total_height']) : K['scrollbar']['setVal'](0, 1);
+                            }),
+                            'chs' != GameMgr['client_language'] ? (this.out['getChildAt'](2)['visible'] = !1, this.out['getChildAt'](3)['visible'] = !0) : (this.out['getChildAt'](2)['visible'] = !0, this.out['getChildAt'](3)['visible'] = !1);
                     }
-                    for (var Y = 0, i = 0; i < view['DesktopMgr'].Inst['player_datas']['length']; i++) {
-                        var W = view['DesktopMgr'].Inst['player_datas'][i];
-                        W && null != W['account_id'] && 0 != W['account_id'] && Y++;
-                    }
-                    this['block_emo'].me['visible'] = view['DesktopMgr'].Inst.mode == view['EMJMode'].play,
-                    this['_container_fun']['visible'] = view['DesktopMgr'].Inst.mode == view['EMJMode'].play,
-                    this['enable'] = !0,
-                    this['setLiqibang'](0),
-                    this['setBen'](0);
-                    var t = this.me['getChildByName']('container_lefttop');
-                    if (view['DesktopMgr'].Inst['is_chuanma_mode']())
-                        t['getChildByName']('num_lizhi_0')['visible'] = !1, t['getChildByName']('num_lizhi_1')['visible'] = !1, t['getChildByName']('num_ben_0')['visible'] = !1, t['getChildByName']('num_ben_1')['visible'] = !1, t['getChildByName']('container_doras')['visible'] = !1, t['getChildByName']('gamemode')['visible'] = !1, t['getChildByName']('activitymode')['visible'] = !0, t['getChildByName']('MD5').y = 63, t['getChildByName']('MD5')['width'] = 239, t['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/left_top1.png'), t['getChildAt'](0)['width'] = 280, t['getChildAt'](0)['height'] = 139, 1 == view['DesktopMgr'].Inst['game_config']['category'] ? (t['getChildByName']('activitymode')['getChildAt'](0)['visible'] = !1, t['getChildByName']('activitymode')['getChildAt'](1)['visible'] = !0) : ('en' == GameMgr['client_language'] && (t['getChildByName']('activitymode')['getChildAt'](0).x = 2 == view['DesktopMgr'].Inst['game_config']['category'] ? 77 : 97), t['getChildByName']('activitymode')['getChildAt'](0).text = game['Tools']['strOfLocalization'](2 == view['DesktopMgr'].Inst['game_config']['category'] ? 3393 : 2025), t['getChildByName']('activitymode')['getChildAt'](0)['visible'] = !0, t['getChildByName']('activitymode')['getChildAt'](1)['visible'] = !1);
-                    else if (t['getChildByName']('num_lizhi_0')['visible'] = !0, t['getChildByName']('num_lizhi_1')['visible'] = !1, t['getChildByName']('num_ben_0')['visible'] = !0, t['getChildByName']('num_ben_1')['visible'] = !0, t['getChildByName']('container_doras')['visible'] = !0, t['getChildByName']('gamemode')['visible'] = !0, t['getChildByName']('activitymode')['visible'] = !1, t['getChildByName']('MD5').y = 51, t['getChildByName']('MD5')['width'] = 276, t['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/left_top.png'), t['getChildAt'](0)['width'] = 313, t['getChildAt'](0)['height'] = 158, view['DesktopMgr'].Inst['game_config']) {
-                        var O = view['DesktopMgr'].Inst['game_config'],
-                        L = game['Tools']['get_room_desc'](O);
-                        this['label_gamemode'].text = L.text,
-                        this['container_gamemode']['visible'] = !0;
-                    } else
-                        this['container_gamemode']['visible'] = !1;
-                    if (this['btn_double_pass']['visible'] = view['DesktopMgr'].Inst.mode == view['EMJMode'].play, view['DesktopMgr'].Inst.mode == view['EMJMode'].play)
-                        if (this['_network_delay']['begin_refresh'](), this['_network_delay'].me['visible'] = !0, view['DesktopMgr'].Inst['is_jjc_mode']()) {
-                            this['container_jjc']['visible'] = !0,
-                            this['label_jjc_win'].text = w['UI_Activity_JJC']['win_count']['toString']();
-                            for (var i = 0; 3 > i; i++)
-                                this['container_jjc']['getChildByName'](i['toString']()).skin = game['Tools']['localUISrc']('myres/mjdesktop/tag_jjc_' + (w['UI_Activity_JJC']['lose_count'] > i ? 'd' : 'l') + '.png');
-                        } else
-                            this['container_jjc']['visible'] = !1;
-                    else
-                        this['_network_delay'].me['visible'] = !1, this['container_jjc']['visible'] = !1;
-                    w['UI_Replay'].Inst && (w['UI_Replay'].Inst['pop_collectinput'].me['visible'] = !1);
-                    var h = this['_container_fun']['getChildByName']('in')['getChildByName']('btn_automoqie'),
-                    v = this['_container_fun']['getChildByName']('out')['getChildByName']('btn_automoqie2');
-                    view['DesktopMgr'].Inst['is_zhanxing_mode']() ? (w['UI_Astrology'].Inst.show(), game['Tools']['setGrayDisable'](h, !0), game['Tools']['setGrayDisable'](v, !0)) : (game['Tools']['setGrayDisable'](h, !1), game['Tools']['setGrayDisable'](v, !1), w['UI_Astrology'].Inst.hide());
-                    for (var i = 0; 4 > i; i++)
-                        this['_player_infos'][i]['tianming']['visible'] = view['DesktopMgr'].Inst['is_tianming_mode'](), this['_player_infos'][i]['tianming'].skin = game['Tools']['localUISrc']('myres/mjdesktop/tianmingx5.png');
-                },
-                V['prototype']['onCloseRoom'] = function () {
-                    this['_network_delay']['close_refresh']();
-                },
-                V['prototype']['refreshSeat'] = function (w) {
-                    void 0 === w && (w = !1);
-                    for (var j = (view['DesktopMgr'].Inst.seat, view['DesktopMgr'].Inst['player_datas']), C = 0; 4 > C; C++) {
-                        var i = view['DesktopMgr'].Inst['localPosition2Seat'](C),
-                        l = this['_player_infos'][C];
-                        if (0 > i)
-                            l['container']['visible'] = !1;
-                        else {
-                            l['container']['visible'] = !0;
-                            var u = view['DesktopMgr'].Inst['getPlayerName'](i);
-                            game['Tools']['SetNickname'](l.name, u),
-                            l.head.id = j[i]['avatar_id'],
-                            l.head['set_head_frame'](j[i]['account_id'], j[i]['avatar_frame']);
-                            var b = (cfg['item_definition'].item.get(j[i]['avatar_frame']), cfg['item_definition'].view.get(j[i]['avatar_frame']));
-                            if (l.head.me.y = b && b['sargs'][0] ? l['head_origin_y'] - Number(b['sargs'][0]) / 100 * this['head_offset_y'] : l['head_origin_y'], l['avatar'] = j[i]['avatar_id'], 0 != C) {
-                                var V = j[i]['account_id'] && 0 != j[i]['account_id'] && view['DesktopMgr'].Inst.mode != view['EMJMode']['paipu'],
-                                k = j[i]['account_id'] && 0 != j[i]['account_id'] && view['DesktopMgr'].Inst.mode == view['EMJMode'].play,
-                                S = view['DesktopMgr'].Inst.mode != view['EMJMode'].play;
-                                w ? l['headbtn']['onChangeSeat'](V, k, S) : l['headbtn']['reset'](V, k, S);
-                            }
-                            l['title'].id = j[i]['title'] ? game['Tools']['titleLocalization'](j[i]['account_id'], j[i]['title']) : 0;
-                        }
-                    }
-                },
-                V['prototype']['refreshNames'] = function () {
-                    for (var w = 0; 4 > w; w++) {
-                        var j = view['DesktopMgr'].Inst['localPosition2Seat'](w),
-                        C = this['_player_infos'][w];
-                        if (0 > j)
-                            C['container']['visible'] = !1;
-                        else {
-                            C['container']['visible'] = !0;
-                            var i = view['DesktopMgr'].Inst['getPlayerName'](j);
-                            game['Tools']['SetNickname'](C.name, i);
-                        }
-                    }
-                },
-                V['prototype']['refreshLinks'] = function () {
-                    for (var w = (view['DesktopMgr'].Inst.seat, 0); 4 > w; w++) {
-                        var j = view['DesktopMgr'].Inst['localPosition2Seat'](w);
-                        view['DesktopMgr'].Inst.mode == view['EMJMode'].play ? this['_player_infos'][w]['disconnect']['visible'] = -1 == j || 0 == w ? !1 : view['DesktopMgr']['player_link_state'][j] != view['ELink_State']['READY'] : view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast'] ? this['_player_infos'][w]['disconnect']['visible'] = -1 == j || 0 == view['DesktopMgr'].Inst['player_datas'][j]['account_id'] ? !1 : view['DesktopMgr']['player_link_state'][j] != view['ELink_State']['READY'] : view['DesktopMgr'].Inst.mode == view['EMJMode']['paipu'] && (this['_player_infos'][w]['disconnect']['visible'] = !1);
-                    }
-                },
-                V['prototype']['setBen'] = function (w) {
-                    w > 99 && (w = 99);
-                    var j = this.me['getChildByName']('container_lefttop'),
-                    C = j['getChildByName']('num_ben_0'),
-                    i = j['getChildByName']('num_ben_1');
-                    w >= 10 ? (C.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + Math['floor'](w / 10)['toString']() + '.png'), i.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (w % 10)['toString']() + '.png'), i['visible'] = !0) : (C.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (w % 10)['toString']() + '.png'), i['visible'] = !1);
-                },
-                V['prototype']['setLiqibang'] = function (w, j) {
-                    void 0 === j && (j = !0),
-                    w > 999 && (w = 999);
-                    var C = this.me['getChildByName']('container_lefttop'),
-                    i = C['getChildByName']('num_lizhi_0'),
-                    l = C['getChildByName']('num_lizhi_1'),
-                    u = C['getChildByName']('num_lizhi_2');
-                    w >= 100 ? (u.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (w % 10)['toString']() + '.png'), l.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (Math['floor'](w / 10) % 10)['toString']() + '.png'), i.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + Math['floor'](w / 100)['toString']() + '.png'), l['visible'] = !0, u['visible'] = !0) : w >= 10 ? (l.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (w % 10)['toString']() + '.png'), i.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + Math['floor'](w / 10)['toString']() + '.png'), l['visible'] = !0, u['visible'] = !1) : (i.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + w['toString']() + '.png'), l['visible'] = !1, u['visible'] = !1),
-                    view['DesktopMgr'].Inst['setRevealScore'](w, j);
-                },
-                V['prototype']['reset_rounds'] = function () {
-                    this['closeCountDown'](),
-                    this['showscoredeltaing'] = !1,
-                    view['DesktopMgr'].Inst['setScoreDelta'](!1);
-                    for (var w = 'myres2/mjp/' + GameMgr.Inst['mjp_view'] + /hand/, j = 0; j < this['doras']['length']; j++)
-                        if (view['DesktopMgr'].Inst['is_jiuchao_mode']())
-                            this['front_doras'][j]['visible'] = !1, this['doras'][j].skin = game['Tools']['localUISrc']('myres/mjdesktop/tou_dora_back.png');
-                        else {
-                            var C = 'myres2/mjpm/' + GameMgr.Inst['mjpm_view'] + /ui/;
-                            this['front_doras'][j]['visible'] = !0,
-                            this['doras'][j].skin = game['Tools']['localUISrc'](C + '5z.png'),
-                            this['front_doras'][j].skin = game['Tools']['localUISrc'](w + 'back.png');
-                        }
-                    for (var j = 0; 4 > j; j++)
-                        this['_player_infos'][j].emo['reset'](), this['_player_infos'][j].que['visible'] = !1;
-                    this['_timecd']['reset'](),
-                    Laya['timer']['clearAll'](this),
-                    Laya['timer']['clearAll'](this['label_md5']),
-                    view['DesktopMgr'].Inst['is_chuanma_mode']() || (this['container_doras']['visible'] = !0),
-                    this['label_md5']['visible'] = !1;
-                },
-                V['prototype']['showCountDown'] = function (w, j) {
-                    this['_timecd']['showCD'](w, j);
-                },
-                V['prototype']['setZhenting'] = function (w) {
-                    this['img_zhenting']['visible'] = w;
-                },
-                V['prototype']['shout'] = function (w, j, C, i) {
-                    app.Log.log('shout:' + w + ' type:' + j);
-                    try {
-                        var l = this['_player_infos'][w],
-                        u = l['container_shout'],
-                        b = u['getChildByName']('img_content'),
-                        V = u['getChildByName']('illust')['getChildByName']('illust'),
-                        k = u['getChildByName']('img_score');
-                        if (0 == i)
-                            k['visible'] = !1;
-                        else {
-                            k['visible'] = !0;
-                            var S = 0 > i ? 'm' + Math.abs(i) : i;
-                            k.skin = game['Tools']['localUISrc']('myres/mjdesktop/shout_score_' + S + '.png');
-                        }
-                        '' == j ? b['visible'] = !1 : (b['visible'] = !0, b.skin = game['Tools']['localUISrc']('myres/mjdesktop/shout_' + j + '.png')),
-                        view['DesktopMgr']['is_yuren_type']() && 100 * Math['random']() < 20 ? (u['getChildByName']('illust')['visible'] = !1, u['getChildAt'](2)['visible'] = !0, u['getChildAt'](0)['visible'] = !1, game['LoadMgr']['setImgSkin'](u['getChildAt'](2), 'extendRes/charactor/yurenjie/xg' + Math['floor'](3 * Math['random']()) + '.png')) : (u['getChildByName']('illust')['visible'] = !0, u['getChildAt'](2)['visible'] = !1, u['getChildAt'](0)['visible'] = !0, V['scaleX'] = 1, game['Tools']['charaPart'](C['avatar_id'], V, 'half', l['illustrect'], !0, !0));
-                        var H = 0,
-                        N = 0;
-                        switch (w) {
-                        case 0:
-                            H = -105,
-                            N = 0;
-                            break;
-                        case 1:
-                            H = 500,
-                            N = 0;
-                            break;
-                        case 2:
-                            H = 0,
-                            N = -300;
-                            break;
-                        default:
-                            H = -500,
-                            N = 0;
-                        }
-                        u['visible'] = !0,
-                        u['alpha'] = 0,
-                        u.x = l['shout_origin_x'] + H,
-                        u.y = l['shout_origin_y'] + N,
-                        Laya['Tween'].to(u, {
-                            alpha: 1,
-                            x: l['shout_origin_x'],
-                            y: l['shout_origin_y']
-                        }, 70),
-                        Laya['Tween'].to(u, {
-                            alpha: 0
-                        }, 150, null, null, 600),
-                        Laya['timer'].once(800, this, function () {
-                            Laya['loader']['clearTextureRes'](V.skin),
-                            u['visible'] = !1;
-                        });
-                    } catch (W) {
-                        var e = {};
-                        e['error'] = W['message'],
-                        e['stack'] = W['stack'],
-                        e['method'] = 'shout',
-                        e['class'] = 'UI_DesktopInfos',
-                        GameMgr.Inst['onFatalError'](e);
-                    }
-                },
-                V['prototype']['closeCountDown'] = function () {
-                    this['_timecd']['close']();
-                },
-                V['prototype']['refreshFuncBtnShow'] = function (w, j, C) {
-                    var i = w['getChildByName']('img_choosed');
-                    j['color'] = w['mouseEnabled'] ? C ? '#3bd647' : '#7992b3' : '#565656',
-                    i['visible'] = C;
-                },
-                V['prototype']['onShowEmo'] = function (w, j) {
-                    var C = this['_player_infos'][w];
-                    0 != w && C['headbtn']['emj_banned'] || C.emo.show(w, j);
-                },
-                V['prototype']['changeHeadEmo'] = function (w) { {
-                        var j = view['DesktopMgr'].Inst['seat2LocalPosition'](w);
-                        this['_player_infos'][j];
-                    }
-                },
-                V['prototype']['onBtnShowScoreDelta'] = function () {
-                    var w = this;
-                    this['showscoredeltaing'] || (this['showscoredeltaing'] = !0, view['DesktopMgr'].Inst['setScoreDelta'](!0), Laya['timer'].once(5000, this, function () {
-                            w['showscoredeltaing'] = !1,
-                            view['DesktopMgr'].Inst['setScoreDelta'](!1);
-                        }));
-                },
-                V['prototype']['btn_seeinfo'] = function (j) {
-                    if (view['DesktopMgr'].Inst.mode != view['EMJMode']['paipu'] && view['DesktopMgr'].Inst['gameing']) {
-                        var C = view['DesktopMgr'].Inst['player_datas'][view['DesktopMgr'].Inst['localPosition2Seat'](j)]['account_id'];
-                        if (C) {
-                            var i = 1 == view['DesktopMgr'].Inst['game_config']['category'],
-                            l = 1,
-                            u = view['DesktopMgr'].Inst['game_config'].meta;
-                            u && u['mode_id'] == game['EMatchMode']['shilian'] && (l = 4),
-                            w['UI_OtherPlayerInfo'].Inst.show(C, view['DesktopMgr'].Inst['game_config'].mode.mode < 10 ? 1 : 2, i ? 1 : 2, l);
-                        }
-                    }
-                },
-                V['prototype']['openDora3BeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_dora3_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openPeipaiOpenBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_peipai_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openDora3BeginShine'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_shine'), 'scene/effect_dora3_shine.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](244),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openMuyuOpenBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_muyu_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openShilianOpenBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_shilian_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openXiuluoOpenBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_xiuluo_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openChuanmaBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_chiyu_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openJiuChaoBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_mingjing_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openAnPaiBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_anye_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openTopMatchOpenBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_dianfengduiju_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openZhanxingBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_zhanxing_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['openTianmingBeginEffect'] = function () {
-                    var w = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_tianming_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                    view['AudioMgr']['PlayAudio'](243),
-                    Laya['timer'].once(5000, w, function () {
-                        w['destory']();
-                    });
-                },
-                V['prototype']['logUpEmoInfo'] = function () {
-                    this['block_emo']['sendEmoLogUp'](),
-                    this['min_double_time'] = 0,
-                    this['max_double_time'] = 0;
-                },
-                V['prototype']['onCollectChange'] = function () {
-                    this['_btn_collect']['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/btn_collect_' + (w['UI_PaiPu']['collect_info'][GameMgr.Inst['record_uuid']] ? 'l.png' : 'd.png'));
-                },
-                V['prototype']['showAIEmo'] = function () {
-                    for (var w = this, j = function (j) {
-                        var i = view['DesktopMgr'].Inst['player_datas'][j];
-                        i['account_id'] && 0 != i['account_id'] || Math['random']() < 0.3 && Laya['timer'].once(500 + 1000 * Math['random'](), C, function () {
-                            w['onShowEmo'](view['DesktopMgr'].Inst['seat2LocalPosition'](j), Math['floor'](9 * Math['random']()));
-                        });
-                    }, C = this, i = 0; i < view['DesktopMgr'].Inst['player_datas']['length']; i++)
-                        j(i);
-                },
-                V['prototype']['setGapType'] = function (w, j) {
-                    void 0 === j && (j = !1);
-                    for (var C = 0; C < w['length']; C++) {
-                        var i = view['DesktopMgr'].Inst['seat2LocalPosition'](C);
-                        this['_player_infos'][i].que['visible'] = !0,
-                        j && (0 == C ? (this['_player_infos'][i].que.pos(this['gapStartPosLst'][C].x + this['selfGapOffsetX'][w[C]], this['gapStartPosLst'][C].y), this['_player_infos'][i].que['scale'](1, 1), Laya['Tween'].to(this['_player_infos'][i].que, {
-                                    scaleX: 0.35,
-                                    scaleY: 0.35,
-                                    x: this['_player_infos'][i]['que_target_pos'].x,
-                                    y: this['_player_infos'][i]['que_target_pos'].y
-                                }, 200)) : (this['_player_infos'][i].que.pos(this['gapStartPosLst'][C].x, this['gapStartPosLst'][C].y), this['_player_infos'][i].que['scale'](1, 1), Laya['Tween'].to(this['_player_infos'][i].que, {
-                                    scaleX: 0.35,
-                                    scaleY: 0.35,
-                                    x: this['_player_infos'][i]['que_target_pos'].x,
-                                    y: this['_player_infos'][i]['que_target_pos'].y
-                                }, 200))),
-                        this['_player_infos'][i].que.skin = game['Tools']['localUISrc']('myres/mjdesktop/dingque_' + w[C] + '.png');
-                    }
-                },
-                V['prototype']['OnNewCard'] = function (w, j) {
-                    if (j) {
-                        var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_xianjing_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
-                        view['AudioMgr']['PlayAudio'](243),
-                        Laya['timer'].once(5000, C, function () {
-                            C['destory']();
-                        }),
-                        Laya['timer'].once(1300, this, function () {
-                            this['ShowSpellCard'](view['DesktopMgr'].Inst['field_spell'], !0);
-                        });
-                    } else
-                        this['ShowSpellCard'](view['DesktopMgr'].Inst['field_spell'], !1);
-                },
-                V['prototype']['ShowSpellCard'] = function (j, C) {
-                    void 0 === C && (C = !1),
-                    w['UI_FieldSpell'].Inst && !w['UI_FieldSpell'].Inst['enable'] && w['UI_FieldSpell'].Inst.show(j, C);
-                },
-                V['prototype']['HideSpellCard'] = function () {
-                    w['UI_FieldSpell'].Inst && w['UI_FieldSpell'].Inst['close']();
-                },
-                V['prototype']['SetTianMingRate'] = function (w, j, C) {
-                    void 0 === C && (C = !1);
-                    var i = view['DesktopMgr'].Inst['seat2LocalPosition'](w),
-                    l = this['_player_infos'][i]['tianming'];
-                    C && 5 != j && l.skin != game['Tools']['localUISrc']('myres/mjdesktop/tianmingx' + j + '.png') && Laya['Tween'].to(l, {
-                        scaleX: 1.1,
-                        scaleY: 1.1
-                    }, 200, null, Laya['Handler']['create'](this, function () {
-                            Laya['Tween'].to(l, {
-                                scaleX: 1,
-                                scaleY: 1
-                            }, 200);
-                        })),
-                    l.skin = game['Tools']['localUISrc']('myres/mjdesktop/tianmingx' + j + '.png');
-                },
-                V.Inst = null,
-                V;
-            }
-            (w['UIBase']);
-            w['UI_DesktopInfo'] = b;
-        }
-        (uiscript || (uiscript = {}));
-        
-
-
-
-
-
-        uiscript.UI_Info.Init  = function () {
-            // 设置名称
-             if (MMP.settings.nickname != '') {
-                            GameMgr.Inst.account_data.nickname = MMP.settings.nickname;
-                        }
+                    return C['prototype']['initRoom'] = function () {
+                        // START 
+                        //var C = view['DesktopMgr'].Inst['main_role_character_info'],
                         // END
-                        var j = this;
-                        this['read_list'] = [],
-                        app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAnnouncement', {
-                            lang: GameMgr['client_language'],
-                            platform: GameMgr['inDmm'] ? 'web_dmm' : 'web'
-                        }, function (C, i) {
-                            C || i['error'] ? w['UIMgr'].Inst['showNetReqError']('fetchAnnouncement', C, i) : j['_refreshAnnouncements'](i);
-                            // START
-                                if ((C || i['error']) === null) {
-                                    if (MMP.settings.isReadme == false || MMP.settings.version != GM_info['script']['version']) {
-                                        uiscript.UI_Info.Inst.show();
-                                        MMP.settings.isReadme = true;
-                                        MMP.settings.version = GM_info['script']['version'];
-                                        MMP.saveSettings();
-                                    }
-                                }
-                                // END
+                        var C = { charid: fake_data.char_id, level: fake_data.level, exp: fake_data.exp, skin: fake_data.skin, extra_emoji: fake_data.emoji, is_upgraded: fake_data.is_upgraded },
+                            K = cfg['item_definition']['character'].find(C['charid']);
+                        this['emo_log_count'] = 0,
+                            this.emos = [];
+                        for (var r = 0; 9 > r; r++)
+                            this.emos.push({
+                                path: K.emo + '/' + r + '.png',
+                                sub_id: r,
+                                sort: r
+                            });
+                        if (C['extra_emoji'])
+                            for (var r = 0; r < C['extra_emoji']['length']; r++)
+                                this.emos.push({
+                                    path: K.emo + '/' + C['extra_emoji'][r] + '.png',
+                                    sub_id: C['extra_emoji'][r],
+                                    sort: C['extra_emoji'][r] > 12 ? 1000000 - C['extra_emoji'][r] : C['extra_emoji'][r]
+                                });
+                        this.emos = this.emos.sort(function (C, K) {
+                            return C.sort - K.sort;
                         }),
-                        app['NetAgent']['AddListener2Lobby']('NotifyAnnouncementUpdate', Laya['Handler']['create'](this, function (w) {
-                                for (var C = GameMgr['inDmm'] ? 'web_dmm' : 'web', i = 0, l = w['update_list']; i < l['length']; i++) {
-                                    var u = l[i];
-                                    if (u.lang == GameMgr['client_language'] && u['platform'] == C) {
-                                        j['have_new_notice'] = !0;
+                            this['allgray'] = !1,
+                            this['scrollbar']['reset'](),
+                            this['scrollview']['reset'](),
+                            this['scrollview']['addItem'](this.emos['length']),
+                            this['btn_chat']['disabled'] = !1,
+                            this['btn_mask']['visible'] = view['DesktopMgr'].Inst['emoji_switch'],
+                            'chs' != GameMgr['client_language'] && (this.out['getChildAt'](3)['visible'] = !view['DesktopMgr'].Inst['emoji_switch']),
+                            this.me.x = 1896,
+                            this.in['visible'] = !1,
+                            this.out['visible'] = !0,
+                            this['emo_infos'] = {
+                                char_id: C['charid'],
+                                emoji: [],
+                                server: 'chs_t' == GameMgr['client_type'] ? 1 : 'jp' == GameMgr['client_type'] ? 2 : 3
+                            };
+                    },
+                        C['prototype']['render_item'] = function (C) {
+                            var K = this,
+                                r = C['index'],
+                                X = C['container'],
+                                U = this.emos[r],
+                                i = X['getChildByName']('btn');
+                            i.skin = game['LoadMgr']['getResImageSkin'](U.path),
+                                this['allgray'] ? game['Tools']['setGrayDisable'](i, !0) : (game['Tools']['setGrayDisable'](i, !1), i['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    if (app['NetAgent']['isMJConnectOK']()) {
+                                        GameMgr.Inst['BehavioralStatistics'](22);
+                                        for (var C = !1, r = 0, X = K['emo_infos']['emoji']; r < X['length']; r++) {
+                                            var i = X[r];
+                                            if (i[0] == U['sub_id']) {
+                                                i[0]++,
+                                                    C = !0;
+                                                break;
+                                            }
+                                        }
+                                        C || K['emo_infos']['emoji'].push([U['sub_id'], 1]),
+                                            app['NetAgent']['sendReq2MJ']('FastTest', 'broadcastInGame', {
+                                                content: JSON['stringify']({
+                                                    emo: U['sub_id']
+                                                }),
+                                                except_self: !1
+                                            }, function () { });
+                                    }
+                                    K['change_all_gray'](!0),
+                                        Laya['timer'].once(5000, K, function () {
+                                            K['change_all_gray'](!1);
+                                        }),
+                                        K['switchShow'](!1);
+                                }, null, !1));
+                        },
+                        C['prototype']['change_all_gray'] = function (C) {
+                            this['allgray'] = C,
+                                this['scrollview']['wantToRefreshAll']();
+                        },
+                        C['prototype']['switchShow'] = function (C) {
+                            var K = this,
+                                r = 0;
+                            r = C ? 1367 : 1896,
+                                Laya['Tween'].to(this.me, {
+                                    x: 1972
+                                }, C ? 60 : 140, Laya.Ease['strongOut'], Laya['Handler']['create'](this, function () {
+                                    C ? (K.out['visible'] = !1, K.in['visible'] = !0) : (K.out['visible'] = !0, K.in['visible'] = !1),
+                                        Laya['Tween'].to(K.me, {
+                                            x: r
+                                        }, C ? 140 : 60, Laya.Ease['strongOut'], Laya['Handler']['create'](K, function () {
+                                            K['btn_chat']['disabled'] = !1,
+                                                K['btn_chat_in']['disabled'] = !1;
+                                        }), 0, !0, !0);
+                                }), 0, !0, !0),
+                                this['btn_chat']['disabled'] = !0,
+                                this['btn_chat_in']['disabled'] = !0;
+                        },
+                        C['prototype']['sendEmoLogUp'] = function () {
+                            // START
+                            //if (this['emo_log_count'] > 0 && this['emo_infos'] && view['DesktopMgr'].Inst.mode == view['EMJMode'].play) {
+                            //    var C = GameMgr.Inst['getMouse']();
+                            //    GameMgr.Inst['postInfo2Server']('emo_stats', {
+                            //        data: this['emo_infos'],
+                            //        m: view['DesktopMgr']['click_prefer'],
+                            //        d: C,
+                            //        e: window['innerHeight'] / 2,
+                            //        f: window['innerWidth'] / 2,
+                            //        t: N.Inst['min_double_time'],
+                            //        g: N.Inst['max_double_time']
+                            //    }, !1),
+                            //    this['emo_infos']['emoji'] = [];
+                            // }
+                            // this['emo_log_count']++;
+                            // END
+                        },
+                        C['prototype']['reset'] = function () {
+                            this['emo_infos'] = null,
+                                this['scrollbar']['reset'](),
+                                this['scrollview']['reset']();
+                        },
+                        C;
+                }
+                    (),
+                i = function () {
+                    function K(K) {
+                        this['effect'] = null,
+                            this['container_emo'] = K['getChildByName']('chat_bubble'),
+                            this.emo = new C['UI_Character_Emo'](this['container_emo']['getChildByName']('content')),
+                            this['root_effect'] = K['getChildByName']('root_effect'),
+                            this['container_emo']['visible'] = !1;
+                    }
+                    return K['prototype'].show = function (C, K) {
+                        var r = this;
+                        if (!view['DesktopMgr'].Inst['emoji_switch']) {
+                            for (var X = view['DesktopMgr'].Inst['player_datas'][view['DesktopMgr'].Inst['localPosition2Seat'](C)]['character']['charid'], U = cfg['character']['emoji']['getGroup'](X), i = '', N = 0, H = 0; H < U['length']; H++)
+                                if (U[H]['sub_id'] == K) {
+                                    2 == U[H].type && (i = U[H].view, N = U[H]['audio']);
+                                    break;
+                                }
+                            this['effect'] && (this['effect']['destory'](), this['effect'] = null),
+                                i ? (this['effect'] = game['FrontEffect'].Inst['create_ui_effect'](this['root_effect'], 'scene/' + i + '.lh', new Laya['Point'](0, 0), 1), Laya['timer'].once(3500, this, function () {
+                                    r['effect']['destory'](),
+                                        r['effect'] = null;
+                                }), N && view['AudioMgr']['PlayAudio'](N)) : (this.emo['setSkin'](X, K), this['container_emo']['visible'] = !0, this['container_emo']['scaleX'] = this['container_emo']['scaleY'] = 0, Laya['Tween'].to(this['container_emo'], {
+                                    scaleX: 1,
+                                    scaleY: 1
+                                }, 120, null, null, 0, !0, !0), Laya['timer'].once(3000, this, function () {
+                                    r.emo['clear'](),
+                                        Laya['Tween'].to(r['container_emo'], {
+                                            scaleX: 0,
+                                            scaleY: 0
+                                        }, 120, null, null, 0, !0, !0);
+                                }), Laya['timer'].once(3500, this, function () {
+                                    r['container_emo']['visible'] = !1;
+                                }));
+                        }
+                    },
+                        K['prototype']['reset'] = function () {
+                            Laya['timer']['clearAll'](this),
+                                this.emo['clear'](),
+                                this['container_emo']['visible'] = !1,
+                                this['effect'] && (this['effect']['destory'](), this['effect'] = null);
+                        },
+                        K;
+                }
+                    (),
+                N = function (N) {
+                    function H() {
+                        var C = N.call(this, new ui.mj['desktopInfoUI']()) || this;
+                        return C['container_doras'] = null,
+                            C['doras'] = [],
+                            C['front_doras'] = [],
+                            C['label_md5'] = null,
+                            C['container_gamemode'] = null,
+                            C['label_gamemode'] = null,
+                            C['btn_auto_moqie'] = null,
+                            C['btn_auto_nofulu'] = null,
+                            C['btn_auto_hule'] = null,
+                            C['img_zhenting'] = null,
+                            C['btn_double_pass'] = null,
+                            C['_network_delay'] = null,
+                            C['_timecd'] = null,
+                            C['_player_infos'] = [],
+                            C['_container_fun'] = null,
+                            C['_fun_in'] = null,
+                            C['_fun_out'] = null,
+                            C['showscoredeltaing'] = !1,
+                            C['_btn_leave'] = null,
+                            C['_btn_fanzhong'] = null,
+                            C['_btn_collect'] = null,
+                            C['block_emo'] = null,
+                            C['head_offset_y'] = 15,
+                            C['gapStartPosLst'] = [new Laya['Vector2'](582, 12), new Laya['Vector2'](-266, 275), new Laya['Vector2'](-380, 103), new Laya['Vector2'](375, 142)],
+                            C['selfGapOffsetX'] = [0, -150, 150],
+                            app['NetAgent']['AddListener2MJ']('NotifyGameBroadcast', Laya['Handler']['create'](C, function (K) {
+                                C['onGameBroadcast'](K);
+                            })),
+                            app['NetAgent']['AddListener2MJ']('NotifyPlayerConnectionState', Laya['Handler']['create'](C, function (K) {
+                                C['onPlayerConnectionState'](K);
+                            })),
+                            H.Inst = C,
+                            C;
+                    }
+                    return __extends(H, N),
+                        H['prototype']['onCreate'] = function () {
+                            var N = this;
+                            this['doras'] = new Array(),
+                                this['front_doras'] = [];
+                            var H = this.me['getChildByName']('container_lefttop'),
+                                w = H['getChildByName']('container_doras');
+                            this['container_doras'] = w,
+                                this['container_gamemode'] = H['getChildByName']('gamemode'),
+                                this['label_gamemode'] = this['container_gamemode']['getChildByName']('lb_mode'),
+                                'kr' == GameMgr['client_language'] && (this['label_gamemode']['scale'](0.85, 0.85), this['label_gamemode']['scriptMap']['capsui.LabelLocalizationSize']['onCreate']()),
+                                this['label_md5'] = H['getChildByName']('MD5'),
+                                H['getChildByName']('btn_md5change')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    if (N['label_md5']['visible'])
+                                        Laya['timer']['clearAll'](N['label_md5']), N['label_md5']['visible'] = !1, view['DesktopMgr'].Inst['is_chuanma_mode']() ? H['getChildByName']('activitymode')['visible'] = !0 : N['container_doras']['visible'] = !0;
+                                    else {
+                                        N['label_md5']['visible'] = !0,
+                                            view['DesktopMgr'].Inst['sha256'] ? (N['label_md5']['fontSize'] = 20, N['label_md5'].y = 45, N['label_md5'].text = game['Tools']['strOfLocalization'](3888) + view['DesktopMgr'].Inst['sha256']) : (N['label_md5']['fontSize'] = 25, N['label_md5'].y = 51, N['label_md5'].text = game['Tools']['strOfLocalization'](2048) + view['DesktopMgr'].Inst.md5),
+                                            H['getChildByName']('activitymode')['visible'] = !1,
+                                            N['container_doras']['visible'] = !1;
+                                        var C = N;
+                                        Laya['timer'].once(5000, N['label_md5'], function () {
+                                            C['label_md5']['visible'] = !1,
+                                                view['DesktopMgr'].Inst['is_chuanma_mode']() ? H['getChildByName']('activitymode')['visible'] = !0 : N['container_doras']['visible'] = !0;
+                                        });
+                                    }
+                                }, null, !1);
+                            for (var G = 0; G < w['numChildren']; G++)
+                                this['doras'].push(w['getChildAt'](G)), this['front_doras'].push(w['getChildAt'](G)['getChildAt'](0));
+                            for (var G = 0; 4 > G; G++) {
+                                var l = this.me['getChildByName']('container_player_' + G),
+                                    R = {};
+                                R['container'] = l,
+                                    R.head = new C['UI_Head'](l['getChildByName']('head'), ''),
+                                    R['head_origin_y'] = l['getChildByName']('head').y,
+                                    R.name = l['getChildByName']('container_name')['getChildByName']('name'),
+                                    R['container_shout'] = l['getChildByName']('container_shout'),
+                                    R['container_shout']['visible'] = !1,
+                                    R['illust'] = R['container_shout']['getChildByName']('illust')['getChildByName']('illust'),
+                                    R['illustrect'] = C['UIRect']['CreateFromSprite'](R['illust']),
+                                    R['shout_origin_x'] = R['container_shout'].x,
+                                    R['shout_origin_y'] = R['container_shout'].y,
+                                    R.emo = new i(l),
+                                    R['disconnect'] = l['getChildByName']('head')['getChildByName']('head')['getChildByName']('disconnect'),
+                                    R['disconnect']['visible'] = !1,
+                                    R['title'] = new C['UI_PlayerTitle'](l['getChildByName']('title'), ''),
+                                    R.que = l['getChildByName']('que'),
+                                    R['que_target_pos'] = new Laya['Vector2'](R.que.x, R.que.y),
+                                    R['tianming'] = l['getChildByName']('tianming'),
+                                    R['tianming']['visible'] = !1,
+                                    0 == G ? l['getChildByName']('btn_seeinfo')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                        N['btn_seeinfo'](0);
+                                    }, null, !1) : R['headbtn'] = new X(l['getChildByName']('btn_head'), G),
+                                    this['_player_infos'].push(R);
+                            }
+                            this['_timecd'] = new K(this.me['getChildByName']('container_countdown')),
+                                this['img_zhenting'] = this.me['getChildByName']('img_zhenting'),
+                                this['img_zhenting']['visible'] = !1,
+                                this['_initFunc'](),
+                                this['block_emo'] = new U(this.me['getChildByName']('container_chat_choose')),
+                                this.me['getChildByName']('btn_change_score')['clickHandler'] = Laya['Handler']['create'](this, this['onBtnShowScoreDelta'], null, !1),
+                                this['_btn_leave'] = this.me['getChildByName']('container_righttop')['getChildByName']('btn_leave'),
+                                this['_btn_leave']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    if (view['DesktopMgr'].Inst.mode == view['EMJMode'].play) {
+                                        if (view['DesktopMgr'].Inst['gameing']) {
+                                            for (var K = 0, r = 0; r < view['DesktopMgr'].Inst['player_datas']['length']; r++)
+                                                view['DesktopMgr'].Inst['player_datas'][r]['account_id'] && K++;
+                                            if (1 >= K)
+                                                C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](21), Laya['Handler']['create'](N, function () {
+                                                    if (view['DesktopMgr'].Inst['gameing']) {
+                                                        for (var C = 0, K = 0; K < view['DesktopMgr'].Inst['player_datas']['length']; K++) {
+                                                            var r = view['DesktopMgr'].Inst['player_datas'][K];
+                                                            r && null != r['account_id'] && 0 != r['account_id'] && C++;
+                                                        }
+                                                        1 == C ? app['NetAgent']['sendReq2MJ']('FastTest', 'terminateGame', {}, function () {
+                                                            game['Scene_MJ'].Inst['GameEnd']();
+                                                        }) : game['Scene_MJ'].Inst['ForceOut']();
+                                                    }
+                                                }));
+                                            else {
+                                                var X = !1;
+                                                if (C['UI_VoteProgress']['vote_info']) {
+                                                    var U = Math['floor']((Date.now() + GameMgr.Inst['server_time_delta']) / 1000 - C['UI_VoteProgress']['vote_info']['start_time'] - C['UI_VoteProgress']['vote_info']['duration_time']);
+                                                    0 > U && (X = !0);
+                                                }
+                                                X ? C['UI_VoteProgress'].Inst['enable'] || C['UI_VoteProgress'].Inst.show() : C['UI_VoteCD']['time_cd'] > (Date.now() + GameMgr.Inst['server_time_delta']) / 1000 ? C['UI_VoteCD'].Inst['enable'] || C['UI_VoteCD'].Inst.show() : C['UI_Vote'].Inst.show();
+                                            }
+                                        }
+                                    } else
+                                        view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast'] && (app['Log_OB'].log('quit ob'), C['UI_Ob_Replay'].Inst['resetRounds'](), C['UI_Ob_Replay'].Inst['enable'] = !1), game['Scene_MJ'].Inst['ForceOut']();
+                                }, null, !1),
+                                this.me['getChildByName']('container_righttop')['getChildByName']('btn_set')['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    C['UI_Config'].Inst.show();
+                                }, null, !1),
+                                this['_btn_fanzhong'] = this.me['getChildByName']('container_righttop')['getChildByName']('btn_fanzhong'),
+                                this['_btn_fanzhong']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    C['UI_Rules'].Inst.show(0, null, view['DesktopMgr'].Inst['is_chuanma_mode']() ? 1 : 0);
+                                }, null, !1),
+                                this['_btn_collect'] = this.me['getChildByName']('container_righttop')['getChildByName']('btn_collect'),
+                                this['_btn_collect']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    view['DesktopMgr'].Inst.mode == view['EMJMode']['paipu'] && (C['UI_PaiPu']['collect_info'][GameMgr.Inst['record_uuid']] ? C['UI_SecondConfirm'].Inst.show(game['Tools']['strOfLocalization'](3248), Laya['Handler']['create'](N, function () {
+                                        C['UI_PaiPu']['removeCollect'](GameMgr.Inst['record_uuid']);
+                                    })) : C['UI_Replay'].Inst && C['UI_Replay'].Inst['pop_collectinput'].show(GameMgr.Inst['record_uuid'], GameMgr.Inst['record_start_time'], GameMgr.Inst['record_end_time']));
+                                }, null, !1),
+                                this['btn_double_pass'] = this.me['getChildByName']('btn_double_pass'),
+                                this['btn_double_pass']['visible'] = !1;
+                            var f = 0;
+                            this['btn_double_pass']['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                if (view['DesktopMgr']['double_click_pass']) {
+                                    var K = Laya['timer']['currTimer'];
+                                    if (f + 300 > K) {
+                                        if (C['UI_ChiPengHu'].Inst['enable'])
+                                            C['UI_ChiPengHu'].Inst['onDoubleClick'](), N['recordDoubleClickTime'](K - f);
+                                        else {
+                                            var r = view['DesktopMgr'].Inst['mainrole']['can_discard'];
+                                            C['UI_LiQiZiMo'].Inst['enable'] && (r = C['UI_LiQiZiMo'].Inst['onDoubleClick'](r)),
+                                                r && view['DesktopMgr'].Inst['mainrole']['onDoubleClick']() && N['recordDoubleClickTime'](K - f);
+                                        }
+                                        f = 0;
+                                    } else
+                                        f = K;
+                                }
+                            }, null, !1),
+                                this['_network_delay'] = new r(this.me['getChildByName']('img_signal')),
+                                this['container_jjc'] = this.me['getChildByName']('container_jjc'),
+                                this['label_jjc_win'] = this['container_jjc']['getChildByName']('win'),
+                                'en' == GameMgr['client_language'] && (H['getChildByName']('activitymode')['getChildAt'](1).x = 98);
+                        },
+                        H['prototype']['recordDoubleClickTime'] = function (C) {
+                            this['min_double_time'] = this['min_double_time'] ? Math.max(0, Math.min(C, this['min_double_time'])) : C,
+                                this['max_double_time'] = this['max_double_time'] ? Math.max(C, this['max_double_time']) : C;
+                        },
+                        H['prototype']['onGameBroadcast'] = function (C) {
+                            app.Log.log('NotifyGameBroadcast ' + JSON['stringify'](C));
+                            var K = view['DesktopMgr'].Inst['seat2LocalPosition'](C.seat),
+                                r = JSON['parse'](C['content']);
+                            null != r.emo && void 0 != r.emo && (this['onShowEmo'](K, r.emo), this['showAIEmo']());
+                        },
+                        H['prototype']['onPlayerConnectionState'] = function (C) {
+                            app.Log.log('NotifyPlayerConnectionState msg: ' + JSON['stringify'](C));
+                            var K = C.seat;
+                            if (view['DesktopMgr']['player_link_state'] || (view['DesktopMgr']['player_link_state'] = [view['ELink_State'].NULL, view['ELink_State'].NULL, view['ELink_State'].NULL, view['ELink_State'].NULL]), view['DesktopMgr']['player_link_state'] && K < view['DesktopMgr']['player_link_state']['length'] && (view['DesktopMgr']['player_link_state'][K] = C['state']), this['enable']) {
+                                var r = view['DesktopMgr'].Inst['seat2LocalPosition'](K);
+                                this['_player_infos'][r]['disconnect']['visible'] = C['state'] != view['ELink_State']['READY'];
+                            }
+                        },
+                        H['prototype']['_initFunc'] = function () {
+                            var C = this;
+                            this['_container_fun'] = this.me['getChildByName']('container_func'),
+                                this['_fun_in'] = this['_container_fun']['getChildByName']('in'),
+                                this['_fun_out'] = this['_container_fun']['getChildByName']('out'),
+                                this['_fun_in_spr'] = this['_fun_in']['getChildByName']('in_func');
+                            var K = this['_fun_out']['getChildByName']('btn_func'),
+                                r = this['_fun_out']['getChildByName']('btn_func2'),
+                                X = this['_fun_in_spr']['getChildByName']('btn_func');
+                            K['clickHandler'] = r['clickHandler'] = new Laya['Handler'](this, function () {
+                                var U = 0;
+                                U = -270,
+                                    Laya['Tween'].to(C['_container_fun'], {
+                                        x: -624
+                                    }, 60, Laya.Ease['strongOut'], Laya['Handler']['create'](C, function () {
+                                        C['_fun_in']['visible'] = !0,
+                                            C['_fun_out']['visible'] = !1,
+                                            Laya['Tween'].to(C['_container_fun'], {
+                                                x: U
+                                            }, 140, Laya.Ease['strongOut'], Laya['Handler']['create'](C, function () {
+                                                K['disabled'] = !1,
+                                                    r['disabled'] = !1,
+                                                    X['disabled'] = !1,
+                                                    C['_fun_out']['visible'] = !1;
+                                            }), 0, !0, !0);
+                                    })),
+                                    K['disabled'] = !0,
+                                    r['disabled'] = !0,
+                                    X['disabled'] = !0;
+                            }, null, !1),
+                                X['clickHandler'] = new Laya['Handler'](this, function () {
+                                    var U = -546;
+                                    Laya['Tween'].to(C['_container_fun'], {
+                                        x: -624
+                                    }, 140, Laya.Ease['strongOut'], Laya['Handler']['create'](C, function () {
+                                        C['_fun_in']['visible'] = !1,
+                                            C['_fun_out']['visible'] = !0,
+                                            Laya['Tween'].to(C['_container_fun'], {
+                                                x: U
+                                            }, 60, Laya.Ease['strongOut'], Laya['Handler']['create'](C, function () {
+                                                K['disabled'] = !1,
+                                                    r['disabled'] = !1,
+                                                    X['disabled'] = !1,
+                                                    C['_fun_out']['visible'] = !0;
+                                            }), 0, !0, !0);
+                                    })),
+                                        K['disabled'] = !0,
+                                        r['disabled'] = !0,
+                                        X['disabled'] = !0;
+                                });
+                            var U = this['_fun_in']['getChildByName']('btn_autolipai'),
+                                i = this['_fun_out']['getChildByName']('btn_autolipai2'),
+                                N = this['_fun_out']['getChildByName']('autolipai'),
+                                H = Laya['LocalStorage']['getItem']('autolipai'),
+                                w = !0;
+                            w = H && '' != H ? 'true' == H : !0,
+                                this['refreshFuncBtnShow'](U, N, w),
+                                U['clickHandler'] = i['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    view['DesktopMgr'].Inst['setAutoLiPai'](!view['DesktopMgr'].Inst['auto_liqi']),
+                                        C['refreshFuncBtnShow'](U, N, view['DesktopMgr'].Inst['auto_liqi']),
+                                        Laya['LocalStorage']['setItem']('autolipai', view['DesktopMgr'].Inst['auto_liqi'] ? 'true' : 'false');
+                                }, null, !1);
+                            var G = this['_fun_in']['getChildByName']('btn_autohu'),
+                                l = this['_fun_out']['getChildByName']('btn_autohu2'),
+                                R = this['_fun_out']['getChildByName']('autohu');
+                            this['refreshFuncBtnShow'](G, R, !1),
+                                G['clickHandler'] = l['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    view['DesktopMgr'].Inst['setAutoHule'](!view['DesktopMgr'].Inst['auto_hule']),
+                                        C['refreshFuncBtnShow'](G, R, view['DesktopMgr'].Inst['auto_hule']);
+                                }, null, !1);
+                            var f = this['_fun_in']['getChildByName']('btn_autonoming'),
+                                A = this['_fun_out']['getChildByName']('btn_autonoming2'),
+                                h = this['_fun_out']['getChildByName']('autonoming');
+                            this['refreshFuncBtnShow'](f, h, !1),
+                                f['clickHandler'] = A['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    view['DesktopMgr'].Inst['setAutoNoFulu'](!view['DesktopMgr'].Inst['auto_nofulu']),
+                                        C['refreshFuncBtnShow'](f, h, view['DesktopMgr'].Inst['auto_nofulu']);
+                                }, null, !1);
+                            var J = this['_fun_in']['getChildByName']('btn_automoqie'),
+                                c = this['_fun_out']['getChildByName']('btn_automoqie2'),
+                                W = this['_fun_out']['getChildByName']('automoqie');
+                            this['refreshFuncBtnShow'](J, W, !1),
+                                J['clickHandler'] = c['clickHandler'] = Laya['Handler']['create'](this, function () {
+                                    view['DesktopMgr'].Inst['setAutoMoQie'](!view['DesktopMgr'].Inst['auto_moqie']),
+                                        C['refreshFuncBtnShow'](J, W, view['DesktopMgr'].Inst['auto_moqie']);
+                                }, null, !1),
+                                'kr' == GameMgr['client_language'] && (N['scale'](0.9, 0.9), R['scale'](0.9, 0.9), h['scale'](0.9, 0.9), W['scale'](0.9, 0.9)),
+                                Laya['Browser'].onPC && !GameMgr['inConch'] ? (K['visible'] = !1, l['visible'] = !0, i['visible'] = !0, A['visible'] = !0, c['visible'] = !0) : (K['visible'] = !0, l['visible'] = !1, i['visible'] = !1, A['visible'] = !1, c['visible'] = !1);
+                        },
+                        H['prototype']['noAutoLipai'] = function () {
+                            var C = this['_container_fun']['getChildByName']('btn_autolipai');
+                            view['DesktopMgr'].Inst['auto_liqi'] = !0,
+                                C['clickHandler'].run();
+                        },
+                        H['prototype']['resetFunc'] = function () {
+                            var C = Laya['LocalStorage']['getItem']('autolipai'),
+                                K = !0;
+                            K = C && '' != C ? 'true' == C : !0;
+                            var r = this['_fun_in']['getChildByName']('btn_autolipai'),
+                                X = this['_fun_out']['getChildByName']('automoqie');
+                            this['refreshFuncBtnShow'](r, X, K),
+                                Laya['LocalStorage']['setItem']('autolipai', K ? 'true' : 'false'),
+                                view['DesktopMgr'].Inst['setAutoLiPai'](K);
+                            var U = this['_fun_in']['getChildByName']('btn_autohu'),
+                                i = this['_fun_out']['getChildByName']('autohu');
+                            this['refreshFuncBtnShow'](U, i, view['DesktopMgr'].Inst['auto_hule']);
+                            var N = this['_fun_in']['getChildByName']('btn_autonoming'),
+                                H = this['_fun_out']['getChildByName']('autonoming');
+                            this['refreshFuncBtnShow'](N, H, view['DesktopMgr'].Inst['auto_nofulu']);
+                            var w = this['_fun_in']['getChildByName']('btn_automoqie'),
+                                G = this['_fun_out']['getChildByName']('automoqie');
+                            this['refreshFuncBtnShow'](w, G, view['DesktopMgr'].Inst['auto_moqie']),
+                                this['_container_fun'].x = -546,
+                                this['_fun_in']['visible'] = !1,
+                                this['_fun_out']['visible'] = !0; {
+                                var l = this['_fun_out']['getChildByName']('btn_func');
+                                this['_fun_out']['getChildByName']('btn_func2');
+                            }
+                            l['disabled'] = !1,
+                                l['disabled'] = !1;
+                        },
+                        H['prototype']['setDora'] = function (C, K) {
+                            if (0 > C || C >= this['doras']['length'])
+                                return console['error']('setDora pos错误'), void 0;
+                            var r = 'myres2/mjpm/' + (K['touming'] ? GameMgr.Inst['touming_mjp_view'] : GameMgr.Inst['mjp_surface_view']) + /ui/;
+                            this['doras'][C].skin = game['Tools']['localUISrc'](r + K['toString'](!1) + '.png'),
+                                this['front_doras'][C]['visible'] = !K['touming'],
+                                this['front_doras'][C].skin = game['Tools']['localUISrc']('myres2/mjp/' + GameMgr.Inst['mjp_view'] + '/hand/front.png');
+                        },
+                        H['prototype']['initRoom'] = function () {
+                            var K = this;
+                            if (view['DesktopMgr'].Inst.mode == view['EMJMode'].play || view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast']) {
+                                for (var r = {}, X = 0; X < view['DesktopMgr'].Inst['player_datas']['length']; X++) {
+                                    for (var U = view['DesktopMgr'].Inst['player_datas'][X]['character'], i = U['charid'], N = cfg['item_definition']['character'].find(i).emo, H = 0; 9 > H; H++) {
+                                        var w = N + '/' + H['toString']() + '.png';
+                                        r[w] = 1;
+                                    }
+                                    if (U['extra_emoji'])
+                                        for (var H = 0; H < U['extra_emoji']['length']; H++) {
+                                            var w = N + '/' + U['extra_emoji'][H]['toString']() + '.png';
+                                            r[w] = 1;
+                                        }
+                                }
+                                var G = [];
+                                for (var l in r)
+                                    G.push(l);
+                                this['block_emo'].me.x = 1878,
+                                    this['block_emo']['reset'](),
+                                    game['LoadMgr']['loadResImage'](G, Laya['Handler']['create'](this, function () {
+                                        K['block_emo']['initRoom']();
+                                    })),
+                                    this['_btn_collect']['visible'] = !1;
+                            } else {
+                                for (var R = !1, X = 0; X < view['DesktopMgr'].Inst['player_datas']['length']; X++) {
+                                    var f = view['DesktopMgr'].Inst['player_datas'][X];
+                                    if (f && null != f['account_id'] && f['account_id'] == GameMgr.Inst['account_id']) {
+                                        R = !0;
                                         break;
                                     }
                                 }
-                            }, null, !1));
-                    }
-            
+                                this['_btn_collect']['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/btn_collect_' + (C['UI_PaiPu']['collect_info'][GameMgr.Inst['record_uuid']] ? 'l.png' : 'd.png')),
+                                    this['_btn_collect']['visible'] = R;
+                            }
+                            if (this['_btn_leave']['visible'] = !0, this['_btn_fanzhong']['visible'] = !1, this['_btn_fanzhong'].x = 152, view['DesktopMgr'].Inst.mode == view['EMJMode'].play) {
+                                for (var A = 0, X = 0; X < view['DesktopMgr'].Inst['player_datas']['length']; X++) {
+                                    var f = view['DesktopMgr'].Inst['player_datas'][X];
+                                    f && null != f['account_id'] && 0 != f['account_id'] && A++;
+                                }
+                                1 == view['DesktopMgr'].Inst['game_config']['category'] ? (this['_btn_leave']['visible'] = !0, this['_btn_fanzhong']['visible'] = !1, view['DesktopMgr'].Inst['is_chuanma_mode']() && (this['_btn_fanzhong']['visible'] = !0, this['_btn_fanzhong'].x = -92)) : (this['_btn_leave']['visible'] = !1, this['_btn_fanzhong']['visible'] = !0);
+                            }
+                            for (var h = 0, X = 0; X < view['DesktopMgr'].Inst['player_datas']['length']; X++) {
+                                var f = view['DesktopMgr'].Inst['player_datas'][X];
+                                f && null != f['account_id'] && 0 != f['account_id'] && h++;
+                            }
+                            this['block_emo'].me['visible'] = view['DesktopMgr'].Inst.mode == view['EMJMode'].play,
+                                this['_container_fun']['visible'] = view['DesktopMgr'].Inst.mode == view['EMJMode'].play,
+                                this['enable'] = !0,
+                                this['setLiqibang'](0),
+                                this['setBen'](0);
+                            var J = this.me['getChildByName']('container_lefttop');
+                            if (view['DesktopMgr'].Inst['is_chuanma_mode']())
+                                J['getChildByName']('num_lizhi_0')['visible'] = !1, J['getChildByName']('num_lizhi_1')['visible'] = !1, J['getChildByName']('num_ben_0')['visible'] = !1, J['getChildByName']('num_ben_1')['visible'] = !1, J['getChildByName']('container_doras')['visible'] = !1, J['getChildByName']('gamemode')['visible'] = !1, J['getChildByName']('activitymode')['visible'] = !0, J['getChildByName']('MD5').y = 63, J['getChildByName']('MD5')['width'] = 239, J['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/left_top1.png'), J['getChildAt'](0)['width'] = 280, J['getChildAt'](0)['height'] = 139, 1 == view['DesktopMgr'].Inst['game_config']['category'] ? (J['getChildByName']('activitymode')['getChildAt'](0)['visible'] = !1, J['getChildByName']('activitymode')['getChildAt'](1)['visible'] = !0) : ('en' == GameMgr['client_language'] && (J['getChildByName']('activitymode')['getChildAt'](0).x = 2 == view['DesktopMgr'].Inst['game_config']['category'] ? 77 : 97), J['getChildByName']('activitymode')['getChildAt'](0).text = game['Tools']['strOfLocalization'](2 == view['DesktopMgr'].Inst['game_config']['category'] ? 3393 : 2025), J['getChildByName']('activitymode')['getChildAt'](0)['visible'] = !0, J['getChildByName']('activitymode')['getChildAt'](1)['visible'] = !1);
+                            else if (J['getChildByName']('num_lizhi_0')['visible'] = !0, J['getChildByName']('num_lizhi_1')['visible'] = !1, J['getChildByName']('num_ben_0')['visible'] = !0, J['getChildByName']('num_ben_1')['visible'] = !0, J['getChildByName']('container_doras')['visible'] = !0, J['getChildByName']('gamemode')['visible'] = !0, J['getChildByName']('activitymode')['visible'] = !1, J['getChildByName']('MD5').y = 51, J['getChildByName']('MD5')['width'] = 276, J['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/left_top.png'), J['getChildAt'](0)['width'] = 313, J['getChildAt'](0)['height'] = 158, view['DesktopMgr'].Inst['game_config']) {
+                                var c = view['DesktopMgr'].Inst['game_config'],
+                                    W = game['Tools']['get_room_desc'](c);
+                                this['label_gamemode'].text = W.text,
+                                    this['container_gamemode']['visible'] = !0;
+                            } else
+                                this['container_gamemode']['visible'] = !1;
+                            if (this['btn_double_pass']['visible'] = view['DesktopMgr'].Inst.mode == view['EMJMode'].play, view['DesktopMgr'].Inst.mode == view['EMJMode'].play)
+                                if (this['_network_delay']['begin_refresh'](), this['_network_delay'].me['visible'] = !0, view['DesktopMgr'].Inst['is_jjc_mode']()) {
+                                    this['container_jjc']['visible'] = !0,
+                                        this['label_jjc_win'].text = C['UI_Activity_JJC']['win_count']['toString']();
+                                    for (var X = 0; 3 > X; X++)
+                                        this['container_jjc']['getChildByName'](X['toString']()).skin = game['Tools']['localUISrc']('myres/mjdesktop/tag_jjc_' + (C['UI_Activity_JJC']['lose_count'] > X ? 'd' : 'l') + '.png');
+                                } else
+                                    this['container_jjc']['visible'] = !1;
+                            else
+                                this['_network_delay'].me['visible'] = !1, this['container_jjc']['visible'] = !1;
+                            C['UI_Replay'].Inst && (C['UI_Replay'].Inst['pop_collectinput'].me['visible'] = !1);
+                            var x = this['_container_fun']['getChildByName']('in')['getChildByName']('btn_automoqie'),
+                                y = this['_container_fun']['getChildByName']('out')['getChildByName']('btn_automoqie2');
+                            view['DesktopMgr'].Inst['is_zhanxing_mode']() ? (C['UI_Astrology'].Inst.show(), game['Tools']['setGrayDisable'](x, !0), game['Tools']['setGrayDisable'](y, !0)) : (game['Tools']['setGrayDisable'](x, !1), game['Tools']['setGrayDisable'](y, !1), C['UI_Astrology'].Inst.hide());
+                            for (var X = 0; 4 > X; X++)
+                                this['_player_infos'][X]['tianming']['visible'] = view['DesktopMgr'].Inst['is_tianming_mode'](), this['_player_infos'][X]['tianming'].skin = game['Tools']['localUISrc']('myres/mjdesktop/tianmingx5.png');
+                        },
+                        H['prototype']['onCloseRoom'] = function () {
+                            this['_network_delay']['close_refresh']();
+                        },
+                        H['prototype']['refreshSeat'] = function (C) {
+                            void 0 === C && (C = !1);
+                            for (var K = (view['DesktopMgr'].Inst.seat, view['DesktopMgr'].Inst['player_datas']), r = 0; 4 > r; r++) {
+                                var X = view['DesktopMgr'].Inst['localPosition2Seat'](r),
+                                    U = this['_player_infos'][r];
+                                if (0 > X)
+                                    U['container']['visible'] = !1;
+                                else {
+                                    U['container']['visible'] = !0;
+                                    var i = view['DesktopMgr'].Inst['getPlayerName'](X);
+                                    game['Tools']['SetNickname'](U.name, i),
+                                        U.head.id = K[X]['avatar_id'],
+                                        U.head['set_head_frame'](K[X]['account_id'], K[X]['avatar_frame']);
+                                    var N = (cfg['item_definition'].item.get(K[X]['avatar_frame']), cfg['item_definition'].view.get(K[X]['avatar_frame']));
+                                    if (U.head.me.y = N && N['sargs'][0] ? U['head_origin_y'] - Number(N['sargs'][0]) / 100 * this['head_offset_y'] : U['head_origin_y'], U['avatar'] = K[X]['avatar_id'], 0 != r) {
+                                        var H = K[X]['account_id'] && 0 != K[X]['account_id'] && (view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast'] || view['DesktopMgr'].Inst.mode == view['EMJMode'].play),
+                                            w = K[X]['account_id'] && 0 != K[X]['account_id'] && view['DesktopMgr'].Inst.mode == view['EMJMode'].play,
+                                            G = view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast'] || view['DesktopMgr'].Inst.mode == view['EMJMode']['paipu'];
+                                        C ? U['headbtn']['onChangeSeat'](H, w, G) : U['headbtn']['reset'](H, w, G);
+                                    }
+                                    U['title'].id = K[X]['title'] ? game['Tools']['titleLocalization'](K[X]['account_id'], K[X]['title']) : 0;
+                                }
+                            }
+                        },
+                        H['prototype']['refreshNames'] = function () {
+                            for (var C = 0; 4 > C; C++) {
+                                var K = view['DesktopMgr'].Inst['localPosition2Seat'](C),
+                                    r = this['_player_infos'][C];
+                                if (0 > K)
+                                    r['container']['visible'] = !1;
+                                else {
+                                    r['container']['visible'] = !0;
+                                    var X = view['DesktopMgr'].Inst['getPlayerName'](K);
+                                    game['Tools']['SetNickname'](r.name, X);
+                                }
+                            }
+                        },
+                        H['prototype']['refreshLinks'] = function () {
+                            for (var C = (view['DesktopMgr'].Inst.seat, 0); 4 > C; C++) {
+                                var K = view['DesktopMgr'].Inst['localPosition2Seat'](C);
+                                view['DesktopMgr'].Inst.mode == view['EMJMode'].play ? this['_player_infos'][C]['disconnect']['visible'] = -1 == K || 0 == C ? !1 : view['DesktopMgr']['player_link_state'][K] != view['ELink_State']['READY'] : view['DesktopMgr'].Inst.mode == view['EMJMode']['live_broadcast'] ? this['_player_infos'][C]['disconnect']['visible'] = -1 == K || 0 == view['DesktopMgr'].Inst['player_datas'][K]['account_id'] ? !1 : view['DesktopMgr']['player_link_state'][K] != view['ELink_State']['READY'] : view['DesktopMgr'].Inst.mode == view['EMJMode']['paipu'] && (this['_player_infos'][C]['disconnect']['visible'] = !1);
+                            }
+                        },
+                        H['prototype']['setBen'] = function (C) {
+                            C > 99 && (C = 99);
+                            var K = this.me['getChildByName']('container_lefttop'),
+                                r = K['getChildByName']('num_ben_0'),
+                                X = K['getChildByName']('num_ben_1');
+                            C >= 10 ? (r.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + Math['floor'](C / 10)['toString']() + '.png'), X.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (C % 10)['toString']() + '.png'), X['visible'] = !0) : (r.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (C % 10)['toString']() + '.png'), X['visible'] = !1);
+                        },
+                        H['prototype']['setLiqibang'] = function (C, K) {
+                            void 0 === K && (K = !0),
+                                C > 999 && (C = 999);
+                            var r = this.me['getChildByName']('container_lefttop'),
+                                X = r['getChildByName']('num_lizhi_0'),
+                                U = r['getChildByName']('num_lizhi_1'),
+                                i = r['getChildByName']('num_lizhi_2');
+                            C >= 100 ? (i.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (C % 10)['toString']() + '.png'), U.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (Math['floor'](C / 10) % 10)['toString']() + '.png'), X.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + Math['floor'](C / 100)['toString']() + '.png'), U['visible'] = !0, i['visible'] = !0) : C >= 10 ? (U.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + (C % 10)['toString']() + '.png'), X.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + Math['floor'](C / 10)['toString']() + '.png'), U['visible'] = !0, i['visible'] = !1) : (X.skin = game['Tools']['localUISrc']('myres/mjdesktop/w_' + C['toString']() + '.png'), U['visible'] = !1, i['visible'] = !1),
+                                view['DesktopMgr'].Inst['setRevealScore'](C, K);
+                        },
+                        H['prototype']['reset_rounds'] = function () {
+                            this['closeCountDown'](),
+                                this['showscoredeltaing'] = !1,
+                                view['DesktopMgr'].Inst['setScoreDelta'](!1);
+                            for (var C = 'myres2/mjp/' + GameMgr.Inst['mjp_view'] + /hand/, K = 0; K < this['doras']['length']; K++)
+                                if (this['front_doras'][K].skin = '', this['doras'][K].skin = '', view['DesktopMgr'].Inst['is_jiuchao_mode']())
+                                    this['front_doras'][K]['visible'] = !1, this['doras'][K].skin = game['Tools']['localUISrc']('myres/mjdesktop/tou_dora_back.png');
+                                else {
+                                    var r = 'myres2/mjpm/' + GameMgr.Inst['mjp_surface_view'] + /ui/;
+                                    this['front_doras'][K]['visible'] = !0,
+                                        this['doras'][K].skin = game['Tools']['localUISrc'](r + '5z.png'),
+                                        this['front_doras'][K].skin = game['Tools']['localUISrc'](C + 'back.png');
+                                }
+                            for (var K = 0; 4 > K; K++)
+                                this['_player_infos'][K].emo['reset'](), this['_player_infos'][K].que['visible'] = !1;
+                            this['_timecd']['reset'](),
+                                Laya['timer']['clearAll'](this),
+                                Laya['timer']['clearAll'](this['label_md5']),
+                                view['DesktopMgr'].Inst['is_chuanma_mode']() || (this['container_doras']['visible'] = !0),
+                                this['label_md5']['visible'] = !1;
+                        },
+                        H['prototype']['showCountDown'] = function (C, K) {
+                            this['_timecd']['showCD'](C, K);
+                        },
+                        H['prototype']['setZhenting'] = function (C) {
+                            this['img_zhenting']['visible'] = C;
+                        },
+                        H['prototype']['shout'] = function (C, K, r, X) {
+                            app.Log.log('shout:' + C + ' type:' + K);
+                            try {
+                                var U = this['_player_infos'][C],
+                                    i = U['container_shout'],
+                                    N = i['getChildByName']('img_content'),
+                                    H = i['getChildByName']('illust')['getChildByName']('illust'),
+                                    w = i['getChildByName']('img_score');
+                                if (0 == X)
+                                    w['visible'] = !1;
+                                else {
+                                    w['visible'] = !0;
+                                    var G = 0 > X ? 'm' + Math.abs(X) : X;
+                                    w.skin = game['Tools']['localUISrc']('myres/mjdesktop/shout_score_' + G + '.png');
+                                }
+                                '' == K ? N['visible'] = !1 : (N['visible'] = !0, N.skin = game['Tools']['localUISrc']('myres/mjdesktop/shout_' + K + '.png')),
+                                    view['DesktopMgr']['is_yuren_type']() && 100 * Math['random']() < 20 ? (i['getChildByName']('illust')['visible'] = !1, i['getChildAt'](2)['visible'] = !0, i['getChildAt'](0)['visible'] = !1, game['LoadMgr']['setImgSkin'](i['getChildAt'](2), 'extendRes/charactor/yurenjie/xg' + Math['floor'](3 * Math['random']()) + '.png')) : (i['getChildByName']('illust')['visible'] = !0, i['getChildAt'](2)['visible'] = !1, i['getChildAt'](0)['visible'] = !0, H['scaleX'] = 1, game['Tools']['charaPart'](r['avatar_id'], H, 'half', U['illustrect'], !0, !0));
+                                var l = 0,
+                                    R = 0;
+                                switch (C) {
+                                    case 0:
+                                        l = -105,
+                                            R = 0;
+                                        break;
+                                    case 1:
+                                        l = 500,
+                                            R = 0;
+                                        break;
+                                    case 2:
+                                        l = 0,
+                                            R = -300;
+                                        break;
+                                    default:
+                                        l = -500,
+                                            R = 0;
+                                }
+                                i['visible'] = !0,
+                                    i['alpha'] = 0,
+                                    i.x = U['shout_origin_x'] + l,
+                                    i.y = U['shout_origin_y'] + R,
+                                    Laya['Tween'].to(i, {
+                                        alpha: 1,
+                                        x: U['shout_origin_x'],
+                                        y: U['shout_origin_y']
+                                    }, 70),
+                                    Laya['Tween'].to(i, {
+                                        alpha: 0
+                                    }, 150, null, null, 600),
+                                    Laya['timer'].once(800, this, function () {
+                                        Laya['loader']['clearTextureRes'](H.skin),
+                                            i['visible'] = !1;
+                                    });
+                            } catch (f) {
+                                var A = {};
+                                A['error'] = f['message'],
+                                    A['stack'] = f['stack'],
+                                    A['method'] = 'shout',
+                                    A['class'] = 'UI_DesktopInfos',
+                                    GameMgr.Inst['onFatalError'](A);
+                            }
+                        },
+                        H['prototype']['closeCountDown'] = function () {
+                            this['_timecd']['close']();
+                        },
+                        H['prototype']['refreshFuncBtnShow'] = function (C, K, r) {
+                            var X = C['getChildByName']('img_choosed');
+                            K['color'] = C['mouseEnabled'] ? r ? '#3bd647' : '#7992b3' : '#565656',
+                                X['visible'] = r;
+                        },
+                        H['prototype']['onShowEmo'] = function (C, K) {
+                            var r = this['_player_infos'][C];
+                            0 != C && r['headbtn']['emj_banned'] || r.emo.show(C, K);
+                        },
+                        H['prototype']['changeHeadEmo'] = function (C) {
+                            {
+                                var K = view['DesktopMgr'].Inst['seat2LocalPosition'](C);
+                                this['_player_infos'][K];
+                            }
+                        },
+                        H['prototype']['onBtnShowScoreDelta'] = function () {
+                            var C = this;
+                            this['showscoredeltaing'] || (this['showscoredeltaing'] = !0, view['DesktopMgr'].Inst['setScoreDelta'](!0), Laya['timer'].once(5000, this, function () {
+                                C['showscoredeltaing'] = !1,
+                                    view['DesktopMgr'].Inst['setScoreDelta'](!1);
+                            }));
+                        },
+                        H['prototype']['btn_seeinfo'] = function (K) {
+                            if (view['DesktopMgr'].Inst.mode != view['EMJMode']['paipu'] && view['DesktopMgr'].Inst['gameing']) {
+                                var r = view['DesktopMgr'].Inst['player_datas'][view['DesktopMgr'].Inst['localPosition2Seat'](K)]['account_id'];
+                                if (r) {
+                                    var X = 1 == view['DesktopMgr'].Inst['game_config']['category'],
+                                        U = 1,
+                                        i = view['DesktopMgr'].Inst['game_config'].meta;
+                                    i && i['mode_id'] == game['EMatchMode']['shilian'] && (U = 4),
+                                        C['UI_OtherPlayerInfo'].Inst.show(r, view['DesktopMgr'].Inst['game_config'].mode.mode < 10 ? 1 : 2, X ? 1 : 2, U);
+                                }
+                            }
+                        },
+                        H['prototype']['openDora3BeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_dora3_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openPeipaiOpenBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_peipai_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openDora3BeginShine'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_shine'), 'scene/effect_dora3_shine.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](244),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openMuyuOpenBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_muyu_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openShilianOpenBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_shilian_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openXiuluoOpenBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_xiuluo_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openChuanmaBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_chiyu_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openJiuChaoBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_mingjing_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openAnPaiBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_anye_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openTopMatchOpenBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_dianfengduiju_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openZhanxingBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_zhanxing_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['openTianmingBeginEffect'] = function () {
+                            var C = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_tianming_begin_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                            view['AudioMgr']['PlayAudio'](243),
+                                Laya['timer'].once(5000, C, function () {
+                                    C['destory']();
+                                });
+                        },
+                        H['prototype']['logUpEmoInfo'] = function () {
+                            this['block_emo']['sendEmoLogUp'](),
+                                this['min_double_time'] = 0,
+                                this['max_double_time'] = 0;
+                        },
+                        H['prototype']['onCollectChange'] = function () {
+                            this['_btn_collect']['getChildAt'](0).skin = game['Tools']['localUISrc']('myres/mjdesktop/btn_collect_' + (C['UI_PaiPu']['collect_info'][GameMgr.Inst['record_uuid']] ? 'l.png' : 'd.png'));
+                        },
+                        H['prototype']['showAIEmo'] = function () {
+                            for (var C = this, K = function (K) {
+                                var X = view['DesktopMgr'].Inst['player_datas'][K];
+                                X['account_id'] && 0 != X['account_id'] || Math['random']() < 0.3 && Laya['timer'].once(500 + 1000 * Math['random'](), r, function () {
+                                    C['onShowEmo'](view['DesktopMgr'].Inst['seat2LocalPosition'](K), Math['floor'](9 * Math['random']()));
+                                });
+                            }, r = this, X = 0; X < view['DesktopMgr'].Inst['player_datas']['length']; X++)
+                                K(X);
+                        },
+                        H['prototype']['setGapType'] = function (C, K) {
+                            void 0 === K && (K = !1);
+                            for (var r = 0; r < C['length']; r++) {
+                                var X = view['DesktopMgr'].Inst['seat2LocalPosition'](r);
+                                this['_player_infos'][X].que['visible'] = !0,
+                                    K && (0 == r ? (this['_player_infos'][X].que.pos(this['gapStartPosLst'][r].x + this['selfGapOffsetX'][C[r]], this['gapStartPosLst'][r].y), this['_player_infos'][X].que['scale'](1, 1), Laya['Tween'].to(this['_player_infos'][X].que, {
+                                        scaleX: 0.35,
+                                        scaleY: 0.35,
+                                        x: this['_player_infos'][X]['que_target_pos'].x,
+                                        y: this['_player_infos'][X]['que_target_pos'].y
+                                    }, 200)) : (this['_player_infos'][X].que.pos(this['gapStartPosLst'][r].x, this['gapStartPosLst'][r].y), this['_player_infos'][X].que['scale'](1, 1), Laya['Tween'].to(this['_player_infos'][X].que, {
+                                        scaleX: 0.35,
+                                        scaleY: 0.35,
+                                        x: this['_player_infos'][X]['que_target_pos'].x,
+                                        y: this['_player_infos'][X]['que_target_pos'].y
+                                    }, 200))),
+                                    this['_player_infos'][X].que.skin = game['Tools']['localUISrc']('myres/mjdesktop/dingque_' + C[r] + '.png');
+                            }
+                        },
+                        H['prototype']['OnNewCard'] = function (C, K) {
+                            if (K) {
+                                var r = game['FrontEffect'].Inst['create_ui_effect'](this.me['getChildByName']('container_effects')['getChildByName']('dora3_begin'), 'scene/effect_xianjing_' + GameMgr['client_language'] + '.lh', new Laya['Point'](0, 0), 1);
+                                view['AudioMgr']['PlayAudio'](243),
+                                    Laya['timer'].once(5000, r, function () {
+                                        r['destory']();
+                                    }),
+                                    Laya['timer'].once(1300, this, function () {
+                                        this['ShowSpellCard'](view['DesktopMgr'].Inst['field_spell'], !0);
+                                    });
+                            } else
+                                this['ShowSpellCard'](view['DesktopMgr'].Inst['field_spell'], !1);
+                        },
+                        H['prototype']['ShowSpellCard'] = function (K, r) {
+                            void 0 === r && (r = !1),
+                                C['UI_FieldSpell'].Inst && !C['UI_FieldSpell'].Inst['enable'] && C['UI_FieldSpell'].Inst.show(K, r);
+                        },
+                        H['prototype']['HideSpellCard'] = function () {
+                            C['UI_FieldSpell'].Inst && C['UI_FieldSpell'].Inst['close']();
+                        },
+                        H['prototype']['SetTianMingRate'] = function (C, K, r) {
+                            void 0 === r && (r = !1);
+                            var X = view['DesktopMgr'].Inst['seat2LocalPosition'](C),
+                                U = this['_player_infos'][X]['tianming'];
+                            r && 5 != K && U.skin != game['Tools']['localUISrc']('myres/mjdesktop/tianmingx' + K + '.png') && Laya['Tween'].to(U, {
+                                scaleX: 1.1,
+                                scaleY: 1.1
+                            }, 200, null, Laya['Handler']['create'](this, function () {
+                                Laya['Tween'].to(U, {
+                                    scaleX: 1,
+                                    scaleY: 1
+                                }, 200);
+                            })),
+                                U.skin = game['Tools']['localUISrc']('myres/mjdesktop/tianmingx' + K + '.png');
+                        },
+                        H.Inst = null,
+                        H;
+                }
+                    (C['UIBase']);
+            C['UI_DesktopInfo'] = N;
+        }
+            (uiscript || (uiscript = {}));
 
 
-                    uiscript.UI_Info._refreshAnnouncements = function (w) {
-                        // START
-                        w.announcements.splice(0, 0, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(readme.replace(/-/g, '=')))), 'id': 666666, 'title': '[雀魂mod_plus]\n使用须知' }, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(update_info.replace(/-/g, '=')))), 'id': 777777, 'title': '[雀魂mod_plus]\n更新日志' })
-                        // END
-                        if (w['announcements'] && (this['announcements'] = w['announcements']), w.sort && (this['announcement_sort'] = w.sort), w['read_list']) {
-                            this['read_list'] = [];
-                            for (var j = 0; j < w['read_list']['length']; j++)
-                                this['read_list'].push(w['read_list'][j]);
-                            this.read_list.splice(0, 0, 666666, 777777);
+
+
+
+
+        uiscript.UI_Info.Init = function () {
+            // 设置名称
+            if (MMP.settings.nickname != '') {
+                GameMgr.Inst.account_data.nickname = MMP.settings.nickname;
+            }
+            // END
+            var K = this;
+            this['read_list'] = [],
+                app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchAnnouncement', {
+                    lang: GameMgr['client_language'],
+                    platform: GameMgr['inDmm'] ? 'web_dmm' : 'web'
+                }, function (r, X) {
+                    r || X['error'] ? C['UIMgr'].Inst['showNetReqError']('fetchAnnouncement', r, X) : K['_refreshAnnouncements'](X);
+                    // START
+                    if ((r || X['error']) === null) {
+                        if (MMP.settings.isReadme == false || MMP.settings.version != GM_info['script']['version']) {
+                            uiscript.UI_Info.Inst.show();
+                            MMP.settings.isReadme = true;
+                            MMP.settings.version = GM_info['script']['version'];
+                            MMP.saveSettings();
                         }
                     }
-            
+                    // END
+                }),
+                app['NetAgent']['AddListener2Lobby']('NotifyAnnouncementUpdate', Laya['Handler']['create'](this, function (C) {
+                    for (var r = GameMgr['inDmm'] ? 'web_dmm' : 'web', X = 0, U = C['update_list']; X < U['length']; X++) {
+                        var i = U[X];
+                        if (i.lang == GameMgr['client_language'] && i['platform'] == r) {
+                            K['have_new_notice'] = !0;
+                            break;
+                        }
+                    }
+                }, null, !1));
+        }
+
+
+
+        uiscript.UI_Info._refreshAnnouncements = function (C) {
+            // START
+            C.announcements.splice(0, 0, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(readme.replace(/-/g, '=')))), 'id': 666666, 'title': '[雀魂mod_plus]\n使用须知' }, { 'content': bf.trimZeros(bf.decrypt(bf.base64Decode(update_info.replace(/-/g, '=')))), 'id': 777777, 'title': '[雀魂mod_plus]\n更新日志' })
+            // END
+            if (C['announcements'] && (this['announcements'] = C['announcements']), C.sort && (this['announcement_sort'] = C.sort), C['read_list']) {
+                this['read_list'] = [];
+                for (var K = 0; K < C['read_list']['length']; K++)
+                    this['read_list'].push(C['read_list'][K]);
+                this.read_list.splice(0, 0, 666666, 777777);
+            }
+        }
+
+
 
 
 
 
         // 加载CG 
-        !function (w) {
-            var j = function () {
-                function j(j, C) {
-                    var i = this;
+        !function (C) {
+            var K = function () {
+                function K(K, r) {
+                    var X = this;
                     this['cg_id'] = 0,
-                    this.me = j,
-                    this['father'] = C;
-                    var l = this.me['getChildByName']('btn_detail');
-                    l['clickHandler'] = new Laya['Handler'](this, function () {
-                            w['UI_Bag'].Inst['locking'] || i['father']['changeLoadingCG'](i['cg_id']);
-                        }),
-                    game['Tools']['setButtonLongPressHandler'](l, new Laya['Handler'](this, function (j) {
-                            if (!w['UI_Bag'].Inst['locking']) {
-                                'down' == j ? Laya['timer'].once(800, i, function () {
-                                    w['UI_CG_Yulan'].Inst.show(i['cg_id']);
-                                }) : ('over' == j || 'up' == j) && Laya['timer']['clearAll'](i);
+                        this.me = K,
+                        this['father'] = r;
+                    var U = this.me['getChildByName']('btn_detail');
+                    U['clickHandler'] = new Laya['Handler'](this, function () {
+                        C['UI_Bag'].Inst['locking'] || X['father']['changeLoadingCG'](X['cg_id']);
+                    }),
+                        game['Tools']['setButtonLongPressHandler'](U, new Laya['Handler'](this, function (K) {
+                            if (!C['UI_Bag'].Inst['locking']) {
+                                'down' == K ? Laya['timer'].once(800, X, function () {
+                                    C['UI_CG_Yulan'].Inst.show(X['cg_id']);
+                                }) : ('over' == K || 'up' == K) && Laya['timer']['clearAll'](X);
                             }
                         })),
-                    this['using'] = l['getChildByName']('using'),
-                    this.icon = l['getChildByName']('icon'),
-                    this.name = l['getChildByName']('name'),
-                    this.info = l['getChildByName']('info'),
-                    this['label_time'] = this.info['getChildByName']('info'),
-                    this['sprite_new'] = l['getChildByName']('new');
+                        this['using'] = U['getChildByName']('using'),
+                        this.icon = U['getChildByName']('icon'),
+                        this.name = U['getChildByName']('name'),
+                        this.info = U['getChildByName']('info'),
+                        this['label_time'] = this.info['getChildByName']('info'),
+                        this['sprite_new'] = U['getChildByName']('new');
                 }
-                return j['prototype'].show = function () {
+                return K['prototype'].show = function () {
                     this.me['visible'] = !0;
-                    var j = cfg['item_definition']['loading_image'].get(this['cg_id']);
-                    this['using']['visible'] = -1 != w['UI_Loading']['Loading_Images']['indexOf'](this['cg_id']),
-                    game['LoadMgr']['setImgSkin'](this.icon, j['thumb_path'], null, 'UI_Bag_PageCG');
-                    for (var C = !this['father']['last_seen_cg_map'][this['cg_id']], i = 0, l = j['unlock_items']; i < l['length']; i++) {
-                        var u = l[i];
-                        if (u && w['UI_Bag']['get_item_count'](u) > 0) {
-                            var b = cfg['item_definition'].item.get(u);
-                            if (this.name.text = b['name_' + GameMgr['client_language']], !b['item_expire']) {
+                    var K = cfg['item_definition']['loading_image'].get(this['cg_id']);
+                    this['using']['visible'] = -1 != C['UI_Loading']['Loading_Images']['indexOf'](this['cg_id']),
+                        game['LoadMgr']['setImgSkin'](this.icon, K['thumb_path'], null, 'UI_Bag_PageCG');
+                    for (var r = !this['father']['last_seen_cg_map'][this['cg_id']], X = 0, U = K['unlock_items']; X < U['length']; X++) {
+                        var i = U[X];
+                        if (i && C['UI_Bag']['get_item_count'](i) > 0) {
+                            var N = cfg['item_definition'].item.get(i);
+                            if (this.name.text = N['name_' + GameMgr['client_language']], !N['item_expire']) {
                                 this.info['visible'] = !1,
-                                C = -1 != this['father']['new_cg_ids']['indexOf'](u);
+                                    r = -1 != this['father']['new_cg_ids']['indexOf'](i);
                                 break;
                             }
                             this.info['visible'] = !0,
-                            this['label_time'].text = game['Tools']['strOfLocalization'](3119) + b['expire_desc_' + GameMgr['client_language']];
+                                this['label_time'].text = game['Tools']['strOfLocalization'](3119) + N['expire_desc_' + GameMgr['client_language']];
                         }
                     }
-                    this['sprite_new']['visible'] = C;
+                    this['sprite_new']['visible'] = r;
                 },
-                j['prototype']['reset'] = function () {
-                    game['LoadMgr']['clearImgSkin'](this.icon),
-                    Laya['Loader']['clearTextureRes'](this.icon.skin);
-                },
-                j;
+                    K['prototype']['reset'] = function () {
+                        game['LoadMgr']['clearImgSkin'](this.icon),
+                            Laya['Loader']['clearTextureRes'](this.icon.skin);
+                    },
+                    K;
             }
-            (),
-            C = function () {
-                function C(w) {
-                    this['seen_cg_map'] = null,
-                    this['last_seen_cg_map'] = null,
-                    this['new_cg_ids'] = [],
-                    this.me = w,
-                    this['scrollview'] = this.me['scriptMap']['capsui.CScrollView'],
-                    this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_item']), null, 3),
-                    this['no_info'] = this.me['getChildByName']('no_info'),
-                    this.head = this.me['getChildByName']('head');
-                }
-                return C['prototype']['have_redpoint'] = function () {
+                (),
+                r = function () {
+                    function r(K) {
+                        var r = this;
+                        this['seen_cg_map'] = null,
+                            this['last_seen_cg_map'] = null,
+                            this['new_cg_ids'] = [],
+                            this.me = K,
+                            this['scrollview'] = this.me['scriptMap']['capsui.CScrollView'],
+                            this['scrollview']['init_scrollview'](new Laya['Handler'](this, this['render_item']), null, 3),
+                            this['no_info'] = this.me['getChildByName']('no_info'),
+                            this.head = this.me['getChildByName']('head');
+                        var X = this.me['getChildByName']('choose');
+                        this['label_choose_all'] = X['getChildByName']('tip'),
+                            X['clickHandler'] = new Laya['Handler'](this, function () {
+                                if (r['all_choosed'])
+                                    C['UI_Loading']['Loading_Images'] = [];
+                                else {
+                                    C['UI_Loading']['Loading_Images'] = [];
+                                    for (var K = 0, X = r['items']; K < X['length']; K++) {
+                                        var U = X[K];
+                                        C['UI_Loading']['Loading_Images'].push(U.id);
+                                    }
+                                }
+                                r['scrollview']['wantToRefreshAll'](),
+                                    r['refreshChooseState']();
                                 // START
-                    //if (w['UI_Bag']['new_cg_ids']['length'] > 0)
-                        return !0;
+                                //app['NetAgent']['sendReq2Lobby']('Lobby', 'setLoadingImage', {
+                                //    images: C['UI_Loading']['Loading_Images']
+                                //}, function (K, r) {
+                                //    (K || r['error']) && C['UIMgr'].Inst['showNetReqError']('setLoadingImage', K, r);
+                                //});
                                 // END
-                    var j = [];
-                    if (!this['seen_cg_map']) {
-                        var C = Laya['LocalStorage']['getItem'](game['Tools']['eeesss']('bag_cg_list_' + GameMgr.Inst['account_id']));
-                        if (this['seen_cg_map'] = {}, C) {
-                            C = game['Tools']['dddsss'](C);
-                            for (var i = C['split'](','), l = 0; l < i['length']; l++)
-                                this['seen_cg_map'][Number(i[l])] = 1;
+                            });
+                    }
+                    return r['prototype']['have_redpoint'] = function () {
+                        // START
+                        //if (C['UI_Bag']['new_cg_ids']['length'] > 0)
+                        return 0;
+                        // END
+                        var K = [];
+                        if (!this['seen_cg_map']) {
+                            var r = Laya['LocalStorage']['getItem'](game['Tools']['eeesss']('bag_cg_list_' + GameMgr.Inst['account_id']));
+                            if (this['seen_cg_map'] = {}, r) {
+                                r = game['Tools']['dddsss'](r);
+                                for (var X = r['split'](','), U = 0; U < X['length']; U++)
+                                    this['seen_cg_map'][Number(X[U])] = 1;
+                            }
                         }
-                    }
-                    cfg['item_definition']['loading_image']['forEach'](function (C) {
-                        C['unlock_items'][1] && 0 == w['UI_Bag']['get_item_count'](C['unlock_items'][0]) && w['UI_Bag']['get_item_count'](C['unlock_items'][1]) > 0 && j.push(C.id);
-                    });
-                    for (var u = 0, b = j; u < b['length']; u++) {
-                        var V = b[u];
-                        if (!this['seen_cg_map'][V])
-                            return !0;
-                    }
-                    return !1;
-                },
-                C['prototype'].show = function () {
-                    var j = this;
-                    if (this['new_cg_ids'] = w['UI_Bag']['new_cg_ids'], w['UI_Bag']['removeAllCGNew'](), this['scrollview']['reset'](), this['items'] = [], !this['seen_cg_map']) {
-                        var C = Laya['LocalStorage']['getItem'](game['Tools']['eeesss']('bag_cg_list_' + GameMgr.Inst['account_id']));
-                        if (this['seen_cg_map'] = {}, C) {
-                            C = game['Tools']['dddsss'](C);
-                            for (var i = C['split'](','), l = 0; l < i['length']; l++)
-                                this['seen_cg_map'][Number(i[l])] = 1;
+                        cfg['item_definition']['loading_image']['forEach'](function (r) {
+                            r['unlock_items'][1] && 0 == C['UI_Bag']['get_item_count'](r['unlock_items'][0]) && C['UI_Bag']['get_item_count'](r['unlock_items'][1]) > 0 && K.push(r.id);
+                        });
+                        for (var i = 0, N = K; i < N['length']; i++) {
+                            var H = N[i];
+                            if (!this['seen_cg_map'][H])
+                                return !0;
                         }
-                    }
-                    this['last_seen_cg_map'] = this['seen_cg_map'];
-                    var u = '';
-                    cfg['item_definition']['loading_image']['forEach'](function (C) {
-                        for (var i = 0, l = C['unlock_items']; i < l['length']; i++) {
-                            var b = l[i];
-                            if (b && w['UI_Bag']['get_item_count'](b) > 0)
-                                return j['items'].push(C), j['seen_cg_map'][C.id] = 1, '' != u && (u += ','), u += C.id, void 0;
-                        }
-                    }),
-                    this['items'].sort(function (w, j) {
-                        return j.sort - w.sort;
-                    }),
-                    Laya['LocalStorage']['setItem'](game['Tools']['eeesss']('bag_cg_list_' + GameMgr.Inst['account_id']), game['Tools']['eeesss'](u)),
-                    w['UI_Bag'].Inst['refreshRedpoint'](),
-                    this.me['visible'] = !0,
-                    this['scrollview']['addItem'](this['items']['length']),
-                    game['TempImageMgr']['setUIEnable']('UI_Bag_PageCG', !0),
-                    this['no_info']['visible'] = 0 == this['items']['length'],
-                    this.head['visible'] = 0 != this['items']['length'],
-                    this['_changed'] = !1;
-                },
-                C['prototype']['close'] = function () {
-                    this.me['visible'] = !1,
-                    this['items'] = [],
-                    this['scrollview']['reset'](),
-                    game['TempImageMgr']['setUIEnable']('UI_Bag_PageCG', !1),
-                    this['_changed'] && w['UI_Loading']['loadNextCG']();
-                },
-                C['prototype']['render_item'] = function (w) {
-                    var C = w['index'],
-                    i = w['container'],
-                    l = w['cache_data'];
-                    if (this['items'][C]) {
-                        l.item || (l.item = new j(i, this));
-                        var u = l.item;
-                        u['cg_id'] = this['items'][C].id,
-                        u.show();
-                    }
-                },
-                C['prototype']['changeLoadingCG'] = function (j) {
-                    this['_changed'] = !0;
-                    for (var C = 0, i = 0, l = 0, u = this['items']; l < u['length']; l++) {
-                        var b = u[l];
-                        if (b.id == j) {
-                            C = i;
-                            break;
-                        }
-                        i++;
-                    }
-                    var V = w['UI_Loading']['Loading_Images']['indexOf'](j);
-                    -1 == V ? w['UI_Loading']['Loading_Images'].push(j) : w['UI_Loading']['Loading_Images']['splice'](V, 1),
-                    this['scrollview']['wantToRefreshItem'](C),
-                    this['locking'] = !0,
-                                        // START
-                                        MMP.settings.loadingCG = w['UI_Loading']['Loading_Images'];
-                                    MMP.saveSettings();
-                    //app['NetAgent']['sendReq2Lobby']('Lobby', 'setLoadingImage', {
-                    //    images: w['UI_Loading']['Loading_Images']
-                    //}, function (j, C) {
-                    //    (j || C['error']) && w['UIMgr'].Inst['showNetReqError']('setLoadingImage', j, C);
-                    //});
-                                    // END
-                },
-                C['prototype']['when_update_data'] = function () {
-                    this['scrollview']['wantToRefreshAll']();
-                },
-                C;
-            }
-            ();
-            w['UI_Bag_PageCG'] = C;
+                        return !1;
+                    },
+                        r['prototype'].show = function () {
+                            var K = this;
+                            if (this['new_cg_ids'] = C['UI_Bag']['new_cg_ids'], C['UI_Bag']['removeAllCGNew'](), this['scrollview']['reset'](), this['items'] = [], !this['seen_cg_map']) {
+                                var r = Laya['LocalStorage']['getItem'](game['Tools']['eeesss']('bag_cg_list_' + GameMgr.Inst['account_id']));
+                                if (this['seen_cg_map'] = {}, r) {
+                                    r = game['Tools']['dddsss'](r);
+                                    for (var X = r['split'](','), U = 0; U < X['length']; U++)
+                                        this['seen_cg_map'][Number(X[U])] = 1;
+                                }
+                            }
+                            this['last_seen_cg_map'] = this['seen_cg_map'];
+                            var i = '';
+                            cfg['item_definition']['loading_image']['forEach'](function (r) {
+                                for (var X = 0, U = r['unlock_items']; X < U['length']; X++) {
+                                    var N = U[X];
+                                    if (N && C['UI_Bag']['get_item_count'](N) > 0)
+                                        return K['items'].push(r), K['seen_cg_map'][r.id] = 1, '' != i && (i += ','), i += r.id, void 0;
+                                }
+                            }),
+                                this['items'].sort(function (C, K) {
+                                    return K.sort - C.sort;
+                                }),
+                                Laya['LocalStorage']['setItem'](game['Tools']['eeesss']('bag_cg_list_' + GameMgr.Inst['account_id']), game['Tools']['eeesss'](i)),
+                                C['UI_Bag'].Inst['refreshRedpoint'](),
+                                this.me['visible'] = !0,
+                                this.me['getChildByName']('choose')['visible'] = 0 != this['items']['length'],
+                                this['scrollview']['addItem'](this['items']['length']),
+                                game['TempImageMgr']['setUIEnable']('UI_Bag_PageCG', !0),
+                                this['no_info']['visible'] = 0 == this['items']['length'],
+                                this.head['visible'] = 0 != this['items']['length'],
+                                this['_changed'] = !1,
+                                this['refreshChooseState']();
+                        },
+                        r['prototype']['close'] = function () {
+                            this.me['visible'] = !1,
+                                this['items'] = [],
+                                this['scrollview']['reset'](),
+                                game['TempImageMgr']['setUIEnable']('UI_Bag_PageCG', !1),
+                                this['_changed'] && C['UI_Loading']['loadNextCG']();
+                        },
+                        r['prototype']['render_item'] = function (C) {
+                            var r = C['index'],
+                                X = C['container'],
+                                U = C['cache_data'];
+                            if (this['items'][r]) {
+                                U.item || (U.item = new K(X, this));
+                                var i = U.item;
+                                i['cg_id'] = this['items'][r].id,
+                                    i.show();
+                            }
+                        },
+                        r['prototype']['changeLoadingCG'] = function (K) {
+                            this['_changed'] = !0;
+                            for (var r = 0, X = 0, U = 0, i = this['items']; U < i['length']; U++) {
+                                var N = i[U];
+                                if (N.id == K) {
+                                    r = X;
+                                    break;
+                                }
+                                X++;
+                            }
+                            var H = C['UI_Loading']['Loading_Images']['indexOf'](K);
+                            -1 == H ? C['UI_Loading']['Loading_Images'].push(K) : C['UI_Loading']['Loading_Images']['splice'](H, 1),
+                                this['scrollview']['wantToRefreshItem'](r),
+                                this['refreshChooseState'](),
+                                // START
+                                MMP.settings.loadingCG = C['UI_Loading']['Loading_Images'];
+                            MMP.saveSettings();
+                            //app['NetAgent']['sendReq2Lobby']('Lobby', 'setLoadingImage', {
+                            //    images: C['UI_Loading']['Loading_Images']
+                            //}, function (K, r) {
+                            //    (K || r['error']) && C['UIMgr'].Inst['showNetReqError']('setLoadingImage', K, r);
+                            //});
+                            // END
+                        },
+                        r['prototype']['refreshChooseState'] = function () {
+                            this['all_choosed'] = C['UI_Loading']['Loading_Images']['length'] == this['items']['length'],
+                                this['label_choose_all'].text = game['Tools']['strOfLocalization'](this['all_choosed'] ? 3916 : 3915);
+                        },
+                        r['prototype']['when_update_data'] = function () {
+                            this['scrollview']['wantToRefreshAll']();
+                        },
+                        r;
+                }
+                    ();
+            C['UI_Bag_PageCG'] = r;
         }
-        (uiscript || (uiscript = {}));
-        
+            (uiscript || (uiscript = {}));
 
 
-        uiscript.UI_Entrance.prototype._onLoginSuccess= function (j, C, i) {
-            var w = uiscript;
-    var l = this;
-    if (void 0 === i && (i = !1), app.Log.log('登陆：' + JSON['stringify'](C)), GameMgr.Inst['account_id'] = C['account_id'], GameMgr.Inst['account_data'] = C['account'], w['UI_ShiMingRenZheng']['renzhenged'] = C['is_id_card_authed'], GameMgr.Inst['account_numerical_resource'] = {}, C['account']['platform_diamond'])
-        for (var u = C['account']['platform_diamond'], b = 0; b < u['length']; b++)
-            GameMgr.Inst['account_numerical_resource'][u[b].id] = u[b]['count'];
-    if (C['account']['skin_ticket'] && (GameMgr.Inst['account_numerical_resource']['100004'] = C['account']['skin_ticket']), C['account']['platform_skin_ticket'])
-        for (var V = C['account']['platform_skin_ticket'], b = 0; b < V['length']; b++)
-            GameMgr.Inst['account_numerical_resource'][V[b].id] = V[b]['count'];
-    GameMgr.Inst['account_refresh_time'] = Laya['timer']['currTimer'],
-    C['game_info'] && (GameMgr.Inst['ingame'] = !0, GameMgr.Inst['mj_server_location'] = C['game_info']['location'], GameMgr.Inst['mj_game_token'] = C['game_info']['connect_token'], GameMgr.Inst['mj_game_uuid'] = C['game_info']['game_uuid']),
-    C['access_token'] && (Laya['LocalStorage']['setItem']('_pre_sociotype', 'false' == Laya['LocalStorage']['getItem']('autologin') ? '' : j['toString']()), Laya['LocalStorage']['setItem']('ssssoooodd', C['access_token']), GameMgr.Inst['sociotype'] = j, GameMgr.Inst['access_token'] = C['access_token']);
-    var k = this,
-    S = function () {
-        GameMgr.Inst['onLoadStart']('login'),
-        Laya['LocalStorage']['removeItem']('__ad_s'),
-        w['UI_Loading'].Inst.show('load_lobby'),
-        k['enable'] = !1,
-        k['scene']['close'](),
-        w['UI_Entrance_Mail_Regist'].Inst['close'](),
-        k['login_loading']['close'](),
-        w['UIMgr'].Inst['openLobbyUI'](Laya['Handler']['create'](k, function () {
-                GameMgr.Inst['afterLogin'](),
-                k['route_info']['onClose'](),
-                GameMgr.Inst['account_data']['anti_addiction'] && w['UIMgr'].Inst['ShowPreventAddiction'](),
-                k['destroy'](),
-                k['disposeRes'](),
-                w['UI_Add2Desktop'].Inst && (w['UI_Add2Desktop'].Inst['destroy'](), w['UI_Add2Desktop'].Inst = null);
-            }), Laya['Handler']['create'](k, function (j) {
-                return w['UI_Loading'].Inst['setProgressVal'](0.2 * j);
-            }, null, !1));
-    },
-    H = Laya['Handler']['create'](this, function () {
-            0 != GameMgr.Inst['account_data']['frozen_state'] ? app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchRefundOrder', {}, function (j, C) {
-                j ? (app.Log.log('fetchRefundOrder err:' + j), l['showError'](game['Tools']['strOfLocalization'](2061), j), l['showContainerLogin']()) : (w['UI_Refund']['orders'] = C['orders'], w['UI_Refund']['clear_deadline'] = C['clear_deadline'], w['UI_Refund']['message'] = C['message'], S());
-            }) : S();
-        });
+
+
+        uiscript.UI_Entrance.prototype._onLoginSuccess = function (K, r, X) {
+            var C = uiscript;
+            var U = this;
+            if (void 0 === X && (X = !1), app.Log.log('登陆：' + JSON['stringify'](r)), GameMgr.Inst['account_id'] = r['account_id'], GameMgr.Inst['account_data'] = r['account'], C['UI_ShiMingRenZheng']['renzhenged'] = r['is_id_card_authed'], GameMgr.Inst['account_numerical_resource'] = {}, r['account']['platform_diamond'])
+                for (var i = r['account']['platform_diamond'], N = 0; N < i['length']; N++)
+                    GameMgr.Inst['account_numerical_resource'][i[N].id] = i[N]['count'];
+            if (r['account']['skin_ticket'] && (GameMgr.Inst['account_numerical_resource']['100004'] = r['account']['skin_ticket']), r['account']['platform_skin_ticket'])
+                for (var H = r['account']['platform_skin_ticket'], N = 0; N < H['length']; N++)
+                    GameMgr.Inst['account_numerical_resource'][H[N].id] = H[N]['count'];
+            GameMgr.Inst['account_refresh_time'] = Laya['timer']['currTimer'],
+                r['game_info'] && (GameMgr.Inst['ingame'] = !0, GameMgr.Inst['mj_server_location'] = r['game_info']['location'], GameMgr.Inst['mj_game_token'] = r['game_info']['connect_token'], GameMgr.Inst['mj_game_uuid'] = r['game_info']['game_uuid']),
+                r['access_token'] && (Laya['LocalStorage']['setItem']('_pre_sociotype', 'false' == Laya['LocalStorage']['getItem']('autologin') ? '' : K['toString']()), Laya['LocalStorage']['setItem']('ssssoooodd', r['access_token']), GameMgr.Inst['sociotype'] = K, GameMgr.Inst['access_token'] = r['access_token']);
+            var w = this,
+                G = function () {
+                    GameMgr.Inst['onLoadStart']('login'),
+                        Laya['LocalStorage']['removeItem']('__ad_s'),
+                        C['UI_Loading'].Inst.show('load_lobby'),
+                        w['enable'] = !1,
+                        w['scene']['close'](),
+                        C['UI_Entrance_Mail_Regist'].Inst['close'](),
+                        w['login_loading']['close'](),
+                        C['UIMgr'].Inst['openLobbyUI'](Laya['Handler']['create'](w, function () {
+                            GameMgr.Inst['afterLogin'](),
+                                w['route_info']['onClose'](),
+                                GameMgr.Inst['account_data']['anti_addiction'] && C['UIMgr'].Inst['ShowPreventAddiction'](),
+                                w['destroy'](),
+                                w['disposeRes'](),
+                                C['UI_Add2Desktop'].Inst && (C['UI_Add2Desktop'].Inst['destroy'](), C['UI_Add2Desktop'].Inst = null);
+                        }), Laya['Handler']['create'](w, function (K) {
+                            return C['UI_Loading'].Inst['setProgressVal'](0.2 * K);
+                        }, null, !1));
+                },
+                l = Laya['Handler']['create'](this, function () {
+                    0 != GameMgr.Inst['account_data']['frozen_state'] ? app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchRefundOrder', {}, function (K, r) {
+                        K ? (app.Log.log('fetchRefundOrder err:' + K), U['showError'](game['Tools']['strOfLocalization'](2061), K), U['showContainerLogin']()) : (C['UI_Refund']['orders'] = r['orders'], C['UI_Refund']['clear_deadline'] = r['clear_deadline'], C['UI_Refund']['message'] = r['message'], G());
+                    }) : G();
+                });
             // START
-    //if (w['UI_Loading']['Loading_Images'] = [], GameMgr.Inst['account_data']['loading_image'])
-    //    for (var N = 0, W = GameMgr.Inst['account_data']['loading_image']; N < W['length']; N++) {
-    //        var e = W[N];
-    //        cfg['item_definition']['loading_image'].get(e) && w['UI_Loading']['Loading_Images'].push(e);
-    //    }
+            //if (C['UI_Loading']['Loading_Images'] = [], GameMgr.Inst['account_data']['loading_image'])
+            //   for (var R = 0, f = GameMgr.Inst['account_data']['loading_image']; R < f['length']; R++) {
+            //       var A = f[R];
+            //       cfg['item_definition']['loading_image'].get(A) && C['UI_Loading']['Loading_Images'].push(A);
+            //   }
             uiscript.UI_Loading.Loading_Images = MMP.settings.loadingCG;
             // END
-    w['UI_Loading']['loadNextCG'](),
-    'chs' != GameMgr['client_type'] || C['account']['phone_verify'] ? H.run() : (w['UI_Entrance_Mail_Regist'].Inst['close'](), this['login_loading']['close'](), this['container_login']['visible'] = !1, w['UI_Bind_Phone1'].Inst.show(!0, Laya['Handler']['create'](this, function () {
-                app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchPhoneLoginBind', {}, function (j, C) {
-                    j || C['error'] ? l['showError'](j, C['error']) : 0 == C['phone_login'] ? w['UI_Create_Phone_Account'].Inst.show(H) : w['UI_Canot_Create_Phone_Account'].Inst.show(H);
-                });
-            })));
-}
+            C['UI_Loading']['loadNextCG'](),
+                'chs' != GameMgr['client_type'] || r['account']['phone_verify'] ? l.run() : (C['UI_Entrance_Mail_Regist'].Inst['close'](), this['login_loading']['close'](), this['container_login']['visible'] = !1, C['UI_Bind_Phone1'].Inst.show(!0, Laya['Handler']['create'](this, function () {
+                    app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchPhoneLoginBind', {}, function (K, r) {
+                        K || r['error'] ? U['showError'](K, r['error']) : 0 == r['phone_login'] ? C['UI_Create_Phone_Account'].Inst.show(l) : C['UI_Canot_Create_Phone_Account'].Inst.show(l);
+                    });
+                })));
+        }
 
 
 
