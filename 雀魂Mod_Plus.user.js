@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.10.269
+// @version      0.10.270
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -292,7 +292,7 @@ function testAPI() {
                                             var items = cfg.item_definition.item.map_;
                                             for (var id in items) {
                                                 if (MMP.settings.setItems.ignoreItems.includes(Number(id)) || (MMP.settings.setItems.ignoreEvent ? (id.slice(0, 3) == '309' ? true : false) : false)) {
-                                                    for (let item of l["items"]) {
+                                                    for (let item of U["items"]) {
                                                         if (item.item_id == id) {
                                                             cfg.item_definition.item.get(item.item_id);
                                                             K._item_map[item.item_id] = {
@@ -1481,7 +1481,7 @@ function testAPI() {
                                                 level: 5,
                                                 exp: 0,
                                                 skin: skin,
-                                                is_upgraded: 1,
+                                                is_upgraded: true,
                                                 extra_emoji: emoji
                                             });
                                         }
