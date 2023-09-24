@@ -6538,6 +6538,14 @@ function testAPI() {
             app.Taboo.test = function () { return null };
             GameMgr.Inst.nickname_replace_enable = false;
         }
+        app.NetAgent.AddListener2Lobby = ((fn) => (name, handler) => {
+            if (name === "NotifyGameFinishRewardV2")
+                handler.method = ((fn) => (data) => {
+                    data.main_character.level = 5;
+                    return fn(data);
+                })(handler.method);
+            return fn.apply(app.NetAgent, [name, handler]);
+        })(app.NetAgent.AddListener2Lobby);
         console.log('[雀魂mod_plus] 启动完毕!!!');
         let testapi = testAPI();
 
