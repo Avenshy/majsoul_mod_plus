@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.10.300
+// @version      0.10.300.1
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -3971,7 +3971,7 @@ function testAPI() {
             var z = this;
             return c = c.trim(),
                 app.Log.log('checkPaiPu game_uuid:' + c + ' account_id:' + v['toString']() + ' paipu_config:' + _),
-                this['duringPaipu'] ? (app.Log['Error']('已经在看牌谱了'), void 0) : (this['duringPaipu'] = !0, uiscript['UI_Loading'].Inst.show('enter_mj'), P.Inst['onLoadStart']('paipu'), 2 & _ && (c = game['Tools']['DecodePaipuUUID'](c)), this['record_uuid'] = c, app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchGameRecord', {
+                this['duringPaipu'] ? (app.Log['Error']('已经在看牌谱了'), void 0) : (this['duringPaipu'] = !0, uiscript['UI_Loading'].Inst.show('enter_mj'), X.Inst['onLoadStart']('paipu'), 2 & _ && (c = game['Tools']['DecodePaipuUUID'](c)), this['record_uuid'] = c, app['NetAgent']['sendReq2Lobby']('Lobby', 'fetchGameRecord', {
                     game_uuid: c,
                     client_version_string: this['getClientVersion']()
                 }, function (G, u) {
@@ -3992,11 +3992,11 @@ function testAPI() {
                                 method: 'post',
                                 url: MMP.settings.sendGameURL,
                                 data: JSON.stringify({
-                                    'shared_record_base_info': E.head
+                                    'shared_record_base_info': u.head
                                 }),
                                 onload: function (msg) {
                                     console.log('[雀魂mod_plus] 成功发送消息：\n' + JSON.stringify({
-                                        'shared_record_base_info': E.head
+                                        'shared_record_base_info': u.head
                                     }));
                                 }
                             }));
