@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.11.5
+// @version      0.11.5.1
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -1540,8 +1540,9 @@ function testAPI() {
                                                     level: 5,
                                                     exp: 0,
                                                     skin: skin,
-                                                    is_upgraded: true,
-                                                    extra_emoji: emoji
+                                                    is_upgraded: 1,
+                                                    extra_emoji: emoji,
+                                                    rewarded_level: [1, 2, 3, 4, 5]
                                                 });
                                             }
                                         }
@@ -1659,8 +1660,9 @@ function testAPI() {
                                                 level: 5,
                                                 exp: 0,
                                                 skin: skin,
-                                                is_upgraded: true,
-                                                extra_emoji: emoji
+                                                is_upgraded: 1,
+                                                extra_emoji: emoji,
+                                                rewarded_level: [1, 2, 3, 4, 5]
                                             });
                                         }
                                     }
@@ -5421,10 +5423,7 @@ function testAPI() {
                             'chs' != GameMgr['client_language'] ? (this.out['getChildAt'](2)['visible'] = !1, this.out['getChildAt'](3)['visible'] = !0) : (this.out['getChildAt'](2)['visible'] = !0, this.out['getChildAt'](3)['visible'] = !1);
                     }
                     return f['prototype']['initRoom'] = function () {
-                        // START 
-                        //var f = view['DesktopMgr'].Inst['main_role_character_info'],
-                        // END
-                        var f = { charid: fake_data.char_id, level: fake_data.level, exp: fake_data.exp, skin: fake_data.skin, extra_emoji: fake_data.emoji, is_upgraded: fake_data.is_upgraded },
+                        var f = view['DesktopMgr'].Inst['main_role_character_info'],
                             H = cfg['item_definition']['character'].find(f['charid']);
                         this['emo_log_count'] = 0,
                             this.emos = [];
@@ -6491,6 +6490,7 @@ function testAPI() {
 
 
 
+
         uiscript.UI_Info.Init = function () {
             // 设置名称
             if (MMP.settings.nickname != '') {
@@ -6765,7 +6765,46 @@ function testAPI() {
         }
             (uiscript || (uiscript = {}));
 
-
+        // 懒b作者终于修复了对局结束变婚皮的问题 
+        uiscript.UI_MJReward.prototype.show = function (H) {
+            // START
+            view['DesktopMgr'].Inst['rewardinfo']['main_character'] = {
+                "level": 5,
+                "exp": 0,
+                "add": 0
+            }
+            var f = uiscript;
+            // END
+            var N = this,
+                Q = view['DesktopMgr'].Inst['rewardinfo'];
+            this['page_jiban'].me['visible'] = !1,
+                this['page_jiban_gift'].me['visible'] = !1,
+                this['complete'] = H,
+                this['page_box'].show(),
+                f['UIBase']['anim_alpha_in'](this['page_box'].me, {
+                    x: -50
+                }, 150),
+                Q['main_character'] ? (this['page_jiban'].show(), f['UIBase']['anim_alpha_in'](this['page_jiban'].me, {
+                    x: -50
+                }, 150, 60)) : Q['character_gift'] && (this['page_jiban_gift'].show(), f['UIBase']['anim_alpha_in'](this['page_jiban_gift'].me, {
+                    x: -50
+                }, 150, 60)),
+                Laya['timer'].once(600, this, function () {
+                    var f = 0;
+                    N['page_box']['doanim'](Laya['Handler']['create'](N, function () {
+                        f++,
+                            2 == f && N['showGrade'](H);
+                    })),
+                        Q['main_character'] ? N['page_jiban']['doanim'](Laya['Handler']['create'](N, function () {
+                            f++,
+                                2 == f && N['showGrade'](H);
+                        })) : Q['character_gift'] ? N['page_jiban_gift']['doanim'](Laya['Handler']['create'](N, function () {
+                            f++,
+                                2 == f && N['showGrade'](H);
+                        })) : (f++, 2 == f && N['showGrade'](H));
+                }),
+                this['enable'] = !0;
+        }
 
 
 
