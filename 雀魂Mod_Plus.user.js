@@ -5,7 +5,7 @@
 // @name:en      MajsoulMod_Plus
 // @name:ja      雀魂Mod_Plus
 // @namespace    https://github.com/Avenshy
-// @version      0.11.5.1
+// @version      0.11.5.2
 // @description       雀魂解锁全角色、皮肤、装扮等，支持全部服务器。
 // @description:zh-TW 雀魂解鎖全角色、皮膚、裝扮等，支持全部伺服器。
 // @description:zh-HK 雀魂解鎖全角色、皮膚、裝扮等，支持全部服務器。
@@ -906,7 +906,11 @@ function testAPI() {
                                                     D[a] = Q['players'][d];
                                                     //修改牌桌上人物头像及皮肤
                                                     if (D[a].account_id == GameMgr.Inst.account_id) {
-                                                        D[a].character = uiscript.UI_Sushe.characters[uiscript.UI_Sushe.main_character_id - 200001];
+                                                        for (let item of uiscript.UI_Sushe.characters){
+                                                            if (item['charid'] == uiscript.UI_Sushe.main_character_id){
+                                                                D[a].character = item;
+                                                            }
+                                                        }
                                                         D[a].avatar_id = uiscript.UI_Sushe.main_chara_info.skin;
                                                         D[a].views = uiscript.UI_Sushe.commonViewList[uiscript.UI_Sushe.using_commonview_index];
                                                         D[a].avatar_frame = GameMgr.Inst.account_data.avatar_frame;
@@ -1526,9 +1530,9 @@ function testAPI() {
                                         }
                                         N.characters = [];
 
-                                        for (let count = 1; count <= cfg.item_definition.character['rows_'].length; count++) {
-                                            let id = 200000 + count;
-                                            let skin = 400001 + count * 100;
+                                        for (let count = 0; count < cfg.item_definition.character['rows_'].length; count++) {
+                                            let id = cfg.item_definition.character['rows_'][count]['id'];
+                                            let skin = cfg.item_definition.character['rows_'][count]['init_skin'];
                                             let emoji = [];
                                             let group = cfg.character.emoji.getGroup(id);
                                             if (group !== undefined) {
@@ -1550,8 +1554,12 @@ function testAPI() {
                                         skins.forEach((element) => {
                                             uiscript.UI_Sushe.add_skin(element['id']);
                                         });
-                                        for (let skinitem in MMP.settings.characters) {
-                                            uiscript.UI_Sushe.characters[skinitem].skin = MMP.settings.characters[skinitem];
+                                        for (let i in uiscript.UI_Sushe.characters) {
+                                            let charid = uiscript.UI_Sushe.characters[i]['charid'];
+                                            let key = charid - 200001;
+                                            if (MMP.settings.characters[key] !== undefined) {
+                                                uiscript.UI_Sushe.characters[i].skin = MMP.settings.characters[key];
+                                            }
                                         }
                                         N.main_character_id = MMP.settings.character;
                                         GameMgr.Inst.account_data.avatar_id = MMP.settings.characters[MMP.settings.character - 200001];
@@ -1646,9 +1654,9 @@ function testAPI() {
                                     }
                                     this.characters = [];
 
-                                    for (let count = 1; count <= cfg.item_definition.character['rows_'].length; count++) {
-                                        let id = 200000 + count;
-                                        let skin = 400001 + count * 100;
+                                    for (let count = 0; count < cfg.item_definition.character['rows_'].length; count++) {
+                                        let id = cfg.item_definition.character['rows_'][count]['id'];
+                                        let skin = cfg.item_definition.character['rows_'][count]['init_skin'];
                                         let emoji = [];
                                         let group = cfg.character.emoji.getGroup(id);
                                         if (group !== undefined) {
@@ -1670,8 +1678,12 @@ function testAPI() {
                                     skins.forEach((element) => {
                                         uiscript.UI_Sushe.add_skin(element['id']);
                                     });
-                                    for (let skinitem in MMP.settings.characters) {
-                                        uiscript.UI_Sushe.characters[skinitem].skin = MMP.settings.characters[skinitem];
+                                    for (let i in uiscript.UI_Sushe.characters) {
+                                        let charid = uiscript.UI_Sushe.characters[i]['charid'];
+                                        let key = charid - 200001;
+                                        if (MMP.settings.characters[key] !== undefined) {
+                                            uiscript.UI_Sushe.characters[i].skin = MMP.settings.characters[key];
+                                        }
                                     }
                                     this.main_character_id = MMP.settings.character;
                                     GameMgr.Inst.account_data.avatar_id = MMP.settings.characters[MMP.settings.character - 200001];
