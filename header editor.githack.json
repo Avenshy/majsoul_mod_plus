@@ -10,7 +10,7 @@
 			"group": "雀魂Safe",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://raw.githack.com/Avenshy/majsoul_mod_plus/master/safe_code.js"
+			"to": "https://raw.githack.com/Avenshy/majsoul_mod_plus/master/safe_code.js?min=1"
 		},
 		{
 			"enable": true,
@@ -22,7 +22,7 @@
 			"group": "雀魂Safe",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://raw.githack.com/Avenshy/majsoul_mod_plus/master/safe_code.js"
+			"to": "https://raw.githack.com/Avenshy/majsoul_mod_plus/master/safe_code.js?min=1"
 		},
 		{
 			"enable": true,
@@ -34,7 +34,7 @@
 			"group": "雀魂Safe",
 			"isFunction": false,
 			"action": "redirect",
-			"to": "https://raw.githack.com/Avenshy/majsoul_mod_plus/master/safe_code.js"
+			"to": "https://raw.githack.com/Avenshy/majsoul_mod_plus/master/safe_code.js?min=1"
 		}
 	],
 	"sendHeader": [],
