@@ -1,0 +1,43 @@
+{
+	"request": [
+		{
+			"enable": true,
+			"name": "国服_CN",
+			"ruleType": "redirect",
+			"matchType": "regexp",
+			"pattern": "^https://game\\.maj\\-soul\\.(com|net)/[0-9]+/v[0-9\\.]+\\.w/code\\.js$",
+			"exclude": "",
+			"group": "雀魂Safe",
+			"isFunction": false,
+			"action": "redirect",
+			"to": "https://raw.githack.com/Avenshy/majsoul_mod_plus/master/safe_code.js"
+		},
+		{
+			"enable": true,
+			"name": "日服_JP",
+			"ruleType": "redirect",
+			"matchType": "regexp",
+			"pattern": "^https://game\\.mahjongsoul\\.com/v[0-9\\.]+\\.w/code\\.js$",
+			"exclude": "",
+			"group": "雀魂Safe",
+			"isFunction": false,
+			"action": "redirect",
+			"to": "https://raw.githack.com/Avenshy/majsoul_mod_plus/master/safe_code.js"
+		},
+		{
+			"enable": true,
+			"name": "国际服_EN",
+			"ruleType": "redirect",
+			"matchType": "regexp",
+			"pattern": "^https://mahjongsoul\\.game\\.yo-star\\.com/v[0-9\\.]+\\.w/code\\.js$",
+			"exclude": "",
+			"group": "雀魂Safe",
+			"isFunction": false,
+			"action": "redirect",
+			"to": "https://raw.githack.com/Avenshy/majsoul_mod_plus/master/safe_code.js"
+		}
+	],
+	"sendHeader": [],
+	"receiveHeader": [],
+	"receiveBody": []
+}
